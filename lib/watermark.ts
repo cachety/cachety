@@ -152,7 +152,7 @@ async function watermarkImage(file: File, text: string): Promise<WatermarkResult
   };
 }
 
-function drawWatermark(
+export function drawWatermark(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
