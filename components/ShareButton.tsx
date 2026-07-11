@@ -17,7 +17,10 @@ export default function ShareButton() {
   const share = async () => {
     const meta = SITE_META[lang];
     const url = `${window.location.origin}${meta.path}`;
-    if (navigator.share) {
+    // Sur mobile (pointeur tactile), vrai partage natif : feuille de
+    // partage du système. Sur desktop, copie du lien — prévisible.
+    const mobile = window.matchMedia("(pointer: coarse)").matches;
+    if (mobile && navigator.share) {
       try {
         await navigator.share({ title: meta.ogTitle, text: meta.description, url });
         return;
