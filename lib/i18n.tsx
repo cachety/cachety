@@ -17,8 +17,8 @@ const plural = (n: number, s: string) => `${n} ${s}${n > 1 ? "s" : ""}`;
 export const STRINGS = {
   fr: {
     switchTo: "Switch to English",
-    taglinePre: "Ajoutez un filigrane à vos documents sensibles,",
-    taglineStrong: "sans qu'ils ne quittent jamais votre appareil",
+    taglinePre: "Ajoutez un filigrane à vos documents sensibles, ",
+    taglineStrong: "sans qu'ils ne quittent jamais votre appareil.",
     badge: "Traitement 100 % local, zéro envoi.",
     sourceLong: "code source vérifiable",
     sourceShort: "code source",
@@ -88,8 +88,8 @@ export const STRINGS = {
   },
   en: {
     switchTo: "Passer en français",
-    taglinePre: "Add a watermark to your sensitive documents,",
-    taglineStrong: "without them ever leaving your device",
+    taglinePre: "Add a watermark to your sensitive documents, ",
+    taglineStrong: "without them ever leaving your device.",
     badge: "100 % local processing, nothing uploaded.",
     sourceLong: "verifiable source code",
     sourceShort: "source code",
@@ -159,8 +159,8 @@ export const STRINGS = {
   },
   ja: {
     switchTo: "言語を選択",
-    taglinePre: "機密文書に透かしを入れます。",
-    taglineStrong: "ファイルが端末の外に出ることはありません",
+    taglinePre: "機密文書に透かしを入れても、",
+    taglineStrong: "ファイルが端末の外に出ることは一切ありません。",
     badge: "100% ローカル処理、アップロードなし。",
     sourceLong: "検証可能なソースコード",
     sourceShort: "ソースコード",
@@ -172,7 +172,7 @@ export const STRINGS = {
     dropAdd: "他のドキュメントを追加（ドロップ・クリック・Ctrl+V）",
     inputAria: "透かしを入れるドキュメントを追加（PDF または画像）",
     rejected: (names: string) =>
-      `対応していない形式です：${names}。PDF と画像（JPG、PNG…）のみ対応しています。`,
+      `対応していない形式です：${names}。PDF と画像（JPG、PNG…）のみ使用できます。`,
     remove: (name: string) => `${name} を削除`,
     pages: (n: number) => `${n} ページ`,
     status: { pending: "待機中", processing: "処理中", ready: "完了", error: "エラー" },
@@ -192,10 +192,10 @@ export const STRINGS = {
     autoApply: "自動プレビュー",
     apply: "透かしを適用",
     applyHint: "「適用」をクリックしてプレビューを生成します。",
-    dropAnywhere: "どこにでもドロップできます",
+    dropAnywhere: "画面のどこにでもドロップできます",
     clearAll: "すべて消去",
     emptyStart: "ドキュメントをドロップして始めましょう。",
-    emptyText: "透かしのテキストを入力してください。",
+    emptyText: "処理を始めるには、透かしのテキストを入力してください。",
     processingGeneric: "処理中…",
     processingDoc: (name: string, p?: [number, number]) =>
       `${name}：透かしを処理中…${p ? ` ${p[0]} / ${p[1]} ページ` : ""}`,

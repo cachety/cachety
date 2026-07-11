@@ -117,8 +117,8 @@ export default function Header() {
             </h1>
           </div>
           <p className="mt-4 text-xl text-encre-2 text-balance">
-            {t.taglinePre}{" "}
-            <strong className="text-encre">{t.taglineStrong}</strong>.
+            {t.taglinePre}
+            <strong className="text-encre">{t.taglineStrong}</strong>
           </p>
           <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-trait bg-feuille px-4 py-1.5 text-sm text-encre-2">
             <ShieldIcon className="h-4 w-4 text-green-700" />
