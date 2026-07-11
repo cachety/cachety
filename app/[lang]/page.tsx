@@ -25,7 +25,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: m.description,
     alternates: { canonical: m.path, languages: LANGUAGE_ALTERNATES },
     openGraph: {
-      images: ["/og-image.png"],
       type: "website",
       siteName: "Filigrane Local",
       locale: m.ogLocale,

@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   appleWebApp: { title: "Filigrane Local", statusBarStyle: "black-translucent" },
   alternates: { canonical: "/", languages: LANGUAGE_ALTERNATES },
   openGraph: {
-    images: ["/og-image.png"],
     type: "website",
     siteName: "Filigrane Local",
     locale: SITE_META.fr.ogLocale,
