@@ -1,0 +1,47 @@
+# Dependencies
+/node_modules
+.pnp
+.pnp.*
+.yarn/install-state.gz
+
+# Build output
+/.next/
+/out/
+/build
+/dist
+
+# pdf.js assets copied at build time (bun run assets)
+/public/pdfjs/
+
+# Cloudflare / Wrangler
+/.wrangler/
+/.vercel/
+.dev.vars
+.dev.vars.*
+
+# Testing
+/coverage
+/.playwright-mcp/
+/test-results/
+/playwright-report/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env files
+.env
+.env*.local
+
+# TypeScript build info
+*.tsbuildinfo
+next-env.d.ts
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+*.pem
+/.vscode/
+/.idea/

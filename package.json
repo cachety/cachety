@@ -1,0 +1,33 @@
+{
+  "name": "filigrane-local",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "assets": "mkdir -p public/pdfjs && cp -r node_modules/pdfjs-dist/cmaps node_modules/pdfjs-dist/standard_fonts node_modules/pdfjs-dist/wasm node_modules/pdfjs-dist/iccs node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdfjs/",
+    "predev": "bun run assets",
+    "dev": "next dev",
+    "prebuild": "bun run assets",
+    "build": "next build",
+    "preview": "bunx wrangler pages dev out",
+    "deploy": "bun run build && bunx wrangler pages deploy out --project-name filigrane-local --branch main",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "fflate": "^0.8.3",
+    "next": "16.2.10",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.1.200",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.2",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "postcss": "^8",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^5"
+  }
+}

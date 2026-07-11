@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-papier: #f2f3f0;
+  --color-feuille: #ffffff;
+  --color-encre: #1a1e33;
+  --color-encre-2: #5c6072;
+  --color-sceau: #c4262e;
+  --color-sceau-fonce: #9e1c23;
+  --color-bleu: #223f92;
+  --color-trait: #d8dad3;
+
+  --font-sans: "Space Grotesk Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", monospace;
+}
+
+.motif-filigrane {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='180'%3E%3Ctext x='130' y='90' font-family='monospace' font-size='17' font-weight='600' fill='%23c4262e' fill-opacity='0.09' text-anchor='middle' transform='rotate(-30 130 90)'%3EDOCUMENT%20PROT%C3%89G%C3%89%3C/text%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
