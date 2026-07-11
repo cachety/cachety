@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ACCEPT, hasVisibleText, isSupported, outputName, zipDocuments } from "@/lib/files";
 import { releaseResult, watermarkFile, type WatermarkResult } from "@/lib/watermark";
 import { useT, type ErrorKey, type Strings } from "@/lib/i18n";
-import { ChevronIcon, CloseIcon, DownloadIcon, UploadIcon } from "@/components/icons";
+import { ChevronIcon, CloseIcon, DownloadIcon } from "@/components/icons";
+import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
 
 type Status = "pending" | "processing" | "ready" | "error";
 
@@ -260,8 +261,12 @@ export default function CoreProduct() {
             />
             {docs.length === 0 ? (
               <>
-                <UploadIcon className="h-9 w-9 text-encre-2" />
-                <span className="text-lg font-semibold">{t.dropTitle}</span>
+                <div className="w-full max-w-[240px] -rotate-2">
+                  <SpecimenCard specimen={t.about.specimen}>
+                    <WatermarkLayer text={t.about.exStamp} />
+                  </SpecimenCard>
+                </div>
+                <span className="mt-1 text-lg font-semibold">{t.dropTitle}</span>
                 <span className="text-sm text-encre-2">{t.dropHint}</span>
               </>
             ) : (
