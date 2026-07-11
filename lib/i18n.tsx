@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type Lang = "fr" | "en";
+export type Lang = "fr" | "en" | "ja";
 
 export type ErrorKey =
   | "unsupported"
@@ -157,6 +157,77 @@ export const STRINGS = {
       generic: "Processing failed. Please try again.",
     } as Record<ErrorKey | "generic", string>,
   },
+  ja: {
+    switchTo: "言語を選択",
+    taglinePre: "機密文書に透かしを入れます。",
+    taglineStrong: "ファイルが端末の外に出ることはありません",
+    badge: "100% ローカル処理、アップロードなし。",
+    sourceLong: "検証可能なソースコード",
+    sourceShort: "ソースコード",
+    step1: "ドキュメント",
+    step2: "透かしのテキスト",
+    step3: "確認してダウンロード",
+    dropTitle: "PDF または画像をここにドロップ",
+    dropHint: "またはクリックして選択。貼り付け（Ctrl+V）も使えます。",
+    dropAdd: "他のドキュメントを追加（ドロップ・クリック・Ctrl+V）",
+    inputAria: "透かしを入れるドキュメントを追加（PDF または画像）",
+    rejected: (names: string) =>
+      `対応していない形式です：${names}。PDF と画像（JPG、PNG…）のみ対応しています。`,
+    remove: (name: string) => `${name} を削除`,
+    pages: (n: number) => `${n} ページ`,
+    status: { pending: "待機中", processing: "処理中", ready: "完了", error: "エラー" },
+    pageOf: (a: number, b: number) => `${a} / ${b} ページ`,
+    textareaAria: "ドキュメントに入れる透かしのテキスト",
+    placeholder: "例：賃貸申込専用のコピー",
+    presets: [
+      "賃貸申込専用のコピー。他の用途は禁止します",
+      "銀行提出専用のコピー。複製・再利用を禁止します",
+      "本人確認専用のコピー。他の用途は禁止します",
+    ],
+    addDate: "今日の日付を追加",
+    onDate: (base: string, date: string) => `${base}（${date}）`,
+    tip: "ヒント：宛先と日付を入れましょう。具体的な透かしは他では使えません。",
+    downloadAll: (n: number) => `すべてダウンロード（${n} 件）`,
+    zipName: "watermarked-documents",
+    autoApply: "自動プレビュー",
+    apply: "透かしを適用",
+    applyHint: "「適用」をクリックしてプレビューを生成します。",
+    dropAnywhere: "どこにでもドロップできます",
+    clearAll: "すべて消去",
+    emptyStart: "ドキュメントをドロップして始めましょう。",
+    emptyText: "透かしのテキストを入力してください。",
+    processingGeneric: "処理中…",
+    processingDoc: (name: string, p?: [number, number]) =>
+      `${name}：透かしを処理中…${p ? ` ${p[0]} / ${p[1]} ページ` : ""}`,
+    docError: (name: string, msg: string) => `${name}：${msg}`,
+    srProcessing: "透かしを処理中です。",
+    srReady: (n: number) => `${n} 件のドキュメントをダウンロードできます。`,
+    previewAlt: (name: string, p: number) => `${name}、透かし入り ${p} ページ目のプレビュー`,
+    zoomOpen: (p: number) => `${p} ページ目のプレビューを拡大`,
+    zoomLabel: (p: number) => `${p} ページ目の拡大プレビュー`,
+    zoomAlt: (name: string, p: number) => `${name}、${p} ページ目の拡大`,
+    zoomClose: "プレビューを閉じる",
+    pagerNav: "ページ移動",
+    pagerPrev: "前のページ",
+    pagerNext: "次のページ",
+    previewLimit: (shown: number, total: number) =>
+      `プレビューは最初の ${shown} ページまでです。ダウンロードには全 ${total} ページが含まれます。`,
+    suffix: "watermarked",
+    sizeUnit: "MB",
+    locale: "ja-JP",
+    footerMade: "作者：",
+    footerInspired: "、着想元：",
+    footerLicense: "。AGPL ライセンス。",
+    errors: {
+      unsupported: "対応していない形式です。PDF または画像（JPG、PNG…）を選んでください。",
+      pdf_unreadable: "この PDF を読み込めませんでした（破損またはパスワード保護）。",
+      pdf_empty: "この PDF にページがありません。",
+      image_unreadable: "この画像を読み込めませんでした。JPG または PNG をお試しください。",
+      canvas_unavailable: "お使いのブラウザではこのドキュメントを描画できません。",
+      export_failed: "ページの書き出しに失敗しました。",
+      generic: "処理に失敗しました。もう一度お試しください。",
+    } as Record<ErrorKey | "generic", string>,
+  },
 };
 
 export type Strings = (typeof STRINGS)["fr"];
@@ -172,8 +243,9 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("lang") as Lang | null;
+    const nav = navigator.language.toLowerCase();
     const detected: Lang =
-      saved ?? (navigator.language.toLowerCase().startsWith("fr") ? "fr" : "en");
+      saved ?? (nav.startsWith("fr") ? "fr" : nav.startsWith("ja") ? "ja" : "en");
     setLangState(detected);
   }, []);
 

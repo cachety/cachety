@@ -35,6 +35,25 @@ export const FlagGB = ({ className }: IconProps) => (
   </svg>
 );
 
+export const FlagJP = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" aria-hidden>
+    <rect width="3" height="2" fill="#ffffff" />
+    <circle cx="1.5" cy="1" r="0.6" fill="#bc002d" />
+  </svg>
+);
+
+export const ChevronDownIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M6 9l6 6 6-6" />
+  </Stroke>
+);
+
+export const CheckIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M5 12l5 5L20 6" />
+  </Stroke>
+);
+
 export const ShieldIcon = ({ className }: IconProps) => (
   <Stroke className={className}>
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
