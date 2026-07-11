@@ -96,7 +96,9 @@ export default function CoreProduct() {
     let depth = 0;
     const hasFiles = (e: DragEvent) =>
       Array.from(e.dataTransfer?.types ?? []).includes("Files");
-    const onOver = (e: DragEvent) => hasFiles(e) && e.preventDefault();
+    // preventDefault on every dragover, otherwise the browser opens the file
+    // instead of letting the page receive the drop.
+    const onOver = (e: DragEvent) => e.preventDefault();
     const onEnter = (e: DragEvent) => {
       if (hasFiles(e)) {
         depth++;
@@ -108,11 +110,10 @@ export default function CoreProduct() {
       if (depth === 0) setDragging(false);
     };
     const onDrop = (e: DragEvent) => {
-      if (!hasFiles(e)) return;
       e.preventDefault();
       depth = 0;
       setDragging(false);
-      addFiles(e.dataTransfer?.files);
+      if (e.dataTransfer?.files?.length) addFiles(e.dataTransfer.files);
     };
     window.addEventListener("dragover", onOver);
     window.addEventListener("dragenter", onEnter);

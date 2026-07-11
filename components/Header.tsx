@@ -14,7 +14,7 @@ function LangToggle() {
     <div
       role="group"
       aria-label="Langue / Language"
-      className="flex items-center gap-0.5 rounded-full border border-trait bg-feuille p-0.5"
+      className="flex items-center gap-2 rounded-full border border-trait bg-feuille px-2 py-1"
     >
       {LANGS.map(({ code, label, flag: FlagIcon }) => {
         const active = lang === code;
@@ -25,10 +25,10 @@ function LangToggle() {
             aria-label={label}
             aria-pressed={active}
             title={label}
-            className={`flex h-5 w-7 items-center justify-center overflow-hidden rounded-full transition ${
+            className={`h-4 w-6 overflow-hidden rounded-[3px] border border-black/10 transition ${
               active
-                ? "ring-2 ring-bleu ring-offset-1 ring-offset-feuille"
-                : "opacity-40 hover:opacity-80"
+                ? "opacity-100 ring-1 ring-encre/25"
+                : "opacity-40 grayscale hover:opacity-80 hover:grayscale-0"
             }`}
           >
             <FlagIcon className="h-full w-full" />
