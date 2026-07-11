@@ -77,12 +77,53 @@ export default function CoreProduct() {
     inputRef.current?.focus();
   };
 
+  const clearAll = () => {
+    setDocs([]);
+    setRejected([]);
+    inputRef.current?.focus();
+  };
+
   const today = () => new Date().toLocaleDateString(t.locale);
 
   useEffect(() => {
     const onPaste = (e: ClipboardEvent) => addFiles(e.clipboardData?.files);
     document.addEventListener("paste", onPaste);
     return () => document.removeEventListener("paste", onPaste);
+  }, [addFiles]);
+
+  // Accepter un fichier déposé n'importe où sur la page, pas seulement la zone.
+  useEffect(() => {
+    let depth = 0;
+    const hasFiles = (e: DragEvent) =>
+      Array.from(e.dataTransfer?.types ?? []).includes("Files");
+    const onOver = (e: DragEvent) => hasFiles(e) && e.preventDefault();
+    const onEnter = (e: DragEvent) => {
+      if (hasFiles(e)) {
+        depth++;
+        setDragging(true);
+      }
+    };
+    const onLeave = () => {
+      depth = Math.max(0, depth - 1);
+      if (depth === 0) setDragging(false);
+    };
+    const onDrop = (e: DragEvent) => {
+      if (!hasFiles(e)) return;
+      e.preventDefault();
+      depth = 0;
+      setDragging(false);
+      addFiles(e.dataTransfer?.files);
+    };
+    window.addEventListener("dragover", onOver);
+    window.addEventListener("dragenter", onEnter);
+    window.addEventListener("dragleave", onLeave);
+    window.addEventListener("drop", onDrop);
+    return () => {
+      window.removeEventListener("dragover", onOver);
+      window.removeEventListener("dragenter", onEnter);
+      window.removeEventListener("dragleave", onLeave);
+      window.removeEventListener("drop", onDrop);
+    };
   }, [addFiles]);
 
   const prevDocs = useRef<Doc[]>([]);
@@ -176,23 +217,30 @@ export default function CoreProduct() {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start">
+      {dragging && (
+        <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-encre/40 p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border-2 border-dashed border-white bg-feuille px-8 py-6 text-center text-lg font-semibold shadow-xl">
+            {t.dropAnywhere}
+          </div>
+        </div>
+      )}
       <div className="flex flex-col gap-8">
         <section aria-label={t.step1}>
-          <StepLabel n={1} active={docs.length === 0}>
-            {t.step1}
-          </StepLabel>
+          <div className="flex items-center justify-between gap-3">
+            <StepLabel n={1} active={docs.length === 0}>
+              {t.step1}
+            </StepLabel>
+            {docs.length > 0 && (
+              <button
+                onClick={clearAll}
+                className="text-sm text-encre-2 underline-offset-2 transition-colors hover:text-sceau hover:underline"
+              >
+                {t.clearAll}
+              </button>
+            )}
+          </div>
 
           <label
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={(e) => {
-              e.preventDefault();
-              setDragging(false);
-              addFiles(e.dataTransfer.files);
-            }}
             className={`motif-filigrane mt-3 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed bg-feuille px-6 text-center transition-colors focus-within:ring-2 focus-within:ring-bleu ${
               docs.length ? "py-5" : "py-12"
             } ${dragging ? "border-sceau bg-sceau/5" : "border-trait hover:border-encre-2"}`}

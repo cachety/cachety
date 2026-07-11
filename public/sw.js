@@ -1,9 +1,13 @@
-const CACHE = "filigrane-v1";
-const CORE = ["/", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png"];
+const CACHE = "filigrane-/*__VERSION__*/";
+const PRECACHE = [/*__PRECACHE__*/];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
-    caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())
+    (async () => {
+      const c = await caches.open(CACHE);
+      await Promise.allSettled(PRECACHE.map((u) => c.add(u)));
+      await self.skipWaiting();
+    })()
   );
 });
 
