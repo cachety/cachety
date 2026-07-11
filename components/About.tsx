@@ -19,7 +19,7 @@ export default function About() {
         <div className="flex shrink-0 items-center gap-4">
           <Link
             href="/"
-            className="text-sm text-encre-2 underline-offset-4 transition-colors hover:text-encre hover:underline"
+            className="text-sm text-bleu underline underline-offset-4 hover:no-underline"
           >
             {a.navTool}
           </Link>
