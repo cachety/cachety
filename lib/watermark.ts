@@ -19,6 +19,7 @@ const RENDER_SCALE = 2;
 const JPEG_QUALITY = 0.85;
 const PREVIEW_MAX_PAGES = 12;
 const WATERMARK_OPACITY = 0.45;
+const WATERMARK_HALO_OPACITY = 0.35;
 const MIN_IMAGE_SIDE = 800;
 export const MAX_CANVAS_AREA = 16_777_216;
 export const MAX_CANVAS_SIDE = 8192;
@@ -177,6 +178,11 @@ export function drawWatermark(
   }
 
   ctx.fillStyle = `rgba(196, 38, 46, ${WATERMARK_OPACITY})`;
+  // Halo blanc : invisible sur fond clair (cas courant), il porte la lisibilité
+  // sur fond rouge/sombre où le rouge se noie. Pas de lecture de pixel.
+  ctx.strokeStyle = `rgba(255, 255, 255, ${WATERMARK_HALO_OPACITY})`;
+  ctx.lineWidth = Math.max(1, fontSize / 10);
+  ctx.lineJoin = "round";
 
   const cx = width / 2;
   const cy = height / 2;
@@ -191,7 +197,10 @@ export function drawWatermark(
   const ny = Math.ceil((radius + stepY) / stepY);
   for (let i = -nx; i <= nx; i++) {
     for (let j = -ny; j <= ny; j++) {
-      ctx.fillText(line, cx + i * stepX, cy + j * stepY);
+      const x = cx + i * stepX;
+      const y = cy + j * stepY;
+      ctx.strokeText(line, x, y);
+      ctx.fillText(line, x, y);
     }
   }
 
