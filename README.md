@@ -26,7 +26,8 @@ J'explique la démarche et la comparaison avec l'outil du gouvernement dans un a
 ## Fonctionnalités
 
 - Plusieurs documents à la fois, formats mélangés (PDF et images).
-- Interface français / anglais (détection automatique).
+- Interface français / anglais / japonais (détection automatique).
+- Liens partageables par langue : `/fr`, `/en` et `/ja` imposent la langue de l'interface et de l'aperçu du lien (bannière Open Graph).
 - Téléchargement groupé en un seul ZIP.
 - Aperçu automatique ou application à la demande, au choix.
 - Installable et utilisable hors-ligne (PWA).

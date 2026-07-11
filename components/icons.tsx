@@ -77,6 +77,22 @@ export const DownloadIcon = ({ className }: IconProps) => (
   </Stroke>
 );
 
+export const ShareIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <circle cx="18" cy="5" r="3" />
+    <circle cx="6" cy="12" r="3" />
+    <circle cx="18" cy="19" r="3" />
+    <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+  </Stroke>
+);
+
+export const LinkIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7" />
+    <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" />
+  </Stroke>
+);
+
 export const CloseIcon = ({ className }: IconProps) => (
   <Stroke className={className}>
     <path d="M18 6L6 18M6 6l12 12" />

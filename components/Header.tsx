@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import LangToggle from "@/components/LangToggle";
+import ShareButton from "@/components/ShareButton";
 import { Flag, ShieldIcon } from "@/components/icons";
 
 export default function Header() {
@@ -24,6 +25,7 @@ export default function Header() {
             <ShieldIcon className="h-4 w-4 shrink-0 text-green-700" />
             {t.sourceShort}
           </a>
+          <ShareButton />
           <LangToggle />
         </div>
       </div>
@@ -36,7 +38,10 @@ export default function Header() {
           >
             {t.about.nav}
           </Link>
-          <LangToggle />
+          <div className="flex items-center gap-2">
+            <ShareButton />
+            <LangToggle />
+          </div>
         </div>
         <div className="mx-auto w-full max-w-3xl pb-8 text-center">
           <div className="flex items-center justify-center gap-3">

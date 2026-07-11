@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { isLang, SITE_META, type Lang } from "@/lib/site-meta";
 
-export type Lang = "fr" | "en" | "ja";
+export type { Lang };
 
 export type ErrorKey =
   | "unsupported"
@@ -76,6 +77,9 @@ export const STRINGS = {
     footerMade: "Par",
     footerInspired: ", inspiré de",
     footerLicense: ". Licence AGPL.",
+    share: "Partager",
+    shareCopied: "Lien copié !",
+    shareLang: (name: string) => `Copier le lien en ${name}`,
     about: {
       nav: "Pourquoi filigraner ?",
       navTool: "L'outil",
@@ -172,6 +176,9 @@ export const STRINGS = {
     footerMade: "By",
     footerInspired: ", inspired by",
     footerLicense: ". AGPL license.",
+    share: "Share",
+    shareCopied: "Link copied!",
+    shareLang: (name: string) => `Copy the link in ${name}`,
     about: {
       nav: "Why watermark?",
       navTool: "The tool",
@@ -268,6 +275,9 @@ export const STRINGS = {
     footerMade: "作者：",
     footerInspired: "、着想元：",
     footerLicense: "。AGPL ライセンス。",
+    share: "共有",
+    shareCopied: "リンクをコピーしました",
+    shareLang: (name: string) => `${name}のリンクをコピー`,
     about: {
       nav: "なぜ透かしを？",
       navTool: "ツール",
@@ -313,16 +323,28 @@ const LangContext = createContext<{
   t: Strings;
 }>({ lang: "fr", setLang: () => {}, t: STRINGS.fr });
 
-export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("fr");
+export function LangProvider({
+  children,
+  forcedLang,
+}: {
+  children: React.ReactNode;
+  forcedLang?: Lang;
+}) {
+  // Une URL /fr, /en ou /ja impose sa langue (liens partageables) ;
+  // la racine garde la détection préférence enregistrée → navigateur.
+  const [lang, setLangState] = useState<Lang>(forcedLang ?? "fr");
 
   useEffect(() => {
+    if (forcedLang) {
+      localStorage.setItem("lang", forcedLang);
+      return;
+    }
     const saved = localStorage.getItem("lang") as Lang | null;
     const nav = navigator.language.toLowerCase();
     const detected: Lang =
       saved ?? (nav.startsWith("fr") ? "fr" : nav.startsWith("ja") ? "ja" : "en");
     setLangState(detected);
-  }, []);
+  }, [forcedLang]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -331,6 +353,13 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   const setLang = (l: Lang) => {
     localStorage.setItem("lang", l);
     setLangState(l);
+    // Sur l'accueil, l'URL reflète la langue affichée : l'adresse reste
+    // partageable telle quelle. replaceState évite de démonter l'app
+    // (les documents chargés seraient perdus avec une vraie navigation).
+    const path = window.location.pathname.replace(/\/+$/, "") || "/";
+    if (path === "/" || isLang(path.slice(1))) {
+      window.history.replaceState(null, "", SITE_META[l].path);
+    }
   };
 
   return (
