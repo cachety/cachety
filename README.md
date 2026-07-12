@@ -1,10 +1,10 @@
 # Filigrane Local
 
-Ajoute un filigrane à un PDF ou une image, dans le navigateur. Rien n'est envoyé nulle part : il n'y a pas de serveur.
+Ajoute un filigrane à vos PDF et images, 100 % localement. Aucun envoi : il n'y a pas de serveur.
 
 **[filigrane-local.fr](https://filigrane-local.fr)**
 
-![Filigrane Local : un PDF filigrané dans le navigateur](docs/preview.png)
+![Filigrane Local : un PDF filigrané localement](docs/preview.png)
 
 ## Auto-hébergement
 

@@ -57,24 +57,24 @@ export const SITE_META: Record<Lang, SiteMeta> = {
     path: "/fr",
     ogLocale: "fr_FR",
     title: "Filigrane Local",
-    ogTitle: "Filigrane Local : filigrane sécurisé, 100 % dans votre navigateur",
+    ogTitle: "Filigrane Local : filigrane sécurisé, 100 % localement",
     description:
-      "Ajoutez un filigrane à vos documents sensibles directement dans votre navigateur. Aucun envoi vers un serveur, code open source vérifiable.",
+      "Ajoutez un filigrane à vos documents sensibles, 100 % localement. Aucun envoi vers un serveur, code open source vérifiable.",
   },
   en: {
     path: "/en",
     ogLocale: "en_GB",
-    title: "Filigrane Local — Secure watermark, 100% in your browser",
-    ogTitle: "Filigrane Local: secure watermark, 100% in your browser",
+    title: "Filigrane Local — Secure watermark, 100% local",
+    ogTitle: "Filigrane Local: secure watermark, 100% local",
     description:
-      "Add a watermark to your sensitive documents right in your browser. Nothing is uploaded to any server, verifiable open-source code.",
+      "Add a watermark to your sensitive documents, 100% locally. Nothing is uploaded to any server, verifiable open-source code.",
   },
   ja: {
     path: "/ja",
     ogLocale: "ja_JP",
-    title: "Filigrane Local — ブラウザ内で完結する安全な透かし",
-    ogTitle: "Filigrane Local：ブラウザ内で完結する安全な透かし",
+    title: "Filigrane Local — 100% ローカルで完結する安全な透かし",
+    ogTitle: "Filigrane Local：100% ローカルで完結する安全な透かし",
     description:
-      "機密文書への透かし入れを、すべてブラウザ内で。サーバーへの送信は一切なし、検証可能なオープンソースです。",
+      "機密文書への透かし入れを 100% ローカルで。サーバーへの送信は一切なし、検証可能なオープンソースです。",
   },
 };
