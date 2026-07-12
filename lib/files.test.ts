@@ -90,4 +90,20 @@ describe("zipDocuments", () => {
     expect(new TextDecoder().decode(zip["a-2.pdf"])).toBe("PDF-A-BIS");
     expect(new TextDecoder().decode(zip["b.png"])).toBe("PNG-B");
   });
+
+  test("neutralise les chemins hostiles (Zip-Slip) : seul le basename est gardé", () => {
+    const zip = unzipSync(
+      zipDocuments([
+        { name: "../../evil.pdf", bytes: strToU8("X") },
+        { name: "/etc/passwd.png", bytes: strToU8("Y") },
+        { name: "a\\b\\c.pdf", bytes: strToU8("Z") },
+      ])
+    );
+    for (const entry of Object.keys(zip)) {
+      expect(entry).not.toContain("/");
+      expect(entry).not.toContain("\\");
+      expect(entry).not.toContain("..");
+    }
+    expect(Object.keys(zip).sort()).toEqual(["c.pdf", "evil.pdf", "passwd.png"]);
+  });
 });

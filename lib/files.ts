@@ -25,9 +25,15 @@ export function uniqueName(name: string, used: Set<string>) {
   return used.add(n), n;
 }
 
+// Ne garde que le dernier segment du chemin : un nom hostile comme
+// « ../evil.pdf » ne peut pas s'échapper du dossier à l'extraction
+// (Zip-Slip). File.name est déjà un basename ; c'est une défense en
+// profondeur au cas où un nom serait forgé en amont.
+const basename = (name: string) => name.split(/[/\\]/).pop() || "document";
+
 export function zipDocuments(files: { name: string; bytes: Uint8Array }[]): Uint8Array {
   const used = new Set<string>();
   const entries: Record<string, [Uint8Array, { level: 0 }]> = {};
-  for (const f of files) entries[uniqueName(f.name, used)] = [f.bytes, { level: 0 }];
+  for (const f of files) entries[uniqueName(basename(f.name), used)] = [f.bytes, { level: 0 }];
   return zipSync(entries);
 }

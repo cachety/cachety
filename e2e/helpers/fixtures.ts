@@ -21,6 +21,31 @@ export async function makePdf(pageSizes: [number, number][]): Promise<Uint8Array
   return doc.save();
 }
 
+/**
+ * PDF valide dont une page porte /Rotate (90 par défaut). pdf-lib expose la
+ * rotation via setRotation ; on l'utilise pour vérifier que le moteur aplatit
+ * l'orientation correctement (cf. red team A5).
+ */
+export async function makeRotatedPdf(
+  w: number,
+  h: number,
+  degrees = 90
+): Promise<Uint8Array> {
+  const { degrees: deg } = await import("pdf-lib");
+  const doc = await PDFDocument.create();
+  const page = doc.addPage([w, h]);
+  page.drawRectangle({
+    x: 4,
+    y: 4,
+    width: w - 8,
+    height: h - 8,
+    borderColor: rgb(0.2, 0.2, 0.25),
+    borderWidth: 1,
+  });
+  page.setRotation(deg(degrees));
+  return doc.save();
+}
+
 export function toBase64(bytes: Uint8Array): string {
   return Buffer.from(bytes).toString("base64");
 }

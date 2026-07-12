@@ -73,10 +73,17 @@ export default function CoreProduct() {
     const accepted = incoming.filter((f) => isSupported(f.type));
     if (!accepted.length) return;
     setDocs((prev) => {
-      const known = new Set(prev.map((d) => d.id));
-      const added = accepted
-        .filter((f) => !known.has(docId(f)))
-        .map<Doc>((f) => ({ id: docId(f), file: f, status: "pending" }));
+      // Le même fichier peut apparaître deux fois dans un seul dépôt :
+      // on déduplique aussi à l'intérieur du lot, pas seulement contre
+      // l'existant, sinon deux docs partagent la même clé React.
+      const seen = new Set(prev.map((d) => d.id));
+      const added: Doc[] = [];
+      for (const f of accepted) {
+        const id = docId(f);
+        if (seen.has(id)) continue;
+        seen.add(id);
+        added.push({ id, file: f, status: "pending" });
+      }
       return [...prev, ...added];
     });
   }, []);

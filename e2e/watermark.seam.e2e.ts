@@ -16,7 +16,7 @@ import { PDFDocument } from "pdf-lib";
 import type { Browser, Page } from "playwright-core";
 import { launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
-import { fromBase64, makePdf, toBase64 } from "./helpers/fixtures";
+import { fromBase64, makePdf, makeRotatedPdf, toBase64 } from "./helpers/fixtures";
 
 const ROOT = join(import.meta.dir, "..");
 const OUT_DIR = join(ROOT, "out");
@@ -315,4 +315,60 @@ describe("contrat d'erreurs du moteur", () => {
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.error).toBe("image_unreadable");
   }, 15_000);
+});
+
+// Régressions issues de la campagne red team : entrées hostiles pour
+// lesquelles la défense a tenu. On les fige ici pour qu'elles le restent.
+describe("corpus adversarial (défenses vérifiées)", () => {
+  test("un fichier de 0 octet rejette proprement (pas de plantage)", async () => {
+    const res = await runWatermark({
+      b64: "",
+      name: "vide.pdf",
+      type: "application/pdf",
+      text: WATERMARK_TEXT,
+    });
+    expect(res.ok).toBe(false);
+    if (!res.ok) expect(res.error).toBe("pdf_unreadable");
+  }, 15_000);
+
+  test(
+    "une page pivotée (/Rotate 90) ressort filigranée et valide",
+    async () => {
+      const res = await runWatermark({
+        b64: toBase64(await makeRotatedPdf(595.28, 841.89, 90)),
+        name: "pivotee.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      expect(res.pageCount).toBe(1);
+      const out = await PDFDocument.load(fromBase64(res.outB64));
+      expect(out.getPageCount()).toBe(1);
+      const { red } = await countRedPixels(res.previews[0]);
+      expect(red).toBeGreaterThan(200);
+    },
+    60_000
+  );
+
+  test(
+    "une page démesurée (200 pouces) est plafonnée sans planter, sortie valide",
+    async () => {
+      const huge = 200 * 72; // 200 pouces en points
+      const res = await runWatermark({
+        b64: toBase64(await makePdf([[huge, huge]])),
+        name: "geante.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      expect(res.pageCount).toBe(1);
+      const out = await PDFDocument.load(fromBase64(res.outB64));
+      // La page de sortie garde les dimensions logiques d'origine…
+      expect(Math.abs(out.getPage(0).getWidth() - huge)).toBeLessThan(1);
+      // …même si le canvas de rendu a été plafonné par fitScale.
+      const { red } = await countRedPixels(res.previews[0]);
+      expect(red).toBeGreaterThan(50);
+    },
+    60_000
+  );
 });
