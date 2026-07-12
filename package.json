@@ -11,7 +11,8 @@
     "postbuild": "bun run scripts/gen-sw.mjs",
     "preview": "bunx wrangler pages dev out",
     "deploy": "bun run build && bunx wrangler pages deploy out --project-name filigrane-local --branch main",
-    "test": "bun test"
+    "test": "bun test",
+    "test:e2e": "bun e2e/run.ts"
   },
   "dependencies": {
     "@fontsource-variable/space-grotesk": "^5.2.10",
@@ -24,9 +25,11 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.2",
+    "@types/bun": "^1.3.14",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "playwright-core": "^1.61.1",
     "postcss": "^8",
     "tailwindcss": "^4.3.2",
     "typescript": "^5"

@@ -1,0 +1,78 @@
+# CI : unitaires (sans build ni navigateur), export statique, métadonnées,
+# puis suite navigateur (harnais du moteur de filigrane + fumée UI).
+#
+# Navigateurs : playwright-core est une simple bibliothèque (le runner reste
+# bun:test) ; `bunx playwright-core install --with-deps <navigateur>` peuple
+# son registre (~/.cache/ms-playwright). Sur le runner GitHub, ni CHROMIUM_EXE
+# ni /opt/pw-browsers n'existent : e2e/helpers/browser.ts retombe donc sur ce
+# registre. Chromium est bloquant ; Firefox et WebKit tournent en matrice non
+# bloquante (continue-on-error), la couverture y est identique sauf le test
+# presse-papiers, sauté hors Chromium (grantPermissions non supporté).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Unitaires + navigateur (Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Dépendances
+        run: bun install --frozen-lockfile
+
+      # Avant le build : garantit que `bun test` reste vert sur un arbre nu
+      # (les tests de métadonnées se sautent proprement sans out/).
+      - name: Tests unitaires
+        run: bun test
+
+      - name: Export statique
+        run: bun run build
+
+      - name: Métadonnées de l'export
+        run: bun test ./e2e/site-meta.static.test.ts
+
+      - name: Chromium (registre playwright-core)
+        run: bunx playwright-core install --with-deps chromium
+
+      - name: Suite navigateur
+        run: bun run test:e2e
+
+  browsers:
+    name: Suite navigateur (${{ matrix.browser }}, non bloquant)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Dépendances
+        run: bun install --frozen-lockfile
+
+      - name: Export statique
+        run: bun run build
+
+      - name: Navigateur (registre playwright-core)
+        run: bunx playwright-core install --with-deps ${{ matrix.browser }}
+
+      - name: Suite navigateur
+        run: bun run test:e2e
+        env:
+          BROWSER: ${{ matrix.browser }}
