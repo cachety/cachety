@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useT } from "@/lib/i18n";
 import LangToggle from "@/components/LangToggle";
 import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
-import { CheckIcon, Flag, ShieldIcon } from "@/components/icons";
+import { Flag } from "@/components/icons";
 
 export default function About() {
   const t = useT();
@@ -33,11 +33,12 @@ export default function About() {
         </h1>
         <p className="mt-4 text-lg text-encre-2 text-pretty">{a.lead}</p>
 
-        <section className="mt-10 rounded-xl border-l-4 border-sceau bg-feuille p-5">
-          <h2 className="text-lg font-semibold">{a.riskTitle}</h2>
-          <p className="mt-2 text-encre-2 text-pretty">{a.riskBody}</p>
+        <section className="mt-8 border-l-2 border-sceau pl-5">
+          <h2 className="font-semibold">{a.riskTitle}</h2>
+          <p className="mt-1 text-encre-2 text-pretty">{a.riskBody}</p>
         </section>
 
+        {/* Le cœur de la page : la démonstration remplace le discours. */}
         <section className="mt-12">
           <h2 className="text-xl font-bold tracking-tight">{a.exampleTitle}</h2>
           <div className="mt-5 grid gap-6 sm:grid-cols-2">
@@ -66,34 +67,29 @@ export default function About() {
           </div>
         </section>
 
+        {/* La seule chose que le lecteur doit retenir pour agir. */}
         <section className="mt-12">
-          <h2 className="text-xl font-bold tracking-tight">{a.howTitle}</h2>
-          <ul className="mt-5 grid gap-4 sm:grid-cols-3">
-            {a.how.map((h) => (
-              <li key={h.title} className="rounded-xl border border-trait bg-feuille p-4">
-                <CheckIcon className="h-5 w-5 text-green-600" />
-                <h3 className="mt-2 font-semibold">{h.title}</h3>
-                <p className="mt-1 text-sm text-encre-2 text-pretty">{h.body}</p>
-              </li>
+          <h2 className="text-xl font-bold tracking-tight">{a.whatTitle}</h2>
+          <p className="mt-2 text-encre-2 text-pretty">{a.whatLead}</p>
+          <dl className="mt-5 divide-y divide-trait border-y border-trait">
+            {a.what.map((w) => (
+              <div key={w.title} className="grid gap-1 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6">
+                <dt className="font-semibold">{w.title}</dt>
+                <dd className="text-encre-2 text-pretty">{w.body}</dd>
+              </div>
             ))}
-          </ul>
+          </dl>
+          <p className="mt-4 text-sm text-encre-2">{a.source}</p>
         </section>
 
-        <p className="mt-10 flex items-start gap-2.5 text-sm text-encre-2 text-pretty">
-          <ShieldIcon className="mt-0.5 h-4 w-4 shrink-0 text-green-700" />
-          {a.note}
-        </p>
-
-        <section className="mt-12 rounded-2xl border border-trait bg-feuille p-8 text-center">
-          <h2 className="text-2xl font-bold tracking-tight">{a.ctaTitle}</h2>
-          <p className="mx-auto mt-2 max-w-md text-encre-2 text-pretty">{a.ctaBody}</p>
+        <p className="mt-12">
           <Link
             href="/"
-            className="mt-6 inline-flex items-center justify-center rounded-full bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce"
+            className="text-bleu underline underline-offset-4 hover:no-underline"
           >
-            {a.ctaButton}
+            {a.backToTool}
           </Link>
-        </section>
+        </p>
       </main>
     </>
   );
