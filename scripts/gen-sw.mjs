@@ -16,6 +16,11 @@ async function walk(dir) {
 
 const files = await walk(OUT);
 
+// Une seule source de vérité pour les langues et les pages qu'elles génèrent.
+const LANGS = ["fr", "en", "ja"];
+const LANG_PAGE = /^\/(fr|en|ja|about)\.html$/; //        /fr.html       -> /fr
+const LANG_ABOUT = /^\/(fr|en|ja)\/about\.html$/; //      /fr/about.html -> /fr/about
+
 const precache = files
   .map((f) => "/" + relative(OUT, f).split("\\").join("/"))
   .filter(
@@ -25,17 +30,15 @@ const precache = files
       (u.startsWith("/_next/static/") ||
         u.startsWith("/pdfjs/") ||
         u === "/index.html" ||
-        /^\/(fr|en|ja|about)\.html$/.test(u) ||
-        /^\/(fr|en|ja)\/about\.html$/.test(u) ||
+        LANG_PAGE.test(u) ||
+        LANG_ABOUT.test(u) ||
         u === "/manifest.webmanifest" ||
         u === "/favicon.ico" ||
         /^\/(icon-\d+|apple-touch-icon)\.png$/.test(u))
   )
   // Les URL servies n'ont pas d'extension : /fr.html est exposé comme /fr.
   .map((u) =>
-    u === "/index.html"
-      ? "/"
-      : u.replace(/^\/(fr|en|ja|about)\.html$/, "/$1").replace(/^\/(fr|en|ja)\/about\.html$/, "/$1/about")
+    u === "/index.html" ? "/" : u.replace(LANG_PAGE, "/$1").replace(LANG_ABOUT, "/$1/about")
   )
   .sort();
 
@@ -53,15 +56,12 @@ console.log(`sw.js: precached ${precache.length} files, cache filigrane-${versio
 // L'export statique fige <html lang="fr"> (layout racine unique) ; les pages
 // en/ja doivent porter leur vraie langue dès le HTML, pas après hydratation
 // (lecteurs d'écran, sélection de glyphes CJK, SEO).
-for (const [file, lang] of [
-  ["en.html", "en"],
-  ["ja.html", "ja"],
-  ["en/about.html", "en"],
-  ["ja/about.html", "ja"],
-]) {
-  const p = join(OUT, file);
-  const html = await readFile(p, "utf8");
-  await writeFile(p, html.replace('<html lang="fr"', `<html lang="${lang}"`));
+for (const lang of LANGS.filter((l) => l !== "fr")) {
+  for (const file of [`${lang}.html`, `${lang}/about.html`]) {
+    const p = join(OUT, file);
+    const html = await readFile(p, "utf8");
+    await writeFile(p, html.replace('<html lang="fr"', `<html lang="${lang}"`));
+  }
 }
 console.log("lang: pages en/ja réétiquetées");
 

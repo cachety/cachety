@@ -1,55 +1,29 @@
 "use client";
 
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ACCEPT, hasVisibleText, isSupported, outputName, zipDocuments } from "@/lib/files";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ACCEPT, hasVisibleText, isSupported, zipDocuments } from "@/lib/files";
 import { isBrowserSupported } from "@/lib/compat";
-import { releaseResult, watermarkFile, type WatermarkResult } from "@/lib/watermark";
-import { useT, type ErrorKey, type Strings } from "@/lib/i18n";
+import { releaseResult, watermarkFile } from "@/lib/watermark";
+import { useT, type ErrorKey } from "@/lib/i18n";
 import {
-  ChevronIcon,
-  CloseIcon,
-  DownloadIcon,
-  EyeIcon,
-  EyeOffIcon,
-  LockIcon,
-  UploadIcon,
-} from "@/components/icons";
+  docId,
+  isFresh,
+  needsAttention,
+  needsPassword,
+  outName,
+  type Doc,
+  type Filter,
+} from "@/lib/doc";
+import { LockIcon, UploadIcon } from "@/components/icons";
 import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
-
-type Status = "pending" | "processing" | "ready" | "error";
-type Filter = "all" | "attention" | "ready";
+import { BatchSummary } from "@/components/BatchSummary";
+import { DocRow } from "@/components/DocList";
+import { Kiosk } from "@/components/Kiosk";
 
 // Au-delà de ce nombre de documents, la liste passe en zone défilante bornée
 // avec résumé et filtres (sinon mille lignes poussent les étapes 2 et 3 à
 // 79 000 pixels du haut de la page).
 const LIST_COMPACT_FROM = 6;
-
-type Doc = {
-  id: string;
-  file: File;
-  status: Status;
-  result?: WatermarkResult;
-  stampedWith?: string;
-  error?: ErrorKey | "generic";
-  progress?: [number, number];
-  // Mot de passe du PDF, gardé en mémoire de composant seulement.
-  // `tries` change à chaque soumission : c'est lui qui relance le
-  // traitement, même si l'utilisateur ressaisit le même mot de passe.
-  password?: string;
-  tries?: number;
-};
-
-const needsPassword = (d: Doc) =>
-  d.error === "pdf_password" || d.error === "pdf_password_wrong";
-
-const docId = (f: File) => `${f.name}:${f.size}:${f.lastModified}`;
-
-const outName = (doc: Doc, t: Strings) =>
-  outputName(doc.file.name, doc.result?.extension ?? "pdf", t.suffix);
-
-function size(bytes: number, t: Strings) {
-  return `${Math.max(0.1, bytes / 1024 / 1024).toFixed(1)} ${t.sizeUnit}`;
-}
 
 function triggerDownload(url: string, name: string) {
   const a = document.createElement("a");
@@ -246,17 +220,20 @@ export default function CoreProduct() {
       aborter.abort();
       clearTimeout(timer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Dépendances volontairement restreintes : `t` et `autoApply` sont lus
+    // ici mais ne doivent pas relancer le lot (changer de langue ou basculer
+    // l'aperçu auto retraiterait mille documents pour rien).
   }, [fileKey, unlockKey, active, meaningful]);
 
   // Des documents chargés seraient perdus par un rechargement accidentel :
   // rien n'est persisté, par conception (confidentialité).
+  const hasDocs = docs.length > 0;
   useEffect(() => {
-    if (!docs.length) return;
+    if (!hasDocs) return;
     const warn = (e: BeforeUnloadEvent) => e.preventDefault();
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
-  }, [docs.length > 0]);
+  }, [hasDocs]);
 
   const unlock = useCallback((id: string, password: string) => {
     setDocs((prev) =>
@@ -271,27 +248,25 @@ export default function CoreProduct() {
     requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
   }, []);
 
-  const fresh = (d: Doc) => d.status === "ready" && !!d.result && d.stampedWith === active;
   const apply = () => setAppliedText(value);
-  const ready = docs.filter(fresh);
+  const ready = docs.filter((d) => isFresh(d, active));
   const processing = docs.some((d) => d.status === "processing");
 
   // Un lot volumineux ne doit pas repousser les étapes 2 et 3 hors de l'écran :
   // au-delà de LIST_COMPACT_FROM, la liste devient une zone à hauteur bornée,
   // coiffée d'un résumé (progression + filtres).
-  const attention = docs.filter((d) => needsPassword(d) || d.error);
+  const attention = docs.filter(needsAttention);
   const done = docs.filter((d) => d.status === "ready" || d.error).length;
   const compact = docs.length > LIST_COMPACT_FROM;
   // Filtre et recherche n'existent que dans le résumé (mode compact). Sous le
   // seuil, la barre disparaît : les appliquer quand même masquerait des
-  // documents sans que rien à l'écran n'explique pourquoi.
+  // documents sans que rien à l'écran n'explique pourquoi. Et un filtre devenu
+  // vide (dernier document déverrouillé) retombe sur « tout ».
   const effFilter: Filter = !compact
     ? "all"
-    : filter === "attention" && !attention.length
+    : (filter === "attention" && !attention.length) || (filter === "ready" && !ready.length)
       ? "all"
-      : filter === "ready" && !ready.length
-        ? "all"
-        : filter;
+      : filter;
   // toLocaleLowerCase : « IMPÔTS » doit trouver « impôts ».
   const needle = compact ? query.trim().toLocaleLowerCase(t.locale) : "";
   // Mémoïsé : à chaque page rendue, un patch de progression re-rend le
@@ -300,27 +275,22 @@ export default function CoreProduct() {
   const listed = useMemo(
     () =>
       docs
-        .filter((d) =>
-          effFilter === "attention"
-            ? needsPassword(d) || d.error
-            : effFilter === "ready"
-              ? d.status === "ready" && !!d.result && d.stampedWith === active
-              : true
-        )
+        .filter((d) => {
+          if (effFilter === "attention") return needsAttention(d);
+          if (effFilter === "ready") return isFresh(d, active);
+          return true;
+        })
         .filter((d) => !needle || d.file.name.toLocaleLowerCase(t.locale).includes(needle))
         // Ce qui réclame l'utilisateur remonte : dans mille lignes, un PDF
         // protégé au rang 700 serait invisible.
-        .sort(
-          (a, b) =>
-            Number(needsPassword(b) || !!b.error) - Number(needsPassword(a) || !!a.error)
-        ),
+        .sort((a, b) => Number(needsAttention(b)) - Number(needsAttention(a))),
     [docs, effFilter, needle, active, t.locale]
   );
 
   // Sans sélection explicite, l'aperçu suit le dernier document terminé.
   const shown =
     docs.find((d) => d.id === activeId) ??
-    [...docs].reverse().find(fresh) ??
+    [...docs].reverse().find((d) => isFresh(d, active)) ??
     docs.find((d) => d.result || d.error);
 
   const [zipping, setZipping] = useState(false);
@@ -574,7 +544,7 @@ export default function CoreProduct() {
             >
               {t.docError(shown.file.name, t.errors[shown.error])}
             </div>
-          ) : shown && fresh(shown) ? (
+          ) : shown && isFresh(shown, active) ? (
             <Kiosk key={shown.id} doc={shown} />
           ) : (
             <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2">
@@ -593,395 +563,6 @@ export default function CoreProduct() {
   );
 }
 
-function Kiosk({ doc }: { doc: Doc }) {
-  const t = useT();
-  const [page, setPage] = useState(0);
-  const zoomRef = useRef<HTMLDialogElement>(null);
-  const result = doc.result!;
-  const shownPages = result.previews.length;
-
-  return (
-    <div className="rounded-2xl border border-trait bg-feuille p-4">
-      <a
-        href={result.url}
-        download={outName(doc, t)}
-        className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2"
-      >
-        <DownloadIcon className="h-5 w-5 shrink-0" />
-        <span className="truncate">{outName(doc, t)}</span>
-        <span className="shrink-0 font-normal opacity-80">
-          ({size(result.blob.size, t)})
-        </span>
-      </a>
-
-      {shownPages > 1 && (
-        <nav
-          aria-label={t.pagerNav}
-          className="mt-4 flex items-center justify-center gap-4"
-        >
-          <PagerButton
-            direction="prev"
-            disabled={page === 0}
-            onClick={() => setPage(page - 1)}
-          />
-          <span className="text-sm text-encre-2 tabular-nums">
-            {t.pageOf(page + 1, result.pageCount)}
-          </span>
-          <PagerButton
-            direction="next"
-            disabled={page === shownPages - 1}
-            onClick={() => setPage(page + 1)}
-          />
-        </nav>
-      )}
-
-      <button
-        onClick={() => zoomRef.current?.showModal()}
-        className="mt-4 block w-full cursor-zoom-in rounded-lg focus:outline-none focus:ring-2 focus:ring-bleu"
-        aria-label={t.zoomOpen(page + 1)}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={result.previews[page]}
-          alt={t.previewAlt(doc.file.name, page + 1)}
-          className="mx-auto max-h-[70vh] w-auto max-w-full rounded-lg border border-trait shadow-sm"
-        />
-      </button>
-
-      <dialog
-        ref={zoomRef}
-        aria-label={t.zoomLabel(page + 1)}
-        onClick={(e) => e.target === zoomRef.current && zoomRef.current.close()}
-        className="m-auto max-h-[95dvh] max-w-[95vw] bg-transparent p-0 backdrop:bg-encre/85"
-      >
-        <div className="relative">
-          <button
-            onClick={() => zoomRef.current?.close()}
-            aria-label={t.zoomClose}
-            className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-encre/70 text-white transition-colors hover:bg-encre focus:outline-none focus:ring-2 focus:ring-white"
-          >
-            <CloseIcon className="h-5 w-5" />
-          </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={result.previews[page]}
-            alt={t.zoomAlt(doc.file.name, page + 1)}
-            className="max-h-[95dvh] max-w-[95vw] rounded-xl object-contain"
-          />
-        </div>
-      </dialog>
-
-      {result.pageCount > shownPages && (
-        <p className="mt-3 text-center text-sm text-encre-2">
-          {t.previewLimit(shownPages, result.pageCount)}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function PagerButton({
-  direction,
-  disabled,
-  onClick,
-}: {
-  direction: "prev" | "next";
-  disabled: boolean;
-  onClick: () => void;
-}) {
-  const t = useT();
-  return (
-    // aria-disabled plutôt que disabled : un bouton désactivé sous le focus
-    // rejette le focus vers <body> ; ici il reste focalisable et inerte.
-    <button
-      onClick={disabled ? undefined : onClick}
-      aria-disabled={disabled || undefined}
-      aria-label={direction === "prev" ? t.pagerPrev : t.pagerNext}
-      className={`flex h-11 w-11 items-center justify-center rounded-lg border border-trait text-encre transition-colors ${
-        disabled ? "cursor-not-allowed opacity-30" : "hover:border-bleu hover:text-bleu"
-      }`}
-    >
-      <ChevronIcon direction={direction === "prev" ? "left" : "right"} className="h-4 w-4" />
-    </button>
-  );
-}
-
-// Mémoïsée : pendant un lot, chaque page rendue re-rend CoreProduct. Sans
-// cette barrière, les mille lignes seraient re-diffées plusieurs fois par
-// seconde alors qu'une seule change.
-const DocRow = memo(function DocRow({
-  doc,
-  selected,
-  onSelect,
-  onRemove,
-  onUnlock,
-}: {
-  doc: Doc;
-  selected: boolean;
-  onSelect: (id: string) => void;
-  onRemove: (id: string) => void;
-  onUnlock: (id: string, password: string) => void;
-}) {
-  const t = useT();
-  return (
-    // Le bouton « retirer » vit dans la carte : en colonne séparée, il volait
-    // 56 px de large à chaque ligne, d'où des noms tronqués très tôt.
-    <li
-      className={`rounded-xl border bg-feuille transition-colors ${
-        selected ? "border-bleu ring-1 ring-bleu" : "border-trait hover:border-encre-2"
-      }`}
-    >
-      <div className="flex items-center">
-        <button
-          id={`doc-${doc.id}`}
-          onClick={() => onSelect(doc.id)}
-          aria-current={selected || undefined}
-          className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-l-xl py-3 pl-4 pr-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-        >
-          <span className="min-w-0">
-            <span className="block truncate font-medium">{doc.file.name}</span>
-            <span className="block text-sm text-encre-2">
-              {size(doc.file.size, t)}
-              {doc.result &&
-                doc.result.extension === "pdf" &&
-                ` · ${t.pages(doc.result.pageCount)}`}
-            </span>
-            {/* La raison de l'échec directement dans la ligne : indispensable
-                pour trier un lot, la pastille seule ne dit pas pourquoi. */}
-            {doc.error && !needsPassword(doc) && (
-              <span className="block text-sm text-sceau-fonce">{t.errors[doc.error]}</span>
-            )}
-          </span>
-          <DocStatus doc={doc} />
-        </button>
-        <button
-          onClick={() => onRemove(doc.id)}
-          aria-label={t.remove(doc.file.name)}
-          className="mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-encre-2 transition-colors hover:bg-sceau/10 hover:text-sceau focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-        >
-          <CloseIcon className="h-4 w-4" />
-        </button>
-      </div>
-      {needsPassword(doc) && (
-        <UnlockForm
-          name={doc.file.name}
-          wrong={doc.error === "pdf_password_wrong"}
-          onUnlock={(pw) => onUnlock(doc.id, pw)}
-        />
-      )}
-    </li>
-  );
-});
-
-function BatchSummary({
-  total,
-  done,
-  attention,
-  ready,
-  filter,
-  onFilter,
-  query,
-  onQuery,
-  shownCount,
-}: {
-  total: number;
-  done: number;
-  attention: number;
-  ready: number;
-  filter: Filter;
-  onFilter: (f: Filter) => void;
-  query: string;
-  onQuery: (q: string) => void;
-  shownCount: number;
-}) {
-  const t = useT();
-  const pct = total ? Math.round((done / total) * 100) : 0;
-
-  // Décompte annoncé aux lecteurs d'écran, 500 ms après la dernière frappe.
-  const [announced, setAnnounced] = useState("");
-  useEffect(() => {
-    if (!query.trim()) {
-      setAnnounced("");
-      return;
-    }
-    const timer = setTimeout(() => setAnnounced(t.batch.matches(shownCount)), 500);
-    return () => clearTimeout(timer);
-  }, [query, shownCount, t]);
-
-  const chips: { key: Filter; label: string; count: number; tone: string }[] = [
-    { key: "all", label: t.batch.all, count: total, tone: "text-encre" },
-    { key: "attention", label: t.batch.attention, count: attention, tone: "text-sceau-fonce" },
-    { key: "ready", label: t.batch.ready, count: ready, tone: "text-green-800" },
-  ];
-
-  return (
-    <div className="mt-3 rounded-xl border border-trait bg-feuille px-4 py-3">
-      <div className="flex items-baseline justify-between gap-3 text-sm">
-        <span className="font-medium">{t.batch.progress(done, total)}</span>
-        <span className="text-encre-2 tabular-nums">{pct} %</span>
-      </div>
-      <div
-        className="mt-2 h-1.5 overflow-hidden rounded-full bg-encre/10"
-        role="progressbar"
-        aria-valuenow={done}
-        aria-valuemin={0}
-        aria-valuemax={total}
-        aria-label={t.batch.progress(done, total)}
-      >
-        <div
-          className="h-full rounded-full bg-bleu transition-[width] duration-300"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        {chips.map(({ key, label, count, tone }) => (
-          <button
-            key={key}
-            onClick={() => onFilter(key)}
-            aria-pressed={filter === key}
-            // Un filtre vide ne sert à rien : on le désactive plutôt que de
-            // laisser l'utilisateur atterrir sur une liste vide.
-            disabled={key !== "all" && count === 0}
-            className={`rounded-full border px-3 py-1 text-sm transition-colors disabled:opacity-40 ${
-              filter === key
-                ? "border-bleu bg-bleu/10 text-bleu"
-                : `border-trait bg-feuille hover:border-encre-2 ${tone}`
-            }`}
-          >
-            {label} <span className="tabular-nums">{count}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Le champ garde sa propre ligne : dans la colonne de gauche, à côté
-          des pastilles, il se réduisait à « Rech… ». */}
-      <input
-        type="search"
-        value={query}
-        onChange={(e) => onQuery(e.target.value)}
-        placeholder={t.batch.searchPlaceholder}
-        aria-label={t.batch.searchAria}
-        // text-base : sous 16px, iOS Safari zoome la page au focus.
-        className="mt-2 w-full rounded-lg border border-trait bg-white px-3 py-1.5 text-base focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm"
-      />
-
-      {query.trim() && (
-        <p className="mt-2 text-sm text-encre-2">{t.batch.matches(shownCount)}</p>
-      )}
-      {/* Annonce différée : liée au rendu, la région vocaliserait un décompte
-          à chaque frappe (« 8 affichés », « 3 affichés », « 1 affiché »…). */}
-      <p className="sr-only" role="status" aria-live="polite">
-        {announced}
-      </p>
-    </div>
-  );
-}
-
-function DocStatus({ doc }: { doc: Doc }) {
-  const t = useT();
-  if (needsPassword(doc)) {
-    return (
-      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-encre/5 px-3 py-1 text-sm font-medium text-encre-2">
-        <LockIcon className="h-3.5 w-3.5" />
-        {t.unlock.locked}
-      </span>
-    );
-  }
-  const styles: Record<Status, string> = {
-    pending: "bg-encre/5 text-encre-2",
-    processing: "bg-bleu/10 text-bleu",
-    ready: "bg-green-700/10 text-green-800",
-    error: "bg-sceau/10 text-sceau-fonce",
-  };
-  return (
-    <span
-      className={`whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium ${styles[doc.status]}`}
-    >
-      {doc.status === "processing" && doc.progress
-        ? t.pageOf(doc.progress[0], doc.progress[1])
-        : t.status[doc.status]}
-    </span>
-  );
-}
-
-function UnlockForm({
-  name,
-  wrong,
-  onUnlock,
-}: {
-  name: string;
-  wrong: boolean;
-  onUnlock: (password: string) => void;
-}) {
-  const t = useT();
-  const [pw, setPw] = useState("");
-  const [visible, setVisible] = useState(false);
-  return (
-    <form
-      className="border-t border-trait px-4 py-3"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (pw) onUnlock(pw);
-      }}
-    >
-      {/* flex-wrap : sur un écran étroit, le bouton passe sous le champ plutôt
-          que de le comprimer jusqu'à « Mot de pass… ». */}
-      <div className="flex flex-wrap items-center gap-2">
-        <LockIcon className="h-4 w-4 shrink-0 text-encre-2" />
-        <div className="relative min-w-[10rem] flex-1">
-          <input
-            type={visible ? "text" : "password"}
-            value={pw}
-            onChange={(e) => setPw(e.target.value)}
-            placeholder={t.unlock.placeholder}
-            aria-label={t.unlock.aria(name)}
-            aria-invalid={wrong || undefined}
-            // one-time-code : contrairement à "off" (ignoré pour les champs
-            // password), supprime la proposition d'enregistrement dans le
-            // gestionnaire de mots de passe. Ce mot de passe de document n'a
-            // rien à faire dans un coffre synchronisé.
-            autoComplete="one-time-code"
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
-            // text-base : sous 16px, iOS Safari zoome la page au focus.
-            className={`w-full rounded-lg border bg-white py-1.5 pl-3 pr-9 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm ${
-              wrong ? "border-sceau/60" : "border-trait"
-            }`}
-          />
-          {pw && (
-            <button
-              type="button"
-              onClick={() => setVisible(!visible)}
-              aria-label={visible ? t.unlock.hide : t.unlock.show}
-              aria-pressed={visible}
-              className="absolute right-1 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-encre-2 transition-colors hover:text-encre focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-            >
-              {visible ? (
-                <EyeOffIcon className="h-4 w-4" />
-              ) : (
-                <EyeIcon className="h-4 w-4" />
-              )}
-            </button>
-          )}
-        </div>
-        <button
-          type="submit"
-          disabled={!pw}
-          className="ml-auto shrink-0 rounded-lg border border-trait px-3 py-2 text-sm font-medium text-encre-2 transition-colors hover:border-bleu hover:text-bleu disabled:opacity-40"
-        >
-          {t.unlock.button}
-        </button>
-      </div>
-      {wrong && (
-        <p role="alert" className="mt-2 text-sm text-sceau-fonce">
-          {t.errors.pdf_password_wrong}
-        </p>
-      )}
-    </form>
-  );
-}
 
 function StepLabel({
   n,

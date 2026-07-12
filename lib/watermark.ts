@@ -16,7 +16,7 @@ export function releaseResult(result: WatermarkResult) {
   result.previews.forEach(URL.revokeObjectURL);
 }
 
-export type ProgressFn = (done: number, total: number) => void;
+type ProgressFn = (done: number, total: number) => void;
 
 const RENDER_SCALE = 2;
 const JPEG_QUALITY = 0.85;
@@ -25,7 +25,7 @@ const WATERMARK_OPACITY = 0.45;
 const WATERMARK_HALO_OPACITY = 0.35;
 const MIN_IMAGE_SIDE = 800;
 export const MAX_CANVAS_AREA = 16_777_216;
-export const MAX_CANVAS_SIDE = 8192;
+const MAX_CANVAS_SIDE = 8192;
 
 export function fitScale(width: number, height: number, scale: number) {
   const byArea = Math.sqrt(MAX_CANVAS_AREA / (width * height * scale * scale));
