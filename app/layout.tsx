@@ -36,7 +36,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr">
-      <body className="min-h-dvh overflow-x-clip bg-papier text-encre antialiased font-sans px-4">
+      {/* flex-col : sans cela, sur un grand écran, le pied de page remontait
+          au ras du contenu en laissant du vide sous lui. */}
+      <body className="flex min-h-dvh flex-col overflow-x-clip bg-papier px-4 font-sans text-encre antialiased">
         {children}
         <ServiceWorker />
       </body>

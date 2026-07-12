@@ -27,7 +27,7 @@ export default function About() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-4xl pb-4">
+      <main className="mx-auto w-full max-w-4xl flex-1 pb-4">
         <h1 className="max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
           {a.title}
         </h1>

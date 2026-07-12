@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <LangProvider>
       <About />
-      <Footer />
+      <Footer width="max-w-4xl" />
     </LangProvider>
   );
 }

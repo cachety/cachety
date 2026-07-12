@@ -28,7 +28,7 @@ export default async function LangAbout({ params }: Props) {
   return (
     <LangProvider forcedLang={lang}>
       <About />
-      <Footer />
+      <Footer width="max-w-4xl" />
     </LangProvider>
   );
 }

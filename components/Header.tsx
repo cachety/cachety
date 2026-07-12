@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <header>
       <div className="sm:hidden">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 py-5">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 py-5">
           <div className="flex min-w-0 items-center gap-2.5">
             <Flag className="h-5 w-7 shrink-0 rounded-sm border border-trait" />
             <h1 className="truncate text-lg font-bold tracking-tight">Filigrane Local</h1>
@@ -21,7 +21,7 @@ export default function Header() {
             <LangToggle />
           </div>
         </div>
-        <div className="mx-auto -mt-2 w-full max-w-6xl pb-4">
+        <div className="mx-auto -mt-2 w-full max-w-7xl pb-4">
           <Link
             href="/about"
             className="inline-flex items-center gap-1 rounded-full border border-trait bg-feuille px-3.5 py-1.5 text-sm font-medium text-bleu transition-colors active:bg-bleu/5"
@@ -33,7 +33,7 @@ export default function Header() {
       </div>
 
       <div className="hidden sm:block">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between pt-4">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between pt-4">
           <Link
             href="/about"
             className="text-sm text-bleu underline underline-offset-4 hover:no-underline"
