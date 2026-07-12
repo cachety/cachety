@@ -80,6 +80,8 @@ export const STRINGS = {
     share: "Partager",
     shareCopied: "Lien copié !",
     shareLang: (name: string) => `Copier le lien en ${name}`,
+    browserTooOld:
+      "Votre navigateur est trop ancien pour cet outil. Mettez-le à jour pour continuer.",
     about: {
       nav: "Pourquoi filigraner ?",
       navTool: "L'outil",
@@ -179,6 +181,7 @@ export const STRINGS = {
     share: "Share",
     shareCopied: "Link copied!",
     shareLang: (name: string) => `Copy the link in ${name}`,
+    browserTooOld: "Your browser is too old for this tool. Update it to continue.",
     about: {
       nav: "Why watermark?",
       navTool: "The tool",
@@ -278,6 +281,8 @@ export const STRINGS = {
     share: "共有",
     shareCopied: "リンクをコピーしました",
     shareLang: (name: string) => `${name}のリンクをコピー`,
+    browserTooOld:
+      "お使いのブラウザが古いため、このツールを利用できません。続けるにはブラウザを更新してください。",
     about: {
       nav: "なぜ透かしを？",
       navTool: "ツール",
@@ -317,6 +322,15 @@ export const STRINGS = {
 
 export type Strings = (typeof STRINGS)["fr"];
 
+// Exportée pour les tests. La valeur stockée est validée : un "lang" altéré
+// dans localStorage (ex. "xx") rendrait STRINGS[lang] indéfini et planterait
+// tout composant lisant t.* — on retombe alors sur la détection navigateur.
+export function detectLang(saved: string | null, navLang: string): Lang {
+  if (saved !== null && isLang(saved)) return saved;
+  const nav = navLang.toLowerCase();
+  return nav.startsWith("fr") ? "fr" : nav.startsWith("ja") ? "ja" : "en";
+}
+
 const LangContext = createContext<{
   lang: Lang;
   setLang: (l: Lang) => void;
@@ -339,11 +353,7 @@ export function LangProvider({
       localStorage.setItem("lang", forcedLang);
       return;
     }
-    const saved = localStorage.getItem("lang") as Lang | null;
-    const nav = navigator.language.toLowerCase();
-    const detected: Lang =
-      saved ?? (nav.startsWith("fr") ? "fr" : nav.startsWith("ja") ? "ja" : "en");
-    setLangState(detected);
+    setLangState(detectLang(localStorage.getItem("lang"), navigator.language));
   }, [forcedLang]);
 
   useEffect(() => {

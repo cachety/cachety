@@ -1,4 +1,7 @@
 import { PDFDocument } from "pdf-lib";
+// Importé avant pdfjs-dist : installe les polyfills que pdf.js 6 suppose
+// présents (Map.getOrInsertComputed…) et fournit l'URL de worker adaptée.
+import { pdfjsWorkerSrc } from "@/lib/compat";
 
 export type WatermarkResult = {
   blob: Blob;
@@ -46,7 +49,7 @@ async function watermarkPdf(
   onProgress?: ProgressFn
 ): Promise<WatermarkResult> {
   const pdfjs = await import("pdfjs-dist");
-  pdfjs.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.mjs";
+  pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerSrc();
 
   const loadingTask = pdfjs.getDocument({
     data: await file.arrayBuffer(),

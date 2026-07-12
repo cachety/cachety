@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ACCEPT, hasVisibleText, isSupported, outputName, zipDocuments } from "@/lib/files";
+import { isBrowserSupported } from "@/lib/compat";
 import { releaseResult, watermarkFile, type WatermarkResult } from "@/lib/watermark";
 import { useT, type ErrorKey, type Strings } from "@/lib/i18n";
 import { ChevronIcon, CloseIcon, DownloadIcon, UploadIcon } from "@/components/icons";
@@ -47,6 +48,13 @@ export default function CoreProduct() {
   const [dragging, setDragging] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Vérifié après montage seulement : au build statique (SSR), window n'existe
+  // pas et le HTML prérendu suppose un navigateur capable.
+  const [unsupported, setUnsupported] = useState(false);
+  useEffect(() => {
+    if (!isBrowserSupported()) setUnsupported(true);
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem("autoApply") === "0") setAutoApply(false);
@@ -216,6 +224,19 @@ export default function CoreProduct() {
       setZipping(false);
     }
   };
+
+  // Navigateur privé d'une API indispensable (createImageBitmap, toBlob…) :
+  // une bannière claire plutôt qu'un outil qui échoue en silence.
+  if (unsupported) {
+    return (
+      <div
+        role="alert"
+        className="mx-auto w-full max-w-2xl rounded-2xl border border-sceau/40 bg-sceau/5 px-6 py-5 text-center font-medium text-sceau-fonce"
+      >
+        {t.browserTooOld}
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start">

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { STRINGS } from "./i18n";
+import { detectLang, STRINGS } from "./i18n";
 
 const keys = (o: object) => Object.keys(o).sort();
 const ALL = [STRINGS.fr, STRINGS.en, STRINGS.ja];
@@ -24,5 +24,24 @@ describe("i18n (parité FR/EN/JA)", () => {
 
   test("les suffixes de nom de fichier restent en ASCII (téléchargement sûr)", () => {
     for (const t of ALL) expect(t.suffix).toMatch(/^[a-z-]+$/);
+  });
+});
+
+describe("détection de langue (localStorage falsifiable)", () => {
+  test("une valeur stockée valide l'emporte", () => {
+    expect(detectLang("ja", "fr-FR")).toBe("ja");
+    expect(detectLang("en", "fr-FR")).toBe("en");
+  });
+
+  test("une valeur altérée (« xx ») retombe sur le navigateur, sans planter", () => {
+    expect(detectLang("xx", "fr-FR")).toBe("fr");
+    expect(detectLang("xx", "ja")).toBe("ja");
+    expect(detectLang("", "de-DE")).toBe("en");
+  });
+
+  test("sans valeur stockée, détection navigateur puis anglais par défaut", () => {
+    expect(detectLang(null, "fr-CA")).toBe("fr");
+    expect(detectLang(null, "JA-JP")).toBe("ja");
+    expect(detectLang(null, "de-DE")).toBe("en");
   });
 });
