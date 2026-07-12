@@ -4,7 +4,7 @@
 
 // pdf.js 6 appelle sans garde-fou des API très récentes :
 // - Map.prototype.getOrInsertComputed (proposition TC39 « upsert »),
-// - Promise.withResolvers, URL.parse.
+// - Promise.withResolvers, URL.parse, Math.sumPrecise.
 // Sur un navigateur un peu ancien, le rendu échoue en TypeError générique.
 // Tout est polyfillable en quelques lignes, avec garde ??= (jamais écrasé).
 //
@@ -46,6 +46,19 @@ export function installCompatPolyfills() {
       return null;
     }
   };
+
+  // Somme compensée (Neumaier) : moins exacte que le vrai sumPrecise,
+  // largement suffisante pour l'usage qu'en fait pdf.js.
+  (Math as any).sumPrecise ??= function (values: Iterable<number>) {
+    let sum = 0;
+    let c = 0;
+    for (const v of values) {
+      const t = sum + v;
+      c += Math.abs(sum) >= Math.abs(v) ? sum - t + v : v - t + sum;
+      sum = t;
+    }
+    return sum + c;
+  };
 }
 
 // Détection AVANT installation : le worker pdf.js tourne dans le même moteur
@@ -54,7 +67,8 @@ const workerNeedsPolyfills =
   typeof Map !== "undefined" &&
   (!("getOrInsertComputed" in Map.prototype) ||
     !("withResolvers" in Promise) ||
-    !("parse" in URL));
+    !("parse" in URL) ||
+    !("sumPrecise" in Math));
 
 installCompatPolyfills();
 
