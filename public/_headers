@@ -1,7 +1,11 @@
 # Preuve technique de la promesse « zéro transfert » :
 # connect-src 'self' interdit toute requête vers un domaine externe.
+# 'unsafe-inline' (script-src) est un gabarit : scripts/gen-sw.mjs le
+# remplace au build par les hachages sha256 des scripts inline émis.
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; worker-src 'self' blob:; connect-src 'self' blob: data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload

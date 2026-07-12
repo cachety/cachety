@@ -26,16 +26,18 @@ self.addEventListener("fetch", (e) => {
   if (new URL(req.url).origin !== self.location.origin) return;
 
   if (req.mode === "navigate") {
+    // Chaque page est mise en cache sous sa propre URL ; hors ligne on sert
+    // la page demandée si on l'a, sinon la racine (coquille de l'appli).
     e.respondWith(
       fetch(req)
         .then((res) => {
           if (res.ok) {
             const copy = res.clone();
-            caches.open(CACHE).then((c) => c.put("/", copy));
+            caches.open(CACHE).then((c) => c.put(req, copy));
           }
           return res;
         })
-        .catch(() => caches.match("/"))
+        .catch(async () => (await caches.match(req)) || caches.match("/"))
     );
     return;
   }
