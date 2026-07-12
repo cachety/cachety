@@ -16,7 +16,14 @@ import { PDFDocument } from "pdf-lib";
 import type { Browser, Page } from "playwright-core";
 import { launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
-import { fromBase64, makePdf, makeRotatedPdf, toBase64 } from "./helpers/fixtures";
+import {
+  ENCRYPTED_PDF_B64,
+  ENCRYPTED_PDF_PASSWORD,
+  fromBase64,
+  makePdf,
+  makeRotatedPdf,
+  toBase64,
+} from "./helpers/fixtures";
 
 const ROOT = join(import.meta.dir, "..");
 const OUT_DIR = join(ROOT, "out");
@@ -42,13 +49,19 @@ type PageResult =
   | { ok: false; error: string };
 
 /** Construit un File dans la page et appelle watermarkFile du bundle réel. */
-function runWatermark(input: { b64: string; name: string; type: string; text: string }) {
+function runWatermark(input: {
+  b64: string;
+  name: string;
+  type: string;
+  text: string;
+  password?: string;
+}) {
   return page.evaluate(async (arg) => {
     const mod = (window as any).__wm;
     const bin = Uint8Array.from(atob(arg.b64), (c) => c.charCodeAt(0));
     const file = new File([bin], arg.name, { type: arg.type });
     try {
-      const res = await mod.watermarkFile(file, arg.text);
+      const res = await mod.watermarkFile(file, arg.text, undefined, arg.password);
       const bytes = new Uint8Array(await res.blob.arrayBuffer());
       let out = "";
       for (let i = 0; i < bytes.length; i += 0x8000) {
@@ -302,6 +315,58 @@ describe("contrat d'erreurs du moteur", () => {
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.error).toBe("unsupported");
   }, 15_000);
+
+  test(
+    "un PDF chiffré sans mot de passe rejette avec « pdf_password »",
+    async () => {
+      const res = await runWatermark({
+        b64: ENCRYPTED_PDF_B64,
+        name: "verrouille.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+      });
+      expect(res.ok).toBe(false);
+      if (!res.ok) expect(res.error).toBe("pdf_password");
+    },
+    30_000
+  );
+
+  test(
+    "un PDF chiffré avec un mauvais mot de passe rejette avec « pdf_password_wrong »",
+    async () => {
+      const res = await runWatermark({
+        b64: ENCRYPTED_PDF_B64,
+        name: "verrouille.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+        password: "pas-le-bon",
+      });
+      expect(res.ok).toBe(false);
+      if (!res.ok) expect(res.error).toBe("pdf_password_wrong");
+    },
+    30_000
+  );
+
+  test(
+    "un PDF chiffré avec le bon mot de passe ressort filigrané et valide",
+    async () => {
+      const res = await runWatermark({
+        b64: ENCRYPTED_PDF_B64,
+        name: "verrouille.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+        password: ENCRYPTED_PDF_PASSWORD,
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      expect(res.pageCount).toBe(1);
+      // La sortie n'est plus chiffrée : elle se recharge sans mot de passe.
+      const out = await PDFDocument.load(fromBase64(res.outB64));
+      expect(out.getPageCount()).toBe(1);
+      const { red } = await countRedPixels(res.previews[0]);
+      expect(red).toBeGreaterThan(200);
+    },
+    60_000
+  );
 
   test("une image illisible rejette avec « image_unreadable »", async () => {
     const garbage = new Uint8Array(256);

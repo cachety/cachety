@@ -77,6 +77,29 @@ export const DownloadIcon = ({ className }: IconProps) => (
   </Stroke>
 );
 
+export const LockIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <rect x="4" y="11" width="16" height="10" rx="2" />
+    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </Stroke>
+);
+
+export const EyeIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+    <circle cx="12" cy="12" r="3" />
+  </Stroke>
+);
+
+export const EyeOffIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 19c-6.5 0-10-7-10-7a18.45 18.45 0 0 1 5.06-5.94" />
+    <path d="M9.9 5.24A9.12 9.12 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19" />
+    <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+    <path d="M2 2l20 20" />
+  </Stroke>
+);
+
 export const ShareIcon = ({ className }: IconProps) => (
   <Stroke className={className}>
     <circle cx="18" cy="5" r="3" />

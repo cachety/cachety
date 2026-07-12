@@ -5,7 +5,15 @@ import { ACCEPT, hasVisibleText, isSupported, outputName, zipDocuments } from "@
 import { isBrowserSupported } from "@/lib/compat";
 import { releaseResult, watermarkFile, type WatermarkResult } from "@/lib/watermark";
 import { useT, type ErrorKey, type Strings } from "@/lib/i18n";
-import { ChevronIcon, CloseIcon, DownloadIcon, UploadIcon } from "@/components/icons";
+import {
+  ChevronIcon,
+  CloseIcon,
+  DownloadIcon,
+  EyeIcon,
+  EyeOffIcon,
+  LockIcon,
+  UploadIcon,
+} from "@/components/icons";
 import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
 
 type Status = "pending" | "processing" | "ready" | "error";
@@ -16,9 +24,17 @@ type Doc = {
   status: Status;
   result?: WatermarkResult;
   stampedWith?: string;
-  error?: string;
+  error?: ErrorKey | "generic";
   progress?: [number, number];
+  // Mot de passe du PDF, gardé en mémoire de composant seulement.
+  // `tries` change à chaque soumission : c'est lui qui relance le
+  // traitement, même si l'utilisateur ressaisit le même mot de passe.
+  password?: string;
+  tries?: number;
 };
+
+const needsPassword = (d: Doc) =>
+  d.error === "pdf_password" || d.error === "pdf_password_wrong";
 
 const docId = (f: File) => `${f.name}:${f.size}:${f.lastModified}`;
 
@@ -161,11 +177,20 @@ export default function CoreProduct() {
   const meaningful = hasVisibleText(active);
   const pending = !autoApply && hasVisibleText(value) && value !== appliedText.trim();
   const fileKey = docs.map((d) => d.id).join("|");
+  // Change à chaque déverrouillage soumis : relance le traitement sans
+  // toucher aux documents déjà prêts (protégés par stampedWith).
+  const unlockKey = docs.map((d) => d.tries ?? 0).join("|");
   useEffect(() => {
     if (!fileKey || !meaningful) {
       setDocs((prev) =>
         prev.some((d) => d.result || d.status !== "pending")
-          ? prev.map((d) => ({ id: d.id, file: d.file, status: "pending" }))
+          ? prev.map((d) => ({
+              id: d.id,
+              file: d.file,
+              status: "pending" as const,
+              password: d.password,
+              tries: d.tries,
+            }))
           : prev
       );
       return;
@@ -181,8 +206,11 @@ export default function CoreProduct() {
         if (doc.result && doc.stampedWith === active) continue;
         patch(doc.id, { status: "processing", error: undefined });
         try {
-          const result = await watermarkFile(doc.file, active, (done, total) =>
-            patch(doc.id, { progress: [done, total] })
+          const result = await watermarkFile(
+            doc.file,
+            active,
+            (done, total) => patch(doc.id, { progress: [done, total] }),
+            doc.password
           );
           if (cancelled) releaseResult(result);
           else patch(doc.id, { status: "ready", result, stampedWith: active, progress: undefined });
@@ -192,7 +220,7 @@ export default function CoreProduct() {
             status: "error",
             result: undefined,
             stampedWith: undefined,
-            error: t.errors[key as ErrorKey] ?? t.errors.generic,
+            error: t.errors[key as ErrorKey] ? (key as ErrorKey) : "generic",
             progress: undefined,
           });
         }
@@ -203,7 +231,16 @@ export default function CoreProduct() {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fileKey, active, meaningful]);
+  }, [fileKey, unlockKey, active, meaningful]);
+
+  const unlock = (id: string, password: string) =>
+    setDocs((prev) =>
+      prev.map((d) =>
+        d.id === id
+          ? { ...d, password, tries: (d.tries ?? 0) + 1, status: "pending", error: undefined }
+          : d
+      )
+    );
 
   const fresh = (d: Doc) => d.status === "ready" && !!d.result && d.stampedWith === active;
   const apply = () => setAppliedText(value);
@@ -311,28 +348,39 @@ export default function CoreProduct() {
             <ul className="mt-3 flex flex-col gap-2">
               {docs.map((doc) => (
                 <li key={doc.id} className="flex items-stretch gap-2">
-                  <button
-                    onClick={() => setActiveId(doc.id)}
-                    aria-pressed={shown?.id === doc.id}
-                    className={`flex min-w-0 flex-1 items-center justify-between gap-3 rounded-xl border bg-feuille px-4 py-3 text-left transition-colors ${
+                  <div
+                    className={`min-w-0 flex-1 rounded-xl border bg-feuille transition-colors ${
                       shown?.id === doc.id
                         ? "border-bleu ring-1 ring-bleu"
                         : "border-trait hover:border-encre-2"
                     }`}
                   >
-                    <span className="min-w-0">
-                      <span className="block truncate font-medium">
-                        {doc.file.name}
+                    <button
+                      onClick={() => setActiveId(doc.id)}
+                      aria-pressed={shown?.id === doc.id}
+                      className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+                    >
+                      <span className="min-w-0">
+                        <span className="block truncate font-medium">
+                          {doc.file.name}
+                        </span>
+                        <span className="block text-sm text-encre-2">
+                          {size(doc.file.size, t)}
+                          {doc.result &&
+                            doc.result.extension === "pdf" &&
+                            ` · ${t.pages(doc.result.pageCount)}`}
+                        </span>
                       </span>
-                      <span className="block text-sm text-encre-2">
-                        {size(doc.file.size, t)}
-                        {doc.result &&
-                          doc.result.extension === "pdf" &&
-                          ` · ${t.pages(doc.result.pageCount)}`}
-                      </span>
-                    </span>
-                    <DocStatus doc={doc} />
-                  </button>
+                      <DocStatus doc={doc} />
+                    </button>
+                    {needsPassword(doc) && (
+                      <UnlockForm
+                        name={doc.file.name}
+                        wrong={doc.error === "pdf_password_wrong"}
+                        onUnlock={(pw) => unlock(doc.id, pw)}
+                      />
+                    )}
+                  </div>
                   <button
                     onClick={() => removeDoc(doc.id)}
                     aria-label={t.remove(doc.file.name)}
@@ -437,12 +485,20 @@ export default function CoreProduct() {
                     : t.emptyText}
               </p>
             </div>
+          ) : shown && needsPassword(shown) ? (
+            <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
+              <LockIcon className="h-8 w-8" />
+              <p className="max-w-xs">
+                <span className="block font-medium text-encre">{t.errors.pdf_password}</span>
+                {t.unlock.hint}
+              </p>
+            </div>
           ) : shown?.error ? (
             <div
               role="alert"
               className="rounded-2xl border border-sceau/40 bg-sceau/5 px-5 py-4 text-sceau-fonce"
             >
-              {t.docError(shown.file.name, shown.error)}
+              {t.docError(shown.file.name, t.errors[shown.error])}
             </div>
           ) : shown && fresh(shown) ? (
             <Kiosk key={shown.id} doc={shown} />
@@ -575,6 +631,14 @@ function PagerButton({
 
 function DocStatus({ doc }: { doc: Doc }) {
   const t = useT();
+  if (needsPassword(doc)) {
+    return (
+      <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-encre/5 px-3 py-1 text-sm font-medium text-encre-2">
+        <LockIcon className="h-3.5 w-3.5" />
+        {t.unlock.locked}
+      </span>
+    );
+  }
   const styles: Record<Status, string> = {
     pending: "bg-encre/5 text-encre-2",
     processing: "bg-bleu/10 text-bleu",
@@ -589,6 +653,74 @@ function DocStatus({ doc }: { doc: Doc }) {
         ? t.pageOf(doc.progress[0], doc.progress[1])
         : t.status[doc.status]}
     </span>
+  );
+}
+
+function UnlockForm({
+  name,
+  wrong,
+  onUnlock,
+}: {
+  name: string;
+  wrong: boolean;
+  onUnlock: (password: string) => void;
+}) {
+  const t = useT();
+  const [pw, setPw] = useState("");
+  const [visible, setVisible] = useState(false);
+  return (
+    <form
+      className="border-t border-trait px-4 py-3"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (pw) onUnlock(pw);
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <LockIcon className="h-4 w-4 shrink-0 text-encre-2" />
+        <div className="relative min-w-0 flex-1">
+          <input
+            type={visible ? "text" : "password"}
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            placeholder={t.unlock.placeholder}
+            aria-label={t.unlock.aria(name)}
+            aria-invalid={wrong || undefined}
+            autoComplete="off"
+            className={`w-full rounded-lg border bg-white py-1.5 pl-3 pr-9 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-bleu ${
+              wrong ? "border-sceau/60" : "border-trait"
+            }`}
+          />
+          {pw && (
+            <button
+              type="button"
+              onClick={() => setVisible(!visible)}
+              aria-label={visible ? t.unlock.hide : t.unlock.show}
+              aria-pressed={visible}
+              className="absolute right-1 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-encre-2 transition-colors hover:text-encre focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+            >
+              {visible ? (
+                <EyeOffIcon className="h-4 w-4" />
+              ) : (
+                <EyeIcon className="h-4 w-4" />
+              )}
+            </button>
+          )}
+        </div>
+        <button
+          type="submit"
+          disabled={!pw}
+          className="shrink-0 rounded-lg border border-trait px-3 py-1.5 text-sm font-medium text-encre-2 transition-colors hover:border-bleu hover:text-bleu disabled:opacity-40"
+        >
+          {t.unlock.button}
+        </button>
+      </div>
+      {wrong && (
+        <p role="alert" className="mt-2 text-sm text-sceau-fonce">
+          {t.errors.pdf_password_wrong}
+        </p>
+      )}
+    </form>
   );
 }
 

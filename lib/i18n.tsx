@@ -8,6 +8,8 @@ export type { Lang };
 export type ErrorKey =
   | "unsupported"
   | "pdf_unreadable"
+  | "pdf_password"
+  | "pdf_password_wrong"
   | "pdf_empty"
   | "image_unreadable"
   | "canvas_unavailable"
@@ -35,6 +37,15 @@ export const STRINGS = {
     remove: (name: string) => `Retirer ${name}`,
     pages: (n: number) => plural(n, "page"),
     status: { pending: "en attente", processing: "en cours", ready: "prêt", error: "erreur" },
+    unlock: {
+      locked: "protégé",
+      placeholder: "Mot de passe du PDF",
+      button: "Déverrouiller",
+      aria: (name: string) => `Mot de passe pour ${name}`,
+      hint: "Saisissez son mot de passe dans la liste de vos documents.",
+      show: "Afficher le mot de passe",
+      hide: "Masquer le mot de passe",
+    },
     pageOf: (a: number, b: number) => `page ${a} / ${b}`,
     textareaAria: "Texte du filigrane à apposer sur vos documents",
     placeholder: "Ex. : Copie exclusivement destinée à mon dossier de location",
@@ -109,7 +120,9 @@ export const STRINGS = {
     },
     errors: {
       unsupported: "Format non pris en charge. Choisissez un PDF ou une image (JPG, PNG…).",
-      pdf_unreadable: "Ce PDF n'a pas pu être lu (fichier corrompu ou protégé par mot de passe).",
+      pdf_unreadable: "Ce PDF n'a pas pu être lu. Le fichier semble corrompu.",
+      pdf_password: "Ce PDF est protégé par un mot de passe.",
+      pdf_password_wrong: "Mot de passe incorrect. Réessayez.",
       pdf_empty: "Ce PDF ne contient aucune page.",
       image_unreadable: "Cette image n'a pas pu être lue. Essayez un JPG ou un PNG.",
       canvas_unavailable: "Votre navigateur ne permet pas le rendu du document.",
@@ -136,6 +149,15 @@ export const STRINGS = {
     remove: (name: string) => `Remove ${name}`,
     pages: (n: number) => plural(n, "page"),
     status: { pending: "waiting", processing: "processing", ready: "ready", error: "error" },
+    unlock: {
+      locked: "locked",
+      placeholder: "PDF password",
+      button: "Unlock",
+      aria: (name: string) => `Password for ${name}`,
+      hint: "Enter its password in your document list.",
+      show: "Show password",
+      hide: "Hide password",
+    },
     pageOf: (a: number, b: number) => `page ${a} / ${b}`,
     textareaAria: "Watermark text to stamp on your documents",
     placeholder: "e.g. Copy for my rental application only",
@@ -209,7 +231,9 @@ export const STRINGS = {
     },
     errors: {
       unsupported: "Unsupported format. Choose a PDF or an image (JPG, PNG…).",
-      pdf_unreadable: "This PDF could not be read (corrupted or password-protected).",
+      pdf_unreadable: "This PDF could not be read. The file appears to be corrupted.",
+      pdf_password: "This PDF is password-protected.",
+      pdf_password_wrong: "Incorrect password. Try again.",
       pdf_empty: "This PDF has no pages.",
       image_unreadable: "This image could not be read. Try a JPG or PNG.",
       canvas_unavailable: "Your browser can't render this document.",
@@ -236,6 +260,15 @@ export const STRINGS = {
     remove: (name: string) => `${name} を削除`,
     pages: (n: number) => `${n} ページ`,
     status: { pending: "待機中", processing: "処理中", ready: "完了", error: "エラー" },
+    unlock: {
+      locked: "ロック中",
+      placeholder: "PDF のパスワード",
+      button: "ロック解除",
+      aria: (name: string) => `${name} のパスワード`,
+      hint: "ドキュメント一覧でパスワードを入力してください。",
+      show: "パスワードを表示",
+      hide: "パスワードを隠す",
+    },
     pageOf: (a: number, b: number) => `${a} / ${b} ページ`,
     textareaAria: "ドキュメントに入れる透かしのテキスト",
     placeholder: "例：賃貸申込専用のコピー",
@@ -310,7 +343,9 @@ export const STRINGS = {
     },
     errors: {
       unsupported: "対応していない形式です。PDF または画像（JPG、PNG…）を選んでください。",
-      pdf_unreadable: "この PDF を読み込めませんでした（破損またはパスワード保護）。",
+      pdf_unreadable: "この PDF を読み込めませんでした。ファイルが破損している可能性があります。",
+      pdf_password: "この PDF はパスワードで保護されています。",
+      pdf_password_wrong: "パスワードが正しくありません。もう一度お試しください。",
       pdf_empty: "この PDF にページがありません。",
       image_unreadable: "この画像を読み込めませんでした。JPG または PNG をお試しください。",
       canvas_unavailable: "お使いのブラウザではこのドキュメントを描画できません。",

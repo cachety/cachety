@@ -36,9 +36,10 @@ export function fitScale(width: number, height: number, scale: number) {
 export async function watermarkFile(
   file: File,
   text: string,
-  onProgress?: ProgressFn
+  onProgress?: ProgressFn,
+  password?: string
 ): Promise<WatermarkResult> {
-  if (file.type === "application/pdf") return watermarkPdf(file, text, onProgress);
+  if (file.type === "application/pdf") return watermarkPdf(file, text, onProgress, password);
   if (file.type.startsWith("image/")) return watermarkImage(file, text);
   throw new Error("unsupported");
 }
@@ -46,13 +47,15 @@ export async function watermarkFile(
 async function watermarkPdf(
   file: File,
   text: string,
-  onProgress?: ProgressFn
+  onProgress?: ProgressFn,
+  password?: string
 ): Promise<WatermarkResult> {
   const pdfjs = await import("pdfjs-dist");
   pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerSrc();
 
   const loadingTask = pdfjs.getDocument({
     data: await file.arrayBuffer(),
+    password,
     standardFontDataUrl: "/pdfjs/standard_fonts/",
     cMapUrl: "/pdfjs/cmaps/",
     wasmUrl: "/pdfjs/wasm/",
@@ -62,8 +65,13 @@ async function watermarkPdf(
   let pdf;
   try {
     pdf = await loadingTask.promise;
-  } catch {
+  } catch (e) {
     await loadingTask.destroy();
+    // pdf.js signale NEED_PASSWORD comme INCORRECT_PASSWORD par la même
+    // exception ; « un mot de passe a été fourni » suffit à les distinguer.
+    if ((e as { name?: string } | null)?.name === "PasswordException") {
+      throw new Error(password ? "pdf_password_wrong" : "pdf_password");
+    }
     throw new Error("pdf_unreadable");
   }
 
