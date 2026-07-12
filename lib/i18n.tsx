@@ -63,6 +63,16 @@ export const STRINGS = {
     autoApply: "Aperçu auto",
     apply: "Appliquer le filigrane",
     applyHint: "Cliquez sur « Appliquer » pour générer l'aperçu.",
+    batch: {
+      progress: (done: number, total: number) => `${done} / ${total} traités`,
+      all: "Tout",
+      attention: "À traiter",
+      ready: "Prêts",
+      searchPlaceholder: "Rechercher un nom…",
+      searchAria: "Rechercher un document par son nom",
+      matches: (n: number) =>
+        n === 0 ? "Aucun document ne correspond." : `${n} document${n > 1 ? "s" : ""} affiché${n > 1 ? "s" : ""}.`,
+    },
     staleResults:
       "Le texte a changé : les documents prêts portent encore l'ancien filigrane. Cliquez sur « Appliquer le filigrane ».",
     dropAnywhere: "Déposez vos documents n'importe où",
@@ -179,6 +189,16 @@ export const STRINGS = {
     autoApply: "Auto preview",
     apply: "Apply watermark",
     applyHint: "Click Apply to generate the preview.",
+    batch: {
+      progress: (done: number, total: number) => `${done} / ${total} processed`,
+      all: "All",
+      attention: "Needs you",
+      ready: "Ready",
+      searchPlaceholder: "Search by name…",
+      searchAria: "Search documents by name",
+      matches: (n: number) =>
+        n === 0 ? "No document matches." : `${n} document${n > 1 ? "s" : ""} shown.`,
+    },
     staleResults:
       "The text changed: ready documents still carry the previous watermark. Click Apply watermark.",
     dropAnywhere: "Drop your documents anywhere",
@@ -294,6 +314,15 @@ export const STRINGS = {
     autoApply: "自動プレビュー",
     apply: "透かしを適用",
     applyHint: "「適用」をクリックしてプレビューを生成します。",
+    batch: {
+      progress: (done: number, total: number) => `${done} / ${total} 件処理済み`,
+      all: "すべて",
+      attention: "要対応",
+      ready: "完了",
+      searchPlaceholder: "名前で検索…",
+      searchAria: "ドキュメントを名前で検索",
+      matches: (n: number) => (n === 0 ? "該当するドキュメントはありません。" : `${n} 件を表示中。`),
+    },
     staleResults:
       "テキストが変更されました。準備済みのドキュメントには以前の透かしが入っています。「透かしを適用」を押してください。",
     dropAnywhere: "画面のどこにでもドロップできます",

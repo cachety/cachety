@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ACCEPT, hasVisibleText, isSupported, outputName, zipDocuments } from "@/lib/files";
 import { isBrowserSupported } from "@/lib/compat";
 import { releaseResult, watermarkFile, type WatermarkResult } from "@/lib/watermark";
@@ -17,6 +17,12 @@ import {
 import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
 
 type Status = "pending" | "processing" | "ready" | "error";
+type Filter = "all" | "attention" | "ready";
+
+// Au-delà de ce nombre de documents, la liste passe en zone défilante bornée
+// avec résumé et filtres (sinon mille lignes poussent les étapes 2 et 3 à
+// 79 000 pixels du haut de la page).
+const LIST_COMPACT_FROM = 6;
 
 type Doc = {
   id: string;
@@ -63,6 +69,9 @@ export default function CoreProduct() {
   const [rejected, setRejected] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  // Résumé du lot (mode compact) : filtre par état et recherche par nom.
+  const [filter, setFilter] = useState<Filter>("all");
+  const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Vérifié après montage seulement : au build statique (SSR), window n'existe
@@ -104,14 +113,18 @@ export default function CoreProduct() {
     });
   }, []);
 
-  const removeDoc = (id: string) => {
+  // useCallback : DocRow est mémoïsée, une fonction recréée à chaque rendu
+  // annulerait la mémoïsation (mille lignes re-rendues pour rien).
+  const removeDoc = useCallback((id: string) => {
     setDocs((prev) => prev.filter((d) => d.id !== id));
     inputRef.current?.focus();
-  };
+  }, []);
 
   const clearAll = () => {
     setDocs([]);
     setRejected([]);
+    setQuery("");
+    setFilter("all");
     inputRef.current?.focus();
   };
 
@@ -245,7 +258,7 @@ export default function CoreProduct() {
     return () => window.removeEventListener("beforeunload", warn);
   }, [docs.length > 0]);
 
-  const unlock = (id: string, password: string) => {
+  const unlock = useCallback((id: string, password: string) => {
     setDocs((prev) =>
       prev.map((d) =>
         d.id === id
@@ -256,14 +269,59 @@ export default function CoreProduct() {
     // Le formulaire qui portait le focus disparaît : on le rend à la ligne
     // du document plutôt que de le laisser tomber sur <body>.
     requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
-  };
+  }, []);
 
   const fresh = (d: Doc) => d.status === "ready" && !!d.result && d.stampedWith === active;
   const apply = () => setAppliedText(value);
   const ready = docs.filter(fresh);
   const processing = docs.some((d) => d.status === "processing");
+
+  // Un lot volumineux ne doit pas repousser les étapes 2 et 3 hors de l'écran :
+  // au-delà de LIST_COMPACT_FROM, la liste devient une zone à hauteur bornée,
+  // coiffée d'un résumé (progression + filtres).
+  const attention = docs.filter((d) => needsPassword(d) || d.error);
+  const done = docs.filter((d) => d.status === "ready" || d.error).length;
+  const compact = docs.length > LIST_COMPACT_FROM;
+  // Filtre et recherche n'existent que dans le résumé (mode compact). Sous le
+  // seuil, la barre disparaît : les appliquer quand même masquerait des
+  // documents sans que rien à l'écran n'explique pourquoi.
+  const effFilter: Filter = !compact
+    ? "all"
+    : filter === "attention" && !attention.length
+      ? "all"
+      : filter === "ready" && !ready.length
+        ? "all"
+        : filter;
+  // toLocaleLowerCase : « IMPÔTS » doit trouver « impôts ».
+  const needle = compact ? query.trim().toLocaleLowerCase(t.locale) : "";
+  // Mémoïsé : à chaque page rendue, un patch de progression re-rend le
+  // composant. Sans cela, mille documents seraient refiltrés et retriés
+  // plusieurs fois par seconde.
+  const listed = useMemo(
+    () =>
+      docs
+        .filter((d) =>
+          effFilter === "attention"
+            ? needsPassword(d) || d.error
+            : effFilter === "ready"
+              ? d.status === "ready" && !!d.result && d.stampedWith === active
+              : true
+        )
+        .filter((d) => !needle || d.file.name.toLocaleLowerCase(t.locale).includes(needle))
+        // Ce qui réclame l'utilisateur remonte : dans mille lignes, un PDF
+        // protégé au rang 700 serait invisible.
+        .sort(
+          (a, b) =>
+            Number(needsPassword(b) || !!b.error) - Number(needsPassword(a) || !!a.error)
+        ),
+    [docs, effFilter, needle, active, t.locale]
+  );
+
+  // Sans sélection explicite, l'aperçu suit le dernier document terminé.
   const shown =
-    docs.find((d) => d.id === activeId) ?? docs.find((d) => d.result || d.error);
+    docs.find((d) => d.id === activeId) ??
+    [...docs].reverse().find(fresh) ??
+    docs.find((d) => d.result || d.error);
 
   const [zipping, setZipping] = useState(false);
   const downloadZip = async () => {
@@ -360,60 +418,37 @@ export default function CoreProduct() {
             </div>
           )}
 
+          {compact && (
+            <BatchSummary
+              total={docs.length}
+              done={done}
+              attention={attention.length}
+              ready={ready.length}
+              filter={effFilter}
+              onFilter={setFilter}
+              query={query}
+              onQuery={setQuery}
+              shownCount={listed.length}
+            />
+          )}
+
           {docs.length > 0 && (
-            <ul className="mt-3 flex flex-col gap-2">
-              {docs.map((doc) => (
-                <li key={doc.id} className="flex items-stretch gap-2">
-                  <div
-                    className={`min-w-0 flex-1 rounded-xl border bg-feuille transition-colors ${
-                      shown?.id === doc.id
-                        ? "border-bleu ring-1 ring-bleu"
-                        : "border-trait hover:border-encre-2"
-                    }`}
-                  >
-                    <button
-                      id={`doc-${doc.id}`}
-                      onClick={() => setActiveId(doc.id)}
-                      aria-current={shown?.id === doc.id || undefined}
-                      className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-                    >
-                      <span className="min-w-0">
-                        <span className="block truncate font-medium">
-                          {doc.file.name}
-                        </span>
-                        <span className="block text-sm text-encre-2">
-                          {size(doc.file.size, t)}
-                          {doc.result &&
-                            doc.result.extension === "pdf" &&
-                            ` · ${t.pages(doc.result.pageCount)}`}
-                        </span>
-                        {/* La raison de l'échec directement dans la ligne :
-                            indispensable pour trier un lot, la pastille seule
-                            ne dit pas pourquoi. */}
-                        {doc.error && !needsPassword(doc) && (
-                          <span className="block truncate text-sm text-sceau-fonce">
-                            {t.errors[doc.error]}
-                          </span>
-                        )}
-                      </span>
-                      <DocStatus doc={doc} />
-                    </button>
-                    {needsPassword(doc) && (
-                      <UnlockForm
-                        name={doc.file.name}
-                        wrong={doc.error === "pdf_password_wrong"}
-                        onUnlock={(pw) => unlock(doc.id, pw)}
-                      />
-                    )}
-                  </div>
-                  <button
-                    onClick={() => removeDoc(doc.id)}
-                    aria-label={t.remove(doc.file.name)}
-                    className="flex w-12 shrink-0 items-center justify-center rounded-xl border border-trait text-encre-2 transition-colors hover:border-sceau hover:text-sceau"
-                  >
-                    <CloseIcon className="h-4 w-4" />
-                  </button>
-                </li>
+            <ul
+              className={`mt-3 flex flex-col gap-2 ${
+                // Zone bornée : la liste défile en interne, les étapes 2 et 3
+                // restent à l'écran quel que soit le nombre de documents.
+                compact ? "max-h-[26rem] overflow-y-auto overscroll-contain pr-1" : ""
+              }`}
+            >
+              {listed.map((doc) => (
+                <DocRow
+                  key={doc.id}
+                  doc={doc}
+                  selected={shown?.id === doc.id}
+                  onSelect={setActiveId}
+                  onRemove={removeDoc}
+                  onUnlock={unlock}
+                />
               ))}
             </ul>
           )}
@@ -662,6 +697,178 @@ function PagerButton({
     >
       <ChevronIcon direction={direction === "prev" ? "left" : "right"} className="h-4 w-4" />
     </button>
+  );
+}
+
+// Mémoïsée : pendant un lot, chaque page rendue re-rend CoreProduct. Sans
+// cette barrière, les mille lignes seraient re-diffées plusieurs fois par
+// seconde alors qu'une seule change.
+const DocRow = memo(function DocRow({
+  doc,
+  selected,
+  onSelect,
+  onRemove,
+  onUnlock,
+}: {
+  doc: Doc;
+  selected: boolean;
+  onSelect: (id: string) => void;
+  onRemove: (id: string) => void;
+  onUnlock: (id: string, password: string) => void;
+}) {
+  const t = useT();
+  return (
+    <li className="flex items-stretch gap-2">
+      <div
+        className={`min-w-0 flex-1 rounded-xl border bg-feuille transition-colors ${
+          selected ? "border-bleu ring-1 ring-bleu" : "border-trait hover:border-encre-2"
+        }`}
+      >
+        <button
+          id={`doc-${doc.id}`}
+          onClick={() => onSelect(doc.id)}
+          aria-current={selected || undefined}
+          className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+        >
+          <span className="min-w-0">
+            <span className="block truncate font-medium">{doc.file.name}</span>
+            <span className="block text-sm text-encre-2">
+              {size(doc.file.size, t)}
+              {doc.result &&
+                doc.result.extension === "pdf" &&
+                ` · ${t.pages(doc.result.pageCount)}`}
+            </span>
+            {/* La raison de l'échec directement dans la ligne : indispensable
+                pour trier un lot, la pastille seule ne dit pas pourquoi. */}
+            {doc.error && !needsPassword(doc) && (
+              <span className="block truncate text-sm text-sceau-fonce">
+                {t.errors[doc.error]}
+              </span>
+            )}
+          </span>
+          <DocStatus doc={doc} />
+        </button>
+        {needsPassword(doc) && (
+          <UnlockForm
+            name={doc.file.name}
+            wrong={doc.error === "pdf_password_wrong"}
+            onUnlock={(pw) => onUnlock(doc.id, pw)}
+          />
+        )}
+      </div>
+      <button
+        onClick={() => onRemove(doc.id)}
+        aria-label={t.remove(doc.file.name)}
+        className="flex w-12 shrink-0 items-center justify-center rounded-xl border border-trait text-encre-2 transition-colors hover:border-sceau hover:text-sceau"
+      >
+        <CloseIcon className="h-4 w-4" />
+      </button>
+    </li>
+  );
+});
+
+function BatchSummary({
+  total,
+  done,
+  attention,
+  ready,
+  filter,
+  onFilter,
+  query,
+  onQuery,
+  shownCount,
+}: {
+  total: number;
+  done: number;
+  attention: number;
+  ready: number;
+  filter: Filter;
+  onFilter: (f: Filter) => void;
+  query: string;
+  onQuery: (q: string) => void;
+  shownCount: number;
+}) {
+  const t = useT();
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  // Décompte annoncé aux lecteurs d'écran, 500 ms après la dernière frappe.
+  const [announced, setAnnounced] = useState("");
+  useEffect(() => {
+    if (!query.trim()) {
+      setAnnounced("");
+      return;
+    }
+    const timer = setTimeout(() => setAnnounced(t.batch.matches(shownCount)), 500);
+    return () => clearTimeout(timer);
+  }, [query, shownCount, t]);
+
+  const chips: { key: Filter; label: string; count: number; tone: string }[] = [
+    { key: "all", label: t.batch.all, count: total, tone: "text-encre" },
+    { key: "attention", label: t.batch.attention, count: attention, tone: "text-sceau-fonce" },
+    { key: "ready", label: t.batch.ready, count: ready, tone: "text-green-800" },
+  ];
+
+  return (
+    <div className="mt-3 rounded-xl border border-trait bg-feuille px-4 py-3">
+      <div className="flex items-baseline justify-between gap-3 text-sm">
+        <span className="font-medium">{t.batch.progress(done, total)}</span>
+        <span className="text-encre-2 tabular-nums">{pct} %</span>
+      </div>
+      <div
+        className="mt-2 h-1.5 overflow-hidden rounded-full bg-encre/10"
+        role="progressbar"
+        aria-valuenow={done}
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-label={t.batch.progress(done, total)}
+      >
+        <div
+          className="h-full rounded-full bg-bleu transition-[width] duration-300"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {chips.map(({ key, label, count, tone }) => (
+          <button
+            key={key}
+            onClick={() => onFilter(key)}
+            aria-pressed={filter === key}
+            // Un filtre vide ne sert à rien : on le désactive plutôt que de
+            // laisser l'utilisateur atterrir sur une liste vide.
+            disabled={key !== "all" && count === 0}
+            className={`rounded-full border px-3 py-1 text-sm transition-colors disabled:opacity-40 ${
+              filter === key
+                ? "border-bleu bg-bleu/10 text-bleu"
+                : `border-trait bg-feuille hover:border-encre-2 ${tone}`
+            }`}
+          >
+            {label} <span className="tabular-nums">{count}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Le champ garde sa propre ligne : dans la colonne de gauche, à côté
+          des pastilles, il se réduisait à « Rech… ». */}
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => onQuery(e.target.value)}
+        placeholder={t.batch.searchPlaceholder}
+        aria-label={t.batch.searchAria}
+        // text-base : sous 16px, iOS Safari zoome la page au focus.
+        className="mt-2 w-full rounded-lg border border-trait bg-white px-3 py-1.5 text-base focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm"
+      />
+
+      {query.trim() && (
+        <p className="mt-2 text-sm text-encre-2">{t.batch.matches(shownCount)}</p>
+      )}
+      {/* Annonce différée : liée au rendu, la région vocaliserait un décompte
+          à chaque frappe (« 8 affichés », « 3 affichés », « 1 affiché »…). */}
+      <p className="sr-only" role="status" aria-live="polite">
+        {announced}
+      </p>
+    </div>
   );
 }
 
