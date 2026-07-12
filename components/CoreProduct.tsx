@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ACCEPT, hasVisibleText, isSupported, zipDocuments } from "@/lib/files";
 import { isBrowserSupported } from "@/lib/compat";
 import { releaseResult, watermarkFile } from "@/lib/watermark";
-import { useT, type ErrorKey } from "@/lib/i18n";
+import { exampleStamp, useT, type ErrorKey } from "@/lib/i18n";
 import {
   docId,
   isFresh,
@@ -458,14 +458,18 @@ export default function CoreProduct() {
               <span className="text-xs text-encre-2 tabular-nums">{text.length} / 120</span>
             )}
           </div>
+          {/* Modèles : le motif (court) et la date du jour, c'est-à-dire deux
+              des trois éléments de la formule. Le destinataire est le seul que
+              l'outil ne peut pas deviner : l'indication juste en dessous le
+              réclame explicitement. */}
           <div className="mt-2 flex flex-wrap gap-2">
             {t.presets.map((p) => (
               <button
-                key={p}
-                onClick={() => setText(t.onDate(p, today()).slice(0, 120))}
-                className="rounded-lg border border-trait bg-feuille px-3 py-1.5 text-left text-sm text-encre-2 transition-colors hover:border-bleu hover:text-bleu"
+                key={p.label}
+                onClick={() => setText(t.onDate(p.text, today()).slice(0, 120))}
+                className="rounded-lg border border-trait bg-feuille px-3 py-1.5 text-sm text-encre-2 transition-colors hover:border-bleu hover:text-bleu"
               >
-                {p.split(".")[0]}
+                {p.label}
               </button>
             ))}
             {value && !text.includes(today()) && (
@@ -477,6 +481,7 @@ export default function CoreProduct() {
               </button>
             )}
           </div>
+          <p className="mt-2 text-sm text-encre-2">{t.presetsHint}</p>
           {!autoApply && (
             <button
               onClick={apply}
@@ -486,7 +491,6 @@ export default function CoreProduct() {
               {t.apply}
             </button>
           )}
-          <p className="mt-2 text-sm text-encre-2">{t.tip}</p>
         </section>
 
         {ready.length > 1 && (
@@ -518,7 +522,7 @@ export default function CoreProduct() {
             <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
               <div className="w-full max-w-[280px] -rotate-2">
                 <SpecimenCard title={t.about.specimenCard} specimen={t.about.specimen}>
-                  <WatermarkLayer text={t.about.exStamp} />
+                  <WatermarkLayer text={exampleStamp(t)} />
                 </SpecimenCard>
               </div>
               <p>
