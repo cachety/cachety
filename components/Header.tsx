@@ -34,11 +34,13 @@ export default function Header() {
 
       <div className="hidden sm:block">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between pt-4">
+          {/* Même pastille que sur mobile : un seul objet, un seul style. */}
           <Link
             href="/about"
-            className="text-sm text-bleu underline underline-offset-4 hover:no-underline"
+            className="inline-flex items-center gap-1 rounded-full border border-trait bg-feuille px-3.5 py-1.5 text-sm font-medium text-bleu transition-colors hover:border-bleu focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
           >
             {t.about.nav}
+            <ChevronIcon direction="right" className="h-3.5 w-3.5" />
           </Link>
           <div className="flex items-center gap-2">
             <ShareButton />

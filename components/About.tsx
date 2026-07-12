@@ -16,12 +16,15 @@ export default function About() {
           <Flag className="h-5 w-7 shrink-0 rounded-sm border border-trait" />
           <span className="truncate text-lg font-bold tracking-tight">Filigrane Local</span>
         </Link>
-        <div className="flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-3">
+          {/* Même pastille que dans l'en-tête de l'outil : la navigation entre
+              les deux pages est un seul et même objet. */}
           <Link
             href="/"
-            className="text-sm text-bleu underline underline-offset-4 hover:no-underline"
+            className="inline-flex items-center gap-1 rounded-full border border-trait bg-feuille px-3.5 py-1.5 text-sm font-medium text-bleu transition-colors hover:border-bleu focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
           >
             {a.navTool}
+            <ChevronIcon direction="right" className="h-3.5 w-3.5" />
           </Link>
           <LangToggle />
         </div>
