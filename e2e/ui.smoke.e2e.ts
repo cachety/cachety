@@ -10,7 +10,7 @@ import { join } from "node:path";
 import type { Browser, BrowserContext, Page } from "playwright-core";
 import { browserName, launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
-import { makePdf } from "./helpers/fixtures";
+import { ENCRYPTED_PDF_B64, ENCRYPTED_PDF_PASSWORD, fromBase64, makePdf } from "./helpers/fixtures";
 import { STRINGS } from "../lib/i18n";
 
 const OUT_DIR = join(import.meta.dir, "..", "out");
@@ -93,6 +93,48 @@ describe("fumée : interface", () => {
       expect(await page.evaluate(() => (window as any).__pasDeNavigation)).toBe(true);
     },
     30_000
+  );
+
+  test(
+    "PDF verrouillé : pastille « protégé », mauvais mot de passe signalé, bon mot de passe → prêt",
+    async () => {
+      const t = STRINGS.fr;
+      const page = await openPage("/fr");
+
+      await page
+        .locator(`input[aria-label="${t.inputAria}"]`)
+        .setInputFiles({
+          name: "verrouille.pdf",
+          mimeType: "application/pdf",
+          buffer: Buffer.from(fromBase64(ENCRYPTED_PDF_B64)),
+        });
+      await page
+        .locator(`textarea[aria-label="${t.textareaAria}"]`)
+        .fill("Copie réservée au test e2e");
+
+      // Le document verrouillé affiche sa pastille et son champ en ligne.
+      await page
+        .getByText(t.unlock.locked, { exact: true })
+        .waitFor({ state: "visible", timeout: 30_000 });
+      const pwInput = page.locator(`input[aria-label="${t.unlock.aria("verrouille.pdf")}"]`);
+
+      // Mauvais mot de passe : message d'erreur, champ toujours là.
+      await pwInput.fill("pas-le-bon");
+      await page.getByRole("button", { name: t.unlock.button }).click();
+      await page
+        .getByText(t.errors.pdf_password_wrong)
+        .first()
+        .waitFor({ state: "visible", timeout: 30_000 });
+
+      // Bon mot de passe : le document passe « prêt », téléchargement proposé.
+      await pwInput.fill(ENCRYPTED_PDF_PASSWORD);
+      await page.getByRole("button", { name: t.unlock.button }).click();
+      await page
+        .getByText(t.status.ready, { exact: true })
+        .waitFor({ state: "visible", timeout: 30_000 });
+      await page.locator("a[download]").waitFor({ state: "visible" });
+    },
+    90_000
   );
 
   // grantPermissions(clipboard-*) n'existe que sur Chromium ; le bouton est

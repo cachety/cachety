@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://filigrane-local.fr/sitemap.xml

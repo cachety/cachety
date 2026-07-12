@@ -62,6 +62,8 @@ export const STRINGS = {
     autoApply: "Aperçu auto",
     apply: "Appliquer le filigrane",
     applyHint: "Cliquez sur « Appliquer » pour générer l'aperçu.",
+    staleResults:
+      "Le texte a changé : les documents prêts portent encore l'ancien filigrane. Cliquez sur « Appliquer le filigrane ».",
     dropAnywhere: "Déposez vos documents n'importe où",
     clearAll: "Tout effacer",
     emptyStart: "Déposez un document pour commencer.",
@@ -174,6 +176,8 @@ export const STRINGS = {
     autoApply: "Auto preview",
     apply: "Apply watermark",
     applyHint: "Click Apply to generate the preview.",
+    staleResults:
+      "The text changed: ready documents still carry the previous watermark. Click Apply watermark.",
     dropAnywhere: "Drop your documents anywhere",
     clearAll: "Clear all",
     emptyStart: "Drop a document to get started.",
@@ -285,6 +289,8 @@ export const STRINGS = {
     autoApply: "自動プレビュー",
     apply: "透かしを適用",
     applyHint: "「適用」をクリックしてプレビューを生成します。",
+    staleResults:
+      "テキストが変更されました。準備済みのドキュメントには以前の透かしが入っています。「透かしを適用」を押してください。",
     dropAnywhere: "画面のどこにでもドロップできます",
     clearAll: "すべて消去",
     emptyStart: "ドキュメントをドロップして始めましょう。",

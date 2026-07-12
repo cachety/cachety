@@ -37,9 +37,11 @@ export async function watermarkFile(
   file: File,
   text: string,
   onProgress?: ProgressFn,
-  password?: string
+  password?: string,
+  signal?: AbortSignal
 ): Promise<WatermarkResult> {
-  if (file.type === "application/pdf") return watermarkPdf(file, text, onProgress, password);
+  if (file.type === "application/pdf")
+    return watermarkPdf(file, text, onProgress, password, signal);
   if (file.type.startsWith("image/")) return watermarkImage(file, text);
   throw new Error("unsupported");
 }
@@ -48,7 +50,8 @@ async function watermarkPdf(
   file: File,
   text: string,
   onProgress?: ProgressFn,
-  password?: string
+  password?: string,
+  signal?: AbortSignal
 ): Promise<WatermarkResult> {
   const pdfjs = await import("pdfjs-dist");
   pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerSrc();
@@ -86,6 +89,10 @@ async function watermarkPdf(
 
   try {
     for (let i = 1; i <= pageCount; i++) {
+      // Un rendu remplacé (texte modifié, document retiré) s'arrête à la
+      // page suivante au lieu de continuer pour rien : sans cela, deux
+      // rendus complets du même PDF peuvent tourner en parallèle.
+      if (signal?.aborted) throw new Error("aborted");
       const page = await pdf.getPage(i);
       const base = page.getViewport({ scale: 1 });
       const scale = fitScale(base.width, base.height, RENDER_SCALE);

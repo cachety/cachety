@@ -196,6 +196,7 @@ export default function CoreProduct() {
       return;
     }
     let cancelled = false;
+    const aborter = new AbortController();
     const patch = (id: string, changes: Partial<Doc>) => {
       if (!cancelled)
         setDocs((prev) => prev.map((d) => (d.id === id ? { ...d, ...changes } : d)));
@@ -210,7 +211,8 @@ export default function CoreProduct() {
             doc.file,
             active,
             (done, total) => patch(doc.id, { progress: [done, total] }),
-            doc.password
+            doc.password,
+            aborter.signal
           );
           if (cancelled) releaseResult(result);
           else patch(doc.id, { status: "ready", result, stampedWith: active, progress: undefined });
@@ -228,10 +230,20 @@ export default function CoreProduct() {
     }, autoApply ? 500 : 0);
     return () => {
       cancelled = true;
+      aborter.abort();
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileKey, unlockKey, active, meaningful]);
+
+  // Des documents chargés seraient perdus par un rechargement accidentel :
+  // rien n'est persisté, par conception (confidentialité).
+  useEffect(() => {
+    if (!docs.length) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [docs.length > 0]);
 
   const unlock = (id: string, password: string) =>
     setDocs((prev) =>
@@ -357,7 +369,7 @@ export default function CoreProduct() {
                   >
                     <button
                       onClick={() => setActiveId(doc.id)}
-                      aria-pressed={shown?.id === doc.id}
+                      aria-current={shown?.id === doc.id || undefined}
                       className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
                     >
                       <span className="min-w-0">
@@ -370,6 +382,14 @@ export default function CoreProduct() {
                             doc.result.extension === "pdf" &&
                             ` · ${t.pages(doc.result.pageCount)}`}
                         </span>
+                        {/* La raison de l'échec directement dans la ligne :
+                            indispensable pour trier un lot, la pastille seule
+                            ne dit pas pourquoi. */}
+                        {doc.error && !needsPassword(doc) && (
+                          <span className="block truncate text-sm text-sceau-fonce">
+                            {t.errors[doc.error]}
+                          </span>
+                        )}
                       </span>
                       <DocStatus doc={doc} />
                     </button>
@@ -469,6 +489,14 @@ export default function CoreProduct() {
           {t.step3}
         </StepLabel>
 
+        {pending && ready.length > 0 && (
+          <div
+            role="alert"
+            className="mt-3 rounded-xl border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-900"
+          >
+            {t.staleResults}
+          </div>
+        )}
         <div className="mt-3">
           {docs.length === 0 || !meaningful ? (
             <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
@@ -503,10 +531,9 @@ export default function CoreProduct() {
           ) : shown && fresh(shown) ? (
             <Kiosk key={shown.id} doc={shown} />
           ) : (
-            <div
-              className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2"
-              aria-live="polite"
-            >
+            <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2">
+              {/* Pas d'aria-live ici : la région sr-only en fin de composant
+                  annonce déjà le traitement, sans répéter chaque page. */}
               {shown ? t.processingDoc(shown.file.name, shown.progress) : t.processingGeneric}
             </div>
           )}
@@ -686,8 +713,16 @@ function UnlockForm({
             placeholder={t.unlock.placeholder}
             aria-label={t.unlock.aria(name)}
             aria-invalid={wrong || undefined}
-            autoComplete="off"
-            className={`w-full rounded-lg border bg-white py-1.5 pl-3 pr-9 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-bleu ${
+            // one-time-code : contrairement à "off" (ignoré pour les champs
+            // password), supprime la proposition d'enregistrement dans le
+            // gestionnaire de mots de passe. Ce mot de passe de document n'a
+            // rien à faire dans un coffre synchronisé.
+            autoComplete="one-time-code"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            // text-base : sous 16px, iOS Safari zoome la page au focus.
+            className={`w-full rounded-lg border bg-white py-1.5 pl-3 pr-9 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm ${
               wrong ? "border-sceau/60" : "border-trait"
             }`}
           />
