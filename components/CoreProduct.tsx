@@ -357,7 +357,10 @@ export default function CoreProduct() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start">
+    // La colonne des documents s'élargit avec l'écran : à 400 px fixes, un nom
+    // un peu long et sa pastille se disputaient la place. On ne l'élargit
+    // qu'à partir de xl, sinon l'aperçu se retrouve plus étroit que la liste.
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[460px_minmax(0,1fr)] 2xl:grid-cols-[520px_minmax(0,1fr)]">
       {dragging && (
         <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-encre/40 p-6 backdrop-blur-sm">
           <div className="rounded-2xl border-2 border-dashed border-white bg-feuille px-8 py-6 text-center text-lg font-semibold shadow-xl">
@@ -437,7 +440,10 @@ export default function CoreProduct() {
               className={`mt-3 flex flex-col gap-2 ${
                 // Zone bornée : la liste défile en interne, les étapes 2 et 3
                 // restent à l'écran quel que soit le nombre de documents.
-                compact ? "max-h-[26rem] overflow-y-auto overscroll-contain pr-1" : ""
+                // Sur mobile, une hauteur relative laisse voir plus de lignes.
+                compact
+                  ? "max-h-[60vh] overflow-y-auto overscroll-contain pr-1 sm:max-h-[26rem]"
+                  : ""
               }`}
             >
               {listed.map((doc) => (
@@ -718,17 +724,19 @@ const DocRow = memo(function DocRow({
 }) {
   const t = useT();
   return (
-    <li className="flex items-stretch gap-2">
-      <div
-        className={`min-w-0 flex-1 rounded-xl border bg-feuille transition-colors ${
-          selected ? "border-bleu ring-1 ring-bleu" : "border-trait hover:border-encre-2"
-        }`}
-      >
+    // Le bouton « retirer » vit dans la carte : en colonne séparée, il volait
+    // 56 px de large à chaque ligne, d'où des noms tronqués très tôt.
+    <li
+      className={`rounded-xl border bg-feuille transition-colors ${
+        selected ? "border-bleu ring-1 ring-bleu" : "border-trait hover:border-encre-2"
+      }`}
+    >
+      <div className="flex items-center">
         <button
           id={`doc-${doc.id}`}
           onClick={() => onSelect(doc.id)}
           aria-current={selected || undefined}
-          className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+          className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-l-xl py-3 pl-4 pr-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
         >
           <span className="min-w-0">
             <span className="block truncate font-medium">{doc.file.name}</span>
@@ -741,28 +749,26 @@ const DocRow = memo(function DocRow({
             {/* La raison de l'échec directement dans la ligne : indispensable
                 pour trier un lot, la pastille seule ne dit pas pourquoi. */}
             {doc.error && !needsPassword(doc) && (
-              <span className="block truncate text-sm text-sceau-fonce">
-                {t.errors[doc.error]}
-              </span>
+              <span className="block text-sm text-sceau-fonce">{t.errors[doc.error]}</span>
             )}
           </span>
           <DocStatus doc={doc} />
         </button>
-        {needsPassword(doc) && (
-          <UnlockForm
-            name={doc.file.name}
-            wrong={doc.error === "pdf_password_wrong"}
-            onUnlock={(pw) => onUnlock(doc.id, pw)}
-          />
-        )}
+        <button
+          onClick={() => onRemove(doc.id)}
+          aria-label={t.remove(doc.file.name)}
+          className="mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-encre-2 transition-colors hover:bg-sceau/10 hover:text-sceau focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+        >
+          <CloseIcon className="h-4 w-4" />
+        </button>
       </div>
-      <button
-        onClick={() => onRemove(doc.id)}
-        aria-label={t.remove(doc.file.name)}
-        className="flex w-12 shrink-0 items-center justify-center rounded-xl border border-trait text-encre-2 transition-colors hover:border-sceau hover:text-sceau"
-      >
-        <CloseIcon className="h-4 w-4" />
-      </button>
+      {needsPassword(doc) && (
+        <UnlockForm
+          name={doc.file.name}
+          wrong={doc.error === "pdf_password_wrong"}
+          onUnlock={(pw) => onUnlock(doc.id, pw)}
+        />
+      )}
     </li>
   );
 });
@@ -919,9 +925,11 @@ function UnlockForm({
         if (pw) onUnlock(pw);
       }}
     >
-      <div className="flex items-center gap-2">
+      {/* flex-wrap : sur un écran étroit, le bouton passe sous le champ plutôt
+          que de le comprimer jusqu'à « Mot de pass… ». */}
+      <div className="flex flex-wrap items-center gap-2">
         <LockIcon className="h-4 w-4 shrink-0 text-encre-2" />
-        <div className="relative min-w-0 flex-1">
+        <div className="relative min-w-[10rem] flex-1">
           <input
             type={visible ? "text" : "password"}
             value={pw}
@@ -961,7 +969,7 @@ function UnlockForm({
         <button
           type="submit"
           disabled={!pw}
-          className="shrink-0 rounded-lg border border-trait px-3 py-1.5 text-sm font-medium text-encre-2 transition-colors hover:border-bleu hover:text-bleu disabled:opacity-40"
+          className="ml-auto shrink-0 rounded-lg border border-trait px-3 py-2 text-sm font-medium text-encre-2 transition-colors hover:border-bleu hover:text-bleu disabled:opacity-40"
         >
           {t.unlock.button}
         </button>
