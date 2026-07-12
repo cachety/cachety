@@ -42,7 +42,7 @@ export default function About() {
           <h2 className="text-xl font-bold tracking-tight">{a.exampleTitle}</h2>
           <div className="mt-5 grid gap-6 sm:grid-cols-2">
             <figure>
-              <SpecimenCard specimen={a.specimen} />
+              <SpecimenCard title={a.specimenCard} specimen={a.specimen} />
               <figcaption className="mt-3">
                 <span className="flex items-center gap-2 text-sm font-semibold">
                   <span className="h-2 w-2 rounded-full bg-sceau" aria-hidden />
@@ -52,7 +52,7 @@ export default function About() {
               </figcaption>
             </figure>
             <figure>
-              <SpecimenCard specimen={a.specimen}>
+              <SpecimenCard title={a.specimenCard} specimen={a.specimen}>
                 <WatermarkLayer text={a.exStamp} />
               </SpecimenCard>
               <figcaption className="mt-3">

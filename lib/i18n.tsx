@@ -19,7 +19,7 @@ const plural = (n: number, s: string) => `${n} ${s}${n > 1 ? "s" : ""}`;
 
 export const STRINGS = {
   fr: {
-    switchTo: "Switch to English",
+    langMenu: "Choisir la langue",
     taglinePre: "Ajoutez un filigrane à vos documents sensibles, ",
     taglineStrong: "sans qu'ils ne quittent jamais votre appareil.",
     badge: "Traitement 100 % local, zéro envoi.",
@@ -48,7 +48,8 @@ export const STRINGS = {
     },
     pageOf: (a: number, b: number) => `page ${a} / ${b}`,
     textareaAria: "Texte du filigrane à apposer sur vos documents",
-    placeholder: "Ex. : Copie exclusivement destinée à mon dossier de location",
+    // Modèle Cybermalveillance/ANSSI : motif + destinataire + date.
+    placeholder: "Ex. : Copie pour mon dossier de location, agence Martin, le 12/07/2026",
     presets: [
       "Copie exclusivement destinée à mon dossier de location. Toute autre utilisation est interdite",
       "Copie fournie uniquement à ma banque. Reproduction et réutilisation interdites",
@@ -114,6 +115,7 @@ export const STRINGS = {
       exGoodLabel: "Copie filigranée",
       exGoodBody: "Liée à un usage précis. Inutilisable ailleurs.",
       specimen: "SPÉCIMEN",
+      specimenCard: "Carte d'identité",
       exStamp: "DOSSIER DE LOCATION, AGENCE MARTIN, 11/07/2026",
       note: "Cybermalveillance.gouv.fr recommande d'inscrire sur toute copie de pièce d'identité le motif de l'envoi, la date et le destinataire. C'est exactement ce que permet cet outil, sans que le document quitte votre appareil.",
       ctaTitle: "Ça prend dix secondes",
@@ -129,14 +131,15 @@ export const STRINGS = {
       image_unreadable: "Cette image n'a pas pu être lue. Essayez un JPG ou un PNG.",
       canvas_unavailable: "Votre navigateur ne permet pas le rendu du document.",
       export_failed: "L'export de la page a échoué.",
-      generic: "Le traitement a échoué. Réessayez.",
+      generic:
+        "Le traitement a échoué. Si cela se reproduit, le document est peut-être trop volumineux pour la mémoire de cet appareil.",
     } as Record<ErrorKey | "generic", string>,
   },
   en: {
-    switchTo: "Passer en français",
+    langMenu: "Choose language",
     taglinePre: "Add a watermark to your sensitive documents, ",
     taglineStrong: "without them ever leaving your device.",
-    badge: "100 % local processing, nothing uploaded.",
+    badge: "100% local processing, nothing uploaded.",
     sourceLong: "verifiable source code",
     sourceShort: "source code",
     step1: "Your documents",
@@ -162,7 +165,7 @@ export const STRINGS = {
     },
     pageOf: (a: number, b: number) => `page ${a} / ${b}`,
     textareaAria: "Watermark text to stamp on your documents",
-    placeholder: "e.g. Copy for my rental application only",
+    placeholder: "e.g. Copy for my rental application, Martin Agency, 12/07/2026",
     presets: [
       "Copy solely for my rental application. Any other use is prohibited",
       "Copy provided to my bank only. Reproduction and reuse prohibited",
@@ -227,7 +230,8 @@ export const STRINGS = {
       exGoodLabel: "Watermarked copy",
       exGoodBody: "Tied to one purpose. Useless elsewhere.",
       specimen: "SPECIMEN",
-      exStamp: "RENTAL APPLICATION, MARTIN AGENCY, 07/11/2026",
+      specimenCard: "Identity card",
+      exStamp: "RENTAL APPLICATION, MARTIN AGENCY, 11/07/2026",
       note: "France's cybersecurity agency (Cybermalveillance.gouv.fr) recommends marking every ID copy with the purpose, date and recipient of the transfer. That is exactly what this tool does, without the document ever leaving your device.",
       ctaTitle: "It takes ten seconds",
       ctaBody: "Clear text across your sensitive documents. Nothing leaves your device.",
@@ -242,11 +246,12 @@ export const STRINGS = {
       image_unreadable: "This image could not be read. Try a JPG or PNG.",
       canvas_unavailable: "Your browser can't render this document.",
       export_failed: "Exporting the page failed.",
-      generic: "Processing failed. Please try again.",
+      generic:
+        "Processing failed. If it happens again, the document may be too large for this device's memory.",
     } as Record<ErrorKey | "generic", string>,
   },
   ja: {
-    switchTo: "言語を選択",
+    langMenu: "言語を選択",
     taglinePre: "機密文書に透かしを入れても、",
     taglineStrong: "ファイルが端末の外に出ることは一切ありません。",
     badge: "100% ローカル処理、アップロードなし。",
@@ -275,7 +280,7 @@ export const STRINGS = {
     },
     pageOf: (a: number, b: number) => `${a} / ${b} ページ`,
     textareaAria: "ドキュメントに入れる透かしのテキスト",
-    placeholder: "例：賃貸申込専用のコピー",
+    placeholder: "例：賃貸申込専用のコピー、マルタン不動産、2026/07/12",
     presets: [
       "賃貸申込専用のコピー。他の用途は禁止します",
       "銀行提出専用のコピー。複製・再利用を禁止します",
@@ -341,6 +346,7 @@ export const STRINGS = {
       exGoodLabel: "透かし入りコピー",
       exGoodBody: "一つの用途に限定。他では使えません。",
       specimen: "見本",
+      specimenCard: "身分証明書",
       exStamp: "賃貸申込、マルタン不動産、2026/07/11",
       note: "フランスの公的機関 Cybermalveillance.gouv.fr は、身分証のコピーに送付の目的・日付・宛先を記すことを推奨しています。このツールはまさにそれを、書類を端末の外に出すことなく行えます。",
       ctaTitle: "わずか十秒",
@@ -356,7 +362,8 @@ export const STRINGS = {
       image_unreadable: "この画像を読み込めませんでした。JPG または PNG をお試しください。",
       canvas_unavailable: "お使いのブラウザではこのドキュメントを描画できません。",
       export_failed: "ページの書き出しに失敗しました。",
-      generic: "処理に失敗しました。もう一度お試しください。",
+      generic:
+        "処理に失敗しました。繰り返し失敗する場合、この端末のメモリに対してドキュメントが大きすぎる可能性があります。",
     } as Record<ErrorKey | "generic", string>,
   },
 };

@@ -27,10 +27,18 @@ const files = readdirSync(join(ROOT, "e2e"))
   // (sinon simple filtre, qui ignorerait nos *.e2e.ts hors motifs).
   .map((f) => `./e2e/${f}`);
 
-const run = Bun.spawnSync(["bun", "test", "--timeout", "120000", ...files], {
-  cwd: ROOT,
-  stdout: "inherit",
-  stderr: "inherit",
-  env: process.env,
-});
-process.exit(run.exitCode ?? 1);
+// Un processus par fichier : chaque suite ouvre son propre navigateur et
+// réserve le port 4181. Dans un seul processus, la seconde suite héritait
+// des ressources de la première (navigateur lent à mourir, port encore
+// tenu) et sa fermeture pouvait bloquer jusqu'au délai d'expiration.
+let failed = 0;
+for (const file of files) {
+  const run = Bun.spawnSync(["bun", "test", "--timeout", "120000", file], {
+    cwd: ROOT,
+    stdout: "inherit",
+    stderr: "inherit",
+    env: process.env,
+  });
+  if (run.exitCode !== 0) failed++;
+}
+process.exit(failed ? 1 : 0);

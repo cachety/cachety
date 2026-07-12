@@ -11,5 +11,14 @@
   <url><loc>https://filigrane-local.fr/fr</loc></url>
   <url><loc>https://filigrane-local.fr/en</loc></url>
   <url><loc>https://filigrane-local.fr/ja</loc></url>
-  <url><loc>https://filigrane-local.fr/about</loc></url>
+  <url>
+    <loc>https://filigrane-local.fr/about</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://filigrane-local.fr/fr/about" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://filigrane-local.fr/en/about" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://filigrane-local.fr/ja/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://filigrane-local.fr/about" />
+  </url>
+  <url><loc>https://filigrane-local.fr/fr/about</loc></url>
+  <url><loc>https://filigrane-local.fr/en/about</loc></url>
+  <url><loc>https://filigrane-local.fr/ja/about</loc></url>
 </urlset>

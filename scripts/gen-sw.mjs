@@ -26,12 +26,17 @@ const precache = files
         u.startsWith("/pdfjs/") ||
         u === "/index.html" ||
         /^\/(fr|en|ja|about)\.html$/.test(u) ||
+        /^\/(fr|en|ja)\/about\.html$/.test(u) ||
         u === "/manifest.webmanifest" ||
         u === "/favicon.ico" ||
         /^\/(icon-\d+|apple-touch-icon)\.png$/.test(u))
   )
   // Les URL servies n'ont pas d'extension : /fr.html est exposé comme /fr.
-  .map((u) => (u === "/index.html" ? "/" : u.replace(/^\/(fr|en|ja|about)\.html$/, "/$1")))
+  .map((u) =>
+    u === "/index.html"
+      ? "/"
+      : u.replace(/^\/(fr|en|ja|about)\.html$/, "/$1").replace(/^\/(fr|en|ja)\/about\.html$/, "/$1/about")
+  )
   .sort();
 
 const version = createHash("sha1").update(precache.join("\n")).digest("hex").slice(0, 8);
@@ -48,12 +53,17 @@ console.log(`sw.js: precached ${precache.length} files, cache filigrane-${versio
 // L'export statique fige <html lang="fr"> (layout racine unique) ; les pages
 // en/ja doivent porter leur vraie langue dès le HTML, pas après hydratation
 // (lecteurs d'écran, sélection de glyphes CJK, SEO).
-for (const [file, lang] of [["en.html", "en"], ["ja.html", "ja"]]) {
+for (const [file, lang] of [
+  ["en.html", "en"],
+  ["ja.html", "ja"],
+  ["en/about.html", "en"],
+  ["ja/about.html", "ja"],
+]) {
   const p = join(OUT, file);
   const html = await readFile(p, "utf8");
   await writeFile(p, html.replace('<html lang="fr"', `<html lang="${lang}"`));
 }
-console.log("lang: en.html/ja.html réétiquetés");
+console.log("lang: pages en/ja réétiquetées");
 
 // CSP : remplace script-src 'unsafe-inline' par les hachages sha256 des
 // scripts inline réellement émis par l'export (bootstrap Next). Calculé à

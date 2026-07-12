@@ -4,9 +4,11 @@ import { useEffect, useRef } from "react";
 import { drawWatermark } from "@/lib/watermark";
 
 export function SpecimenCard({
+  title,
   specimen,
   children,
 }: {
+  title: string;
   specimen: string;
   children?: React.ReactNode;
 }) {
@@ -14,7 +16,7 @@ export function SpecimenCard({
     <div className="relative aspect-[85/54] overflow-hidden rounded-lg border border-trait bg-gradient-to-br from-white to-bleu/5 shadow-sm">
       <div className="flex items-center justify-between bg-bleu px-3 py-1.5">
         <span className="text-[8px] font-semibold uppercase tracking-[0.18em] text-white/90">
-          Carte d&apos;identité
+          {title}
         </span>
         <span className="text-[8px] font-semibold uppercase tracking-[0.18em] text-white/70">
           {specimen}

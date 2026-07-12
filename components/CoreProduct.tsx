@@ -245,7 +245,7 @@ export default function CoreProduct() {
     return () => window.removeEventListener("beforeunload", warn);
   }, [docs.length > 0]);
 
-  const unlock = (id: string, password: string) =>
+  const unlock = (id: string, password: string) => {
     setDocs((prev) =>
       prev.map((d) =>
         d.id === id
@@ -253,6 +253,10 @@ export default function CoreProduct() {
           : d
       )
     );
+    // Le formulaire qui portait le focus disparaît : on le rend à la ligne
+    // du document plutôt que de le laisser tomber sur <body>.
+    requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
+  };
 
   const fresh = (d: Doc) => d.status === "ready" && !!d.result && d.stampedWith === active;
   const apply = () => setAppliedText(value);
@@ -368,6 +372,7 @@ export default function CoreProduct() {
                     }`}
                   >
                     <button
+                      id={`doc-${doc.id}`}
                       onClick={() => setActiveId(doc.id)}
                       aria-current={shown?.id === doc.id || undefined}
                       className="flex w-full min-w-0 items-center justify-between gap-3 rounded-xl px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
@@ -501,7 +506,7 @@ export default function CoreProduct() {
           {docs.length === 0 || !meaningful ? (
             <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
               <div className="w-full max-w-[280px] -rotate-2">
-                <SpecimenCard specimen={t.about.specimen}>
+                <SpecimenCard title={t.about.specimenCard} specimen={t.about.specimen}>
                   <WatermarkLayer text={t.about.exStamp} />
                 </SpecimenCard>
               </div>
@@ -645,11 +650,15 @@ function PagerButton({
 }) {
   const t = useT();
   return (
+    // aria-disabled plutôt que disabled : un bouton désactivé sous le focus
+    // rejette le focus vers <body> ; ici il reste focalisable et inerte.
     <button
-      onClick={onClick}
-      disabled={disabled}
+      onClick={disabled ? undefined : onClick}
+      aria-disabled={disabled || undefined}
       aria-label={direction === "prev" ? t.pagerPrev : t.pagerNext}
-      className="flex h-11 w-11 items-center justify-center rounded-lg border border-trait text-encre transition-colors hover:border-bleu hover:text-bleu disabled:cursor-not-allowed disabled:opacity-30"
+      className={`flex h-11 w-11 items-center justify-center rounded-lg border border-trait text-encre transition-colors ${
+        disabled ? "cursor-not-allowed opacity-30" : "hover:border-bleu hover:text-bleu"
+      }`}
     >
       <ChevronIcon direction={direction === "prev" ? "left" : "right"} className="h-4 w-4" />
     </button>

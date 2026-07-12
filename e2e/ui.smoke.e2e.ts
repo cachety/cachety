@@ -30,6 +30,12 @@ afterAll(async () => {
 });
 
 afterEach(async () => {
+  // Une page avec des documents chargés pose un garde beforeunload et
+  // retient des blob: : Chromium traîne alors à se fermer (la fermeture du
+  // navigateur peut bloquer). On vide la page avant de fermer le contexte.
+  for (const page of context?.pages() ?? []) {
+    await page.goto("about:blank").catch(() => {});
+  }
   await context?.close();
   context = undefined;
 });
@@ -85,8 +91,8 @@ describe("fumée : interface", () => {
         (window as any).__pasDeNavigation = true;
       });
 
-      await visible(page, 'button[aria-label="Langue / Language"]').click();
-      await page.getByRole("option", { name: /日本語/ }).click();
+      await visible(page, `button[aria-label="${STRINGS.en.langMenu}"]`).click();
+      await page.getByRole("menuitemradio", { name: /日本語/ }).click();
 
       await page.getByText(STRINGS.ja.dropTitle).waitFor({ state: "visible" });
       expect(new URL(page.url()).pathname).toBe("/ja");

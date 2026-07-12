@@ -44,7 +44,7 @@ export default function ShareButton() {
       onClick={share}
       aria-label={t.share}
       title={t.share}
-      className="flex items-center gap-1.5 rounded-full border border-trait bg-feuille px-2 py-1 text-sm text-encre-2 transition-colors hover:border-encre-2 hover:text-encre sm:px-3"
+      className="flex items-center gap-1.5 rounded-full border border-trait bg-feuille px-2.5 py-1.5 text-sm text-encre-2 transition-colors hover:border-encre-2 hover:text-encre sm:px-3"
     >
       {copied ? (
         <CheckIcon className="h-3.5 w-3.5 shrink-0 text-green-700" />

@@ -49,9 +49,11 @@ jobs:
         run: bun run test:e2e
 
   browsers:
-    name: Suite navigateur (${{ matrix.browser }}, non bloquant)
+    # WebKit bloquant : c'est le moteur (Safari/iOS) où canvas et pdf.js
+    # cassent en premier. Firefox reste indicatif.
+    name: Suite navigateur (${{ matrix.browser }})
     runs-on: ubuntu-latest
-    continue-on-error: true
+    continue-on-error: ${{ matrix.browser == 'firefox' }}
     strategy:
       fail-fast: false
       matrix:
