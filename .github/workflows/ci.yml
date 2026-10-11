@@ -22,6 +22,15 @@ on:
   # rougir la CI même sans nouveau commit.
   schedule:
     - cron: "0 6 * * 1"
+  # Lancement manuel (onglet Actions → CI → Run workflow) : rejoue toute la
+  # suite et, sur main, republie le site si la case est cochée. Les tests
+  # restent obligatoires : on ne publie jamais un export non testé.
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Publier sur cachety.com après les tests (branche main seulement)"
+        type: boolean
+        default: true
 
 # Moindre privilège : la CI ne fait que lire le dépôt. Les actions tierces
 # sont épinglées par SHA de commit (une étiquette peut être déplacée).
@@ -77,7 +86,7 @@ jobs:
 
       # L'export testé ci-dessus, transmis tel quel au job de déploiement.
       - name: Export testé (artefact)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy))
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: site
@@ -126,10 +135,11 @@ jobs:
           BROWSER: ${{ matrix.browser }}
 
   deploy:
-    # Uniquement un push sur main, après les suites bloquantes (Chromium et
-    # WebKit). Ni le planning hebdomadaire ni une PR ne déploient.
+    # Un push sur main, ou un lancement manuel sur main (case « Publier »
+    # cochée), après les suites bloquantes (Chromium et WebKit). Ni le
+    # planning hebdomadaire ni une PR ne déploient.
     name: Déploiement (Cloudflare Pages)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy))
     needs: [test, browsers]
     runs-on: ubuntu-latest
     environment:

@@ -24,6 +24,8 @@ Cachety is a static export (`out/`). It can be hosted anywhere that serves files
 
 Pull requests and the weekly audit run never deploy.
 
+**Manual publish.** To force a deploy without a new commit (for example after adding the secrets, or after a Cloudflare setting change): GitHub → *Actions* → *CI* → *Run workflow*, pick the `main` branch, keep **Publish** checked, and run. The full test suite runs first, as for a push; untick **Publish** to only run the tests. Manual runs on other branches never deploy.
+
 ### One-time setup
 
 1. **Create the Pages project** (once, from your machine):
