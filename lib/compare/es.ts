@@ -10,6 +10,7 @@ import type { Comparison } from "./types";
 // para marcar copias), así que no hay comparativa con un organismo público.
 
 const CHECKED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 // Celdas de Cachety que se repiten de una página a otra (hoja de datos verificada).
 const C = {
@@ -142,7 +143,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "iLovePDF: seguridad e ISO 27001", url: "https://www.ilovepdf.com/help/security" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Smallpdf ─────────────────────────────
@@ -236,7 +237,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "Smallpdf: planes y límites", url: "https://smallpdf.com/pricing" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── PDF24 ─────────────────────────────
@@ -334,7 +335,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "PDF24: todas las herramientas", url: "https://tools.pdf24.org/en/all-tools" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Sejda ─────────────────────────────
@@ -428,7 +429,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "Sejda: precios", url: "https://www.sejda.com/pricing" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Adobe Acrobat ─────────────────────────────
@@ -520,7 +521,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "Adobe: política de privacidad", url: "https://www.adobe.com/privacy/policy.html" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Canva ─────────────────────────────
@@ -611,7 +612,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "Canva: registro e inicio de sesión", url: "https://www.canva.com/help/sign-up-log-in-variantb/" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Watermarkly ─────────────────────────────
@@ -704,7 +705,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "Watermarkly: precios", url: "https://watermarkly.com/pricing/" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Saferlayer ─────────────────────────────
@@ -796,6 +797,6 @@ export const COMPARISONS_ES: Comparison[] = [
       { label: "Saferlayer: página principal", url: "https://saferlayer.com/" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 ];

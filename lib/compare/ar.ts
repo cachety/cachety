@@ -6,7 +6,7 @@ import type { GuideBlock } from "@/lib/guides";
 import type { Comparison } from "./types";
 
 const CHECKED = "2026-10-11";
-const UPDATED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 /** Lignes communes : ce que fait Cachety, d'après sa fiche technique. */
 const C = {

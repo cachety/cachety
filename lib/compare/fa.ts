@@ -6,7 +6,7 @@ import type { Comparison } from "./types";
 // و در تاریخ CHECKED بررسی شده است. قیمت دقیق نمی‌نویسیم، چون زود عوض می‌شود.
 
 const CHECKED = "2026-10-11";
-const UPDATED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 // سطرهای مشترک دربارهٔ Cachety (فقط ادعاهای تأییدشده).
 const C = {

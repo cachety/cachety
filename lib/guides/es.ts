@@ -74,7 +74,7 @@ export const GUIDES_ES: Guide[] = [
         a: "No con solo editar el PDF: la marca de agua queda fundida en la propia página. Aun así, ninguna marca de agua hace imposible el mal uso, así que envía solo lo que de verdad te piden.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "marca-de-agua-copia-dni-nie",
@@ -148,7 +148,7 @@ export const GUIDES_ES: Guide[] = [
         a: "Sí. Funciona igual con cualquier documento en PDF o en imagen: JPG, PNG, HEIC, WebP y otros formatos habituales.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "enviar-nominas-declaracion-renta-seguro",
@@ -219,7 +219,7 @@ export const GUIDES_ES: Guide[] = [
         a: "No. Cachety rehace cada página como imagen, así que el texto ya no se puede seleccionar ni copiar. Es justo lo que protege lo que has ocultado. Guarda tu original en un lugar seguro.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "tachar-datos-pdf-gratis",
@@ -295,7 +295,7 @@ export const GUIDES_ES: Guide[] = [
         a: "Hasta 200 MB por archivo y 500 páginas por PDF.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "marca-de-agua-desde-el-movil",
@@ -370,7 +370,7 @@ export const GUIDES_ES: Guide[] = [
         a: "Al tocar para elegir un archivo, tu móvil puede ofrecerte hacer una foto o escoger una de la galería. Una foto nítida y con buena luz da el mejor resultado.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "copia-ine-robo-de-identidad",
@@ -443,6 +443,6 @@ export const GUIDES_ES: Guide[] = [
         a: "Sí. Funciona igual con cualquier documento de identidad, sea cual sea tu país. Solo cambia el texto que escribes en la marca de agua.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
 ];

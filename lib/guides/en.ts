@@ -76,7 +76,7 @@ export const GUIDES_EN: Guide[] = [
         a: "Not simply by editing the PDF: the watermark is blended into the page itself. That said, no watermark makes misuse impossible, so only send what is really needed.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "watermark-passport-copy",
@@ -154,7 +154,7 @@ export const GUIDES_EN: Guide[] = [
         a: "Yes. HEIC photos are supported, along with JPG, PNG, WebP and PDF.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "send-bank-statements-safely",
@@ -233,7 +233,7 @@ export const GUIDES_EN: Guide[] = [
         a: "Not necessarily. If you only have a photo of a paper payslip, Cachety can watermark the image, or combine several into one PDF.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "redact-pdf-free",
@@ -313,7 +313,7 @@ export const GUIDES_EN: Guide[] = [
         a: "Up to 200 MB per file and 500 pages per PDF.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "watermark-documents-on-phone",
@@ -388,7 +388,7 @@ export const GUIDES_EN: Guide[] = [
         a: "When you tap to choose a file, your phone may offer to take a photo or pick one from your library. A clear, well-lit photo gives the best result.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
   {
     slug: "password-protect-pdf-free",
@@ -466,6 +466,6 @@ export const GUIDES_EN: Guide[] = [
         a: "Long and random is best. The Generate button creates one for you, so you do not have to think one up.",
       },
     ],
-    updated: "2026-10-11",
+    updated: "2026-10-12",
   },
 ];

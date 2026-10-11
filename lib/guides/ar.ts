@@ -4,7 +4,7 @@
 
 import type { Guide } from "./types";
 
-const UPDATED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 export const GUIDES_AR: Guide[] = [
   // ------------------------------------------------------------------ id-card

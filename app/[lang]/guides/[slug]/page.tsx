@@ -7,7 +7,7 @@ import { ChevronIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
 import { findGuide, GUIDES, guideAlternates, guidePath, relatedGuides } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
-import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage } from "@/lib/site-meta";
+import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage, pageTitle } from "@/lib/site-meta";
 
 // Export statique : seuls les guides déclarés dans lib/guides existent.
 export const dynamicParams = false;
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const g = findGuide(lang, slug)!;
   const path = guidePath(lang, slug);
   return {
-    title: `${g.metaTitle} | ${BRAND}`,
+    title: pageTitle(g.metaTitle),
     description: g.description,
     alternates: { canonical: path, languages: guideAlternates(lang, g) },
     openGraph: {

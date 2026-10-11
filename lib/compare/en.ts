@@ -6,6 +6,7 @@ import type { Comparison } from "./types";
 // read on the `checked` date. Prices change often, so none are quoted here.
 
 const CHECKED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 export const COMPARISONS_EN: Comparison[] = [
   // ───────────────────────────── iLovePDF ─────────────────────────────
@@ -161,7 +162,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Smallpdf ─────────────────────────────
@@ -311,7 +312,7 @@ export const COMPARISONS_EN: Comparison[] = [
       { label: "Smallpdf pricing", url: "https://smallpdf.com/pricing" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ─────────────────────────── Adobe Acrobat ───────────────────────────
@@ -453,7 +454,7 @@ export const COMPARISONS_EN: Comparison[] = [
       { label: "Adobe privacy policy", url: "https://www.adobe.com/privacy/policy.html" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── PDF24 ─────────────────────────────
@@ -593,7 +594,7 @@ export const COMPARISONS_EN: Comparison[] = [
       { label: "PDF24 list of tools", url: "https://tools.pdf24.org/en/all-tools" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Sejda ─────────────────────────────
@@ -743,7 +744,7 @@ export const COMPARISONS_EN: Comparison[] = [
       { label: "Sejda pricing", url: "https://www.sejda.com/pricing" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ───────────────────────────── Canva ─────────────────────────────
@@ -887,7 +888,7 @@ export const COMPARISONS_EN: Comparison[] = [
       { label: "Canva Trust Centre", url: "https://trust.canva.com/" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 
   // ─────────────────────────── Watermarkly ───────────────────────────
@@ -1035,6 +1036,6 @@ export const COMPARISONS_EN: Comparison[] = [
       { label: "Watermarkly home page", url: "https://watermarkly.com/" },
     ],
     checked: CHECKED,
-    updated: CHECKED,
+    updated: UPDATED,
   },
 ];

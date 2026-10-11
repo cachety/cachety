@@ -69,7 +69,7 @@ export const ABOUT_META: Record<Lang, PageMeta> = {
   fr: {
     title: `Pourquoi filigraner vos papiers d'identité ? | ${BRAND}`,
     description:
-      "À quoi sert un filigrane sur une pièce d'identité ou un justificatif : limiter la réutilisation d'une copie, la rendre traçable et se protéger de l'usurpation d'identité.",
+      "À quoi sert un filigrane sur une pièce d'identité : empêcher la réutilisation d'une copie, la rendre traçable et se protéger de l'usurpation d'identité.",
   },
   en: {
     title: `Why watermark your ID documents? | ${BRAND}`,
@@ -93,7 +93,7 @@ export const ABOUT_META: Record<Lang, PageMeta> = {
 
 export const PRIVACY_META: Record<Lang, PageMeta> = {
   fr: {
-    title: `Confidentialité et sécurité : vos fichiers restent chez vous | ${BRAND}`,
+    title: `Confidentialité : vos fichiers restent chez vous | ${BRAND}`,
     description:
       "Comment Cachety protège vos documents : traitement dans votre navigateur, aucun envoi, aucun compte, aucun cookie de suivi. Expliqué simplement, et vérifiable.",
   },
@@ -175,7 +175,7 @@ export const SITE_META: Record<Lang, SiteMeta> = {
     title: `${BRAND} : filigrane sécurisé pour vos papiers, sans envoi`,
     ogTitle: `${BRAND} : filigranez vos papiers sans qu'ils quittent votre appareil`,
     description:
-      "Ajoutez un filigrane à vos pièces d'identité et justificatifs, gratuitement. Tout se passe dans votre navigateur : aucun fichier n'est envoyé. Open source, conçu en France.",
+      "Filigranez gratuitement vos pièces d'identité et justificatifs. Tout se passe dans votre navigateur : aucun fichier n'est envoyé. Open source, conçu en France.",
   },
   en: {
     path: "/en",
@@ -196,15 +196,25 @@ export const SITE_META: Record<Lang, SiteMeta> = {
   zh: {
     path: "/zh",
     ogLocale: "zh_CN",
-    title: `${BRAND}：免费给证件和文件加水印，文件不上传`,
+    title: `${BRAND}：身份证复印件加水印，免费且文件不上传`,
     ogTitle: `${BRAND}：文件不离开设备，就能加水印`,
     description:
-      "免费为身份证件和敏感文件添加水印。全部在浏览器内完成，文件绝不上传。开源软件，法国出品。",
+      "免费给身份证复印件、证件照片和 PDF 文件加水印，注明“仅供…使用”，防止被挪作他用。全程在浏览器内完成，文件绝不上传。开源软件，法国出品。",
   },
   es: META_ES.site,
   ar: META_AR.site,
   fa: META_FA.site,
 };
+
+/**
+ * Titre d'une page de contenu : « | Cachety » ajouté seulement s'il tient
+ * (≈ 60 caractères affichés par les moteurs) et si la marque n'y est pas déjà
+ * (« Cachety ou Smallpdf ? | Cachety » répétait le nom).
+ */
+export function pageTitle(title: string): string {
+  const full = `${title} | ${BRAND}`;
+  return title.includes(BRAND) || full.length > 60 ? title : full;
+}
 
 /**
  * Image de partage (Open Graph, X…) de la langue : 1200×630, générée par

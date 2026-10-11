@@ -5,7 +5,7 @@
 import type { Comparison } from "./types";
 
 const CHECKED = "2026-10-11";
-const UPDATED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 // Formulations communes pour la colonne Cachety (fiche de faits du projet).
 const CACHETY = {

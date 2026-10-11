@@ -5,7 +5,7 @@ import type { GuideBlock } from "@/lib/guides";
 import type { Comparison } from "./types";
 
 const CHECKED = "2026-10-11";
-const UPDATED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 // Cases « Cachety » reprises d'une page à l'autre (fiche de faits Cachety).
 const C = {

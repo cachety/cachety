@@ -15,7 +15,7 @@ import {
   type CompareRow,
 } from "@/lib/compare";
 import { SITE_COPY } from "@/lib/site-copy";
-import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage } from "@/lib/site-meta";
+import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage, pageTitle } from "@/lib/site-meta";
 
 // Export statique : seuls les comparatifs déclarés dans lib/compare existent.
 export const dynamicParams = false;
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const c = findComparison(lang, slug)!;
   const path = comparePath(lang, slug);
   return {
-    title: `${c.metaTitle} | ${BRAND}`,
+    title: pageTitle(c.metaTitle),
     description: c.description,
     alternates: { canonical: path, languages: comparisonAlternates(lang, c) },
     openGraph: {
