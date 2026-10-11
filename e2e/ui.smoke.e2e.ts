@@ -201,7 +201,14 @@ describe("réordonner les documents", () => {
       await page.locator(`input[aria-label="${t.positionOf("c.pdf", 3)}"]`).press("Enter");
       await orderBecomes(page, ["a.pdf", "b.pdf", "c.pdf"]);
 
-      // Glisser : la poignée de a.pdf lâchée sous la dernière ligne.
+      // Glisser : la poignée de a.pdf lâchée sous la dernière ligne. La liste
+      // est d'abord centrée : sous l'en-tête, elle déborde de la fenêtre de
+      // 720 px, et un point de lâcher hors écran ne vise aucune ligne (Firefox,
+      // WebKit) ; près des bords, le défilement automatique la ferait bouger.
+      await page
+        .locator("li[data-doc-index]")
+        .first()
+        .evaluate((li) => li.parentElement!.scrollIntoView({ block: "center" }));
       const handle = page.locator(`button[aria-label="${t.dragHandle("a.pdf")}"]`);
       const from = (await handle.boundingBox())!;
       const last = (await page.locator("li[data-doc-index]").nth(2).boundingBox())!;

@@ -49,3 +49,6 @@ Thumbs.db
 
 # État local des agents d’éditeur (Cursor)
 /.cursor/
+
+# Journaux CI téléchargés pour diagnostic
+/logs/

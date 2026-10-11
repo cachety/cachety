@@ -116,6 +116,10 @@ describe("masquage depuis l'aperçu", () => {
       await page.getByRole("button", { name: t.mask.start }).click({ timeout: 30_000 });
 
       const surface = page.getByRole("application", { name: t.mask.surface(1) });
+      // L'aperçu dépasse la fenêtre de 720 px : on l'aligne en haut, pour que
+      // tout le tracé (du coin jusqu'au milieu) reste à l'écran (Firefox ignore
+      // un geste qui sort de la fenêtre).
+      await surface.evaluate((el) => el.scrollIntoView({ block: "start" }));
       const box = (await surface.boundingBox())!;
       await page.mouse.move(box.x + 2, box.y + 2);
       await page.mouse.down();
