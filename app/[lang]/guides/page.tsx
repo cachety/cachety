@@ -5,7 +5,7 @@ import { ChevronIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
 import { GUIDES, guidePath, guidesIndexPath } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
-import { GUIDES_META, LANG_CODES, pageAlternates, SITE_META, SITE_URL, type Lang } from "@/lib/site-meta";
+import { GUIDES_META, LANG_CODES, pageAlternates, SITE_META, SITE_URL, type Lang, ogImage } from "@/lib/site-meta";
 
 export const dynamicParams = false;
 
@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: m.description,
     alternates: { canonical: guidesIndexPath(lang), languages: pageAlternates("/guides") },
     openGraph: {
+      images: [ogImage(lang)],
       type: "website",
       siteName: BRAND,
       locale: SITE_META[lang].ogLocale,

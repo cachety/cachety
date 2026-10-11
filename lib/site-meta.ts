@@ -205,3 +205,11 @@ export const SITE_META: Record<Lang, SiteMeta> = {
   ar: META_AR.site,
   fa: META_FA.site,
 };
+
+/**
+ * Image de partage (Open Graph, X…) de la langue : 1200×630, générée par
+ * scripts/og.ts et versionnée dans public/og/.
+ */
+export function ogImage(lang: Lang) {
+  return { url: `/og/${lang}.png`, width: 1200, height: 630, type: "image/png", alt: SITE_META[lang].ogTitle };
+}

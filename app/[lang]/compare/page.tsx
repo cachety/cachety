@@ -6,7 +6,7 @@ import { BRAND } from "@/lib/brand";
 import { compareIndexPath, comparePath, COMPARISONS } from "@/lib/compare";
 import { guidesIndexPath } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
-import { COMPARE_META, LANG_CODES, pageAlternates, SITE_META, SITE_URL, type Lang } from "@/lib/site-meta";
+import { COMPARE_META, LANG_CODES, pageAlternates, SITE_META, SITE_URL, type Lang, ogImage } from "@/lib/site-meta";
 
 export const dynamicParams = false;
 
@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: m.description,
     alternates: { canonical: compareIndexPath(lang), languages: pageAlternates("/compare") },
     openGraph: {
+      images: [ogImage(lang)],
       type: "website",
       siteName: BRAND,
       locale: SITE_META[lang].ogLocale,

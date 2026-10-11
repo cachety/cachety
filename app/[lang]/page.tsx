@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import { BRAND } from "@/lib/brand";
 import HomeApp from "@/components/HomeApp";
-import {
-  LANG_CODES,
-  LANGUAGE_ALTERNATES,
-  SITE_META,
-  SITE_URL,
-  type Lang,
-} from "@/lib/site-meta";
+import { LANG_CODES, LANGUAGE_ALTERNATES, SITE_META, SITE_URL, type Lang, ogImage } from "@/lib/site-meta";
 
 // Export statique : seules /fr, /en, /ja et /zh existent.
 export const dynamicParams = false;
@@ -26,6 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: m.description,
     alternates: { canonical: m.path, languages: LANGUAGE_ALTERNATES },
     openGraph: {
+      images: [ogImage(lang)],
       type: "website",
       siteName: BRAND,
       locale: m.ogLocale,

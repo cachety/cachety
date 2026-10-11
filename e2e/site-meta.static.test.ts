@@ -1,5 +1,5 @@
 // Métadonnées de l'export statique (out/) : titres et balises OG localisés,
-// hreflang complets, et surtout AUCUNE og:image (retirée volontairement).
+// hreflang complets, et l'image de partage de la langue (public/og/<lang>.png).
 // Source de vérité : lib/site-meta.ts — le test se dérègle avec elle, pas
 // avec des chaînes recopiées.
 //
@@ -33,6 +33,9 @@ const PAGES: { file: string; lang: Lang }[] = [
   { file: "en.html", lang: "en" },
   { file: "ja.html", lang: "ja" },
   { file: "zh.html", lang: "zh" },
+  { file: "es.html", lang: "es" },
+  { file: "ar.html", lang: "ar" },
+  { file: "fa.html", lang: "fa" },
 ];
 
 const attr = (s: string) => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;/g, "'");
@@ -71,16 +74,21 @@ describe.skipIf(!built)("métadonnées de l'export statique", () => {
         expect(og(html, "og:locale")).toBe(meta.ogLocale);
       });
 
-      test("liens hreflang fr / en / ja / zh / x-default", () => {
+      test("liens hreflang de toutes les langues et x-default", () => {
         for (const [code, path] of Object.entries(LANGUAGE_ALTERNATES)) {
           const expected = path === "/" ? SITE_URL : `${SITE_URL}${path}`;
           expect(hreflang(html, code)).toBe(expected);
         }
       });
 
-      test("aucune og:image (retirée volontairement)", () => {
-        // Recherche brute : couvre aussi le payload RSC échappé.
-        expect(html).not.toContain("og:image");
+      test("image de partage de la langue, 1200×630, présente dans l'export", () => {
+        expect(og(html, "og:image")).toBe(`${SITE_URL}/og/${lang}.png`);
+        expect(og(html, "og:image:width")).toBe("1200");
+        expect(og(html, "og:image:height")).toBe("630");
+        const png = readFileSync(join(OUT_DIR, "og", `${lang}.png`));
+        // En-tête PNG (IHDR) : largeur et hauteur sur 4 octets, big-endian.
+        expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
+        expect(html).toContain('<meta name="twitter:card" content="summary_large_image"/>');
       });
     });
   }

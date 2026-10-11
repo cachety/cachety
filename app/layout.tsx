@@ -3,7 +3,7 @@ import "@fontsource-variable/space-grotesk";
 import "./globals.css";
 import ServiceWorker from "@/components/ServiceWorker";
 import { AUTHOR, BRAND } from "@/lib/brand";
-import { LANGUAGE_ALTERNATES, SITE_META, SITE_URL } from "@/lib/site-meta";
+import { LANGUAGE_ALTERNATES, ogImage, SITE_META, SITE_URL } from "@/lib/site-meta";
 
 export const viewport: Viewport = {
   themeColor: "#1a1e33",
@@ -35,6 +35,7 @@ export const metadata: Metadata = {
   appleWebApp: { title: BRAND, statusBarStyle: "black-translucent" },
   alternates: { canonical: "/", languages: LANGUAGE_ALTERNATES },
   openGraph: {
+    images: [ogImage("en")],
     type: "website",
     siteName: BRAND,
     locale: SITE_META.en.ogLocale,
@@ -42,6 +43,9 @@ export const metadata: Metadata = {
     title: SITE_META.en.ogTitle,
     description: SITE_META.en.description,
   },
+  // Les pages sans bloc « twitter » héritent de la grande image ; X reprend
+  // titre, description et image des balises Open Graph.
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({

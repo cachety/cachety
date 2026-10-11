@@ -4,7 +4,7 @@ import ContentPage from "@/components/ContentPage";
 import { ChevronIcon, ShieldIcon } from "@/components/icons";
 import { BRAND, REPO_URL } from "@/lib/brand";
 import { SITE_COPY } from "@/lib/site-copy";
-import { LANG_CODES, pageAlternates, PRIVACY_META, SITE_META, SITE_URL, type Lang } from "@/lib/site-meta";
+import { LANG_CODES, pageAlternates, PRIVACY_META, SITE_META, SITE_URL, type Lang, ogImage } from "@/lib/site-meta";
 
 export const dynamicParams = false;
 
@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: m.description,
     alternates: { canonical: `/${lang}/privacy`, languages: pageAlternates("/privacy") },
     openGraph: {
+      images: [ogImage(lang)],
       type: "website",
       siteName: BRAND,
       locale: SITE_META[lang].ogLocale,
