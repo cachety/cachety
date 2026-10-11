@@ -13,6 +13,10 @@ const NOT_FOUND: Record<Lang, { message: string; back: string }> = {
   es: { message: "Esta página no existe.", back: "Volver a Cachety" },
   ar: { message: "هذه الصفحة غير موجودة.", back: "العودة إلى Cachety" },
   fa: { message: "این صفحه وجود ندارد.", back: "بازگشت به Cachety" },
+  de: { message: "Diese Seite gibt es nicht.", back: "Zurück zu Cachety" },
+  pt: { message: "Esta página não existe.", back: "Voltar para o Cachety" },
+  id: { message: "Halaman ini tidak ditemukan.", back: "Kembali ke Cachety" },
+  nl: { message: "Deze pagina bestaat niet.", back: "Terug naar Cachety" },
 };
 
 export default function NotFound() {

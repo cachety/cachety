@@ -5,7 +5,7 @@ Thank you for helping! Cachety is a small personal project, so clear, focused co
 ## Ways to help
 
 - **Report a bug or a wrong fact**, with the [issue forms](https://github.com/cachety/cachety/issues/new/choose). Never attach a real ID or personal document.
-- **Fix a translation.** Native speakers of any of the 7 languages are very welcome.
+- **Fix a translation.** Native speakers of any of the 11 languages are very welcome.
 - **Keep comparison pages accurate.** If a "Cachety vs X" page is out of date, open an issue or a pull request with a public source.
 - **Security problems:** report them privately, never in a public issue. See [SECURITY.md](SECURITY.md).
 
@@ -27,7 +27,7 @@ These are checked by tests and in review. A change that breaks one is not merged
 
 1. **Nothing leaves the browser.** No request to another domain, no analytics, no third-party script, font or image. The Content-Security-Policy (`connect-src 'self'`) must stay as strict as it is.
 2. **No raw HTML from data.** No `dangerouslySetInnerHTML`, `innerHTML` or `eval`. Guides and comparisons are plain text.
-3. **Every language keeps the same structure.** If you add a string, add it to all 7 languages (tests compare them).
+3. **Every language keeps the same structure.** If you add a string, add it to all 11 languages (tests compare them).
 4. **Right-to-left works.** Use logical Tailwind classes (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`, `text-start`) instead of `ml-`, `mr-`, `pl-`, `pr-`, `left-`, `right-`, `text-left`.
 5. **Plain words.** Most users are not technical. Short sentences, no jargon, and no promise the code doesn't keep (see [docs/security.md](docs/security.md)).
 6. **Comparison pages are factual and fair.** Every claim about another tool cites the vendor's public page (`sources`), carries the date it was checked (`checked`), and each page says honestly when the other tool is the better choice.

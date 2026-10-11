@@ -1,0 +1,486 @@
+import type { Guide } from "./types";
+
+// Uitleg in het Nederlands, geschreven voor Nederland (BSN, KopieID, makelaars,
+// werkgeversverklaring) met waar nodig een opmerking voor Vlaanderen (eID,
+// rijksregisternummer). Geen vertalingen maar lokale equivalenten. Alleen
+// platte tekst: geen links, geen HTML, geen markdown. Bedrijfsnamen zijn verzonnen.
+
+export const GUIDES_NL: Guide[] = [
+  // ───────────────────────────── ID-bewijs ─────────────────────────────
+  {
+    slug: "veilige-kopie-id-bewijs",
+    topic: "id-card",
+    title: "Zo maak je een veilige kopie van je ID-kaart of paspoort",
+    metaTitle: "Veilige kopie ID maken: BSN doorstrepen en watermerk",
+    description:
+      "Een veilige kopie van je identiteitsbewijs in een minuut: BSN en pasfoto afdekken, doel en datum erop. Gratis, zonder je ID ergens te uploaden.",
+    intro:
+      "De overheid raadt het al jaren aan: stuur nooit zomaar een kale kopie van je paspoort of identiteitskaart. Een veilige kopie heeft je BSN onleesbaar gemaakt en vermeldt voor wie hij is, waarvoor en wanneer. Zo maak je er een, op je telefoon of computer.",
+    example: "Kopie voor huuraanvraag, Makelaardij De Linde, 12-10-2026",
+    body: [
+      { type: "h2", text: "Wat een veilige kopie is" },
+      {
+        type: "p",
+        text: "De Rijksoverheid geeft een eenvoudig recept. Maak je burgerservicenummer (BSN) onleesbaar, ook in de cijferreeks onderaan het document. Zet op de kopie dat het een kopie is. Schrijf erbij voor welke organisatie of welk product de kopie bedoeld is. En zet de datum erop waarop je hem afgeeft. Wie zo'n kopie in handen krijgt, kan er weinig mee: hij is duidelijk gemaakt voor één organisatie, op één dag, met één doel.",
+      },
+      {
+        type: "list",
+        items: [
+          "Het doel: huuraanvraag, bankrekening openen, telefoonabonnement.",
+          "De ontvanger: de naam van het bedrijf of de persoon.",
+          "De datum: de dag dat je de kopie verstuurt.",
+          "Het woord kopie, zodat niemand hem voor een origineel kan laten doorgaan.",
+        ],
+      },
+      { type: "h2", text: "Mag die organisatie wel om een kopie vragen?" },
+      {
+        type: "p",
+        text: "Lang niet iedereen mag een kopie van je identiteitsbewijs maken of bewaren. Volgens de Rijksoverheid mogen onder meer overheidsinstanties, banken, notarissen, casino's, levensverzekeraars en je werkgever dat. Andere bedrijven, zoals een telecomaanbieder of autoverhuurder, alleen onder voorwaarden, en dan moeten de pasfoto en het BSN afgeschermd zijn. Vaak is een kopie helemaal niet nodig: het bedrijf kan ook gewoon het soort document en het documentnummer noteren. Vraag gerust waarom ze een kopie willen en op welke regel ze zich baseren.",
+      },
+      {
+        type: "p",
+        text: "Je BSN is nog strenger beschermd. Organisaties buiten de overheid mogen het alleen gebruiken als een wet dat toestaat, en alleen voor het doel uit die wet. Jouw toestemming verandert daar niets aan. Een bank of werkgever heeft je BSN nodig voor de Belastingdienst; een makelaar of webwinkel in de regel niet.",
+      },
+      { type: "h2", text: "Zo maak je een veilige kopie met Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com in je browser, op je telefoon of computer. Je hoeft niets te installeren en geen account aan te maken.",
+          "Sleep een foto of scan van je ID-kaart of paspoort in het vak, of tik om hem te kiezen. Foto's van een iPhone (HEIC) werken ook.",
+          "Typ het watermerk, bijvoorbeeld: Kopie voor huuraanvraag, Makelaardij De Linde. Druk op de knop om de datum van vandaag toe te voegen.",
+          "Kies Gebied afdekken en teken een rechthoek over je BSN. Vergeet de cijferreeks onderaan niet, en dek ook je pasfoto af als de ontvanger die niet nodig heeft.",
+          "Controleer het voorbeeld en download de kopie. Stuur alleen deze versie, nooit het origineel.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Je ID verlaat je apparaat niet. Cachety werkt helemaal in je browser: er is geen server die je documenten ontvangt. Zet na het laden gerust je telefoon in vliegtuigmodus: het blijft werken.",
+      },
+      {
+        type: "tip",
+        text: "Wat je afdekt, wordt echt uit het bestand gehaald, niet alleen met een zwart blok bedekt. Niemand kan je BSN dus later onder de rechthoek vandaan halen door de tekst te selecteren.",
+      },
+      { type: "h2", text: "En de KopieID-app van de overheid?" },
+      {
+        type: "p",
+        text: "De Rijksoverheid heeft een gratis app, KopieID, voor iPhone en Android. Je fotografeert je identiteitsbewijs, streept gegevens door en vult in voor wie en waarvoor de kopie is; die tekst komt met de datum als watermerk op de kopie. Dat is een prima keuze als je alleen een Nederlands identiteitsbewijs op je telefoon wilt beveiligen. Cachety is handig als je al een pdf of scan hebt, op je computer werkt, ook je loonstroken en bankafschriften wilt beveiligen, of in één keer een eigen versie voor meerdere ontvangers wilt maken.",
+      },
+      { type: "h2", text: "Woon je in België?" },
+      {
+        type: "p",
+        text: "Op de Belgische eID staat je rijksregisternummer. De Gegevensbeschermingsautoriteit wijst erop dat je kaart tonen vaak genoeg is en dat een kopie een laatste redmiddel hoort te zijn. Moet het toch, kopieer dan alleen de voorkant of maak het rijksregisternummer onleesbaar als de ontvanger het niet wettelijk nodig heeft. Met Cachety dek je het af zoals een BSN.",
+      },
+      {
+        type: "warning",
+        text: "Een watermerk ontmoedigt misbruik en maakt een lek traceerbaar, maar kan niet voorkomen dat iemand je kopie fotografeert. Ben je je ID kwijt of vermoed je misbruik, meld het dan bij je gemeente of de politie, en neem contact op met het Centraal Meldpunt Identiteitsfraude.",
+      },
+    ],
+    faq: [
+      {
+        q: "Moet ik mijn BSN altijd doorstrepen?",
+        a: "Als de ontvanger geen wettelijke basis heeft om je BSN te gebruiken, ja. Denk aan een makelaar, verhuurder of webwinkel. Je werkgever, je bank en de overheid mogen je BSN wel gebruiken; daar kun je het laten staan.",
+      },
+      {
+        q: "Accepteert een bank of werkgever een kopie met watermerk?",
+        a: "Meestal wel. Het watermerk is doorzichtig, dus alle gegevens blijven leesbaar. Een organisatie die een volledige kopie mag bewaren, zal soms vragen om niets af te dekken. Twijfel je, vraag het dan voordat je verstuurt.",
+      },
+      {
+        q: "Wat is het verschil met de KopieID-app?",
+        a: "Beide zijn gratis en zetten een watermerk met doel en datum op je kopie. KopieID is een app van de overheid voor je telefoon, gemaakt voor identiteitsbewijzen die je fotografeert. Cachety werkt in elke browser, ook op een computer, en verwerkt ook pdf's zoals loonstroken, met een wachtwoord en een versie per ontvanger als extra.",
+      },
+      {
+        q: "Is Cachety echt gratis?",
+        a: "Ja. Gratis, zonder account en zonder tracking. Het is opensourcesoftware, gemaakt in Frankrijk door Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-12",
+  },
+
+  // ───────────────────────────── Huurwoning ─────────────────────────────
+  {
+    slug: "documenten-huurwoning-veilig-versturen",
+    topic: "rental",
+    title: "Je ID en loonstroken veilig naar een makelaar of verhuurder sturen",
+    metaTitle: "Documenten voor een huurwoning veilig versturen",
+    description:
+      "Op zoek naar een huurwoning? Zet een watermerk op je ID, loonstroken en werkgeversverklaring voor de makelaar, en trap niet in nepverhuurders.",
+    intro:
+      "Wie een huurwoning zoekt, stuurt al snel een hele map persoonlijke documenten rond. Een watermerk laat zien voor welke makelaar en welke woning elke kopie bedoeld is, en maakt hem voor iedereen anders veel minder bruikbaar.",
+    example: "Huuraanvraag Lindenlaan 12, Makelaardij De Linde, 12-10-2026",
+    body: [
+      { type: "h2", text: "Waarom makelaars zoveel vragen" },
+      {
+        type: "p",
+        text: "Een verhuurder wil weten of je de huur kunt betalen. Daarom vragen makelaars vaak om een kopie van je identiteitsbewijs, een werkgeversverklaring, een paar recente loonstroken en soms een bankafschrift of een uittreksel uit de BRP. Voor een bezichtiging alleen hoeven ze niet al je gegevens te hebben. Pas als de woning echt aan jou wordt toegewezen, hebben ze een sterkere reden om meer te vragen. Je documenten gaan per mail, belanden in gedeelde mappen en soms bij een screeningsbureau. Elke extra kopie is een extra kans dat er iets misgaat.",
+      },
+      { type: "h2", text: "Pas op voor nepverhuurders" },
+      {
+        type: "p",
+        text: "Een bekende truc: iemand zet een mooie woning voor een redelijke prijs online, vaak gekopieerd van een echte advertentie. Er is veel belangstelling, zegt de verhuurder, dus stuur alvast je paspoort en loonstroken om de bezichtiging te reserveren. De woning bestaat niet, en met je documenten worden abonnementen of leningen op jouw naam afgesloten. Een watermerk met de naam van de makelaar en het doel maakt zo'n kopie veel minder waard. Wie hem wil hergebruiken, moet uitleggen waarom er Huuraanvraag Lindenlaan 12, Makelaardij De Linde op je paspoort staat.",
+      },
+      {
+        type: "warning",
+        text: "Wees op je hoede als je je ID moet sturen voordat je de woning hebt gezien, of als je een borg moet overmaken voor een woning waar je nooit binnen bent geweest. Vertrouw je het niet, meld het dan bij de Fraudehelpdesk en neem bij schade direct contact op met je bank.",
+      },
+      { type: "h2", text: "Zo zet je een watermerk op je documenten" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com in je browser. Er is niets te installeren en geen account nodig.",
+          "Sleep je bestanden erin, of tik om ze te kiezen. Je ID, loonstroken en werkgeversverklaring kunnen in één keer.",
+          "Kies het sjabloon Huurwoning en vul het aan met het adres en de naam van de makelaar. Druk op de knop om de datum van vandaag toe te voegen.",
+          "Dek je BSN af op je ID en je loonstroken: een makelaar heeft er geen wettelijke basis voor.",
+          "Controleer het voorbeeld en download de kopieën. Stuur die, nooit de originelen.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Je bestanden blijven op je eigen apparaat. Cachety werkt in je browser: er is geen server die je documenten ontvangt. Na het laden werkt het zelfs in vliegtuigmodus.",
+      },
+      {
+        type: "tip",
+        text: "Reageer je op meerdere woningen? Zet de optie Meerdere ontvangers aan en maak in één keer een versie per makelaar, elk met een eigen naam erop. Duikt er ooit een kopie op waar hij niet hoort, dan weet je waar hij vandaan komt.",
+      },
+      { type: "h2", text: "Laat alleen zien wat nodig is" },
+      {
+        type: "p",
+        text: "Een makelaar die je inkomen controleert, wil je salaris zien binnenkomen, niet wat je bij de drogist uitgaf. Teken op het voorbeeld rechthoeken over je rekeningnummer, je BSN of afschrijvingen die er niet toe doen. Wat je afdekt, wordt echt uit het bestand verwijderd. Eerlijk is eerlijk: een watermerk ontmoedigt misbruik en maakt een lek traceerbaar, maar maakt hergebruik niet onmogelijk. Het is een verstandige extra laag, geen wondermiddel.",
+      },
+    ],
+    faq: [
+      {
+        q: "Accepteert een makelaar een kopie met watermerk?",
+        a: "In de meeste gevallen wel. Het watermerk is doorzichtig, dus je gegevens blijven leesbaar. Wil een makelaar het origineel zien, dan laat je dat bij de bezichtiging of ondertekening zien; de kopie met watermerk is voor wat je mailt of uploadt.",
+      },
+      {
+        q: "Mag een verhuurder mijn BSN vragen?",
+        a: "Organisaties buiten de overheid mogen je BSN alleen gebruiken als een wet dat toestaat. Een gewone verhuurder of makelaar heeft daar in de regel geen basis voor. Dek het dus af op je ID en je loonstroken, en vraag waarom als iemand erop staat.",
+      },
+      {
+        q: "Wat zet ik in het watermerk?",
+        a: "Het doel, de ontvanger en de datum. Bijvoorbeeld: Huuraanvraag Lindenlaan 12, Makelaardij De Linde, 12-10-2026.",
+      },
+      {
+        q: "Kan de makelaar het watermerk weghalen?",
+        a: "Niet door de pdf gewoon te bewerken: het watermerk zit in het beeld van elke pagina. Geen enkel watermerk maakt misbruik onmogelijk, dus stuur alleen wat echt nodig is.",
+      },
+    ],
+    updated: "2026-10-12",
+  },
+
+  // ─────────────────────── Loonstrook en werkgeversverklaring ───────────────────────
+  {
+    slug: "loonstrook-werkgeversverklaring-veilig-versturen",
+    topic: "tax-payslip",
+    title: "Loonstrook, werkgeversverklaring of IB60 veilig versturen",
+    metaTitle: "Loonstrook en werkgeversverklaring veilig versturen",
+    description:
+      "Loonstrook, werkgeversverklaring of IB60 nodig voor een huurwoning of hypotheek? Zet er een watermerk op en lak je BSN zwart, gratis en zonder uploaden.",
+    intro:
+      "Voor een huurwoning, een hypotheek of een lening moet je laten zien wat je verdient. Daarvoor stuur je documenten vol gevoelige gegevens: je salaris, je BSN, je adres en je werkgever. Met een watermerk en een paar afgedekte vakjes verstuur je ze een stuk veiliger.",
+    example: "Hypotheekaanvraag, Hypotheekhuis Zuidwal, 12-10-2026",
+    body: [
+      { type: "h2", text: "Welke documenten er meestal gevraagd worden" },
+      {
+        type: "list",
+        items: [
+          "Loonstroken: meestal de laatste een tot drie maanden. Daar staan je salaris, je BSN, je adres en vaak je rekeningnummer op.",
+          "Werkgeversverklaring: een formulier dat je werkgever invult over je contract en inkomen.",
+          "Inkomensverklaring (IB60): te downloaden bij de Belastingdienst, vaak gevraagd bij een hypotheek.",
+          "Jaaropgave: het overzicht van je loon over een heel jaar.",
+        ],
+      },
+      { type: "h2", text: "Wie mag wat zien?" },
+      {
+        type: "p",
+        text: "Organisaties buiten de overheid mogen je BSN alleen gebruiken als een wet dat toestaat. Een bank of hypotheekverstrekker heeft je BSN nodig voor de Belastingdienst, dus daar kun je het meestal laten staan. Een makelaar, verhuurder of andere partij heeft er in de regel geen wettelijke basis voor. Daar dek je het af. Je salaris laat je natuurlijk staan: daar gaat het juist om.",
+      },
+      { type: "h2", text: "Zo beveilig je je loonstrook met Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com in je browser. Geen account, niets te installeren.",
+          "Sleep je loonstroken, werkgeversverklaring en IB60 erin. Pdf's en foto's werken allebei.",
+          "Typ het watermerk, of kies het sjabloon Hypotheek of Huurwoning en vul het aan met de naam van de ontvanger. Druk op de knop om de datum toe te voegen.",
+          "Dek af wat de ontvanger niet nodig heeft: je BSN voor een verhuurder, je personeelsnummer, je rekeningnummer.",
+          "Wil je alles in één bestand? Kies Eén pdf, zet de documenten in de juiste volgorde en download.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Moet het bestand onder een bepaalde grootte blijven voor een uploadportaal? Kies een maximale grootte van 1, 2, 5 of 10 MB per bestand.",
+      },
+      { type: "h2", text: "Een wachtwoord voor de extra voorzichtigen" },
+      {
+        type: "p",
+        text: "Je kunt de pdf beveiligen met een wachtwoord (AES-256). Stuur het wachtwoord dan via een ander kanaal dan het bestand, bijvoorbeeld per sms als de pdf per mail gaat. Zo heeft iemand die alleen je mailbox binnenkomt nog niets aan het document.",
+      },
+      {
+        type: "p",
+        text: "Je documenten worden niet geüpload. Cachety doet al het werk in je browser, op je eigen apparaat. Dat is precies wat je wilt met een document waarop je salaris en je BSN staan.",
+      },
+      {
+        type: "warning",
+        text: "Cachety zet elke pagina om in een afbeelding. De tekst in het resultaat is dus niet meer te selecteren. Sommige hypotheekverstrekkers lezen documenten automatisch in en vragen om het originele bestand. Vraag het na als je twijfelt, en bewaar je originelen goed.",
+      },
+    ],
+    faq: [
+      {
+        q: "Mag ik mijn BSN op mijn loonstrook zwartlakken?",
+        a: "Voor een verhuurder of makelaar wel: die heeft geen wettelijke basis om je BSN te gebruiken. Voor een bank of hypotheekverstrekker kan het nodig zijn om het te laten staan. Vraag het na als je het niet zeker weet.",
+      },
+      {
+        q: "Werkt het ook voor een Belgische loonfiche?",
+        a: "Ja. Cachety werkt met elke pdf of foto. Dek op een Belgisch document je rijksregisternummer af als de ontvanger het niet wettelijk nodig heeft.",
+      },
+      {
+        q: "Kan ik meerdere loonstroken in één pdf zetten?",
+        a: "Ja. Voeg ze allemaal toe, kies Eén pdf, sleep ze in de goede volgorde en download één bestand met watermerk.",
+      },
+      {
+        q: "Worden mijn loonstroken ergens opgeslagen?",
+        a: "Nee. Ze blijven in het geheugen van je apparaat en verdwijnen als je het tabblad sluit. Er is geen server die ze ontvangt.",
+      },
+    ],
+    updated: "2026-10-12",
+  },
+
+  // ───────────────────────────── Zwartlakken ─────────────────────────────
+  {
+    slug: "bsn-zwartlakken-pdf",
+    topic: "redact",
+    title: "Zo lak je je BSN of andere gegevens echt zwart in een pdf",
+    metaTitle: "BSN zwartlakken in een pdf: gratis en echt verwijderd",
+    description:
+      "BSN, rekeningnummer of pasfoto zwartlakken in een pdf of foto? Waarom een zwart blok vaak niet genoeg is, en hoe je het gratis goed doet.",
+    intro:
+      "Een zwart blok over een nummer lijkt het te verbergen. In veel pdf's staat de tekst er alleen nog gewoon onder, en kan iedereen hem kopiëren. Zo lak je gegevens gratis en goed zwart.",
+    example: "Kopie voor telefoonabonnement, Telgo Mobiel, 12-10-2026",
+    body: [
+      { type: "h2", text: "Waarom een zwart blok niet altijd genoeg is" },
+      {
+        type: "p",
+        text: "Een pdf bestaat uit lagen. Teken je in veel pdf-programma's een zwarte rechthoek, dan leg je alleen een vorm bovenop. De oorspronkelijke tekst zit nog in het bestand. Iemand kan hem selecteren, kopiëren en ergens anders plakken, en daar staat je BSN weer. Daar zijn al heel wat mensen en organisaties ingetrapt. Het is een makkelijke fout, want op het scherm ziet alles er goed uit.",
+      },
+      {
+        type: "tip",
+        text: "Een snelle test voor elke zwartgelakte pdf: probeer de tekst onder het zwarte blok te selecteren, of zoek met de zoekfunctie van je pdf-lezer naar een woord dat je hebt verborgen. Wordt het gevonden, dan is het niet gelukt.",
+      },
+      { type: "h2", text: "Hoe Cachety zwartlakt" },
+      {
+        type: "p",
+        text: "Cachety legt geen blok bovenop. Elke pagina wordt opnieuw opgebouwd als afbeelding, met het afgedekte gebied echt zwart gemaakt. De verborgen tekst is weg uit het bestand, net als de selecteerbare tekstlaag en de verborgen informatie van het bestand, zoals de auteur of de gps-locatie van een foto.",
+      },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com in je browser. Je hoeft je niet te registreren.",
+          "Sleep je pdf of afbeelding in het vak. JPG, PNG, HEIC en andere gangbare formaten werken ook.",
+          "Typ een kort watermerk met het doel, de ontvanger en de datum, of druk op de knop om de datum van vandaag toe te voegen.",
+          "Kies Gebied afdekken en teken op het voorbeeld rechthoeken over alles wat weg moet.",
+          "Controleer het voorbeeld op elke pagina en download je zwartgelakte kopie.",
+        ],
+      },
+      { type: "h2", text: "Wat mensen meestal zwartlakken" },
+      {
+        type: "list",
+        items: [
+          "Het BSN op een identiteitsbewijs, ook in de cijferreeks onderaan, en op loonstroken en brieven van de Belastingdienst.",
+          "Het rijksregisternummer op een Belgische eID of loonfiche.",
+          "De pasfoto, als de ontvanger alleen je naam en geboortedatum nodig heeft.",
+          "Rekeningnummers en afschrijvingen die er niet toe doen.",
+          "Medische gegevens, of informatie over kinderen of andere gezinsleden.",
+        ],
+      },
+      { type: "h2", text: "Privé zonder uploaden" },
+      {
+        type: "p",
+        text: "Veel gratis online tools om te censureren of zwart te lakken vragen je om je document naar hun servers te uploaden. Dat is vreemd voor precies de gegevens die je wilt beschermen. Cachety werkt andersom: je bestand blijft op je apparaat, er wordt niets verstuurd, en na het laden werkt de pagina zelfs in vliegtuigmodus.",
+      },
+      {
+        type: "warning",
+        text: "Omdat de zwartgelakte kopie uit afbeeldingen bestaat, kun je de tekst niet meer doorzoeken of kopiëren. Dat is de bedoeling, maar bewaar je origineel goed voor als je het later nodig hebt.",
+      },
+    ],
+    faq: [
+      {
+        q: "Kan ik een pdf zwartlakken zonder Adobe Acrobat?",
+        a: "Ja. Cachety is gratis, werkt in elke moderne browser en verwijdert echt wat je afdekt, in plaats van het alleen te bedekken.",
+      },
+      {
+        q: "Kan zwartgelakte tekst worden teruggehaald?",
+        a: "Als hij alleen met een vorm is bedekt, vaak wel. Bij Cachety wordt het afgedekte gebied uit het bestand zelf verwijderd, dus er blijft geen verborgen tekst over.",
+      },
+      {
+        q: "Moet ik een watermerk toevoegen om zwart te lakken?",
+        a: "Cachety is gebouwd rond het watermerk, dus een korte tekst hoort bij het proces. Een watermerk met doel, ontvanger en datum is sowieso verstandig en maakt een gelekte kopie traceerbaar.",
+      },
+      {
+        q: "Hoe groot mag de pdf zijn?",
+        a: "Tot 200 MB per bestand en 500 pagina's per pdf. Afdekken kan op de eerste pagina's van het document; de app laat zien tot welke pagina.",
+      },
+    ],
+    updated: "2026-10-12",
+  },
+
+  // ───────────────────────────── Telefoon ─────────────────────────────
+  {
+    slug: "watermerk-op-telefoon",
+    topic: "phone",
+    title: "Zo zet je een watermerk op een document met je iPhone of Android",
+    metaTitle: "Watermerk op je telefoon: iPhone en Android, gratis",
+    description:
+      "Zet gratis een watermerk op documenten en foto's op je iPhone of Android, zonder app uit de App Store. HEIC-foto's werken, er wordt niets geüpload.",
+    intro:
+      "De meeste mensen fotograferen hun documenten met hun telefoon en sturen ze meteen door. Je kunt daar ook direct een watermerk op zetten, in een minuut, zonder iets te installeren.",
+    example: "Sollicitatie, Groenhof Logistiek, afdeling HR, 12-10-2026",
+    body: [
+      { type: "h2", text: "Waarom op je telefoon" },
+      {
+        type: "p",
+        text: "Op je telefoon staan de foto's van je documenten al, dus daar zet je er ook het watermerk op. Je hoeft ze niet naar jezelf te mailen, naar een computer te zetten of extra kopieën te laten slingeren. Cachety draait in de browser van je telefoon, zoals Safari of Chrome. Je foto's worden op de telefoon zelf verwerkt en nooit geüpload. Het is dezelfde tool als op de computer, met dezelfde functies: sjablonen, afdekken, meerdere ontvangers en een wachtwoord als je dat wilt.",
+      },
+      { type: "h2", text: "Stap voor stap" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com in Safari, Chrome of je gewone browser.",
+          "Tik op het vak en kies de foto's of pdf's die je wilt versturen. Meerdere tegelijk kan.",
+          "Typ de tekst van je watermerk, of kies een sjabloon. Tik op de knop om de datum van vandaag toe te voegen.",
+          "Controleer het voorbeeld. Dek je BSN af als de ontvanger het niet nodig heeft.",
+          "Download de kopie met watermerk en deel hem via mail, WhatsApp of een andere app. Verwijder daarna de kale kopieën die je onderweg hebt gemaakt.",
+        ],
+      },
+      { type: "h2", text: "Foto's van je iPhone (HEIC) werken ook" },
+      {
+        type: "p",
+        text: "iPhones slaan foto's meestal op als HEIC, een formaat dat sommige websites weigeren. Cachety accepteert HEIC, maar ook JPG, PNG, WebP en pdf, dus je kunt foto's zo uit je fotobibliotheek gebruiken.",
+      },
+      {
+        type: "tip",
+        text: "Foto's van je telefoon bevatten vaak de gps-locatie waar ze zijn gemaakt, en dat kan je huis zijn. Cachety haalt die verborgen informatie uit de kopie die je krijgt.",
+      },
+      { type: "h2", text: "Zet het op je beginscherm" },
+      {
+        type: "p",
+        text: "Je kunt Cachety als een app installeren. Op een iPhone tik je in Safari op de deelknop en dan op Zet op beginscherm. Op Android kies je in het menu van de browser voor app installeren of toevoegen aan startscherm. Daarna open je het met één tik, net als elke andere app. Op Android krijg je er een handigheidje bij: na de installatie staat Cachety in het deelmenu. Tik in je galerij of bestanden-app op Delen bij een document en kies Cachety om er direct een watermerk op te zetten.",
+      },
+      {
+        type: "list",
+        items: [
+          "Gratis, zonder account en zonder tracking.",
+          "Werkt zonder internet zodra de pagina is geladen.",
+          "Meerdere ontvangers: een aparte versie voor iedereen.",
+          "Een wachtwoord op de gedownloade pdf als je dat wilt.",
+        ],
+      },
+      {
+        type: "warning",
+        text: "Een watermerk ontmoedigt misbruik en maakt een lek traceerbaar, maar kan niet voorkomen dat iemand een foto van je scherm maakt. Stuur documenten alleen naar mensen waarvan je hebt nagegaan dat ze echt zijn. Ben je toch opgelicht, neem dan contact op met je bank en doe aangifte bij de politie.",
+      },
+    ],
+    faq: [
+      {
+        q: "Moet ik een app downloaden?",
+        a: "Nee. Cachety werkt in de browser van je telefoon. Je kunt het op je beginscherm zetten voor snelle toegang, maar dat hoeft niet.",
+      },
+      {
+        q: "Werkt het op oudere telefoons?",
+        a: "Het werkt in elke recente versie van Safari of Chrome. Heel grote pdf's kunnen op een oudere telefoon wat langer duren.",
+      },
+      {
+        q: "Worden mijn foto's ergens geüpload?",
+        a: "Nee. Alles gebeurt op je telefoon. Zet na het laden van de pagina gerust vliegtuigmodus aan: het blijft werken.",
+      },
+      {
+        q: "Kan ik direct vanuit Cachety een foto maken?",
+        a: "Als je op het vak tikt, biedt je telefoon vaak aan om een foto te maken of er een uit je bibliotheek te kiezen. Een scherpe foto bij goed licht geeft het beste resultaat.",
+      },
+    ],
+    updated: "2026-10-12",
+  },
+
+  // ───────────────────────────── Identiteitsfraude ─────────────────────────────
+  {
+    slug: "identiteitsfraude-voorkomen-kopie-id",
+    topic: "identity-theft",
+    title: "Identiteitsfraude met een kopie van je ID voorkomen, en wat te doen als het misgaat",
+    metaTitle: "Identiteitsfraude voorkomen met een veilige kopie ID",
+    description:
+      "Met een kale kopie van je paspoort kan een oplichter veel kwaad. Zo maak je misbruik moeilijker, en dit doe je als het toch misgaat.",
+    intro:
+      "Met je naam, geboortedatum en BSN kan een oplichter een abonnement afsluiten of een lening aanvragen op jouw naam. Een kopie van je identiteitsbewijs is daarvoor vaak het startpunt. Je kunt het hem een stuk lastiger maken.",
+    example: "Kopie voor rekening openen, Polderbank, 12-10-2026",
+    body: [
+      { type: "h2", text: "Hoe een kopie wordt misbruikt" },
+      {
+        type: "p",
+        text: "Oplichters hebben vaak geen origineel nodig. Een duidelijke kopie van je paspoort of ID-kaart, samen met een loonstrook of bankafschrift, is genoeg om bij sommige bedrijven een telefoonabonnement, een lening of een webwinkelaccount aan te vragen. Zulke kopieën komen uit gehackte mailboxen, slecht beveiligde bedrijfsmappen, nepadvertenties voor woningen of banen, en berichten van iemand die zich voordoet als familielid.",
+      },
+      { type: "h2", text: "Vijf gewoontes die misbruik moeilijker maken" },
+      {
+        type: "list",
+        items: [
+          "Vraag eerst of een kopie echt nodig is. Vaak kan een bedrijf ook alleen het soort document en het nummer noteren.",
+          "Maak je BSN onleesbaar als de ontvanger geen wettelijke basis heeft om het te gebruiken, ook in de cijferreeks onderaan.",
+          "Zet op elke kopie het doel, de ontvanger en de datum, als watermerk over de hele pagina.",
+          "Maak voor elke ontvanger een eigen versie, zodat je weet waar een gelekte kopie vandaan komt.",
+          "Stuur nooit documenten naar iemand die je niet hebt gecontroleerd, hoe dringend het ook klinkt.",
+        ],
+      },
+      { type: "h2", text: "Zo maak je een kopie die weinig waard is voor oplichters" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com in je browser, op je telefoon of computer.",
+          "Voeg een foto of scan van je identiteitsbewijs toe.",
+          "Typ het watermerk met doel en ontvanger en druk op de knop om de datum toe te voegen.",
+          "Zet Traceerbare kopie aan: elke kopie krijgt een uniek kenmerk. Bewaar het overzicht van je kopieën zelf, want het wordt nergens opgeslagen.",
+          "Dek je BSN en, als die niet nodig is, je pasfoto af. Download de kopie en stuur alleen die.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Een kopie met watermerk die toch opduikt, vertelt je direct waar het lek zat: de naam van de ontvanger en het kenmerk staan erop. Dat helpt als je moet uitleggen dat jij die lening of dat abonnement niet hebt afgesloten.",
+      },
+      { type: "h2", text: "Wat te doen als het toch misgaat" },
+      {
+        type: "steps",
+        items: [
+          "Verzamel bewijs: brieven van incassobureaus, rekeningen van abonnementen die je niet hebt afgesloten, afschriften.",
+          "Neem contact op met het bedrijf waar het misbruik plaatsvond en vraag de aanvraagpapieren op, zoals de gebruikte kopie van je ID.",
+          "Doe aangifte bij de politie en neem zoveel mogelijk documenten mee.",
+          "Meld het bij het Centraal Meldpunt Identiteitsfraude en -fouten. Dat helpt slachtoffers als ze er met de betrokken organisaties zelf niet uitkomen.",
+          "Ben je je identiteitsbewijs kwijt of is het gestolen, meld dat dan ook bij je gemeente of de politie.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Goed om te weten: een kopie van een identiteitsbewijs is zelf geen geldig identiteitsbewijs. Dat is een belangrijk punt als je moet aantonen dat iemand anders zich voor jou heeft uitgegeven.",
+      },
+      {
+        type: "warning",
+        text: "Een watermerk is een verstandige extra laag, geen garantie. Het maakt misbruik lastiger en een lek traceerbaar, maar kan niet voorkomen dat iemand een document fotografeert of nabewerkt.",
+      },
+    ],
+    faq: [
+      {
+        q: "Wat kan iemand met een kopie van mijn paspoort?",
+        a: "Met een duidelijke kopie, zeker als je BSN erop staat, kan een oplichter bij sommige bedrijven een abonnement, lening of account op jouw naam proberen aan te vragen. Een watermerk met doel, ontvanger en datum en een afgedekt BSN maken dat een stuk moeilijker.",
+      },
+      {
+        q: "Waar meld ik identiteitsfraude?",
+        a: "Doe aangifte bij de politie en meld het bij het Centraal Meldpunt Identiteitsfraude en -fouten. Neem ook direct contact op met de bedrijven waar het misbruik plaatsvond, en met je bank als er geld mee gemoeid is.",
+      },
+      {
+        q: "Helpt een watermerk echt?",
+        a: "Het maakt een kopie minder bruikbaar voor iets anders dan het doel dat erop staat, en het laat zien waar een lek vandaan kwam. Het is geen schild tegen alles, maar wel een goedkope en snelle extra drempel.",
+      },
+      {
+        q: "Wordt mijn ID ergens opgeslagen als ik Cachety gebruik?",
+        a: "Nee. Je ID wordt in je browser verwerkt, op je eigen apparaat. Er is geen server die het ontvangt, en na het sluiten van het tabblad is alles uit het geheugen.",
+      },
+    ],
+    updated: "2026-10-12",
+  },
+];

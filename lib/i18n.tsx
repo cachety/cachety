@@ -5,6 +5,10 @@ import { dirOf, HREFLANG, isLang, SITE_META, type Lang } from "@/lib/site-meta";
 import { STRINGS_AR } from "@/lib/locales/ar/strings";
 import { STRINGS_ES } from "@/lib/locales/es/strings";
 import { STRINGS_FA } from "@/lib/locales/fa/strings";
+import { STRINGS_DE } from "@/lib/locales/de/strings";
+import { STRINGS_PT } from "@/lib/locales/pt/strings";
+import { STRINGS_ID } from "@/lib/locales/id/strings";
+import { STRINGS_NL } from "@/lib/locales/nl/strings";
 import { readPref, writePref } from "@/lib/storage";
 
 export type { Lang };
@@ -965,6 +969,10 @@ export const STRINGS: Record<Lang, Strings> = {
   es: STRINGS_ES,
   ar: STRINGS_AR,
   fa: STRINGS_FA,
+  de: STRINGS_DE,
+  pt: STRINGS_PT,
+  id: STRINGS_ID,
+  nl: STRINGS_NL,
 };
 
 /** Le filigrane d'exemple EST la formule : motif, destinataire, date. */
@@ -982,6 +990,11 @@ export function detectLang(saved: string | null, navLang: string): Lang {
   if (nav.startsWith("es")) return "es";
   if (nav.startsWith("ar")) return "ar";
   if (nav.startsWith("fa")) return "fa";
+  if (nav.startsWith("de")) return "de";
+  if (nav.startsWith("pt")) return "pt";
+  // « in » : ancien code de l'indonésien, encore renvoyé par certains Android.
+  if (nav.startsWith("id") || nav.startsWith("in")) return "id";
+  if (nav.startsWith("nl")) return "nl";
   return "en";
 }
 

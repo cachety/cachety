@@ -55,6 +55,10 @@ const LOCALE: Record<Lang, string> = {
   es: "es-ES",
   ar: "ar-u-nu-latn",
   fa: "fa-IR",
+  de: "de-DE",
+  pt: "pt-BR",
+  id: "id-ID",
+  nl: "nl-NL",
 };
 
 const day = (iso: string, lang: Lang) =>

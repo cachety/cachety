@@ -1,6 +1,6 @@
 # Cachety
 
-[English](README.md) · [Français](README.fr.md) · **Español** · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [简体中文](README.zh.md)
+[English](README.md) · [Français](README.fr.md) · **Español** · [Português](README.pt.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Bahasa Indonesia](README.id.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [简体中文](README.zh.md)
 
 **Pon una marca de agua a tus documentos de identidad y papeles sensibles sin que salgan nunca de tu dispositivo.**
 
@@ -8,7 +8,7 @@ Cachety añade una marca de agua a PDF y fotos (documento de identidad, pasaport
 
 ### 👉 Úsalo ahora: **[cachety.com](https://cachety.com)**
 
-Disponible en English, Français, Español, العربية, فارسی, 日本語 y 简体中文.
+Disponible en English, Français, Español, Português, Deutsch, Nederlands, Bahasa Indonesia, العربية, فارسی, 日本語 y 简体中文.
 
 ![Cachety: un PDF con marca de agua en el navegador](docs/preview.png)
 
@@ -44,10 +44,10 @@ Alojarla por tu cuenta sigue siendo posible y está totalmente soportado (ver m�
 - **Tamaño máximo por archivo** (1, 2, 5 o 10 MB) para los portales que lo limitan.
 - **Un solo PDF** en el orden que elijas (arrastrando y soltando), o un archivo **ZIP**.
 - **Funciona en el móvil**, se puede instalar como una app y funciona **sin conexión** una vez cargada.
-- **7 idiomas**, con diseño de derecha a izquierda para el árabe y el persa, y fuentes específicas para cada escritura.
+- **11 idiomas**, con diseño de derecha a izquierda para el árabe y el persa, y fuentes específicas para cada escritura.
 - **Recorrido guiado** para quien llega por primera vez, que se ofrece cuando alguien parece no saber por dónde empezar.
-- **42 guías prácticas** para situaciones cotidianas en Francia, el Reino Unido, España y Latinoamérica, el mundo árabe, Irán, Japón y China.
-- **45 comparativas verificadas** con otras herramientas de marca de agua (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat y más), con sus fuentes, incluido cuándo otra herramienta es mejor opción.
+- **70 guías prácticas** para situaciones cotidianas en Francia, el Reino Unido, Alemania, los Países Bajos, España y Latinoamérica, Brasil, Indonesia, el mundo árabe, Irán, Japón y China.
+- **71 comparativas verificadas** con otras herramientas de marca de agua (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat y más), con sus fuentes, incluido cuándo otra herramienta es mejor opción.
 
 ## Privacidad desde el diseño, y verificable
 
@@ -84,7 +84,7 @@ bun run test:e2e   # browser suite (CHROMIUM_EXE=/path/to/chrome to use a local 
 
 Tecnologías: Next.js (exportación estática), React, Tailwind CSS, PDF.js, pdf-lib, libheif.
 
-- Textos de la interfaz: `lib/i18n.tsx` (francés, inglés, japonés, chino) y `lib/locales/<lang>/strings.ts` (español, árabe, persa).
+- Textos de la interfaz: `lib/i18n.tsx` (francés, inglés, japonés, chino) y `lib/locales/<lang>/strings.ts` (los demás idiomas).
 - Textos del sitio web: `lib/site-copy.ts` y `lib/locales/<lang>/site.ts`. Metadatos de las páginas: `lib/site-meta.ts` y `lib/locales/<lang>/meta.ts`.
 - Guías: `lib/guides/<lang>.ts`.
 - Páginas de comparativa («Cachety vs X»): `lib/compare/<lang>.ts`. Cada afirmación sobre otra herramienta debe citar su fuente (`sources`) e indicar la fecha en que se comprobó (`checked`), y cada página debe decir cuándo la otra herramienta es mejor opción. Vuelve a comprobar estos datos con regularidad: los servicios cambian.

@@ -8,6 +8,10 @@ import type { Lang } from "@/lib/site-meta";
 import { SITE_AR } from "@/lib/locales/ar/site";
 import { SITE_ES } from "@/lib/locales/es/site";
 import { SITE_FA } from "@/lib/locales/fa/site";
+import { SITE_DE } from "@/lib/locales/de/site";
+import { SITE_PT } from "@/lib/locales/pt/site";
+import { SITE_ID } from "@/lib/locales/id/site";
+import { SITE_NL } from "@/lib/locales/nl/site";
 
 type Item = { title: string; body: string };
 type Section = { title: string; paras?: string[]; items?: string[] };
@@ -920,4 +924,8 @@ export const SITE_COPY: Record<Lang, SiteCopy> = {
   es: SITE_ES,
   ar: SITE_AR,
   fa: SITE_FA,
+  de: SITE_DE,
+  pt: SITE_PT,
+  id: SITE_ID,
+  nl: SITE_NL,
 };

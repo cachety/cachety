@@ -10,6 +10,10 @@ import { GUIDES_ZH } from "./zh";
 import { GUIDES_ES } from "./es";
 import { GUIDES_AR } from "./ar";
 import { GUIDES_FA } from "./fa";
+import { GUIDES_DE } from "./de";
+import { GUIDES_PT } from "./pt";
+import { GUIDES_ID } from "./id";
+import { GUIDES_NL } from "./nl";
 
 export type { Guide, GuideBlock, GuideTopic } from "./types";
 
@@ -21,6 +25,10 @@ export const GUIDES: Record<Lang, Guide[]> = {
   es: GUIDES_ES,
   ar: GUIDES_AR,
   fa: GUIDES_FA,
+  de: GUIDES_DE,
+  pt: GUIDES_PT,
+  id: GUIDES_ID,
+  nl: GUIDES_NL,
 };
 
 export const guidePath = (lang: Lang, slug: string) => `/${lang}/guides/${slug}`;

@@ -18,7 +18,7 @@ const files = await walk(OUT);
 
 // Une seule source de vérité pour les langues et les pages qu'elles génèrent.
 // Doit suivre LANG_CODES et HREFLANG (lib/site-meta.ts).
-const LANGS = ["fr", "en", "ja", "zh", "es", "ar", "fa"];
+const LANGS = ["fr", "en", "ja", "zh", "es", "ar", "fa", "de", "pt", "id", "nl"];
 const HTML_LANG = { zh: "zh-CN" };
 const RTL = new Set(["ar", "fa"]);
 const LANG_ALT = LANGS.join("|");

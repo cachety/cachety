@@ -1,6 +1,6 @@
 # Cachety
 
-[English](README.md) · **Français** · [Español](README.es.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [简体中文](README.zh.md)
+[English](README.md) · **Français** · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Bahasa Indonesia](README.id.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [简体中文](README.zh.md)
 
 **Filigranez vos papiers d'identité et documents sensibles sans qu'ils quittent jamais votre appareil.**
 
@@ -8,7 +8,7 @@ Cachety ajoute un filigrane à vos PDF et à vos photos (carte d'identité, pass
 
 ### 👉 À utiliser tout de suite : **[cachety.com](https://cachety.com)**
 
-Disponible en English, Français, Español, العربية, فارسی, 日本語 et 简体中文.
+Disponible en English, Français, Español, Português, Deutsch, Nederlands, Bahasa Indonesia, العربية, فارسی, 日本語 et 简体中文.
 
 ![Cachety : un PDF filigrané dans le navigateur](docs/preview.png)
 
@@ -44,10 +44,10 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 - **Taille maximale par fichier** (1, 2, 5 ou 10 Mo) pour les sites de dépôt qui la limitent.
 - **Un seul PDF** dans l'ordre de votre choix (glisser-déposer), ou une archive **ZIP**.
 - **Fonctionne sur téléphone**, s'installe comme une appli, et fonctionne **hors connexion** une fois chargé.
-- **7 langues**, avec mise en page de droite à gauche pour l'arabe et le persan, et des polices dédiées à chaque écriture.
+- **11 langues**, avec mise en page de droite à gauche pour l'arabe et le persan, et des polices dédiées à chaque écriture.
 - **Visite guidée** pour les nouveaux venus, proposée quand quelqu'un semble ne pas savoir par où commencer.
-- **42 guides pratiques** pour les situations de tous les jours en France, au Royaume-Uni, en Espagne et en Amérique latine, dans le monde arabe, en Iran, au Japon et en Chine.
-- **45 comparatifs vérifiés** avec d'autres outils de filigrane (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat et d'autres), sources à l'appui, y compris quand un autre outil est le meilleur choix.
+- **70 guides pratiques** pour les situations de tous les jours en France, au Royaume-Uni, en Allemagne, aux Pays-Bas, en Espagne et en Amérique latine, au Brésil, en Indonésie, dans le monde arabe, en Iran, au Japon et en Chine.
+- **71 comparatifs vérifiés** avec d'autres outils de filigrane (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat, KopieID et d'autres), sources à l'appui, y compris quand un autre outil est le meilleur choix.
 
 ## Confidentialité dès la conception, et vérifiable
 
@@ -84,7 +84,7 @@ bun run test:e2e   # browser suite (CHROMIUM_EXE=/path/to/chrome to use a local 
 
 Technologies : Next.js (export statique), React, Tailwind CSS, PDF.js, pdf-lib, libheif.
 
-- Textes de l'interface : `lib/i18n.tsx` (français, anglais, japonais, chinois) et `lib/locales/<lang>/strings.ts` (espagnol, arabe, persan).
+- Textes de l'interface : `lib/i18n.tsx` (français, anglais, japonais, chinois) et `lib/locales/<lang>/strings.ts` (les autres langues).
 - Textes du site : `lib/site-copy.ts` et `lib/locales/<lang>/site.ts`. Métadonnées des pages : `lib/site-meta.ts` et `lib/locales/<lang>/meta.ts`.
 - Guides : `lib/guides/<lang>.ts`.
 - Pages de comparatif (« Cachety vs X ») : `lib/compare/<lang>.ts`. Chaque affirmation sur un autre outil doit citer sa source (`sources`) et porter sa date de vérification (`checked`), et chaque page doit dire quand l'autre outil est le meilleur choix. Revérifiez ces faits régulièrement : les services évoluent.

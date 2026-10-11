@@ -5,10 +5,14 @@ import { BRAND, SITE_URL } from "@/lib/brand";
 import { META_AR } from "@/lib/locales/ar/meta";
 import { META_ES } from "@/lib/locales/es/meta";
 import { META_FA } from "@/lib/locales/fa/meta";
+import { META_DE } from "@/lib/locales/de/meta";
+import { META_PT } from "@/lib/locales/pt/meta";
+import { META_ID } from "@/lib/locales/id/meta";
+import { META_NL } from "@/lib/locales/nl/meta";
 
 export { SITE_URL };
 
-export const LANG_CODES = ["fr", "en", "ja", "zh", "es", "ar", "fa"] as const;
+export const LANG_CODES = ["fr", "en", "ja", "zh", "es", "ar", "fa", "de", "pt", "id", "nl"] as const;
 export type Lang = (typeof LANG_CODES)[number];
 
 export const isLang = (v: string): v is Lang =>
@@ -23,6 +27,10 @@ export const HREFLANG: Record<Lang, string> = {
   es: "es",
   ar: "ar",
   fa: "fa",
+  de: "de",
+  pt: "pt",
+  id: "id",
+  nl: "nl",
 };
 
 /** Langues écrites de droite à gauche : <html dir="rtl">. */
@@ -89,6 +97,10 @@ export const ABOUT_META: Record<Lang, PageMeta> = {
   es: META_ES.about,
   ar: META_AR.about,
   fa: META_FA.about,
+  de: META_DE.about,
+  pt: META_PT.about,
+  id: META_ID.about,
+  nl: META_NL.about,
 };
 
 export const PRIVACY_META: Record<Lang, PageMeta> = {
@@ -115,6 +127,10 @@ export const PRIVACY_META: Record<Lang, PageMeta> = {
   es: META_ES.privacy,
   ar: META_AR.privacy,
   fa: META_FA.privacy,
+  de: META_DE.privacy,
+  pt: META_PT.privacy,
+  id: META_ID.privacy,
+  nl: META_NL.privacy,
 };
 
 export const GUIDES_META: Record<Lang, PageMeta> = {
@@ -141,6 +157,10 @@ export const GUIDES_META: Record<Lang, PageMeta> = {
   es: META_ES.guides,
   ar: META_AR.guides,
   fa: META_FA.guides,
+  de: META_DE.guides,
+  pt: META_PT.guides,
+  id: META_ID.guides,
+  nl: META_NL.guides,
 };
 
 export const COMPARE_META: Record<Lang, PageMeta> = {
@@ -166,6 +186,10 @@ export const COMPARE_META: Record<Lang, PageMeta> = {
   es: META_ES.compare,
   ar: META_AR.compare,
   fa: META_FA.compare,
+  de: META_DE.compare,
+  pt: META_PT.compare,
+  id: META_ID.compare,
+  nl: META_NL.compare,
 };
 
 export const SITE_META: Record<Lang, SiteMeta> = {
@@ -204,6 +228,10 @@ export const SITE_META: Record<Lang, SiteMeta> = {
   es: META_ES.site,
   ar: META_AR.site,
   fa: META_FA.site,
+  de: META_DE.site,
+  pt: META_PT.site,
+  id: META_ID.site,
+  nl: META_NL.site,
 };
 
 /**

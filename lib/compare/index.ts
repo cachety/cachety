@@ -7,6 +7,10 @@ import { COMPARISONS_AR } from "./ar";
 import { COMPARISONS_EN } from "./en";
 import { COMPARISONS_ES } from "./es";
 import { COMPARISONS_FA } from "./fa";
+import { COMPARISONS_DE } from "./de";
+import { COMPARISONS_PT } from "./pt";
+import { COMPARISONS_ID } from "./id";
+import { COMPARISONS_NL } from "./nl";
 import { COMPARISONS_FR } from "./fr";
 import { COMPARISONS_JA } from "./ja";
 import { COMPARISONS_ZH } from "./zh";
@@ -21,6 +25,10 @@ export const COMPARISONS: Record<Lang, Comparison[]> = {
   es: COMPARISONS_ES,
   ar: COMPARISONS_AR,
   fa: COMPARISONS_FA,
+  de: COMPARISONS_DE,
+  pt: COMPARISONS_PT,
+  id: COMPARISONS_ID,
+  nl: COMPARISONS_NL,
 };
 
 export const comparePath = (lang: Lang, slug: string) => `/${lang}/compare/${slug}`;

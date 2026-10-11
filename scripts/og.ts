@@ -29,6 +29,10 @@ const STACK: Record<Lang, string> = {
   es: `"Space Grotesk Variable", sans-serif`,
   ar: `"Space Grotesk Variable", "Cairo Variable", sans-serif`,
   fa: `"Space Grotesk Variable", "Vazirmatn Variable", sans-serif`,
+  de: `"Space Grotesk Variable", sans-serif`,
+  pt: `"Space Grotesk Variable", sans-serif`,
+  id: `"Space Grotesk Variable", sans-serif`,
+  nl: `"Space Grotesk Variable", sans-serif`,
   ja: `"Space Grotesk Variable", "Noto Sans JP Variable", sans-serif`,
   zh: `"Space Grotesk Variable", "Noto Sans SC Variable", sans-serif`,
 };

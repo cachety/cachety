@@ -36,6 +36,10 @@ const PAGES: { file: string; lang: Lang }[] = [
   { file: "es.html", lang: "es" },
   { file: "ar.html", lang: "ar" },
   { file: "fa.html", lang: "fa" },
+  { file: "de.html", lang: "de" },
+  { file: "pt.html", lang: "pt" },
+  { file: "id.html", lang: "id" },
+  { file: "nl.html", lang: "nl" },
 ];
 
 const attr = (s: string) => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;/g, "'");

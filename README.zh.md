@@ -1,6 +1,6 @@
 # Cachety
 
-[English](README.md) · [Français](README.fr.md) · [Español](README.es.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · **简体中文**
+[English](README.md) · [Français](README.fr.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Bahasa Indonesia](README.id.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · **简体中文**
 
 **给身份证和敏感文件加水印，文件始终不离开您的设备。**
 
@@ -8,7 +8,7 @@ Cachety 可以给 PDF 和照片（身份证、护照、工资条、税单、银�
 
 ### 👉 立即使用：**[cachety.com](https://cachety.com)**
 
-支持语言：English、Français、Español、العربية、فارسی、日本語 和 简体中文。
+支持语言：English、Français、Español、Português、Deutsch、Nederlands、Bahasa Indonesia、العربية、فارسی、日本語 和 简体中文。
 
 ![Cachety：在浏览器中加好水印的 PDF](docs/preview.png)
 
@@ -44,10 +44,10 @@ Cachety 可以给 PDF 和照片（身份证、护照、工资条、税单、银�
 - **限制文件大小**（1、2、5 或 10 MB），适合有上传限制的网站。
 - **合并成一个 PDF**，顺序可拖放调整；也可以打包成 **ZIP**。
 - **手机也能用**，可以作为 App 安装，加载一次后**离线**也能用。
-- **7 种语言**，阿拉伯语和波斯语采用从右到左的排版，每种文字都配有专用字体。
+- **11 种语言**，阿拉伯语和波斯语采用从右到左的排版，每种文字都配有专用字体。
 - **引导帮助教程**，在首次访问者似乎不知从何下手时出现。
-- **42 篇实用指南**，覆盖法国、英国、西班牙和拉丁美洲、阿拉伯世界、伊朗、日本和中国的日常场景。
-- **45 篇经过事实核查的对比文章**，对比其他水印工具（FiligraneFacile、iLovePDF、Smallpdf、PDF24、Adobe Acrobat 等），附有资料来源，也会写明什么时候其他工具更合适。
+- **70 篇实用指南**，覆盖法国、英国、德国、荷兰、西班牙和拉丁美洲、巴西、印度尼西亚、阿拉伯世界、伊朗、日本和中国的日常场景。
+- **71 篇经过事实核查的对比文章**，对比其他水印工具（FiligraneFacile、iLovePDF、Smallpdf、PDF24、Adobe Acrobat 等），附有资料来源，也会写明什么时候其他工具更合适。
 
 ## 从设计上保护隐私，而且可以验证
 
@@ -84,7 +84,7 @@ bun run test:e2e   # browser suite (CHROMIUM_EXE=/path/to/chrome to use a local 
 
 技术栈：Next.js（静态导出）、React、Tailwind CSS、PDF.js、pdf-lib、libheif。
 
-- 界面文字：`lib/i18n.tsx`（法语、英语、日语、中文）和 `lib/locales/<lang>/strings.ts`（西班牙语、阿拉伯语、波斯语）。
+- 界面文字：`lib/i18n.tsx`（法语、英语、日语、中文）和 `lib/locales/<lang>/strings.ts`（其他语言）。
 - 网站文案：`lib/site-copy.ts` 和 `lib/locales/<lang>/site.ts`。页面元数据：`lib/site-meta.ts` 和 `lib/locales/<lang>/meta.ts`。
 - 指南：`lib/guides/<lang>.ts`。
 - 对比页面（「Cachety vs X」）：`lib/compare/<lang>.ts`。关于其他工具的每一条说法都必须注明来源（`sources`）和核实日期（`checked`），每个页面都必须写明什么时候其他工具更合适。请定期重新核实这些信息：服务是会变的。

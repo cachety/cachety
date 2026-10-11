@@ -1,6 +1,6 @@
 # Cachety
 
-**English** · [Français](README.fr.md) · [Español](README.es.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [简体中文](README.zh.md)
+**English** · [Français](README.fr.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Bahasa Indonesia](README.id.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · [日本語](README.ja.md) · [简体中文](README.zh.md)
 
 **Watermark your ID and sensitive documents without them ever leaving your device.**
 
@@ -8,7 +8,7 @@ Cachety adds a watermark to PDFs and photos (ID cards, passports, payslips, tax 
 
 ### 👉 Use it now: **[cachety.com](https://cachety.com)**
 
-Available in English, Français, Español, العربية, فارسی, 日本語 and 简体中文.
+Available in English, Français, Español, Português, Deutsch, Nederlands, Bahasa Indonesia, العربية, فارسی, 日本語 and 简体中文.
 
 ![Cachety: a PDF watermarked in the browser](docs/preview.png)
 
@@ -44,10 +44,10 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **Maximum size per file** (1, 2, 5 or 10 MB) for upload portals that limit it.
 - **Single PDF** in the order you choose (drag and drop), or a **ZIP** archive.
 - **Works on phones**, can be installed as an app, and works **offline** once loaded.
-- **7 languages**, with right-to-left layout for Arabic and Persian and dedicated fonts for each script.
+- **11 languages**, with right-to-left layout for Arabic and Persian and dedicated fonts for each script.
 - **Guided help tour** for first-time visitors, offered when someone seems unsure where to start.
-- **42 practical guides** for everyday situations in France, the UK, Spain and Latin America, the Arab world, Iran, Japan and China.
-- **45 fact-checked comparisons** with other watermark tools (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat and more), with sources, including when another tool is the better choice.
+- **70 practical guides** for everyday situations in France, the UK, Germany, the Netherlands, Spain and Latin America, Brazil, Indonesia, the Arab world, Iran, Japan and China.
+- **71 fact-checked comparisons** with other watermark tools (iLovePDF, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), with sources, including when another tool is the better choice.
 
 ## Privacy by design, and verifiable
 
@@ -84,7 +84,7 @@ bun run test:e2e   # browser suite (CHROMIUM_EXE=/path/to/chrome to use a local 
 
 Stack: Next.js (static export), React, Tailwind CSS, PDF.js, pdf-lib, libheif.
 
-- Interface strings: `lib/i18n.tsx` (French, English, Japanese, Chinese) and `lib/locales/<lang>/strings.ts` (Spanish, Arabic, Persian).
+- Interface strings: `lib/i18n.tsx` (French, English, Japanese, Chinese) and `lib/locales/<lang>/strings.ts` (the other languages).
 - Website text: `lib/site-copy.ts` and `lib/locales/<lang>/site.ts`. Page metadata: `lib/site-meta.ts` and `lib/locales/<lang>/meta.ts`.
 - Guides: `lib/guides/<lang>.ts`.
 - Comparison pages ("Cachety vs X"): `lib/compare/<lang>.ts`. Every claim about another tool must cite its source (`sources`) and carry the date it was checked (`checked`), and each page must say when the other tool is the better choice. Re-check these facts regularly: services change.

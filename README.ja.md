@@ -1,6 +1,6 @@
 # Cachety
 
-[English](README.md) · [Français](README.fr.md) · [Español](README.es.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · **日本語** · [简体中文](README.zh.md)
+[English](README.md) · [Français](README.fr.md) · [Español](README.es.md) · [Português](README.pt.md) · [Deutsch](README.de.md) · [Nederlands](README.nl.md) · [Bahasa Indonesia](README.id.md) · [العربية](README.ar.md) · [فارسی](README.fa.md) · **日本語** · [简体中文](README.zh.md)
 
 **身分証や大切な書類に、端末の外へ一度も出さずに透かしを入れられます。**
 
@@ -8,7 +8,7 @@ Cachety は、PDF や写真（運転免許証、パスポート、給与明細�
 
 ### 👉 今すぐ使う：**[cachety.com](https://cachety.com)**
 
-対応言語：English、Français、Español、العربية、فارسی、日本語、简体中文。
+対応言語：English、Français、Español、Português、Deutsch、Nederlands、Bahasa Indonesia、العربية、فارسی、日本語、简体中文。
 
 ![Cachety：ブラウザの中で透かしを入れた PDF](docs/preview.png)
 
@@ -44,10 +44,10 @@ Cachety は、PDF や写真（運転免許証、パスポート、給与明細�
 - **ファイルサイズの上限**（1・2・5・10 MB）を設定でき、容量制限のあるアップロード先にも対応します。
 - **1 つの PDF** にまとめる（ドラッグ＆ドロップで順番を指定）か、**ZIP** ファイルでダウンロードできます。
 - **スマホでも使え**、アプリとしてインストールでき、一度読み込めば**オフライン**でも動きます。
-- **7 言語**に対応。アラビア語とペルシア語は右から左へのレイアウトで表示し、文字ごとに専用のフォントを用意しています。
+- **11 言語**に対応。アラビア語とペルシア語は右から左へのレイアウトで表示し、文字ごとに専用のフォントを用意しています。
 - **ヘルプツアー：** はじめての方が迷っていそうなときに、ご案内を表示します。
-- **42 本の実用ガイド：** フランス、イギリス、スペインと中南米、アラブ諸国、イラン、日本、中国の身近な場面に対応しています。
-- **45 本の比較記事：** 他の透かしツール（FiligraneFacile、iLovePDF、Smallpdf、PDF24、Adobe Acrobat など）との比較を、事実を確認し出典つきでまとめています。他のツールの方が向いている場面もはっきり書いています。
+- **70 本の実用ガイド：** フランス、イギリス、ドイツ、オランダ、スペインと中南米、ブラジル、インドネシア、アラブ諸国、イラン、日本、中国の身近な場面に対応しています。
+- **71 本の比較記事：** 他の透かしツール（FiligraneFacile、iLovePDF、Smallpdf、PDF24、Adobe Acrobat など）との比較を、事実を確認し出典つきでまとめています。他のツールの方が向いている場面もはっきり書いています。
 
 ## 設計からプライバシーを守り、しかも検証できる
 
@@ -84,7 +84,7 @@ bun run test:e2e   # browser suite (CHROMIUM_EXE=/path/to/chrome to use a local 
 
 使用技術：Next.js（静的書き出し）、React、Tailwind CSS、PDF.js、pdf-lib、libheif。
 
-- 画面の文言：`lib/i18n.tsx`（フランス語、英語、日本語、中国語）と `lib/locales/<lang>/strings.ts`（スペイン語、アラビア語、ペルシア語）。
+- 画面の文言：`lib/i18n.tsx`（フランス語、英語、日本語、中国語）と `lib/locales/<lang>/strings.ts`（その他の言語）。
 - サイトの文章：`lib/site-copy.ts` と `lib/locales/<lang>/site.ts`。ページのメタデータ：`lib/site-meta.ts` と `lib/locales/<lang>/meta.ts`。
 - ガイド：`lib/guides/<lang>.ts`。
 - 比較ページ（「Cachety vs X」）：`lib/compare/<lang>.ts`。他のツールについての記述には、必ず出典（`sources`）と確認した日付（`checked`）をつけ、どのページでも他のツールの方が向いている場面を書いてください。サービスは変わるので、定期的に事実を確認し直してください。

@@ -55,7 +55,7 @@ describe("détection de langue (localStorage falsifiable)", () => {
     expect(detectLang("xx", "fr-FR")).toBe("fr");
     expect(detectLang("xx", "ja")).toBe("ja");
     expect(detectLang("xx", "zh-CN")).toBe("zh");
-    expect(detectLang("", "de-DE")).toBe("en");
+    expect(detectLang("", "it-IT")).toBe("en");
   });
 
   test("sans valeur stockée, détection navigateur puis anglais par défaut", () => {
@@ -66,6 +66,11 @@ describe("détection de langue (localStorage falsifiable)", () => {
     expect(detectLang(null, "es-MX")).toBe("es");
     expect(detectLang(null, "ar-EG")).toBe("ar");
     expect(detectLang(null, "fa-IR")).toBe("fa");
-    expect(detectLang(null, "de-DE")).toBe("en");
+    expect(detectLang(null, "de-DE")).toBe("de");
+    expect(detectLang(null, "pt-BR")).toBe("pt");
+    expect(detectLang(null, "id-ID")).toBe("id");
+    expect(detectLang(null, "in-ID")).toBe("id");
+    expect(detectLang(null, "nl-BE")).toBe("nl");
+    expect(detectLang(null, "it-IT")).toBe("en");
   });
 });
