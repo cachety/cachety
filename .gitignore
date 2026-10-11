@@ -52,3 +52,6 @@ Thumbs.db
 
 # Journaux CI téléchargés pour diagnostic
 /logs/
+
+# Contenus de publication (posts, captures) : hors dépôt
+/publications/
