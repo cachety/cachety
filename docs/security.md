@@ -88,8 +88,12 @@ the same header with a comma, which makes the browser enforce *both*
 policies. The build ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)) therefore:
 
 - removes the CSP from the `/*` block (which keeps every other header);
-- adds one exact-path rule per page (`/`, `/fr`, `/fr/guides/…`), whose
+- adds one exact-path rule per page (`/`, `/fr`, `/fr/privacy`…), whose
   `script-src` lists only that page's hashes;
+- groups the many guide and comparison pages into one rule per language and
+  section (`/fr/guides/*`, `/fr/compare/*`), listing the hashes of those
+  pages only. Each of these pages still carries its exact `<meta>` policy,
+  and the browser enforces both, so a page can only run its own scripts;
 - adds a strict rule with no hash at all for `/_next/*`, `/pdfjs/*` and
   `/sw.js` (scripts, the pdf.js worker and the service worker);
 - fails the build if the result exceeds 100 rules or 2,000 characters per line.
@@ -338,7 +342,7 @@ replays `out/_headers` ([e2e/helpers/server.ts](../e2e/helpers/server.ts)).
 | File | What is verified |
 | --- | --- |
 | `lib/security-headers.test.ts` | CSP directives (no external origin, no `unsafe-eval`, `object-src`/`base-uri`/`form-action`/`frame-ancestors` set to `'none'`) and hardening headers |
-| `e2e/security.static.test.ts` | Real export: no `'unsafe-inline'` left in any policy; each page's CSP (header rule and `<meta>`) lists exactly that page's inline scripts; no CSP on `/*` (no joined policies); a strict hash-free CSP on scripts and workers; Cloudflare limits (100 rules, 2,000 characters per line); `<meta>` before any script; no external resource; no source map |
+| `e2e/security.static.test.ts` | Real export: no `'unsafe-inline'` left in any policy; each page's `<meta>` CSP lists exactly that page's inline scripts, and its header rule lists them too (guide and comparison pages: those of their section only); no CSP on `/*` (no joined policies); a strict hash-free CSP on scripts and workers; Cloudflare limits (100 rules, 2,000 characters per line); `<meta>` before any script; no external resource; no source map |
 | `e2e/ui.smoke.e2e.ts` (security) | A complete watermarking run only contacts the origin, with no CSP violation; an exfiltration attempt via `fetch` is blocked |
 | `e2e/watermark.seam.e2e.ts` (sanitisation) | A hostile PDF (hidden text, Info/XMP metadata, attachment, `OpenAction` JavaScript, link) leaves **nothing** in the output; a JPEG with EXIF comes out without metadata |
 | `e2e/watermark.seam.e2e.ts` (adversarial corpus) | Empty file, rotated page, oversized page: clean rejection or valid output |

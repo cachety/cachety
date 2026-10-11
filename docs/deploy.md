@@ -65,7 +65,7 @@ The response should show a CSP with sha256 hashes, HSTS and `X-Frame-Options: DE
 
 ### Limits to keep in mind
 
-`_headers` allows at most **100 rules** and **2,000 characters per line**. The build writes one CSP rule per page (78 rules for 74 pages in 7 languages) and **fails** if either limit is exceeded, so you will know before deploying. Each new language with 6 guides adds about 10 rules, so two more languages would reach the limit. Beyond that, the plan is to give guide pages a shared rule and rely on their `<meta>` policy for the script hashes.
+`_headers` allows at most **100 rules** and **2,000 characters per line**. The build writes one CSP rule per page, except guide and comparison pages, which share one rule per language and section (57 rules for 126 pages in 7 languages). It **fails** if either limit is exceeded, so you will know before deploying. Adding guides or comparisons adds no rules; each new language adds about 7.
 
 ---
 
