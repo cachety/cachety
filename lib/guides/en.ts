@@ -42,11 +42,11 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         type: "p",
-        text: "Your files never leave your device. Cachety works inside your browser: there is no server that receives your documents. Once the page has loaded, you can even switch on airplane mode and it keeps working.",
+        text: "Your files never leave your device. Cachety works inside your browser: there is no server that receives your documents. Once the page has loaded, you can even switch on aeroplane mode and it keeps working.",
       },
       {
         type: "tip",
-        text: "Applying to several flats? Use the several recipients option to make one version per agent in one go, each with its own name on it. If a copy ever turns up somewhere it should not, you will know where it came from.",
+        text: "Applying to several flats? Use the Several recipients option to make a separate version for each agent, each with its own name on it. If a copy ever turns up somewhere it should not, you will know where it came from.",
       },
       { type: "h2", text: "Hide what the agent does not need" },
       {
@@ -55,7 +55,7 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         type: "p",
-        text: "One honest word: a watermark discourages misuse and makes a leak traceable, but it cannot make reuse physically impossible. Someone could still photograph a document. It is a sensible layer of protection, not a magic shield.",
+        text: "To be clear: a watermark discourages misuse and makes a leak traceable, but it cannot make reuse physically impossible. Someone could still photograph a document. It is a sensible layer of protection, not a magic shield.",
       },
     ],
     faq: [
@@ -204,7 +204,7 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         type: "tip",
-        text: "Turn on the traceable copy option. It adds the date and a unique reference to each copy, and gives you a copy log to keep. If a statement ever leaks, you can tell which copy it was.",
+        text: "Turn on the Traceable copy option. It adds the date and a unique reference to each copy, and gives you a copy log to keep. If a statement ever leaks, you can tell which copy it was.",
       },
       {
         type: "p",
@@ -284,7 +284,7 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "Private by design" },
       {
         type: "p",
-        text: "Many free online redaction tools ask you to upload your document to their servers. That is a strange thing to do with the very information you are trying to protect. Cachety works the other way round: your file stays on your device, nothing is sent anywhere, and the page even keeps working in airplane mode once it has loaded.",
+        text: "Many free online redaction tools ask you to upload your document to their servers. That is a strange thing to do with the very information you are trying to protect. Cachety works the other way round: your file stays on your device, nothing is sent anywhere, and the page even keeps working in aeroplane mode once it has loaded.",
       },
       {
         type: "warning",
@@ -306,7 +306,7 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         q: "Do I have to add a watermark to redact?",
-        a: "Cachety is built around watermarking, so it is designed for adding a short text as well. A watermark with the purpose, recipient and date is good practice anyway, and makes any leaked copy traceable.",
+        a: "Cachety is built around watermarking, so a short watermark text is part of the process. A watermark with the purpose, recipient and date is good practice anyway, and makes any leaked copy traceable.",
       },
       {
         q: "How big a PDF can I redact?",
@@ -361,7 +361,7 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Free, with no account and no tracking.",
           "Works with the internet switched off once the page has loaded.",
-          "Several recipients: one version per person in one go.",
+          "Several recipients: a separate version for each person.",
           "Optional password on the downloaded PDF.",
         ],
       },
@@ -381,7 +381,7 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         q: "Are my photos uploaded anywhere?",
-        a: "No. Everything happens on your phone. You can even turn on airplane mode after the page has loaded and it keeps working.",
+        a: "No. Everything happens on your phone. You can even turn on aeroplane mode after the page has loaded and it keeps working.",
       },
       {
         q: "Can I take a photo directly from Cachety?",

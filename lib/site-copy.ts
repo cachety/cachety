@@ -120,13 +120,13 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       how: [
         { title: "Déposez votre document", body: "Un PDF ou une photo, même prise avec un iPhone. Plusieurs à la fois si besoin." },
         { title: "Écrivez à quoi il sert", body: "Par exemple « Dossier de location, agence Martin, 12/10/2026 ». Des modèles sont prêts à l'emploi." },
-        { title: "Vérifiez, puis téléchargez", body: "L'aperçu montre exactement le résultat. Le fichier filigrané s'enregistre sur votre appareil." },
+        { title: "Vérifiez, puis téléchargez", body: "L'aperçu montre exactement le résultat. Le fichier filigrané est enregistré sur votre appareil." },
       ],
       trustTitle: "Vos documents ne quittent jamais votre appareil",
       trustLead: "La plupart des sites de filigrane envoient votre carte d'identité sur leurs serveurs. Cachety, non : tout le travail est fait par votre navigateur, sur votre téléphone ou votre ordinateur.",
       trust: [
         { title: "Traité chez vous", body: "Vos fichiers restent dans la mémoire de votre appareil. Fermez l'onglet, et tout est effacé." },
-        { title: "Bloqué par conception", body: "La page interdit à votre navigateur d'envoyer des données vers un autre site. Même en cas de bug, vos fichiers ne peuvent pas partir." },
+        { title: "Verrouillé dès la conception", body: "La page interdit à votre navigateur d'envoyer des données vers un autre site. Même en cas de bug, vos fichiers ne peuvent pas partir." },
         { title: "Aucun compte, aucun pistage", body: "Pas d'inscription, pas de cookie de suivi, pas de statistiques de visite, pas de régie publicitaire." },
         { title: "Open source et vérifiable", body: "Le code est public. N'importe qui peut le relire, le vérifier, ou héberger sa propre copie du site." },
       ],
@@ -138,7 +138,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         { title: "Masquer une information", body: "Noircissez un IBAN, un numéro fiscal ou une photo. Le contenu est réellement supprimé, pas seulement recouvert." },
         { title: "Copies traçables", body: "Une date et une référence unique sur chaque copie : si elle circule, vous saurez d'où elle vient." },
         { title: "Une version par destinataire", body: "Une version personnalisée pour chaque agence ou banque, en un seul téléchargement." },
-        { title: "Mot de passe", body: "Protégez le PDF avec un chiffrement fort (AES-256), le même niveau que les banques." },
+        { title: "Mot de passe", body: "Protégez le PDF avec un chiffrement fort (AES-256), celui qu'utilisent les banques." },
         { title: "Données cachées retirées", body: "Texte sélectionnable, métadonnées et position GPS des photos disparaissent du fichier final." },
         { title: "Taille maximale", body: "1, 2, 5 ou 10 Mo par fichier, pour les sites qui limitent la taille des envois." },
         { title: "Sur téléphone aussi", body: "iPhone et Android, photos HEIC comprises. Ajoutez Cachety à votre écran d'accueil comme une appli." },
@@ -216,7 +216,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         {
           title: "Ce qui est gardé sur votre appareil",
           paras: [
-            "Seulement vos réglages : la langue, l'apparence du filigrane, l'aperçu automatique et la taille maximale choisie. Ils restent dans votre navigateur pour vous éviter de les refaire. Ni fichier, ni texte, ni mot de passe n'y est enregistré. Vous pouvez les effacer à tout moment en vidant les données du site dans votre navigateur.",
+            "Seulement vos réglages : la langue, l'apparence du filigrane, l'aperçu automatique et la taille maximale choisie. Ils restent dans votre navigateur pour vous éviter de les refaire. Aucun fichier, aucun texte ni aucun mot de passe n'y est enregistré. Vous pouvez les effacer à tout moment en vidant les données du site dans votre navigateur.",
             "Pour fonctionner hors connexion, le navigateur garde aussi une copie des pages du site (pas de vos documents).",
           ],
         },
@@ -238,7 +238,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
           ],
         },
         {
-          title: "Une protection soignée de vos copies",
+          title: "Des copies protégées avec soin",
           items: [
             "Les zones masquées sont réellement supprimées du fichier, pas recouvertes d'un rectangle.",
             "Le texte caché, les métadonnées et la position GPS des photos sont retirés.",
@@ -322,7 +322,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     landing: {
       howTitle: "How it works",
       how: [
-        { title: "Drop your document", body: "A PDF or a photo, even one taken on an iPhone. Several at once if you need." },
+        { title: "Drop your document", body: "A PDF or a photo, even one taken on an iPhone. Several at once if you need to." },
         { title: "Say what it's for", body: "For example “Rental application, Martin Lettings, 11/10/2026”. Ready-made templates are included." },
         { title: "Check, then download", body: "The preview shows exactly what you'll get. The watermarked file is saved to your device." },
       ],
@@ -334,8 +334,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         { title: "No account, no tracking", body: "No sign-up, no tracking cookies, no visitor analytics, no ad networks." },
         { title: "Open source and verifiable", body: "The code is public. Anyone can read it, check it, or host their own copy of the site." },
       ],
-      airplaneTitle: "Check it yourself: the airplane-mode test",
-      airplaneBody: "Open this page, then switch off the internet (airplane mode). Drop in a document: Cachety still works. Proof that nothing goes over the internet.",
+      airplaneTitle: "Check it yourself: the aeroplane mode test",
+      airplaneBody: "Open this page, then switch off the internet (aeroplane mode). Drop in a document: Cachety still works. Proof that nothing goes over the internet.",
       featuresTitle: "Everything you need to protect a copy",
       features: [
         { title: "Watermark across the page", body: "Repeated diagonally and blended into the image: it can't be deleted by simply editing the PDF." },
@@ -358,7 +358,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       faq: [
         {
           q: "Are my files uploaded to a server?",
-          a: "No, never. The site doesn't even have a server that could receive a file. Your browser does all the work, and the page technically forbids it from contacting any other website. The airplane-mode test proves it in ten seconds.",
+          a: "No, never. The site doesn't even have a server that could receive a file. Your browser does all the work, and the page technically forbids it from contacting any other website. The aeroplane mode test proves it in ten seconds.",
         },
         {
           q: "Is it really free? What's the catch?",
@@ -435,14 +435,14 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         {
           title: "How to check it yourself",
           items: [
-            "The airplane-mode test: open the site, switch off the internet, then watermark a document. Everything works.",
+            "The aeroplane mode test: open the site, switch off the internet, then watermark a document. Everything works.",
             "The source code is public: anyone can read it, and automated tests check on every change that no data can leave.",
             "For the curious: the page's security policy (CSP) forbids the browser from connecting to any other website.",
             "Prefer to trust no one? You can run the site on your own computer or server.",
           ],
         },
         {
-          title: "Careful protection of your copies",
+          title: "Extra protection for your copies",
           items: [
             "Masked areas are really removed from the file, not just covered by a rectangle.",
             "Hidden text, metadata and the GPS location of photos are removed.",
@@ -527,14 +527,14 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       howTitle: "使い方",
       how: [
         { title: "書類をドロップ", body: "PDF でも写真でも。iPhone で撮った写真もそのまま使えます。複数まとめても大丈夫です。" },
-        { title: "用途を書く", body: "たとえば「賃貸申込専用 ○○不動産 2026/10/11」。よく使う文面のひな形もあります。" },
+        { title: "用途を書く", body: "たとえば「賃貸申込専用 ○○不動産 2026/10/11」。よく使う文面はテンプレートから選べます。" },
         { title: "確認してダウンロード", body: "プレビューがそのまま仕上がりです。透かし入りのファイルは端末に保存されます。" },
       ],
       trustTitle: "書類は端末の外に出ません",
       trustLead: "多くの透かしサイトは、身分証の画像をサーバーにアップロードします。Cachety は違います。すべての処理は、あなたのスマホやパソコンのブラウザの中で行われます。",
       trust: [
         { title: "端末の中で処理", body: "ファイルは端末のメモリの中にだけあります。タブを閉じれば、すべて消えます。" },
-        { title: "しくみで送信を禁止", body: "このページは、ブラウザが他のサイトへデータを送ることを禁じています。万一不具合があっても、ファイルは外に出られません。" },
+        { title: "外部への送信をブロック", body: "このページの設定で、ブラウザから他のサイトへのデータ送信を禁止しています。万一不具合があっても、ファイルが外に出ることはありません。" },
         { title: "登録なし・追跡なし", body: "会員登録も、追跡クッキーも、アクセス解析も、広告配信ネットワークもありません。" },
         { title: "オープンソースで検証可能", body: "コードは公開されています。誰でも読んで確かめられ、自分でサイトを運用することもできます。" },
       ],
@@ -562,7 +562,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       faq: [
         {
           q: "ファイルはサーバーに送られますか？",
-          a: "いいえ、一切送られません。そもそもこのサイトには、ファイルを受け取るサーバーがありません。処理はすべてブラウザが行い、このページは他のサイトとの通信をしくみの上で禁じています。機内モードテストで 10 秒で確かめられます。",
+          a: "いいえ、一切送られません。そもそもこのサイトには、ファイルを受け取るサーバーがありません。処理はすべてブラウザの中で行われ、このページの設定で他のサイトとの通信も禁止しています。機内モードテストなら 10 秒で確かめられます。",
         },
         {
           q: "本当に無料ですか？",
@@ -723,9 +723,9 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       nameShort: "cachet（印章）+ cacher（隐藏）",
     },
     hero: {
-      title: "给证件加水印，文件不发往任何地方",
+      title: "给证件加水印，文件全程不上传",
       lead: "身份证、户口本、工资条、银行流水：几秒钟就能加上水印。从头到尾，文件都只留在您自己的设备上。",
-      pills: ["免费", "无需注册", "不上传", "法国制作"],
+      pills: ["免费", "无需注册", "不上传", "法国出品"],
     },
     landing: {
       howTitle: "使用方法",
@@ -738,7 +738,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       trustLead: "很多在线加水印网站会把您的身份证上传到它们的服务器。Cachety 不会：所有处理都由您手机或电脑上的浏览器完成。",
       trust: [
         { title: "在本机处理", body: "文件只存在于设备内存中。关闭页面，一切随之清除。" },
-        { title: "从机制上禁止外传", body: "页面禁止浏览器向任何其他网站发送数据。即使出了问题，文件也传不出去。" },
+        { title: "技术上杜绝外传", body: "页面禁止浏览器向任何其他网站发送数据。即使出了问题，文件也传不出去。" },
         { title: "无需注册，没有跟踪", body: "不用注册，没有跟踪 Cookie，不做访问统计，也不接入广告联盟。" },
         { title: "开源，可验证", body: "代码完全公开。任何人都可以查看、核实，甚至自己部署一份。" },
       ],
@@ -746,7 +746,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       airplaneBody: "先打开本页，然后断网（开启飞行模式）。再拖入一个文件：Cachety 照常工作。这就证明没有任何东西经过互联网。",
       featuresTitle: "保护复印件所需的功能，一应俱全",
       features: [
-        { title: "整页水印", body: "斜向重复铺满，并融入图像本身：仅仅编辑 PDF 是删不掉的。" },
+        { title: "整页水印", body: "斜向重复铺满整页，直接融进图像，单靠编辑 PDF 删不掉。" },
         { title: "遮盖信息（打码）", body: "遮住银行卡号、身份证号或照片。内容会被真正删除，而不只是盖住。" },
         { title: "可追溯副本", body: "每份副本都带有日期和唯一编号：一旦外流，就知道是从哪里流出的。" },
         { title: "每个接收方一个版本", body: "给每家中介、每家银行各生成一份专属版本，一次下载。" },
@@ -755,8 +755,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         { title: "控制文件大小", body: "可限制在每个文件 1、2、5 或 10 MB 以内，适合有上传限制的网站。" },
         { title: "手机也能用", body: "支持 iPhone 和安卓，包括 HEIC 照片。还能像 App 一样添加到主屏幕。" },
       ],
-      originTitle: "免费、开源、法国制作",
-      originBody: "Cachety 是免费的开源软件（AGPL 许可）。代码向所有人公开，并将一直如此。它延续了法国开源项目 Filigrane Local 和 Filigraneur 的工作。",
+      originTitle: "免费、开源、法国出品",
+      originBody: "Cachety 是免费的开源软件（AGPL 许可）。代码向所有人公开，并将一直如此。它是在法国开源项目 Filigrane Local 和 Filigraneur 的基础上发展而来的。",
       originBy: "设计与维护：",
       supportTitle: "支持 Cachety",
       supportBody: "Cachety 免费，并将一直免费。但开发需要时间，域名和开发工具也需要费用。如果 Cachety 帮到了您，一笔小小的捐助能让它继续下去。",
@@ -845,12 +845,12 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
           items: [
             "飞行模式测试：打开网站后断网，再给文件加水印，一切照常。",
             "源代码公开：任何人都能查看，每次修改都有自动测试确认数据无法外传。",
-            "给好奇的朋友：本页的安全策略（CSP）禁止浏览器连接任何其他网站。",
+            "懂技术的朋友可以查看：本页的安全策略（CSP）禁止浏览器连接任何其他网站。",
             "谁都不想信任？您可以在自己的电脑或服务器上运行这个网站。",
           ],
         },
         {
-          title: "细致保护您的复印件",
+          title: "对复印件的更多保护",
           items: [
             "遮盖的区域会从文件中真正删除，而不是盖上一个方块。",
             "隐藏文字、元数据和照片的 GPS 位置都会被清除。",
@@ -904,7 +904,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         def: "源自法语 cachet（为文件作证的印章）与 cacher（隐藏）。给分享的内容盖上印，把其余的遮起来。",
       },
       support: "支持本项目",
-      madeIn: "法国制作",
+      madeIn: "法国出品",
       by: "作者：",
       basedOn: "基于",
       inspiredBy: "其灵感来自",

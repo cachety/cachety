@@ -100,7 +100,7 @@ export const PRIVACY_META: Record<Lang, PageMeta> = {
   en: {
     title: `Privacy & security: your files stay with you | ${BRAND}`,
     description:
-      "How Cachety protects your documents: processed in your browser, never uploaded, no account, no tracking cookies. Explained simply, and verifiable.",
+      "How Cachety protects your documents: processed in your browser, never uploaded, no account, no tracking cookies. Explained simply, and easy to check.",
   },
   ja: {
     title: `プライバシーと安全性：ファイルは手元から出ません | ${BRAND}`,
@@ -126,7 +126,7 @@ export const GUIDES_META: Record<Lang, PageMeta> = {
   en: {
     title: `Guides: watermark and protect your documents | ${BRAND}`,
     description:
-      "Step-by-step guides to watermark ID for a letting agent, a passport copy or bank statements, redact a PDF, or password-protect it, all for free.",
+      "Step-by-step guides to watermark your ID for a letting agent, a passport copy or bank statements, redact a PDF, or password-protect it, all for free.",
   },
   ja: {
     title: `ガイド：書類に透かしを入れて身を守る | ${BRAND}`,
@@ -199,7 +199,7 @@ export const SITE_META: Record<Lang, SiteMeta> = {
     title: `${BRAND}：免费给证件和文件加水印，文件不上传`,
     ogTitle: `${BRAND}：文件不离开设备，就能加水印`,
     description:
-      "免费为身份证件和敏感文件添加水印。全部在浏览器内完成，文件绝不上传。开源软件，法国制作。",
+      "免费为身份证件和敏感文件添加水印。全部在浏览器内完成，文件绝不上传。开源软件，法国出品。",
   },
   es: META_ES.site,
   ar: META_AR.site,

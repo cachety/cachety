@@ -46,7 +46,7 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com dans votre navigateur, sur ordinateur ou sur téléphone.",
           "Déposez vos fichiers : pièce d’identité, trois dernières fiches de paie, avis d’imposition, justificatif de domicile. Vous pouvez en mettre plusieurs à la fois, en PDF ou en photo.",
-          "Choisissez le modèle « Logement » ou tapez votre texte : l’objet, le destinataire et la date, par exemple « Dossier de location – Agence Martin – 12/10/2026 ». Le bouton de date du jour vous évite de la saisir.",
+          "Choisissez le modèle « Logement » ou tapez votre texte : le motif, le destinataire et la date, par exemple « Dossier de location – Agence Martin – 12/10/2026 ». Le bouton « Ajouter la date du jour » vous évite de la saisir.",
           "Vérifiez l’aperçu : le texte doit couvrir la page sans gêner la lecture des informations utiles.",
           "Téléchargez. Si vous le souhaitez, réunissez tout en un seul PDF dans l’ordre de votre choix : c’est plus simple pour l’agence.",
         ],
@@ -72,7 +72,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         q: "Que faut-il écrire dans le filigrane ?",
-        a: "L’objet, le destinataire et la date : « Dossier de location – Agence Martin – 12/10/2026 ». Pour un particulier, mettez son nom à la place de l’agence.",
+        a: "Le motif, le destinataire et la date : « Dossier de location – Agence Martin – 12/10/2026 ». Pour un particulier, mettez son nom à la place de l’agence.",
       },
       {
         q: "Le propriétaire peut-il enlever le filigrane ?",
@@ -111,7 +111,7 @@ export const GUIDES_FR: Guide[] = [
       {
         type: "list",
         items: [
-          "L’objet : pourquoi vous envoyez cette copie (location, ouverture de compte, inscription).",
+          "Le motif : pourquoi vous envoyez cette copie (location, ouverture de compte, inscription).",
           "Le destinataire : le nom de l’organisme ou de la personne.",
           "La date du jour : elle montre que la copie a été faite pour une démarche précise, à un moment précis.",
         ],
@@ -186,7 +186,7 @@ export const GUIDES_FR: Guide[] = [
       { type: "h2", text: "Filigraner : toujours" },
       {
         type: "p",
-        text: "Chaque fois que vous envoyez l’un de ces documents, ajoutez un filigrane qui précise l’objet, le destinataire et la date : « Dossier de prêt – Banque Durand – 12/10/2026 » ou « Dossier de location – M. Petit – 12/10/2026 ». Le destinataire peut tout lire, mais la copie est clairement liée à une démarche.",
+        text: "Chaque fois que vous envoyez l’un de ces documents, ajoutez un filigrane qui précise le motif, le destinataire et la date : « Dossier de prêt – Banque Durand – 12/10/2026 » ou « Dossier de location – M. Petit – 12/10/2026 ». Le destinataire peut tout lire, mais la copie est clairement liée à une démarche.",
       },
       { type: "h2", text: "Masquer : seulement ce qui n’est pas demandé" },
       {
@@ -238,7 +238,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         q: "Puis-je protéger le PDF par un mot de passe ?",
-        a: "Oui, c’est une option. Le PDF est alors protégé par un chiffrement fort (AES-256), le même niveau que les banques. Envoyez le mot de passe par un autre moyen que le fichier, par SMS par exemple.",
+        a: "Oui, c’est une option. Le PDF est alors protégé par un chiffrement fort (AES-256), celui qu’utilisent les banques. Envoyez le mot de passe par un autre moyen que le fichier, par SMS par exemple.",
       },
     ],
     updated: UPDATED,
@@ -259,7 +259,7 @@ export const GUIDES_FR: Guide[] = [
       { type: "h2", text: "Le piège du rectangle noir" },
       {
         type: "p",
-        text: "Beaucoup de gens ouvrent leur PDF, dessinent un rectangle noir sur le numéro à cacher, et enregistrent. À l’écran, tout semble parfait. Pourtant, dans bien des cas, le texte est toujours là, simplement recouvert. Il suffit de le sélectionner, de faire copier-coller, ou de supprimer le rectangle, pour le voir réapparaître.",
+        text: "Beaucoup de gens ouvrent leur PDF, dessinent un rectangle noir sur le numéro à cacher, et enregistrent. À l’écran, tout semble parfait. Pourtant, dans bien des cas, le texte est toujours là, simplement recouvert. Il suffit de le sélectionner et de le copier-coller, ou de supprimer le rectangle, pour le voir réapparaître.",
       },
       {
         type: "warning",
@@ -352,7 +352,7 @@ export const GUIDES_FR: Guide[] = [
         type: "steps",
         items: [
           "Ouvrez cachety.com dans votre navigateur.",
-          "Touchez la zone d’ajout et choisissez vos fichiers : une photo de votre galerie ou un PDF enregistré sur le téléphone.",
+          "Touchez la zone de dépôt et choisissez vos fichiers : une photo de votre galerie ou un PDF enregistré sur le téléphone.",
           "Tapez votre texte, par exemple « Inscription club de sport – Club Leroy – 12/10/2026 », ou choisissez un modèle et ajoutez la date du jour.",
           "Vérifiez l’aperçu en zoomant si besoin.",
           "Téléchargez le résultat, puis envoyez-le par mail ou par messagerie.",
@@ -426,7 +426,7 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Vérifiez à qui vous envoyez : une vraie agence, un vrai employeur, un organisme que vous connaissez.",
           "N’envoyez que ce qui est demandé, et masquez ce qui ne sert pas, comme le numéro de sécurité sociale.",
-          "Ajoutez toujours un filigrane : objet, destinataire, date.",
+          "Ajoutez toujours un filigrane : motif, destinataire, date.",
           "Faites une copie différente pour chaque destinataire, pour savoir d’où viendrait une fuite.",
         ],
       },
@@ -441,7 +441,7 @@ export const GUIDES_FR: Guide[] = [
           "Ouvrez cachety.com.",
           "Déposez vos documents : carte d’identité, passeport, justificatifs, en PDF ou en photo.",
           "Tapez votre texte, par exemple « Candidature – Société Garnier – 12/10/2026 ».",
-          "Activez la copie traçable : chaque copie reçoit la date et une référence unique, et vous gardez un journal de vos envois. Ce journal reste chez vous, il n’est enregistré nulle part.",
+          "Activez la copie traçable : chaque copie reçoit la date et une référence unique, et vous gardez un registre de vos envois. Ce registre reste chez vous, il n’est enregistré nulle part.",
           "Vérifiez l’aperçu, puis téléchargez et envoyez.",
         ],
       },
@@ -477,7 +477,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         q: "Comment savoir qui a laissé fuiter ma copie ?",
-        a: "Si chaque copie porte le nom du destinataire, ou une référence unique avec la copie traçable, il suffit de lire le filigrane de la copie retrouvée et de la comparer à votre journal d’envois.",
+        a: "Si chaque copie porte le nom du destinataire, ou une référence unique avec la copie traçable, il suffit de lire le filigrane de la copie retrouvée et de la comparer à votre registre des envois.",
       },
       {
         q: "Où porter plainte pour usurpation d’identité ?",

@@ -67,7 +67,7 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         q: "¿Cachety es gratis de verdad?",
-        a: "Sí. Es gratis, sin cuenta y sin rastreo. Es un software de código abierto hecho en Francia por Amir Moradi.",
+        a: "Sí. Es gratis, sin cuenta y sin rastreo. Es software de código abierto hecho en Francia por Amir Moradi.",
       },
       {
         q: "¿La inmobiliaria puede quitar la marca de agua?",
@@ -133,7 +133,7 @@ export const GUIDES_ES: Guide[] = [
     faq: [
       {
         q: "¿Es seguro enviar una foto del DNI por correo o WhatsApp?",
-        a: "Es habitual, pero hazlo solo con quien hayas comprobado que es de fiar, y solo cuando de verdad lo necesite. Ponle antes una marca de agua para que la copia quede atada a ese único uso.",
+        a: "Es habitual, pero hazlo solo con quien hayas comprobado que es de fiar, y solo cuando de verdad lo necesite. Ponle antes una marca de agua para que la copia quede vinculada a ese único uso.",
       },
       {
         q: "¿La marca de agua hará ilegible mi DNI?",
@@ -267,10 +267,10 @@ export const GUIDES_ES: Guide[] = [
           "La firma, cuando la copia es solo informativa.",
         ],
       },
-      { type: "h2", text: "Privado desde el diseño" },
+      { type: "h2", text: "Pensado para la privacidad" },
       {
         type: "p",
-        text: "Muchas webs gratuitas para tachar PDF te piden subir el documento a sus servidores. Es raro hacer eso justo con la información que quieres proteger. Cachety funciona al revés: tu archivo se queda en tu dispositivo, no se envía nada, y la página sigue funcionando en modo avión una vez cargada.",
+        text: "Muchas webs gratuitas para tachar PDF te piden subir el documento a sus servidores. Es una contradicción hacerlo justo con la información que quieres proteger. Cachety funciona al revés: tu archivo se queda en tu dispositivo, no se envía nada, y la página sigue funcionando en modo avión una vez cargada.",
       },
       {
         type: "warning",
@@ -311,7 +311,7 @@ export const GUIDES_ES: Guide[] = [
       { type: "h2", text: "Hazlo donde ya están tus fotos" },
       {
         type: "p",
-        text: "Tus fotos de documentos viven en tu móvil, así que tiene sentido ponerles la marca de agua ahí mismo. No hace falta enviártelas por correo, pasarlas al ordenador ni dejar copias sueltas por ahí. Cachety funciona en el navegador del móvil, como Safari o Chrome. Tus fotos se procesan en el propio teléfono y nunca se suben. Es la misma herramienta que en el ordenador, con las mismas funciones: plantillas, zonas ocultas, varios destinatarios y contraseña opcional.",
+        text: "Tus fotos de documentos viven en tu móvil, así que tiene sentido ponerles la marca de agua ahí mismo. No hace falta enviártelas por correo, pasarlas a otro equipo ni dejar copias sueltas por ahí. Cachety funciona en el navegador del móvil, como Safari o Chrome. Tus fotos se procesan en el propio teléfono y nunca se suben. Es la misma herramienta que en un PC, con las mismas funciones: plantillas, zonas ocultas, varios destinatarios y contraseña opcional.",
       },
       { type: "h2", text: "Paso a paso" },
       {
@@ -407,7 +407,7 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en el navegador de tu celular o de tu computadora.",
           "Agrega la foto de tu INE, de frente y de reverso. Las fotos de iPhone (HEIC) también funcionan.",
-          "Escribe el texto de la marca de agua y toca el botón para añadir la fecha de hoy.",
+          "Escribe el texto de la marca de agua y toca el botón para agregar la fecha de hoy.",
           "Si no hace falta mostrar tu domicilio o alguna clave, dibuja un rectángulo para ocultarla.",
           "Revisa la vista previa y descarga la copia. Envía esa, nunca la foto original.",
         ],

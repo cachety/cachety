@@ -64,7 +64,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "One copy per recipient",
-        cachety: "Yes, up to 20 recipients in one go, each with their own name on it.",
+        cachety: "Yes, up to 20 recipients at once, each with their own name on it.",
         other: "Not offered in the watermark tool.",
         edge: "cachety",
       },
@@ -75,7 +75,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "Other PDF tools",
-        cachety: "Watermark, mask, combine, password and size only.",
+        cachety: "Watermark, masking, combining, password and file size only.",
         other: "A large range: merge, split, compress, convert, sign and more.",
         edge: "other",
       },
@@ -102,7 +102,7 @@ export const COMPARISONS_EN: Comparison[] = [
           "Your file never leaves your device, so there is no upload and no retention period to think about.",
           "The watermark is blended into each page, so it cannot simply be deleted by editing the PDF.",
           "You can black out details such as an account number or a photo in the same step.",
-          "You can make one copy per letting agent, employer or bank, each with its own name, in one go.",
+          "In a single step, you can make one copy per letting agent, employer or bank, each with its own name.",
           "Hidden data like metadata, GPS location in photos and the text layer is removed from the result.",
         ],
       },
@@ -118,7 +118,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         type: "p",
-        text: "One honest point: Cachety turns every page into an image, so the text in the result can no longer be selected or searched. That is deliberate, to make the watermark hard to remove, but it does mean the file can be larger than the original.",
+        text: "To be fair: Cachety turns every page into an image, so the text in the result can no longer be selected or searched. That is deliberate, to make the watermark hard to remove, but it does mean the file can be larger than the original.",
       },
     ],
     chooseOther: [
@@ -130,7 +130,7 @@ export const COMPARISONS_EN: Comparison[] = [
       "You are watermarking a passport, driving licence, payslip or bank statement and would rather it never left your device.",
       "You want to send a different, named copy to each letting agent or employer.",
       "You want to black out details and add a password to the PDF in the same step.",
-      "You want a free tool with no ads, no account and nothing to install.",
+      "You want a free tool with no ad networks, no account and nothing to install.",
     ],
     faq: [
       {
@@ -225,7 +225,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "One copy per recipient",
-        cachety: "Yes, up to 20 named copies in one go.",
+        cachety: "Yes, up to 20 named copies at once.",
         other: "Not offered in the watermark tool.",
         edge: "cachety",
       },
@@ -325,7 +325,7 @@ export const COMPARISONS_EN: Comparison[] = [
     description:
       "Adobe's free online tools do not include a watermark tool; it is part of paid Acrobat. Cachety watermarks PDFs free, on your own device.",
     intro:
-      "Adobe Acrobat is the reference for PDF editing, and it can add watermarks. But watermarking is not among Adobe's free online tools: you need a paid Acrobat subscription. Cachety is a free way to watermark an ID document without leaving your browser.",
+      "Adobe Acrobat is the industry standard for PDF editing, and it can add watermarks. But watermarking is not among Adobe's free online tools: you need a paid Acrobat subscription. Cachety is a free way to watermark an ID document without leaving your browser.",
     verdict:
       "If you already pay for Acrobat, or you need professional PDF editing, Acrobat is the stronger tool, with text and image watermarks and many other features. If you just want to watermark a passport or payslip before sending it, Cachety does that for free, with no account, and your file stays on your device.",
     table: [
@@ -371,7 +371,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "Other PDF features",
-        cachety: "Watermark, mask, combine, password and size only.",
+        cachety: "Watermark, masking, combining, password and file size only.",
         other: "Full PDF editing, conversion, OCR, forms, e-signatures and much more.",
         edge: "other",
       },
@@ -469,7 +469,7 @@ export const COMPARISONS_EN: Comparison[] = [
     intro:
       "PDF24 is a free, generous set of PDF tools from a Berlin company, with no limits and no registration. Its online watermark tool runs on PDF24's servers in Germany. Cachety is also free, but your file never leaves your device.",
     verdict:
-      "PDF24 is a strong free toolbox, and its Windows app, PDF24 Creator, keeps files on your PC. For a quick watermark on an ID document from a phone or a Mac, Cachety avoids the upload and has no adverts or advertising trackers on the page.",
+      "PDF24 is a strong free toolbox, and its Windows app, PDF24 Creator, keeps files on your PC. For a quick watermark on an ID document from a phone or a Mac, Cachety avoids the upload and has no ad networks or advertising trackers on the page.",
     table: [
       {
         criterion: "Where your file is processed",
@@ -511,13 +511,13 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "One copy per recipient",
-        cachety: "Yes, up to 20 named copies in one go.",
+        cachety: "Yes, up to 20 named copies at once.",
         other: "Not offered in the watermark tool.",
         edge: "cachety",
       },
       {
         criterion: "Other PDF tools",
-        cachety: "Watermark, mask, combine, password and size only.",
+        cachety: "Watermark, masking, combining, password and file size only.",
         other: "Dozens of free tools, plus a free desktop app for Windows.",
         edge: "other",
       },
@@ -546,7 +546,7 @@ export const COMPARISONS_EN: Comparison[] = [
         type: "list",
         items: [
           "Works on your device on any system, including iPhone, Android and Mac, with nothing to install.",
-          "No adverts and no advertising trackers on the page.",
+          "No ad networks and no advertising trackers on the page.",
           "Watermark, masking, password and hidden data removal in a single step.",
           "One named copy per recipient, handy when you apply to several letting agents.",
         ],
@@ -569,8 +569,8 @@ export const COMPARISONS_EN: Comparison[] = [
     ],
     chooseCachety: [
       "You want to watermark an ID document on a phone or a Mac without uploading it.",
-      "You prefer a page with no adverts or advertising trackers.",
-      "You need masking, a password and one copy per recipient in one go.",
+      "You prefer a page with no ad networks or advertising trackers.",
+      "You need masking, a password and one copy per recipient in a single tool.",
     ],
     faq: [
       {
@@ -637,7 +637,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "Several versions, one per recipient",
-        cachety: "Yes, up to 20 recipients in one go.",
+        cachety: "Yes, up to 20 recipients at once.",
         other: "Yes, by entering several watermark texts, one per line.",
       },
       {
@@ -664,7 +664,7 @@ export const COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "Other PDF tools",
-        cachety: "Watermark, mask, combine, password and size only.",
+        cachety: "Watermark, masking, combining, password and file size only.",
         other: "A full online and desktop PDF editor.",
         edge: "other",
       },
@@ -673,7 +673,7 @@ export const COMPARISONS_EN: Comparison[] = [
       { type: "h2", text: "Uploading versus staying on your device" },
       {
         type: "p",
-        text: "Sejda's website uploads your file over an encrypted connection, processes it, and deletes it automatically after two hours. That is a reasonable policy. Sejda also sells Sejda Desktop, which it says works without your files ever leaving your computer, which is a good option if you install software.",
+        text: "Sejda's website uploads your file over an encrypted connection, processes it, and deletes it automatically after two hours. That is a reasonable policy. Sejda also sells Sejda Desktop, which it says works without your files ever leaving your computer: a good option if you are happy to install software.",
       },
       {
         type: "p",

@@ -35,14 +35,14 @@ export const SITE_ES: SiteCopy = {
     ],
     trustTitle: "Tus documentos nunca salen de tu dispositivo",
     trustLead:
-      "La mayoría de las webs de marcas de agua suben tu documento de identidad a sus servidores. Cachety no: todo el trabajo lo hace tu navegador, en tu propio móvil u ordenador.",
+      "La mayoría de las webs de marcas de agua suben tu documento de identidad a sus servidores. Cachety no: todo el trabajo lo hace tu navegador, en tu propio móvil o PC.",
     trust: [
       {
         title: "Procesado en tu dispositivo",
         body: "Tus archivos se quedan en la memoria de tu dispositivo. Cierra la pestaña y todo desaparece.",
       },
       {
-        title: "Bloqueado desde el diseño",
+        title: "Protección integrada",
         body: "La página prohíbe a tu navegador enviar datos a cualquier otra web. Aunque algo fallara, tus archivos no podrían salir.",
       },
       {
@@ -94,12 +94,12 @@ export const SITE_ES: SiteCopy = {
     ],
     originTitle: "Gratis, de código abierto, hecho en Francia",
     originBody:
-      "Cachety es un software libre y gratuito (licencia AGPL). Su código está abierto a todos y lo seguirá estando. Se basa en Filigrane Local y Filigraneur, dos proyectos franceses de código abierto.",
+      "Cachety es software libre y gratuito (licencia AGPL). Su código está abierto a todos y lo seguirá estando. Se basa en Filigrane Local y Filigraneur, dos proyectos franceses de código abierto.",
     originBy: "Creado y mantenido por",
     supportTitle: "Apoya a Cachety",
     supportBody:
-      "Cachety es gratis y lo seguirá siendo. Pero lleva tiempo, y el dominio y las herramientas de desarrollo cuestan dinero. Si Cachety te ha sido útil, un pequeño donativo ayuda a mantenerlo.",
-    supportCta: "Hacer un donativo",
+      "Cachety es gratis y lo seguirá siendo. Pero lleva tiempo, y el dominio y las herramientas de desarrollo cuestan dinero. Si Cachety te ha sido útil, una pequeña donación ayuda a mantenerlo.",
+    supportCta: "Hacer una donación",
     supportNote: "Opcional. El pago se hace en GitHub Sponsors, fuera de este sitio.",
     faqTitle: "Preguntas frecuentes",
     faq: [
@@ -109,7 +109,7 @@ export const SITE_ES: SiteCopy = {
       },
       {
         q: "¿De verdad es gratis? ¿Dónde está la trampa?",
-        a: "No la hay: sin cuenta, sin versión de pago, sin recoger datos. Como nada se procesa en un servidor, alojar el sitio casi no cuesta nada, y el código abierto garantiza que seguirá siendo gratis. Para financiar su desarrollo, Cachety cuenta con donativos voluntarios, y quizá algún día muestre unos pocos enlaces patrocinados elegidos a mano (herramientas de cifrado, software libre…). Nunca anuncios que te rastreen, y nunca nada basado en tus documentos.",
+        a: "No la hay: sin cuenta, sin versión de pago, sin recoger datos. Como nada se procesa en un servidor, alojar el sitio casi no cuesta nada, y el código abierto garantiza que seguirá siendo gratis. Para financiar su desarrollo, Cachety cuenta con donaciones voluntarias, y quizá algún día muestre unos pocos enlaces patrocinados elegidos a mano (herramientas de cifrado, software libre…). Nunca anuncios que te rastreen, y nunca nada basado en tus documentos.",
       },
       {
         q: "¿Qué archivos puedo marcar?",
@@ -117,7 +117,7 @@ export const SITE_ES: SiteCopy = {
       },
       {
         q: "¿Se puede quitar la marca de agua?",
-        a: "No editando el PDF: la marca de agua forma parte de la imagen de cada página. Siendo sinceros, nada impide que alguien fotografíe o retoque un documento. Una marca de agua disuade de reutilizarlo y te permite saber de dónde vino una filtración.",
+        a: "No con un editor de PDF: la marca de agua forma parte de la imagen de cada página. Siendo sinceros, nada impide que alguien fotografíe o retoque un documento. Una marca de agua disuade de reutilizarlo y te permite saber de dónde vino una filtración.",
       },
       {
         q: "¿Qué escribo en la marca de agua?",
@@ -175,7 +175,7 @@ export const SITE_ES: SiteCopy = {
         title: "Alojamiento y financiación",
         paras: [
           "Las páginas del sitio las sirve Cloudflare. Como cualquier proveedor de alojamiento, ve técnicamente las direcciones IP de los visitantes y las páginas que piden, para poder servirlas. Nunca ve tus documentos, porque nunca se envían.",
-          "Los donativos pasan por GitHub Sponsors, en la propia web de GitHub y bajo su propia política de privacidad. Cachety nunca ve tus datos de pago, y sus páginas no contienen ningún formulario ni script de pago.",
+          "Las donaciones pasan por GitHub Sponsors, en la propia web de GitHub y bajo su propia política de privacidad. Cachety nunca ve tus datos de pago, y sus páginas no contienen ningún formulario ni script de pago.",
           "Hoy no hay anuncios en Cachety. Para que el proyecto siga adelante, en el futuro podrían aparecer algunos enlaces patrocinados, elegidos a mano y fieles a su espíritu: herramientas de cifrado, software libre, envío seguro de documentos. Estarán claramente señalados, los servirá el propio Cachety sin redes publicitarias ni scripts de terceros, y nunca dependerán de tus documentos. La política de seguridad de la página seguirá prohibiendo cualquier conexión a otra web.",
         ],
       },
@@ -185,11 +185,11 @@ export const SITE_ES: SiteCopy = {
           "La prueba del modo avión: abre el sitio, desconecta internet y pon una marca de agua a un documento. Todo funciona.",
           "El código fuente es público: cualquiera puede leerlo, y unas pruebas automáticas comprueban en cada cambio que ningún dato puede salir.",
           "Para curiosos: la política de seguridad de la página (CSP) prohíbe al navegador conectarse a cualquier otra web.",
-          "¿Prefieres no fiarte de nadie? Puedes ejecutar el sitio en tu propio ordenador o servidor.",
+          "¿Prefieres no fiarte de nadie? Puedes ejecutar el sitio en tu propio equipo o servidor.",
         ],
       },
       {
-        title: "Protección cuidadosa de tus copias",
+        title: "Tus copias, bien protegidas",
         items: [
           "Las zonas ocultas se eliminan de verdad del archivo, no solo se tapan con un rectángulo.",
           "Se eliminan el texto oculto, los metadatos y la ubicación GPS de las fotos.",
@@ -224,8 +224,8 @@ export const SITE_ES: SiteCopy = {
     verdictTitle: "En resumen",
     tableTitle: "Cara a cara",
     criterion: "Criterio",
-    edgeCachety: "Ventaja Cachety",
-    edgeOther: (n: string) => `Ventaja ${n}`,
+    edgeCachety: "Ventaja de Cachety",
+    edgeOther: (n: string) => `Ventaja de ${n}`,
     chooseOther: (n: string) => `Cuándo ${n} es mejor opción`,
     chooseCachety: "Cuándo Cachety es mejor opción",
     sourcesTitle: "Fuentes",

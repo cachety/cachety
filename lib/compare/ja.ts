@@ -658,7 +658,7 @@ export const COMPARISONS_JA: Comparison[] = [
       AIRPLANE_TIP,
       {
         type: "p",
-        text: "透かしの文字には「本人確認専用」「提出先」「日付」を入れるのがおすすめです。Cachetyには「賃貸の申込み用」などのテンプレートと、今日の日付を入れるボタンがあります。",
+        text: "透かしの文字には「本人確認専用」「提出先」「日付」を入れるのがおすすめです。Cachetyには「賃貸申込」などのテンプレートと、今日の日付を入れるボタンがあります。",
       },
       CACHETY_LIMITS,
       ...HOW_TO,

@@ -31,7 +31,7 @@ const C = {
 const HOW_TO: { type: "steps"; items: string[] } = {
   type: "steps",
   items: [
-    "Abre cachety.com en el navegador del móvil o del ordenador. No hay que instalar nada.",
+    "Abre cachety.com en el navegador del móvil o del PC. No hay que instalar nada.",
     "Suelta tu DNI, NIE, pasaporte o nómina en la página. Puedes añadir varios archivos a la vez.",
     "Escribe para qué es la copia, para quién y la fecha, por ejemplo: Solo para alquiler – Inmobiliaria Sol – 11/10/2026.",
     "Si quieres, tapa lo que no necesitan ver y añade una contraseña.",
@@ -56,7 +56,7 @@ export const COMPARISONS_ES: Comparison[] = [
     description:
       "iLovePDF o Cachety para poner marca de agua a tu DNI: dónde va tu archivo, cuánto tiempo se guarda y cuándo conviene cada uno. Comparativa clara.",
     intro:
-      "iLovePDF, una empresa de Barcelona, es probablemente la web de PDF más usada en español. Su herramienta de marca de agua funciona bien, pero tu archivo se sube a sus servidores. Cachety hace la marca de agua sin que el documento salga de tu móvil u ordenador.",
+      "iLovePDF, una empresa de Barcelona, es probablemente la web de PDF más usada en español. Su herramienta de marca de agua funciona bien, pero tu archivo se sube a sus servidores. Cachety hace la marca de agua sin que el documento salga de tu móvil o PC.",
     verdict:
       "Para un documento de identidad, la diferencia clave es dónde está tu archivo mientras se procesa. Con iLovePDF se sube a sus servidores y se borra en un plazo de hasta dos horas, según su política. Con Cachety no sale de tu dispositivo. Si necesitas un logo como marca de agua o muchas otras herramientas PDF, iLovePDF es más completo.",
     table: [
@@ -75,7 +75,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { type: "h2", text: "La diferencia que importa con un DNI" },
       {
         type: "p",
-        text: "Cuando usas iLovePDF, tu archivo viaja por internet hasta sus servidores, se procesa allí y vuelve a ti. Durante un rato, una copia de tu DNI está en un ordenador de otra empresa, bajo sus reglas. iLovePDF explica que protege esos archivos y los borra en un plazo de hasta dos horas. Con Cachety, ese viaje no existe: todo pasa dentro de tu navegador.",
+        text: "Cuando usas iLovePDF, tu archivo viaja por internet hasta sus servidores, se procesa allí y vuelve a ti. Durante un rato, una copia de tu DNI está en un servidor de otra empresa, bajo sus reglas. iLovePDF explica que protege esos archivos y los borra en un plazo de hasta dos horas. Con Cachety, ese viaje no existe: todo pasa dentro de tu navegador.",
       },
       {
         type: "p",
@@ -87,7 +87,7 @@ export const COMPARISONS_ES: Comparison[] = [
         items: [
           "Puedes usar una imagen o un logo como marca de agua.",
           "Tiene decenas de herramientas: comprimir, convertir a Word, firmar, OCR, organizar páginas.",
-          "Tiene apps para móvil y una app de escritorio para Windows y Mac que procesa los archivos en tu ordenador.",
+          "Tiene apps para móvil y una app de escritorio para Windows y Mac que procesa los archivos en tu equipo.",
           "Se conecta con Google Drive y Dropbox.",
         ],
       },
@@ -118,7 +118,7 @@ export const COMPARISONS_ES: Comparison[] = [
     faq: [
       {
         q: "¿Es seguro usar iLovePDF para el DNI?",
-        a: "iLovePDF cifra la subida y dice que borra los archivos en un plazo de hasta dos horas. Aun así, tu DNI pasa un tiempo en sus servidores. Si prefieres que no salga de tu móvil u ordenador, usa una herramienta que trabaje en el navegador, como Cachety.",
+        a: "iLovePDF cifra la subida y dice que borra los archivos en un plazo de hasta dos horas. Aun así, tu DNI pasa un tiempo en sus servidores. Si prefieres que no salga de tu móvil o PC, usa una herramienta que trabaje en el navegador, como Cachety.",
       },
       {
         q: "¿Cuánto tiempo guarda iLovePDF mis archivos?",
@@ -175,11 +175,11 @@ export const COMPARISONS_ES: Comparison[] = [
       { type: "h2", text: "En el navegador no siempre quiere decir en tu dispositivo" },
       {
         type: "p",
-        text: "Smallpdf anuncia que funciona desde el navegador, y es verdad: no tienes que instalar nada. Pero su propia página de marca de agua explica que los archivos se suben con cifrado TLS y se borran de sus servidores tras una hora. Es decir, durante ese tiempo una copia de tu documento está en un ordenador de otra empresa.",
+        text: "Smallpdf anuncia que funciona desde el navegador, y es verdad: no tienes que instalar nada. Pero su propia página de marca de agua explica que los archivos se suben con cifrado TLS y se borran de sus servidores tras una hora. Es decir, durante ese tiempo una copia de tu documento está en un servidor de otra empresa.",
       },
       {
         type: "p",
-        text: "Cachety también funciona desde el navegador, pero el trabajo se hace en tu móvil u ordenador. No hay ningún servidor que reciba tus archivos, y puedes comprobarlo con el modo avión.",
+        text: "Cachety también funciona desde el navegador, pero el trabajo se hace en tu móvil o PC. No hay ningún servidor que reciba tus archivos, y puedes comprobarlo con el modo avión.",
       },
       { type: "h2", text: "Lo que hace bien Smallpdf" },
       {
@@ -305,7 +305,7 @@ export const COMPARISONS_ES: Comparison[] = [
       "Quieres colocar la marca de agua en una posición concreta de la página.",
     ],
     chooseCachety: [
-      "Quieres marcar tu DNI desde el móvil o desde cualquier ordenador sin subirlo a ningún servidor.",
+      "Quieres marcar tu DNI desde el móvil o desde cualquier PC sin subirlo a ningún servidor.",
       "Prefieres una web sin publicidad ni rastreadores de anuncios.",
       "Necesitas tapar datos y crear una copia por destinatario en un solo paso.",
     ],
@@ -352,7 +352,7 @@ export const COMPARISONS_ES: Comparison[] = [
     verdict:
       "Sejda es más flexible en el diseño de la marca de agua: admite imágenes, posiciones exactas y también puede crear una versión por destinatario. Su versión web, eso sí, sube tus archivos y los borra a las dos horas. Cachety no sube nada y añade tapar datos y contraseña en el mismo paso.",
     table: [
-      { criterion: "Dónde se procesa el archivo", cachety: C.where, other: "Sejda Web: en sus servidores, tras una subida cifrada. Sejda Desktop: en tu ordenador.", edge: "cachety" },
+      { criterion: "Dónde se procesa el archivo", cachety: C.where, other: "Sejda Web: en sus servidores, tras una subida cifrada. Sejda Desktop: en tu equipo.", edge: "cachety" },
       { criterion: "Cuánto tiempo se guarda", cachety: C.retention, other: "Su web dice que se borra automáticamente a las 2 horas, sin copias de seguridad según su política.", edge: "cachety" },
       { criterion: "Precio y límites", cachety: C.price, other: "Gratis hasta 200 páginas o 50 MB y 3 tareas por hora; planes de pago para más." },
       { criterion: "Rastreo", cachety: C.ads, other: "Su política menciona cookies de socios de analítica y de publicidad, con opción de rechazar la analítica.", edge: "cachety" },
@@ -367,7 +367,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { type: "h2", text: "Una herramienta muy completa, pero en la nube" },
       {
         type: "p",
-        text: "La marca de agua de Sejda permite casi todo: texto o logo, posición exacta, páginas concretas y plantillas. Para usarla en la web, el PDF se sube a sus servidores y se borra a las dos horas. Si prefieres que no salga de tu ordenador, Sejda ofrece una versión de escritorio que, según su web, tiene las mismas funciones y no envía los archivos a ninguna parte.",
+        text: "La marca de agua de Sejda permite casi todo: texto o logo, posición exacta, páginas concretas y plantillas. Para usarla en la web, el PDF se sube a sus servidores y se borra a las dos horas. Si prefieres que no salga de tu equipo, Sejda ofrece una versión de escritorio que, según su web, tiene las mismas funciones y no envía los archivos a ninguna parte.",
       },
       {
         type: "p",
@@ -379,7 +379,7 @@ export const COMPARISONS_ES: Comparison[] = [
         items: [
           "Admite logos e imágenes como marca de agua.",
           "Puedes colocar la marca de agua exactamente donde quieras.",
-          "Sejda Desktop procesa en tu ordenador, sin subir nada.",
+          "Sejda Desktop procesa en tu equipo, sin subir nada.",
           "Incluye un editor de PDF completo.",
         ],
       },
@@ -400,7 +400,7 @@ export const COMPARISONS_ES: Comparison[] = [
     chooseOther: [
       "Necesitas un logo o una imagen como marca de agua, en una posición exacta.",
       "Quieres un editor de PDF completo, en la web o en el escritorio.",
-      "Trabajas en un ordenador y prefieres Sejda Desktop para procesar en local con más opciones de diseño.",
+      "Trabajas en un PC y prefieres Sejda Desktop para procesar en local con más opciones de diseño.",
     ],
     chooseCachety: [
       "Quieres marcar documentos de identidad sin subirlos, también desde el móvil.",
@@ -418,7 +418,7 @@ export const COMPARISONS_ES: Comparison[] = [
       },
       {
         q: "¿Hay una alternativa a Sejda que no suba el PDF?",
-        a: "Sí: Sejda Desktop trabaja en tu ordenador sin subir los archivos. Cachety trabaja en tu navegador, gratis, también en el móvil.",
+        a: "Sí: Sejda Desktop trabaja en tu equipo sin subir los archivos. Cachety trabaja en tu navegador, gratis, también en el móvil.",
       },
     ],
     sources: [
@@ -447,7 +447,7 @@ export const COMPARISONS_ES: Comparison[] = [
       "Si ya pagas Acrobat y trabajas con PDF a diario, su marca de agua es muy completa: texto o imagen, por delante o por detrás de la página. Si solo quieres proteger la copia de tu DNI o de tus nóminas, Cachety lo hace gratis, sin cuenta y sin que el documento salga de tu dispositivo.",
     table: [
       { criterion: "Marca de agua gratis", cachety: "Sí, siempre gratis.", other: "No: no está entre sus herramientas online gratuitas. Hace falta Acrobat de pago.", edge: "cachety" },
-      { criterion: "Dónde se procesa el archivo", cachety: C.where, other: "Acrobat de escritorio trabaja en tu ordenador. Acrobat en la web usa la nube de Adobe." },
+      { criterion: "Dónde se procesa el archivo", cachety: C.where, other: "Acrobat de escritorio trabaja en tu equipo. Acrobat en la web usa la nube de Adobe." },
       { criterion: "Cuenta", cachety: C.account, other: "Hace falta una cuenta de Adobe con suscripción.", edge: "cachety" },
       { criterion: "Rastreo", cachety: C.ads, other: "Su política de privacidad dice que usa cookies y otras tecnologías para seguir el uso de sus servicios.", edge: "cachety" },
       { criterion: "Tipo de marca de agua", cachety: C.watermark, other: "Texto o imagen, con fuente, tamaño, color, opacidad y posición, delante o detrás de la página." },
@@ -461,7 +461,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { type: "h2", text: "La marca de agua en Adobe es de pago" },
       {
         type: "p",
-        text: "Mucha gente busca cómo poner una marca de agua con Adobe y descubre que no está entre las herramientas online gratuitas de Adobe, que sí incluyen editar, unir o proteger con contraseña. La marca de agua forma parte de Acrobat de pago, en el ordenador o en la web con suscripción.",
+        text: "Mucha gente busca cómo poner una marca de agua con Adobe y descubre que no está entre las herramientas online gratuitas de Adobe, que sí incluyen editar, unir o proteger con contraseña. La marca de agua forma parte de Acrobat de pago, en el escritorio o en la web con suscripción.",
       },
       {
         type: "p",
@@ -556,7 +556,7 @@ export const COMPARISONS_ES: Comparison[] = [
       },
       {
         type: "p",
-        text: "Cachety funciona al revés: no hay cuenta ni nube. Abres la página, añades tu documento y descargas la copia. El original no sale de tu móvil u ordenador.",
+        text: "Cachety funciona al revés: no hay cuenta ni nube. Abres la página, añades tu documento y descargas la copia. El original no sale de tu móvil o PC.",
       },
       { type: "h2", text: "En qué es mejor Canva" },
       {
@@ -638,7 +638,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { criterion: "Ocultar datos y contraseña", cachety: "Sí, las dos cosas.", other: "No las encontramos en sus páginas de marca de agua.", edge: "cachety" },
       { criterion: "Una copia por destinatario", cachety: C.recipients, other: "No lo documenta.", edge: "cachety" },
       { criterion: "Apps y lotes grandes", cachety: "Web que se puede añadir a la pantalla de inicio. Sin app de escritorio.", other: "Apps para Windows, Mac, iOS y Android; la de escritorio procesa hasta 50.000 archivos.", edge: "other" },
-      { criterion: "Código abierto", cachety: C.openSource, other: "No lo indica." , edge: "cachety" },
+      { criterion: "Código abierto", cachety: C.openSource, other: "No lo indica.", edge: "cachety" },
     ],
     body: [
       { type: "h2", text: "Las dos trabajan en tu dispositivo" },
@@ -725,7 +725,7 @@ export const COMPARISONS_ES: Comparison[] = [
       { criterion: "Dónde se procesa el archivo", cachety: C.where, other: "Free y Pro: en tu navegador, sin enviar archivos a sus servidores. Su API para empresas sí procesa en servidores en Finlandia." },
       { criterion: "Cuenta", cachety: C.account, other: "Free: sin registro. Pro: cuenta de pago." },
       { criterion: "PDF", cachety: "Sí, gratis, hasta 500 páginas por PDF.", other: "No en la versión Free; sí en Pro, de pago.", edge: "cachety" },
-      { criterion: "Precio", cachety: C.price, other: "Versión gratuita para imágenes y plan Pro de pago." , edge: "cachety" },
+      { criterion: "Precio", cachety: C.price, other: "Versión gratuita para imágenes y plan Pro de pago.", edge: "cachety" },
       { criterion: "Rastreo", cachety: C.ads, other: "Cookies analíticas, como Google Analytics 4, solo si las aceptas. Dice no usar cookies de publicidad." },
       { criterion: "Tipo de marca de agua", cachety: C.watermark, other: "Dice ofrecer marcas de agua difíciles de quitar, incluso con IA. No detalla el diseño en sus textos legales." },
       { criterion: "Ocultar datos y contraseña", cachety: "Sí, las dos cosas.", other: "No lo documenta.", edge: "cachety" },
@@ -747,7 +747,7 @@ export const COMPARISONS_ES: Comparison[] = [
       {
         type: "list",
         items: [
-          "Está muy enfocado en compartir documentos de identidad de forma segura.",
+          "Está muy centrada en compartir documentos de identidad de forma segura.",
           "Ofrece una API para empresas que quieran integrar la marca de agua.",
           "Dice no usar cookies de publicidad.",
         ],

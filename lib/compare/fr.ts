@@ -87,7 +87,7 @@ export const COMPARISONS_FR: Comparison[] = [
       },
       {
         criterion: "Type de filigrane",
-        cachety: "Texte en diagonale sur toute la page, réglable : police, taille, couleur, opacité, effet vague.",
+        cachety: "Texte en diagonale sur toute la page, réglable : police, taille, couleur, opacité, ondulation.",
         other: "Texte libre incrusté dans l’image. Les réglages d’apparence ne sont pas décrits dans ses CGU.",
       },
       {
@@ -205,7 +205,7 @@ export const COMPARISONS_FR: Comparison[] = [
       {
         criterion: "À quoi ça sert",
         cachety: "Filigraner n’importe quel document, pour n’importe quelle démarche.",
-        other: "Monter un dossier de location complet, vérifié, puis le partager aux bailleurs.",
+        other: "Monter un dossier de location complet, vérifié, puis le partager avec les bailleurs.",
       },
       {
         criterion: "Où sont vos documents",
@@ -227,7 +227,7 @@ export const COMPARISONS_FR: Comparison[] = [
       },
       {
         criterion: "Texte du filigrane",
-        cachety: "Celui que vous voulez : objet, destinataire, date, référence.",
+        cachety: "Celui que vous voulez : motif, destinataire, date, référence.",
         other: "Texte fixe : « Document exclusivement destiné à la location d’appartement ».",
         edge: "cachety",
       },
@@ -400,7 +400,7 @@ export const COMPARISONS_FR: Comparison[] = [
       { type: "h2", text: "Où va votre pièce d’identité ?" },
       {
         type: "p",
-        text: "Avec l’outil en ligne, votre fichier est envoyé sur les serveurs d’iLovePDF, traité là-bas, puis renvoyé. Sa politique de confidentialité prévoit une suppression dans les deux heures. C’est court et encadré, mais pendant ce temps, une copie de votre pièce d’identité est chez quelqu’un d’autre, sous ses règles à lui. Avec Cachety, il n’y a pas d’envoi : le filigrane est dessiné par votre navigateur, sur votre appareil. Vous pouvez le vérifier vous-même en passant en mode avion.",
+        text: "Avec l’outil en ligne, votre fichier est envoyé sur les serveurs d’iLovePDF, traité là-bas, puis renvoyé. Sa politique de confidentialité prévoit une suppression dans les deux heures. C’est court et encadré, mais pendant ce temps, une copie de votre pièce d’identité est chez quelqu’un d’autre, soumise à ses propres règles. Avec Cachety, il n’y a pas d’envoi : le filigrane est dessiné par votre navigateur, sur votre appareil. Vous pouvez le vérifier vous-même en passant en mode avion.",
       },
       { type: "h2", text: "Ce qui compte pour un document d’identité" },
       {
@@ -426,7 +426,7 @@ export const COMPARISONS_FR: Comparison[] = [
     ],
     chooseCachety: [
       "Vous filigranez une pièce d’identité ou un justificatif et ne voulez pas l’envoyer en ligne.",
-      "Vous voulez un outil sans publicité et sans compte.",
+      "Vous voulez un outil gratuit, sans compte, sans pisteur publicitaire et sans rien installer.",
       "Vous devez masquer une zone et faire une version par destinataire en une seule fois.",
     ],
     faq: [
@@ -466,7 +466,7 @@ export const COMPARISONS_FR: Comparison[] = [
     intro:
       "Smallpdf, édité en Suisse, est l’un des outils PDF en ligne les plus connus. Son interface est soignée et son filigrane simple à utiliser. Mais derrière la promesse d’un travail dans le navigateur, vos fichiers sont bien envoyés sur ses serveurs.",
     verdict:
-      "Smallpdf est agréable et complet, avec des applications et de nombreux outils PDF. Sa FAQ indique toutefois que les fichiers sont téléversés et supprimés de ses serveurs après une heure. Pour une pièce d’identité, Cachety garde tout sur votre appareil et ajoute masquage, mot de passe et versions par destinataire dans le même outil.",
+      "Smallpdf est agréable et complet, avec des applications et de nombreux outils PDF. Sa FAQ indique toutefois que les fichiers sont envoyés puis supprimés de ses serveurs après une heure. Pour une pièce d’identité, Cachety garde tout sur votre appareil et ajoute masquage, mot de passe et versions par destinataire dans le même outil.",
     table: [
       {
         criterion: "Où le fichier est traité",
@@ -477,7 +477,7 @@ export const COMPARISONS_FR: Comparison[] = [
       {
         criterion: "Conservation des fichiers",
         cachety: CACHETY.retention,
-        other: "Une heure selon la page de l’outil ; sa politique de confidentialité parle d’un « délai raisonnable » sans compte.",
+        other: "Une heure selon la page de l’outil ; sa politique de confidentialité parle d’un « délai raisonnable » pour un usage sans compte.",
         edge: "cachety",
       },
       {
@@ -592,7 +592,7 @@ export const COMPARISONS_FR: Comparison[] = [
     intro:
       "PDF24, édité à Berlin, est gratuit, sans limite et très complet. Son outil de filigrane en ligne fait bien son travail. La différence avec Cachety tient surtout au chemin que prend votre fichier.",
     verdict:
-      "PDF24 est un excellent outil gratuit, financé par la publicité, avec un logiciel Windows qui travaille hors ligne. Ses outils en ligne, en revanche, traitent vos fichiers sur ses serveurs, avec une suppression sous une heure. Pour une pièce d’identité, Cachety évite l’envoi, sans publicité.",
+      "PDF24 est un excellent outil gratuit, financé par la publicité, avec un logiciel Windows qui travaille hors ligne. Ses outils en ligne, en revanche, traitent vos fichiers sur ses serveurs, avec une suppression sous une heure. Pour une pièce d’identité, Cachety évite l’envoi, sans régie publicitaire ni pisteur.",
     table: [
       {
         criterion: "Où le fichier est traité",
@@ -684,7 +684,7 @@ export const COMPARISONS_FR: Comparison[] = [
     ],
     chooseCachety: [
       "Vous filigranez une pièce d’identité depuis un téléphone ou un Mac, sans rien installer ni rien envoyer.",
-      "Vous voulez un outil sans publicité.",
+      "Vous voulez un outil sans régie publicitaire ni pisteur.",
       "Vous voulez masquer, protéger et faire une version par destinataire en une seule fois.",
     ],
     faq: [
