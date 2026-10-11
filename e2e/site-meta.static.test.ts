@@ -26,12 +26,13 @@ if (!built) {
 }
 
 // La racine détecte la langue côté client mais son HTML expose les
-// métadonnées françaises (app/layout.tsx).
+// métadonnées anglaises (app/layout.tsx : racine internationale).
 const PAGES: { file: string; lang: Lang }[] = [
-  { file: "index.html", lang: "fr" },
+  { file: "index.html", lang: "en" },
   { file: "fr.html", lang: "fr" },
   { file: "en.html", lang: "en" },
   { file: "ja.html", lang: "ja" },
+  { file: "zh.html", lang: "zh" },
 ];
 
 const attr = (s: string) => s.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;/g, "'");
@@ -70,7 +71,7 @@ describe.skipIf(!built)("métadonnées de l'export statique", () => {
         expect(og(html, "og:locale")).toBe(meta.ogLocale);
       });
 
-      test("liens hreflang fr / en / ja / x-default", () => {
+      test("liens hreflang fr / en / ja / zh / x-default", () => {
         for (const [code, path] of Object.entries(LANGUAGE_ALTERNATES)) {
           const expected = path === "/" ? SITE_URL : `${SITE_URL}${path}`;
           expect(hreflang(html, code)).toBe(expected);

@@ -1,7 +1,11 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { isLang, SITE_META, type Lang } from "@/lib/site-meta";
+import { dirOf, HREFLANG, isLang, SITE_META, type Lang } from "@/lib/site-meta";
+import { STRINGS_AR } from "@/lib/locales/ar/strings";
+import { STRINGS_ES } from "@/lib/locales/es/strings";
+import { STRINGS_FA } from "@/lib/locales/fa/strings";
+import { readPref, writePref } from "@/lib/storage";
 
 export type { Lang };
 
@@ -11,19 +15,19 @@ export type ErrorKey =
   | "pdf_password"
   | "pdf_password_wrong"
   | "pdf_empty"
+  | "file_too_large"
+  | "pdf_too_many_pages"
+  | "image_too_large"
   | "image_unreadable"
   | "canvas_unavailable"
   | "export_failed";
 
 const plural = (n: number, s: string) => `${n} ${s}${n > 1 ? "s" : ""}`;
 
-export const STRINGS = {
+// Langues d'origine ; les suivantes vivent dans lib/locales/<lang>/strings.ts.
+const BASE_STRINGS = {
   fr: {
     langMenu: "Choisir la langue",
-    taglinePre: "Ajoutez un filigrane à vos documents sensibles, ",
-    taglineStrong: "sans qu'ils ne quittent jamais votre appareil.",
-    badge: "Traitement 100 % local, zéro envoi.",
-    sourceLong: "code source vérifiable",
     step1: "Vos documents",
     step2: "Texte du filigrane",
     step3: "Vérifiez, puis téléchargez",
@@ -32,7 +36,7 @@ export const STRINGS = {
     dropAdd: "Ajouter d'autres documents (dépôt, clic ou Ctrl+V)",
     inputAria: "Ajouter des documents à filigraner (PDF ou images)",
     rejected: (names: string) =>
-      `Format non pris en charge : ${names}. Seuls les PDF et les images (JPG, PNG…) sont acceptés.`,
+      `Format non pris en charge : ${names}. Seuls les PDF et les images (JPG, PNG, HEIC…) sont acceptés.`,
     remove: (name: string) => `Retirer ${name}`,
     pages: (n: number) => plural(n, "page"),
     status: { pending: "en attente", processing: "en cours", ready: "prêt", error: "erreur" },
@@ -53,13 +57,111 @@ export const STRINGS = {
       { label: "Logement", text: "Dossier de location" },
       { label: "Banque", text: "Ouverture de compte bancaire" },
       { label: "Embauche", text: "Dossier d'embauche" },
+      { label: "Assurance", text: "Dossier d'assurance" },
+      { label: "Impôts", text: "Déclaration fiscale" },
+      { label: "Santé", text: "Dossier médical" },
+      { label: "École", text: "Inscription scolaire" },
+      { label: "Crédit", text: "Demande de crédit" },
+      { label: "Notaire", text: "Dossier notarial" },
+      { label: "Visa", text: "Demande de visa" },
+      { label: "Énergie", text: "Contrat d'énergie" },
+      { label: "Mobile", text: "Souscription mobile" },
+      { label: "Avocat", text: "Dossier juridique" },
+      { label: "Permis", text: "Dossier de permis de conduire" },
+      { label: "Mariage", text: "Dossier de mariage" },
+      { label: "Succession", text: "Dossier de succession" },
+      { label: "Mutuelle", text: "Adhésion à une mutuelle" },
+      { label: "Passeport", text: "Demande de passeport" },
+      { label: "Université", text: "Inscription universitaire" },
+      { label: "Retraite", text: "Dossier de retraite" },
+      { label: "Entreprise", text: "Création d'entreprise" },
+      { label: "Copropriété", text: "Dossier de copropriété" },
+      { label: "Justice", text: "Demande d'aide juridictionnelle" },
     ],
     presetsHint: "Ajoutez le destinataire : « …, agence Martin ».",
+    morePresets: (n: number) => `+ ${n} autres modèles`,
+    fewerPresets: "Moins de modèles",
+    jumpToPreview: (n: number) => (n > 1 ? `Voir l'aperçu et télécharger (${n})` : "Voir l'aperçu et télécharger"),
     addDate: "Ajouter la date du jour",
     onDate: (base: string, date: string) => `${base}, le ${date}`,
-    downloadAll: (n: number) => `Tout télécharger (${plural(n, "document")})`,
+    downloadPdf: (n: number) => `Un seul PDF (${plural(n, "document")})`,
+    downloadAll: (n: number) => `Archive ZIP (${plural(n, "document")})`,
     zipName: "documents-filigranes",
+    bundlePassword:
+      "Le mot de passe verrouille les PDF, pas l'archive. Le ZIP s'ouvre sans mot de passe ; chaque PDF, comme le PDF unique, le demande.",
+    orderHint: "Ordre du PDF unique : glissez une ligne par sa poignée, ou tapez sa position.",
+    trace: {
+      toggle: "Copie traçable : date et référence unique",
+      hint: "Chaque copie porte sa propre référence. Si un document circule là où il ne devrait pas, vous saurez à qui vous l'aviez remis.",
+      refLabel: "réf.",
+      renew: "Nouvelles références",
+      registry: "Registre des copies (à conserver : il n'est enregistré nulle part)",
+      copy: "Copier le registre",
+      copied: "Registre copié",
+      line: (recipient: string, ref: string, date: string) => `${date} · ${ref} · ${recipient}`,
+      self: "(sans destinataire)",
+    },
+    multi: {
+      toggle: "Plusieurs destinataires",
+      label: "Destinataires, un par ligne",
+      placeholder: "Agence Martin\nFoncia Lyon\nBanque Populaire",
+      count: (n: number) => (n > 1 ? `${n} destinataires` : `${n} destinataire`),
+      limit: (max: number) => `${max} destinataires au plus : les lignes suivantes sont ignorées.`,
+      previewFor: (name: string) => `Aperçu pour ${name}. Chaque destinataire reçoit sa propre version au téléchargement.`,
+      downloadPdf: (n: number) => `Un PDF par destinataire (${n})`,
+      downloadZip: (n: number) => `Archive ZIP, un dossier par destinataire (${n})`,
+      preparing: (i: number, n: number, name: string) => `Préparation ${i} sur ${n} : ${name}…`,
+    },
+    size: {
+      label: "Taille maximale par fichier",
+      none: "Aucune",
+      mb: (n: number) => `${n} Mo`,
+      over: (n: number) => `Impossible de descendre sous ${n} Mo sans rendre le document illisible.`,
+    },
+    mask: {
+      start: "Masquer une zone",
+      hint: "Tracez un rectangle sur l'aperçu : numéro fiscal, IBAN, photo… Ce qui est masqué disparaît du fichier, il n'est pas seulement recouvert.",
+      surface: (page: number) => `Zone de tracé des masques, page ${page}`,
+      apply: (n: number) => `Appliquer (${n})`,
+      cancel: "Annuler",
+      onPage: (n: number) => (n > 1 ? `${n} zones masquées sur cette page` : `${n} zone masquée sur cette page`),
+      clearPage: "Retirer les masques de cette page",
+      limit: (n: number) => `Masquage possible sur les ${n} premières pages.`,
+    },
+    shareReceived: (n: number) => (n > 1 ? `${n} fichiers reçus par partage.` : `1 fichier reçu par partage.`),
+    dragHandle: (name: string) => `Déplacer ${name} (glisser, ou flèches haut et bas)`,
+    positionOf: (name: string, total: number) => `Position de ${name}, de 1 à ${total}`,
+    moved: (name: string, pos: number, total: number) => `${name} : position ${pos} sur ${total}.`,
+    bundleStale: "Le texte ou l'apparence a changé pendant la préparation. Relancez le téléchargement.",
     autoApply: "Aperçu auto",
+    style: {
+      legend: "Apparence",
+      font: "Police",
+      fonts: { mono: "Mono", sans: "Sans", serif: "Serif" },
+      size: "Taille",
+      color: "Couleur",
+      opacity: "Opacité",
+      wave: "Ondulation",
+      percent: (n: number) => `${n} %`,
+      customColor: "Couleur personnalisée",
+      sample: "Filigrane",
+      swatches: { seal: "Rouge", ink: "Encre", blue: "Bleu", black: "Noir", white: "Blanc" },
+    },
+    filePassword: {
+      legend: "Mot de passe du fichier",
+      label: "Mot de passe",
+      placeholder: "Laisser vide pour un fichier ouvert",
+      generate: "Générer",
+      copy: "Copier",
+      copied: "Copié · effacé dans 1 min",
+      show: "Afficher le mot de passe",
+      hide: "Masquer le mot de passe",
+      hint: "AES-256 (PDF 2.0) : résistant au quantique, et ouvert par les téléphones et ordinateurs récents. L'aperçu reste visible ; seul le téléchargement est protégé. Une image part en PDF chiffré.",
+      weak: "Ce mot de passe est court : il se devine, chiffrement ou pas.",
+      strong: "Secret aléatoire de 256 bits.",
+      encrypting: "Chiffrement…",
+      encryptFailed: "Le chiffrement du fichier a échoué.",
+    },
     apply: "Appliquer le filigrane",
     applyHint: "Cliquez sur « Appliquer » pour générer l'aperçu.",
     batch: {
@@ -73,7 +175,7 @@ export const STRINGS = {
         n === 0 ? "Aucun document ne correspond." : `${n} document${n > 1 ? "s" : ""} affiché${n > 1 ? "s" : ""}.`,
     },
     staleResults:
-      "Le texte a changé : les documents prêts portent encore l'ancien filigrane. Cliquez sur « Appliquer le filigrane ».",
+      "Le filigrane a changé : les documents prêts portent encore l'ancien. Cliquez sur « Appliquer le filigrane ».",
     dropAnywhere: "Déposez vos documents n'importe où",
     clearAll: "Tout effacer",
     emptyStart: "Déposez un document pour commencer.",
@@ -97,17 +199,30 @@ export const STRINGS = {
     suffix: "filigrane",
     sizeUnit: "Mo",
     locale: "fr-FR",
-    footerMade: "Par",
-    footerInspired: ", inspiré de",
-    footerLicense: ". Licence AGPL.",
     share: "Partager",
     shareCopied: "Lien copié !",
     shareLang: (name: string) => `Copier le lien en ${name}`,
+    tour: {
+      open: "Aide",
+      openAria: "Me montrer comment faire",
+      nudge: "Vous ne savez pas par où commencer ? Je vous montre en 4 étapes.",
+      nudgeYes: "Montrez-moi",
+      nudgeNo: "Non merci",
+      steps: [
+        { title: "Ajoutez votre document", body: "Touchez ici, ou glissez un PDF ou une photo sur cette zone. Il reste sur votre appareil." },
+        { title: "Écrivez à quoi il sert", body: "Indiquez le motif, le destinataire et la date. Ou choisissez un modèle tout prêt." },
+        { title: "Options (facultatif)", body: "Masquer une partie de la page, ajouter un mot de passe, une version par destinataire… Vous pouvez passer cette étape." },
+        { title: "Vérifiez et téléchargez", body: "L'aperçu montre le résultat. S'il vous convient, téléchargez votre document filigrané." },
+      ],
+      next: "Suivant",
+      back: "Retour",
+      done: "C'est compris",
+      close: "Fermer le guide",
+      stepOf: (i: number, n: number) => `Étape ${i} sur ${n}`,
+    },
     browserTooOld:
       "Votre navigateur est trop ancien pour cet outil. Mettez-le à jour pour continuer.",
     about: {
-      nav: "Pourquoi filigraner ?",
-      navTool: "L'outil",
       title: "Pourquoi filigraner vos documents ?",
       lead: "Location, embauche, ouverture de compte : on vous demande sans cesse une copie de vos papiers. Une fois envoyée, cette copie vous échappe. Un filigrane la rattache à un seul usage, pour qu'elle ne puisse servir à rien d'autre.",
       misuse: ["Ouvrir un compte", "Souscrire un crédit", "Usurper votre identité"],
@@ -136,6 +251,9 @@ export const STRINGS = {
       pdf_password: "Ce PDF est protégé par un mot de passe.",
       pdf_password_wrong: "Mot de passe incorrect. Réessayez.",
       pdf_empty: "Ce PDF ne contient aucune page.",
+      file_too_large: "Fichier trop volumineux (200 Mo maximum).",
+      pdf_too_many_pages: "PDF trop long (500 pages maximum). Scindez-le en plusieurs fichiers.",
+      image_too_large: "Image trop grande (250 mégapixels maximum).",
       image_unreadable: "Cette image n'a pas pu être lue. Essayez un JPG ou un PNG.",
       canvas_unavailable: "Votre navigateur ne permet pas le rendu du document.",
       export_failed: "L'export de la page a échoué.",
@@ -145,10 +263,6 @@ export const STRINGS = {
   },
   en: {
     langMenu: "Choose language",
-    taglinePre: "Add a watermark to your sensitive documents, ",
-    taglineStrong: "without them ever leaving your device.",
-    badge: "100% local processing, nothing uploaded.",
-    sourceLong: "verifiable source code",
     step1: "Your documents",
     step2: "Watermark text",
     step3: "Review, then download",
@@ -157,7 +271,7 @@ export const STRINGS = {
     dropAdd: "Add more documents (drop, click or Ctrl+V)",
     inputAria: "Add documents to watermark (PDF or images)",
     rejected: (names: string) =>
-      `Unsupported format: ${names}. Only PDFs and images (JPG, PNG…) are accepted.`,
+      `Unsupported format: ${names}. Only PDFs and images (JPG, PNG, HEIC…) are accepted.`,
     remove: (name: string) => `Remove ${name}`,
     pages: (n: number) => plural(n, "page"),
     status: { pending: "waiting", processing: "processing", ready: "ready", error: "error" },
@@ -177,13 +291,111 @@ export const STRINGS = {
       { label: "Housing", text: "Rental application" },
       { label: "Bank", text: "Opening a bank account" },
       { label: "Hiring", text: "Job application file" },
+      { label: "Insurance", text: "Insurance file" },
+      { label: "Tax", text: "Tax return" },
+      { label: "Health", text: "Medical file" },
+      { label: "School", text: "School enrolment" },
+      { label: "Loan", text: "Loan application" },
+      { label: "Notary", text: "Notarial file" },
+      { label: "Visa", text: "Visa application" },
+      { label: "Energy", text: "Energy contract" },
+      { label: "Mobile", text: "Mobile plan signup" },
+      { label: "Lawyer", text: "Legal file" },
+      { label: "Licence", text: "Driving licence file" },
+      { label: "Marriage", text: "Marriage file" },
+      { label: "Estate", text: "Estate file" },
+      { label: "Health plan", text: "Health plan enrolment" },
+      { label: "Passport", text: "Passport application" },
+      { label: "University", text: "University enrolment" },
+      { label: "Pension", text: "Pension file" },
+      { label: "Business", text: "Starting a business" },
+      { label: "Condo", text: "Condominium file" },
+      { label: "Legal aid", text: "Legal aid application" },
     ],
     presetsHint: "Add the recipient: “…, Martin Agency”.",
+    morePresets: (n: number) => `+ ${n} more templates`,
+    fewerPresets: "Fewer templates",
+    jumpToPreview: (n: number) => (n > 1 ? `See preview and download (${n})` : "See preview and download"),
     addDate: "Add today's date",
     onDate: (base: string, date: string) => `${base}, ${date}`,
-    downloadAll: (n: number) => `Download all (${plural(n, "document")})`,
+    downloadPdf: (n: number) => `Single PDF (${plural(n, "document")})`,
+    downloadAll: (n: number) => `ZIP archive (${plural(n, "document")})`,
     zipName: "watermarked-documents",
+    bundlePassword:
+      "The password locks the PDFs, not the archive. The ZIP opens without a password; each PDF, and the single PDF, asks for it.",
+    orderHint: "Order of the single PDF: drag a row by its handle, or type its position.",
+    trace: {
+      toggle: "Traceable copy: date and unique reference",
+      hint: "Each copy carries its own reference. If a document turns up where it shouldn't, you'll know who you gave it to.",
+      refLabel: "ref.",
+      renew: "New references",
+      registry: "Copy log (keep it: it isn't stored anywhere)",
+      copy: "Copy the log",
+      copied: "Log copied",
+      line: (recipient: string, ref: string, date: string) => `${date} · ${ref} · ${recipient}`,
+      self: "(no recipient)",
+    },
+    multi: {
+      toggle: "Several recipients",
+      label: "Recipients, one per line",
+      placeholder: "Martin Lettings\nFoxtons\nBarclays",
+      count: (n: number) => (n > 1 ? `${n} recipients` : `${n} recipient`),
+      limit: (max: number) => `${max} recipients at most: further lines are ignored.`,
+      previewFor: (name: string) => `Preview for ${name}. Each recipient gets their own version on download.`,
+      downloadPdf: (n: number) => `One PDF per recipient (${n})`,
+      downloadZip: (n: number) => `ZIP archive, one folder per recipient (${n})`,
+      preparing: (i: number, n: number, name: string) => `Preparing ${i} of ${n}: ${name}…`,
+    },
+    size: {
+      label: "Maximum size per file",
+      none: "None",
+      mb: (n: number) => `${n} MB`,
+      over: (n: number) => `Can't get under ${n} MB without making the document unreadable.`,
+    },
+    mask: {
+      start: "Mask an area",
+      hint: "Draw a rectangle on the preview: tax number, bank details, photo… Masked content is removed from the file, not just covered.",
+      surface: (page: number) => `Mask drawing area, page ${page}`,
+      apply: (n: number) => `Apply (${n})`,
+      cancel: "Cancel",
+      onPage: (n: number) => (n > 1 ? `${n} masked areas on this page` : `${n} masked area on this page`),
+      clearPage: "Remove this page's masks",
+      limit: (n: number) => `Masking is available on the first ${n} pages.`,
+    },
+    shareReceived: (n: number) => (n > 1 ? `${n} files received by sharing.` : `1 file received by sharing.`),
+    dragHandle: (name: string) => `Move ${name} (drag, or up and down arrow keys)`,
+    positionOf: (name: string, total: number) => `Position of ${name}, from 1 to ${total}`,
+    moved: (name: string, pos: number, total: number) => `${name}: position ${pos} of ${total}.`,
+    bundleStale: "The text or appearance changed while preparing. Start the download again.",
     autoApply: "Auto preview",
+    style: {
+      legend: "Appearance",
+      font: "Typeface",
+      fonts: { mono: "Mono", sans: "Sans", serif: "Serif" },
+      size: "Size",
+      color: "Colour",
+      opacity: "Opacity",
+      wave: "Wave",
+      percent: (n: number) => `${n}%`,
+      customColor: "Custom colour",
+      sample: "Watermark",
+      swatches: { seal: "Red", ink: "Ink", blue: "Blue", black: "Black", white: "White" },
+    },
+    filePassword: {
+      legend: "File password",
+      label: "Password",
+      placeholder: "Leave empty for an open file",
+      generate: "Generate",
+      copy: "Copy",
+      copied: "Copied · cleared in 1 min",
+      show: "Show password",
+      hide: "Hide password",
+      hint: "AES-256 (PDF 2.0): quantum-resistant, and opened by current phones and computers. The preview stays visible; only the download is protected. An image is delivered as an encrypted PDF.",
+      weak: "This password is short: it can be guessed, AES-256 or not.",
+      strong: "256-bit random secret.",
+      encrypting: "Encrypting…",
+      encryptFailed: "Encrypting the file failed.",
+    },
     apply: "Apply watermark",
     applyHint: "Click Apply to generate the preview.",
     batch: {
@@ -197,7 +409,7 @@ export const STRINGS = {
         n === 0 ? "No document matches." : `${n} document${n > 1 ? "s" : ""} shown.`,
     },
     staleResults:
-      "The text changed: ready documents still carry the previous watermark. Click Apply watermark.",
+      "The watermark changed: ready documents still carry the previous one. Click Apply watermark.",
     dropAnywhere: "Drop your documents anywhere",
     clearAll: "Clear all",
     emptyStart: "Drop a document to get started.",
@@ -221,16 +433,29 @@ export const STRINGS = {
     suffix: "watermarked",
     sizeUnit: "MB",
     locale: "en-GB",
-    footerMade: "By",
-    footerInspired: ", inspired by",
-    footerLicense: ". AGPL license.",
     share: "Share",
     shareCopied: "Link copied!",
     shareLang: (name: string) => `Copy the link in ${name}`,
+    tour: {
+      open: "Help",
+      openAria: "Show me how it works",
+      nudge: "Not sure where to start? I can show you in 4 steps.",
+      nudgeYes: "Show me",
+      nudgeNo: "No thanks",
+      steps: [
+        { title: "Add your document", body: "Tap here, or drag a PDF or a photo onto this area. It stays on your device." },
+        { title: "Write what it's for", body: "Say what the copy is for, who it's for and the date. Or pick a ready-made template." },
+        { title: "Options (optional)", body: "Hide part of the page, add a password, one version per recipient… You can skip this step." },
+        { title: "Check and download", body: "The preview shows the result. If it looks right, download your watermarked document." },
+      ],
+      next: "Next",
+      back: "Back",
+      done: "Got it",
+      close: "Close the guide",
+      stepOf: (i: number, n: number) => `Step ${i} of ${n}`,
+    },
     browserTooOld: "Your browser is too old for this tool. Update it to continue.",
     about: {
-      nav: "Why watermark?",
-      navTool: "The tool",
       title: "Why watermark your documents?",
       lead: "Renting, hiring, opening an account: you are constantly asked for a copy of your ID. Once sent, that copy is out of your hands. A watermark ties it to a single purpose, so it can't be used for anything else.",
       misuse: ["Open an account", "Take out a loan", "Steal your identity"],
@@ -259,6 +484,9 @@ export const STRINGS = {
       pdf_password: "This PDF is password-protected.",
       pdf_password_wrong: "Incorrect password. Try again.",
       pdf_empty: "This PDF has no pages.",
+      file_too_large: "File too large (200 MB maximum).",
+      pdf_too_many_pages: "PDF too long (500 pages maximum). Split it into several files.",
+      image_too_large: "Image too large (250 megapixels maximum).",
       image_unreadable: "This image could not be read. Try a JPG or PNG.",
       canvas_unavailable: "Your browser can't render this document.",
       export_failed: "Exporting the page failed.",
@@ -268,10 +496,6 @@ export const STRINGS = {
   },
   ja: {
     langMenu: "言語を選択",
-    taglinePre: "機密文書に透かしを入れても、",
-    taglineStrong: "ファイルが端末の外に出ることは一切ありません。",
-    badge: "100% ローカル処理、アップロードなし。",
-    sourceLong: "検証可能なソースコード",
     step1: "ドキュメント",
     step2: "透かしのテキスト",
     step3: "確認してダウンロード",
@@ -280,7 +504,7 @@ export const STRINGS = {
     dropAdd: "他のドキュメントを追加（ドロップ・クリック・Ctrl+V）",
     inputAria: "透かしを入れるドキュメントを追加（PDF または画像）",
     rejected: (names: string) =>
-      `対応していない形式です：${names}。PDF と画像（JPG、PNG…）のみ使用できます。`,
+      `対応していない形式です：${names}。PDF と画像（JPG、PNG、HEIC…）のみ使用できます。`,
     remove: (name: string) => `${name} を削除`,
     pages: (n: number) => `${n} ページ`,
     status: { pending: "待機中", processing: "処理中", ready: "完了", error: "エラー" },
@@ -300,13 +524,111 @@ export const STRINGS = {
       { label: "住まい", text: "賃貸申込" },
       { label: "銀行", text: "銀行口座の開設" },
       { label: "就職", text: "採用応募書類" },
+      { label: "保険", text: "保険の手続き" },
+      { label: "税金", text: "税務申告" },
+      { label: "医療", text: "医療書類" },
+      { label: "学校", text: "入学手続き" },
+      { label: "ローン", text: "融資の申込" },
+      { label: "公証", text: "公証書類" },
+      { label: "査証", text: "ビザ申請" },
+      { label: "電気ガス", text: "エネルギー契約" },
+      { label: "携帯", text: "携帯の契約" },
+      { label: "弁護士", text: "法律書類" },
+      { label: "免許", text: "運転免許の手続き" },
+      { label: "婚姻", text: "婚姻届" },
+      { label: "相続", text: "相続手続き" },
+      { label: "健保", text: "健康保険の加入" },
+      { label: "旅券", text: "パスポート申請" },
+      { label: "大学", text: "大学の入学手続き" },
+      { label: "年金", text: "年金手続き" },
+      { label: "起業", text: "会社設立" },
+      { label: "管理組合", text: "管理組合の書類" },
+      { label: "法務", text: "法律扶助の申請" },
     ],
     presetsHint: "宛先を書き足してください（例：「…、マルタン不動産」）。",
+    morePresets: (n: number) => `＋ ほか ${n} 件のひな形`,
+    fewerPresets: "ひな形を減らす",
+    jumpToPreview: (n: number) => (n > 1 ? `プレビューとダウンロード（${n}）` : "プレビューとダウンロード"),
     addDate: "今日の日付を追加",
     onDate: (base: string, date: string) => `${base}（${date}）`,
-    downloadAll: (n: number) => `すべてダウンロード（${n} 件）`,
+    downloadPdf: (n: number) => `1つのPDF（${n} 件）`,
+    downloadAll: (n: number) => `ZIPアーカイブ（${n} 件）`,
     zipName: "watermarked-documents",
+    bundlePassword:
+      "パスワードはPDFを保護します。ZIPはそのまま開けます。各PDFと、まとめたPDFは、このパスワードを要求します。",
+    orderHint: "1つのPDFの順序です。ハンドルで行をドラッグするか、番号を入力してください。",
+    trace: {
+      toggle: "追跡可能なコピー：日付と固有の参照番号",
+      hint: "コピーごとに固有の参照番号が入ります。書類が想定外の場所で見つかっても、誰に渡したものか分かります。",
+      refLabel: "参照",
+      renew: "参照番号を再発行",
+      registry: "コピーの記録（どこにも保存されないので控えてください）",
+      copy: "記録をコピー",
+      copied: "記録をコピーしました",
+      line: (recipient: string, ref: string, date: string) => `${date} · ${ref} · ${recipient}`,
+      self: "（宛先なし）",
+    },
+    multi: {
+      toggle: "複数の宛先",
+      label: "宛先（1行に1件）",
+      placeholder: "山田不動産\n東京賃貸センター\nみずほ銀行",
+      count: (n: number) => `宛先 ${n} 件`,
+      limit: (max: number) => `宛先は最大 ${max} 件です。以降の行は無視されます。`,
+      previewFor: (name: string) => `${name} 向けのプレビューです。ダウンロード時に宛先ごとの版が作られます。`,
+      downloadPdf: (n: number) => `宛先ごとに1つのPDF（${n}）`,
+      downloadZip: (n: number) => `ZIP（宛先ごとのフォルダ、${n}）`,
+      preparing: (i: number, n: number, name: string) => `準備中 ${i}/${n}：${name}…`,
+    },
+    size: {
+      label: "1ファイルの最大サイズ",
+      none: "なし",
+      mb: (n: number) => `${n} MB`,
+      over: (n: number) => `文書を読めなくせずに ${n} MB 未満にはできませんでした。`,
+    },
+    mask: {
+      start: "範囲を隠す",
+      hint: "プレビュー上で四角形を描きます（マイナンバー、口座番号、顔写真など）。隠した部分は上から覆うのではなく、ファイルから消去されます。",
+      surface: (page: number) => `マスクの描画領域（${page} ページ）`,
+      apply: (n: number) => `適用（${n}）`,
+      cancel: "キャンセル",
+      onPage: (n: number) => `このページで ${n} か所を隠しています`,
+      clearPage: "このページのマスクを外す",
+      limit: (n: number) => `マスクは最初の ${n} ページで使えます。`,
+    },
+    shareReceived: (n: number) => `共有から ${n} 件のファイルを受け取りました。`,
+    dragHandle: (name: string) => `${name}を移動（ドラッグ、または上下の矢印キー）`,
+    positionOf: (name: string, total: number) => `${name}の位置（1〜${total}）`,
+    moved: (name: string, pos: number, total: number) => `${name}：${total}件中${pos}番目。`,
+    bundleStale: "準備中にテキストまたは外観が変更されました。もう一度ダウンロードしてください。",
     autoApply: "自動プレビュー",
+    style: {
+      legend: "見た目",
+      font: "書体",
+      fonts: { mono: "等幅", sans: "ゴシック", serif: "明朝" },
+      size: "サイズ",
+      color: "色",
+      opacity: "不透明度",
+      wave: "波形",
+      percent: (n: number) => `${n}%`,
+      customColor: "その他の色",
+      sample: "透かし",
+      swatches: { seal: "赤", ink: "墨", blue: "青", black: "黒", white: "白" },
+    },
+    filePassword: {
+      legend: "ファイルのパスワード",
+      label: "パスワード",
+      placeholder: "空欄のままなら保護しません",
+      generate: "生成",
+      copy: "コピー",
+      copied: "コピーしました · 1 分後に消去",
+      show: "パスワードを表示",
+      hide: "パスワードを隠す",
+      hint: "AES-256（PDF 2.0）。量子計算機に耐え、最近の端末で開けます。プレビューはそのまま、ダウンロードしたファイルだけが保護されます。画像は暗号化PDFになります。",
+      weak: "このパスワードは短く、AES-256でも推測できます。",
+      strong: "256ビットの乱数です。",
+      encrypting: "暗号化しています…",
+      encryptFailed: "ファイルの暗号化に失敗しました。",
+    },
     apply: "透かしを適用",
     applyHint: "「適用」をクリックしてプレビューを生成します。",
     batch: {
@@ -319,7 +641,7 @@ export const STRINGS = {
       matches: (n: number) => (n === 0 ? "該当するドキュメントはありません。" : `${n} 件を表示中。`),
     },
     staleResults:
-      "テキストが変更されました。準備済みのドキュメントには以前の透かしが入っています。「透かしを適用」を押してください。",
+      "透かしが変更されました。準備済みのドキュメントには以前の透かしが入っています。「透かしを適用」を押してください。",
     dropAnywhere: "画面のどこにでもドロップできます",
     clearAll: "すべて消去",
     emptyStart: "ドキュメントをドロップして始めましょう。",
@@ -343,17 +665,30 @@ export const STRINGS = {
     suffix: "watermarked",
     sizeUnit: "MB",
     locale: "ja-JP",
-    footerMade: "作者：",
-    footerInspired: "、着想元：",
-    footerLicense: "。AGPL ライセンス。",
     share: "共有",
     shareCopied: "リンクをコピーしました",
     shareLang: (name: string) => `${name}のリンクをコピー`,
+    tour: {
+      open: "ヘルプ",
+      openAria: "使い方を見る",
+      nudge: "どこから始めればいいか迷っていますか？4つのステップでご案内します。",
+      nudgeYes: "案内を見る",
+      nudgeNo: "結構です",
+      steps: [
+        { title: "書類を追加する", body: "ここをタップするか、PDF や写真をこの枠にドラッグします。ファイルは端末から出ません。" },
+        { title: "用途を書く", body: "コピーの用途、提出先、日付を書きます。用意されたテンプレートから選ぶこともできます。" },
+        { title: "オプション（任意）", body: "ページの一部を隠す、パスワードを付ける、提出先ごとに別の版を作る…。飛ばしてもかまいません。" },
+        { title: "確認してダウンロード", body: "プレビューで仕上がりを確認し、問題なければ透かし入りの書類をダウンロードします。" },
+      ],
+      next: "次へ",
+      back: "戻る",
+      done: "わかりました",
+      close: "ガイドを閉じる",
+      stepOf: (i: number, n: number) => `ステップ ${i} / ${n}`,
+    },
     browserTooOld:
       "お使いのブラウザが古いため、このツールを利用できません。続けるにはブラウザを更新してください。",
     about: {
-      nav: "なぜ透かしを？",
-      navTool: "ツール",
       title: "なぜ書類に透かしを入れるのか",
       lead: "賃貸、就職、口座開設。身分証のコピーを求められる場面は絶えません。一度送ったコピーは、もう自分の手を離れます。透かしを入れれば、そのコピーは一つの用途だけに結びつき、他には使えなくなります。",
       misuse: ["口座を開設する", "ローンを組む", "なりすます"],
@@ -382,6 +717,9 @@ export const STRINGS = {
       pdf_password: "この PDF はパスワードで保護されています。",
       pdf_password_wrong: "パスワードが正しくありません。もう一度お試しください。",
       pdf_empty: "この PDF にページがありません。",
+      file_too_large: "ファイルが大きすぎます（最大 200 MB）。",
+      pdf_too_many_pages: "PDF のページ数が多すぎます（最大 500 ページ）。複数のファイルに分割してください。",
+      image_too_large: "画像が大きすぎます（最大 2 億 5,000 万画素）。",
       image_unreadable: "この画像を読み込めませんでした。JPG または PNG をお試しください。",
       canvas_unavailable: "お使いのブラウザではこのドキュメントを描画できません。",
       export_failed: "ページの書き出しに失敗しました。",
@@ -389,9 +727,245 @@ export const STRINGS = {
         "処理に失敗しました。繰り返し失敗する場合、この端末のメモリに対してドキュメントが大きすぎる可能性があります。",
     } as Record<ErrorKey | "generic", string>,
   },
+  zh: {
+    langMenu: "选择语言",
+    step1: "文件",
+    step2: "水印文字",
+    step3: "核对并下载",
+    dropTitle: "将 PDF 或图片拖到这里",
+    dropHint: "也可以点击选择，或直接粘贴（Ctrl+V）。",
+    dropAdd: "继续添加文件（拖放、点击或 Ctrl+V）",
+    inputAria: "添加要加水印的文件（PDF 或图片）",
+    rejected: (names: string) => `不支持的格式：${names}。只能使用 PDF 和图片（JPG、PNG、HEIC 等）。`,
+    remove: (name: string) => `移除 ${name}`,
+    pages: (n: number) => `${n} 页`,
+    status: { pending: "等待中", processing: "处理中", ready: "已完成", error: "出错" },
+    unlock: {
+      locked: "已加密",
+      placeholder: "PDF 密码",
+      button: "解锁",
+      aria: (name: string) => `${name} 的密码`,
+      hint: "请在文件列表中输入密码。",
+      show: "显示密码",
+      hide: "隐藏密码",
+    },
+    pageOf: (a: number, b: number) => `第 ${a} / ${b} 页`,
+    textareaAria: "印在文件上的水印文字",
+    placeholder: "例如：仅供租房申请使用，马丁房产，2026/10/10",
+    presets: [
+      { label: "住房", text: "租房申请" },
+      { label: "银行", text: "银行开户" },
+      { label: "招聘", text: "求职材料" },
+      { label: "保险", text: "保险材料" },
+      { label: "税务", text: "纳税申报" },
+      { label: "医疗", text: "病历材料" },
+      { label: "学校", text: "入学登记" },
+      { label: "贷款", text: "贷款申请" },
+      { label: "公证", text: "公证材料" },
+      { label: "签证", text: "签证申请" },
+      { label: "能源", text: "能源合同" },
+      { label: "手机", text: "手机入网" },
+      { label: "律师", text: "法律文件" },
+      { label: "驾照", text: "驾照申请材料" },
+      { label: "婚姻", text: "婚姻登记" },
+      { label: "继承", text: "继承材料" },
+      { label: "医保", text: "医保参保" },
+      { label: "护照", text: "护照申请" },
+      { label: "大学", text: "大学入学" },
+      { label: "养老金", text: "养老金材料" },
+      { label: "创业", text: "公司注册" },
+      { label: "物业", text: "物业材料" },
+      { label: "法援", text: "法律援助申请" },
+    ],
+    presetsHint: "请补上接收方（例如「……，马丁房产」）。",
+    morePresets: (n: number) => `＋ 另外 ${n} 个模板`,
+    fewerPresets: "收起模板",
+    jumpToPreview: (n: number) => (n > 1 ? `查看预览并下载（${n}）` : "查看预览并下载"),
+    addDate: "加上今天的日期",
+    onDate: (base: string, date: string) => `${base}，${date}`,
+    downloadPdf: (n: number) => `合并为一个 PDF（${n} 份）`,
+    downloadAll: (n: number) => `ZIP 压缩包（${n} 份）`,
+    zipName: "watermarked-documents",
+    bundlePassword:
+      "密码保护的是 PDF，不是压缩包。ZIP 可以直接打开；每一份 PDF，以及合并后的那一份，都会要求这个密码。",
+    orderHint: "合并 PDF 的顺序：拖动行左侧的手柄，或直接输入序号。",
+    trace: {
+      toggle: "可追溯副本：日期和唯一编号",
+      hint: "每份副本都有自己的编号。如果文件出现在不该出现的地方，您就知道当初交给了谁。",
+      refLabel: "编号",
+      renew: "重新生成编号",
+      registry: "副本记录（请自行保存：任何地方都不会存储）",
+      copy: "复制记录",
+      copied: "记录已复制",
+      line: (recipient: string, ref: string, date: string) => `${date} · ${ref} · ${recipient}`,
+      self: "（无接收方）",
+    },
+    multi: {
+      toggle: "多个接收方",
+      label: "接收方，每行一个",
+      placeholder: "链家地产\n我爱我家\n招商银行",
+      count: (n: number) => `${n} 个接收方`,
+      limit: (max: number) => `最多 ${max} 个接收方，其余行将被忽略。`,
+      previewFor: (name: string) => `${name} 的预览。下载时每个接收方都会得到自己的版本。`,
+      downloadPdf: (n: number) => `每个接收方一个 PDF（${n}）`,
+      downloadZip: (n: number) => `ZIP 压缩包，每个接收方一个文件夹（${n}）`,
+      preparing: (i: number, n: number, name: string) => `正在准备 ${i}/${n}：${name}…`,
+    },
+    size: {
+      label: "单个文件的最大大小",
+      none: "不限",
+      mb: (n: number) => `${n} MB`,
+      over: (n: number) => `无法在保证可读的前提下压缩到 ${n} MB 以下。`,
+    },
+    mask: {
+      start: "遮盖区域",
+      hint: "在预览上画一个矩形：身份证号、银行账号、照片……被遮盖的内容会从文件中删除，而不只是被盖住。",
+      surface: (page: number) => `遮盖绘制区域，第 ${page} 页`,
+      apply: (n: number) => `应用（${n}）`,
+      cancel: "取消",
+      onPage: (n: number) => `本页已遮盖 ${n} 处`,
+      clearPage: "移除本页的遮盖",
+      limit: (n: number) => `仅前 ${n} 页可以遮盖。`,
+    },
+    shareReceived: (n: number) => `已通过分享收到 ${n} 个文件。`,
+    dragHandle: (name: string) => `移动${name}（拖动，或使用上下方向键）`,
+    positionOf: (name: string, total: number) => `${name}的位置（1 到 ${total}）`,
+    moved: (name: string, pos: number, total: number) => `${name}：第 ${pos} 位，共 ${total} 个。`,
+    bundleStale: "准备过程中文字或外观已更改。请重新下载。",
+    autoApply: "自动预览",
+    style: {
+      legend: "外观",
+      font: "字体",
+      fonts: { mono: "等宽", sans: "无衬线", serif: "衬线" },
+      size: "字号",
+      color: "颜色",
+      opacity: "不透明度",
+      wave: "波浪",
+      percent: (n: number) => `${n}%`,
+      customColor: "其他颜色",
+      sample: "水印",
+      swatches: { seal: "红", ink: "墨", blue: "蓝", black: "黑", white: "白" },
+    },
+    filePassword: {
+      legend: "文件密码",
+      label: "密码",
+      placeholder: "留空则不加密",
+      generate: "生成",
+      copy: "复制",
+      copied: "已复制 · 1 分钟后清除",
+      show: "显示密码",
+      hide: "隐藏密码",
+      hint: "AES-256（PDF 2.0）。可抵御量子计算，也能在最新的设备上打开。预览不加密，只有下载的文件受保护。图片会变成加密的 PDF。",
+      weak: "这个密码太短，即使使用 AES-256 也可能被猜到。",
+      strong: "这是 256 位随机密钥。",
+      encrypting: "正在加密…",
+      encryptFailed: "文件加密失败。",
+    },
+    apply: "应用水印",
+    applyHint: "点击「应用」生成预览。",
+    batch: {
+      progress: (done: number, total: number) => `已处理 ${done} / ${total} 份`,
+      all: "全部",
+      attention: "需要处理",
+      ready: "已完成",
+      searchPlaceholder: "按名称搜索…",
+      searchAria: "按名称搜索文件",
+      matches: (n: number) => (n === 0 ? "没有匹配的文件。" : `正在显示 ${n} 份。`),
+    },
+    staleResults: "水印已更改。已完成的文件仍是上一版水印。请点击「应用水印」。",
+    dropAnywhere: "可以拖到页面的任意位置",
+    clearAll: "全部清除",
+    emptyStart: "拖入文件即可开始。",
+    emptyText: "请先填写水印文字，再开始处理。",
+    processingGeneric: "处理中…",
+    processingDoc: (name: string, p?: [number, number]) =>
+      `${name}：正在加水印…${p ? ` 第 ${p[0]} / ${p[1]} 页` : ""}`,
+    docError: (name: string, msg: string) => `${name}：${msg}`,
+    srProcessing: "正在加水印。",
+    srReady: (n: number) => `${n} 份文件可以下载。`,
+    previewAlt: (name: string, p: number) => `${name}，已加水印的第 ${p} 页预览`,
+    zoomOpen: (p: number) => `放大第 ${p} 页的预览`,
+    zoomLabel: (p: number) => `第 ${p} 页的放大预览`,
+    zoomAlt: (name: string, p: number) => `${name}，第 ${p} 页的放大图`,
+    zoomClose: "关闭预览",
+    pagerNav: "翻页",
+    pagerPrev: "上一页",
+    pagerNext: "下一页",
+    previewLimit: (shown: number, total: number) =>
+      `预览只显示前 ${shown} 页。下载的文件包含全部 ${total} 页。`,
+    suffix: "watermarked",
+    sizeUnit: "MB",
+    locale: "zh-CN",
+    share: "分享",
+    shareCopied: "链接已复制",
+    shareLang: (name: string) => `复制${name}链接`,
+    tour: {
+      open: "帮助",
+      openAria: "演示使用方法",
+      nudge: "不知道从哪里开始？我用 4 步带您走一遍。",
+      nudgeYes: "带我看看",
+      nudgeNo: "不用了",
+      steps: [
+        { title: "添加文件", body: "点这里，或把 PDF、照片拖到这个区域。文件始终留在您的设备上。" },
+        { title: "写明用途", body: "写上复印件的用途、接收方和日期。也可以直接选一个现成模板。" },
+        { title: "选项（可选）", body: "遮挡页面的一部分、加密码、为每个接收方各生成一份……这一步可以跳过。" },
+        { title: "检查并下载", body: "预览会显示最终效果。确认无误后，下载加好水印的文件。" },
+      ],
+      next: "下一步",
+      back: "上一步",
+      done: "知道了",
+      close: "关闭指南",
+      stepOf: (i: number, n: number) => `第 ${i} 步，共 ${n} 步`,
+    },
+    browserTooOld: "您的浏览器版本过旧，无法使用此工具。请更新浏览器后再继续。",
+    about: {
+      title: "为什么要给文件加水印",
+      lead: "租房、求职、开户。对方一次次索要身份证件的复印件。复印件一旦发出，就不再由您掌控。加上水印，这份复印件就只绑定一个用途，别处无法再用。",
+      misuse: ["开立账户", "申请贷款", "冒充身份"],
+      onlyUse: "仅限此用途",
+      whatTitle: "三样东西，缺一不可",
+      whatLead: "这是法国机构 Cybermalveillance.gouv.fr 建议的写法。上方的水印也是按这个格式写的。",
+      what: [
+        { part: "租房申请", title: "用途", body: "任何其他用途一眼就能看出不合规。" },
+        { part: "马丁房产", title: "接收方", body: "复印件外流时，仍能看出它交给了谁。" },
+        { part: "2026年7月11日", title: "日期", body: "带日期的复印件，过几年就失效了。" },
+      ],
+      exampleTitle: "一眼就能看出差别",
+      exBadLabel: "空白复印件",
+      exBadBody: "任何人都可以拿去用于任何用途。",
+      exGoodLabel: "已加水印的复印件",
+      exGoodBody: "只限一个用途，别处无法再用。",
+      specimen: "样本",
+      specimenCard: "身份证件",
+      backToTool: "给文件加水印",
+      ctaNote: "文件不会离开您的设备。",
+      source: "Cybermalveillance.gouv.fr（法国网络犯罪受害者援助机构）。",
+    },
+    errors: {
+      unsupported: "不支持的格式。请选择 PDF 或图片（JPG、PNG 等）。",
+      pdf_unreadable: "无法读取这个 PDF。文件可能已损坏。",
+      pdf_password: "这个 PDF 受密码保护。",
+      pdf_password_wrong: "密码不正确。请再试一次。",
+      pdf_empty: "这个 PDF 没有页面。",
+      file_too_large: "文件太大（最大 200 MB）。",
+      pdf_too_many_pages: "PDF 页数过多（最多 500 页）。请拆分成多个文件。",
+      image_too_large: "图片太大（最多 2.5 亿像素）。",
+      image_unreadable: "无法读取这张图片。请尝试 JPG 或 PNG。",
+      canvas_unavailable: "您的浏览器无法绘制这个文件。",
+      export_failed: "页面导出失败。",
+      generic: "处理失败。如果反复出现，可能是文件相对于这台设备的内存来说太大了。",
+    } as Record<ErrorKey | "generic", string>,
+  },
 };
 
-export type Strings = (typeof STRINGS)["fr"];
+export type Strings = (typeof BASE_STRINGS)["fr"];
+
+export const STRINGS: Record<Lang, Strings> = {
+  ...BASE_STRINGS,
+  es: STRINGS_ES,
+  ar: STRINGS_AR,
+  fa: STRINGS_FA,
+};
 
 /** Le filigrane d'exemple EST la formule : motif, destinataire, date. */
 export const exampleStamp = (t: Strings) => t.about.what.map((w) => w.part).join(", ");
@@ -402,14 +976,35 @@ export const exampleStamp = (t: Strings) => t.about.what.map((w) => w.part).join
 export function detectLang(saved: string | null, navLang: string): Lang {
   if (saved !== null && isLang(saved)) return saved;
   const nav = navLang.toLowerCase();
-  return nav.startsWith("fr") ? "fr" : nav.startsWith("ja") ? "ja" : "en";
+  if (nav.startsWith("fr")) return "fr";
+  if (nav.startsWith("ja")) return "ja";
+  if (nav.startsWith("zh")) return "zh";
+  if (nav.startsWith("es")) return "es";
+  if (nav.startsWith("ar")) return "ar";
+  if (nav.startsWith("fa")) return "fa";
+  return "en";
 }
+
+/** BCP 47 pour <html lang> : le chinois simplifié a besoin de zh-CN pour les glyphes. */
+export function htmlLang(lang: Lang): string {
+  return HREFLANG[lang];
+}
+
+/**
+ * Polices CJK (scripts/fonts.mjs) : la feuille n'est liée qu'en japonais ou
+ * en chinois. React la place dans <head> (prérendu compris) et ne la charge
+ * qu'une fois.
+ */
+const CJK_FONT_CSS: Partial<Record<Lang, string>> = {
+  ja: "/fonts/noto-sans-jp/index.css",
+  zh: "/fonts/noto-sans-sc/index.css",
+};
 
 const LangContext = createContext<{
   lang: Lang;
   setLang: (l: Lang) => void;
   t: Strings;
-}>({ lang: "fr", setLang: () => {}, t: STRINGS.fr });
+}>({ lang: "en", setLang: () => {}, t: STRINGS.en });
 
 export function LangProvider({
   children,
@@ -418,24 +1013,25 @@ export function LangProvider({
   children: React.ReactNode;
   forcedLang?: Lang;
 }) {
-  // Une URL /fr, /en ou /ja impose sa langue (liens partageables) ;
+  // Une URL /fr, /en, /ja… impose sa langue (liens partageables) ;
   // la racine garde la détection préférence enregistrée → navigateur.
-  const [lang, setLangState] = useState<Lang>(forcedLang ?? "fr");
+  const [lang, setLangState] = useState<Lang>(forcedLang ?? "en");
 
   useEffect(() => {
     if (forcedLang) {
-      localStorage.setItem("lang", forcedLang);
+      writePref("lang", forcedLang);
       return;
     }
-    setLangState(detectLang(localStorage.getItem("lang"), navigator.language));
+    setLangState(detectLang(readPref("lang"), navigator.language));
   }, [forcedLang]);
 
   useEffect(() => {
-    document.documentElement.lang = lang;
+    document.documentElement.lang = htmlLang(lang);
+    document.documentElement.dir = dirOf(lang);
   }, [lang]);
 
   const setLang = (l: Lang) => {
-    localStorage.setItem("lang", l);
+    writePref("lang", l);
     setLangState(l);
     // Sur l'accueil, l'URL reflète la langue affichée : l'adresse reste
     // partageable telle quelle. replaceState évite de démonter l'app
@@ -448,6 +1044,7 @@ export function LangProvider({
 
   return (
     <LangContext.Provider value={{ lang, setLang, t: STRINGS[lang] }}>
+      {CJK_FONT_CSS[lang] && <link rel="stylesheet" href={CJK_FONT_CSS[lang]} precedence="fonts" />}
       {children}
     </LangContext.Provider>
   );

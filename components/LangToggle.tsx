@@ -3,15 +3,26 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang, useT, type Lang } from "@/lib/i18n";
 import { SITE_META } from "@/lib/site-meta";
-import { CheckIcon, ChevronDownIcon, Flag, FlagGB, FlagJP, LinkIcon } from "@/components/icons";
+import { CheckIcon, ChevronDownIcon, GlobeIcon, LinkIcon } from "@/components/icons";
 
-const LANGS: { code: Lang; name: string; tag: string; flag: typeof Flag }[] = [
-  { code: "fr", name: "Français", tag: "fr-FR", flag: Flag },
-  { code: "en", name: "English", tag: "en-GB", flag: FlagGB },
-  { code: "ja", name: "日本語", tag: "ja-JP", flag: FlagJP },
+// Pas de drapeaux : une langue n'est pas un pays (l'arabe, l'espagnol, le
+// persan se parlent dans bien des pays). Nom natif et code court seulement.
+const LANGS: { code: Lang; name: string; short: string }[] = [
+  { code: "en", name: "English", short: "EN" },
+  { code: "fr", name: "Français", short: "FR" },
+  { code: "es", name: "Español", short: "ES" },
+  { code: "ar", name: "العربية", short: "ع" },
+  { code: "fa", name: "فارسی", short: "فا" },
+  { code: "ja", name: "日本語", short: "日本語" },
+  { code: "zh", name: "简体中文", short: "中文" },
 ];
 
-export default function LangToggle() {
+/**
+ * `links` : sur une page de contenu (guide, confidentialité…), le texte est
+ * figé dans sa langue au build ; changer de langue doit donc ouvrir la page
+ * équivalente plutôt que traduire l'interface autour d'un texte inchangé.
+ */
+export default function LangToggle({ links }: { links?: Partial<Record<Lang, string>> }) {
   const { lang, setLang } = useLang();
   const t = useT();
   const [open, setOpen] = useState(false);
@@ -81,20 +92,21 @@ export default function LangToggle() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={t.langMenu}
-        className="flex items-center gap-1.5 rounded-full border border-trait bg-feuille px-2.5 py-1.5 transition-colors hover:border-encre-2"
+        className="flex h-9 items-center gap-1.5 rounded-full border border-trait bg-feuille px-2.5 transition-colors hover:border-encre-2"
       >
-        <span className="h-4 w-6 overflow-hidden rounded-[3px] border border-black/10">
-          <current.flag className="h-full w-full" />
+        <GlobeIcon className="h-4 w-4 text-encre-2" />
+        <span lang={current.code} className="text-sm font-semibold text-encre">
+          {current.short}
         </span>
-        <ChevronDownIcon className={`h-3.5 w-3.5 text-encre-2 transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDownIcon className={`hidden h-3.5 w-3.5 text-encre-2 transition-transform sm:block ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <ul
           role="menu"
           aria-label={t.langMenu}
-          className="absolute right-0 z-50 mt-2 min-w-[220px] overflow-hidden rounded-xl border border-trait bg-feuille py-1 shadow-lg"
+          className="absolute end-0 z-50 mt-2 min-w-[220px] overflow-hidden rounded-xl border border-trait bg-feuille py-1 shadow-lg"
         >
-          {LANGS.map(({ code, name, tag, flag: FlagIcon }) => {
+          {LANGS.map(({ code, name, short }) => {
             const active = lang === code;
             return (
               <li
@@ -107,17 +119,23 @@ export default function LangToggle() {
                   role="menuitemradio"
                   aria-checked={active}
                   onClick={() => {
+                    const href = links?.[code];
+                    if (href && code !== lang) {
+                      window.location.assign(href);
+                      return;
+                    }
                     setLang(code);
                     setOpen(false);
                     triggerRef.current?.focus();
                   }}
-                  className="flex min-w-0 flex-1 items-center gap-3 py-2 pl-3 pr-1 text-left"
+                  className="flex min-w-0 flex-1 items-center gap-3 py-2 ps-3 pe-1 text-start"
                 >
-                  <span className="h-4 w-6 shrink-0 overflow-hidden rounded-[3px] border border-black/10">
-                    <FlagIcon className="h-full w-full" />
+                  <span lang={code} className="flex-1 text-sm font-medium text-encre">
+                    {name}
                   </span>
-                  <span className="flex-1 text-sm font-medium text-encre">{name}</span>
-                  <span className="text-xs text-encre-2 tabular-nums">{tag}</span>
+                  <span lang={code} className="text-xs text-encre-2">
+                    {short}
+                  </span>
                   <CheckIcon className={`h-4 w-4 text-bleu ${active ? "" : "invisible"}`} />
                 </button>
                 <button
@@ -125,7 +143,7 @@ export default function LangToggle() {
                   onClick={() => copyLink(code)}
                   aria-label={t.shareLang(name)}
                   title={t.shareLang(name)}
-                  className="mr-2 shrink-0 rounded-md p-1.5 text-encre-2 transition-colors hover:bg-encre/10 hover:text-encre"
+                  className="me-2 shrink-0 rounded-md p-1.5 text-encre-2 transition-colors hover:bg-encre/10 hover:text-encre"
                 >
                   {copiedCode === code ? (
                     <CheckIcon className="h-4 w-4 text-green-700" />

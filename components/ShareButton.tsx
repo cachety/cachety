@@ -5,7 +5,7 @@ import { useLang } from "@/lib/i18n";
 import { SITE_META } from "@/lib/site-meta";
 import { CheckIcon, ShareIcon } from "@/components/icons";
 
-// Partage l'accueil dans la langue affichée : l'URL /fr, /en ou /ja
+// Partage l'accueil dans la langue affichée : l'URL /fr, /en, /ja ou /zh
 // impose la langue de l'interface et de l'aperçu du lien (bannière OG).
 export default function ShareButton() {
   const { lang, t } = useLang();
@@ -44,14 +44,15 @@ export default function ShareButton() {
       onClick={share}
       aria-label={t.share}
       title={t.share}
-      className="flex items-center gap-1.5 rounded-full border border-trait bg-feuille px-2.5 py-1.5 text-sm text-encre-2 transition-colors hover:border-encre-2 hover:text-encre sm:px-3"
+      className="flex items-center gap-1.5 rounded-full border border-trait bg-feuille h-9 px-2.5 text-sm text-encre-2 transition-colors hover:border-encre-2 hover:text-encre 2xl:px-3"
     >
       {copied ? (
         <CheckIcon className="h-3.5 w-3.5 shrink-0 text-green-700" />
       ) : (
         <ShareIcon className="h-3.5 w-3.5 shrink-0" />
       )}
-      <span className="hidden whitespace-nowrap sm:inline">
+      {/* Libellé visible sur très grand écran, et toujours le temps du « copié ». */}
+      <span className={`whitespace-nowrap ${copied ? "inline" : "hidden 2xl:inline"}`}>
         {copied ? t.shareCopied : t.share}
       </span>
     </button>

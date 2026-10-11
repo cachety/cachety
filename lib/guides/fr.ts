@@ -1,0 +1,493 @@
+// Guides pratiques en français, écrits pour un public en France.
+// Texte brut uniquement : pas de lien, pas de balise, pas de markdown.
+
+import type { Guide } from "./types";
+
+const UPDATED = "2026-10-11";
+
+export const GUIDES_FR: Guide[] = [
+  // ------------------------------------------------------------------
+  {
+    slug: "filigrane-dossier-location",
+    topic: "rental",
+    title: "Mettre un filigrane sur son dossier de location",
+    metaTitle: "Filigrane sur un dossier de location : le guide",
+    description:
+      "Filigrane pour dossier de location : protégez vos papiers envoyés à une agence ou un propriétaire, et déjouez l’arnaque au faux bailleur. Gratuit.",
+    intro:
+      "Pièce d’identité, fiches de paie, avis d’imposition : un dossier de location contient tout ce qu’il faut pour usurper votre identité. Un simple filigrane, ajouté en deux minutes, limite fortement les risques.",
+    example: "Dossier de location – Agence Martin – 12/10/2026",
+    body: [
+      { type: "h2", text: "Pourquoi un dossier de location attire les escrocs" },
+      {
+        type: "p",
+        text: "Pour louer un appartement, on envoie souvent ses papiers à plusieurs agences et à plusieurs propriétaires, parfois à des inconnus rencontrés sur une petite annonce. Chaque envoi, c’est une copie de plus qui circule, dans une boîte mail ou un dossier partagé que vous ne contrôlez pas.",
+      },
+      {
+        type: "p",
+        text: "En France, l’arnaque au faux propriétaire est bien connue : une annonce alléchante, un « bailleur » pressé qui réclame le dossier complet avant toute visite, puis plus de nouvelles. Les documents récupérés servent ensuite à ouvrir un crédit, souscrire un abonnement ou louer un autre logement à votre nom.",
+      },
+      {
+        type: "warning",
+        text: "Méfiez-vous d’un propriétaire qui refuse la visite, demande de l’argent avant la signature ou exige votre dossier complet par message. Dans le doute, n’envoyez rien, et ne versez jamais de dépôt de garantie avant d’avoir visité et signé.",
+      },
+      { type: "h2", text: "Ce que change un filigrane" },
+      {
+        type: "p",
+        text: "Le filigrane est un texte écrit en travers de chaque page, par exemple « Dossier de location – Agence Martin – 12/10/2026 ». Le document reste parfaitement lisible pour l’agence, mais il devient difficile à réutiliser ailleurs : une banque ou un opérateur qui reçoit une copie marquée « location » pour une autre personne a de bonnes raisons de se méfier. Et si une copie fuite, la mention vous indique à qui vous l’aviez confiée.",
+      },
+      {
+        type: "p",
+        text: "Le principe est d’ailleurs déjà appliqué par certaines plateformes de dossier, comme DossierFacile, le service proposé par l’État : les pièces y sont marquées pour un usage locatif. Si une agence vous demande vos papiers en direct, vous pouvez faire la même chose vous-même.",
+      },
+      { type: "h2", text: "Filigraner votre dossier avec Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com dans votre navigateur, sur ordinateur ou sur téléphone.",
+          "Déposez vos fichiers : pièce d’identité, trois dernières fiches de paie, avis d’imposition, justificatif de domicile. Vous pouvez en mettre plusieurs à la fois, en PDF ou en photo.",
+          "Choisissez le modèle « Logement » ou tapez votre texte : l’objet, le destinataire et la date, par exemple « Dossier de location – Agence Martin – 12/10/2026 ». Le bouton de date du jour vous évite de la saisir.",
+          "Vérifiez l’aperçu : le texte doit couvrir la page sans gêner la lecture des informations utiles.",
+          "Téléchargez. Si vous le souhaitez, réunissez tout en un seul PDF dans l’ordre de votre choix : c’est plus simple pour l’agence.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Vous postulez pour plusieurs logements ? Indiquez plusieurs destinataires : Cachety prépare une version par agence ou par propriétaire, en une seule fois. Si une copie circule un jour, vous saurez d’où elle vient.",
+      },
+      { type: "h2", text: "Vos papiers ne quittent pas votre appareil" },
+      {
+        type: "p",
+        text: "Avec Cachety, rien n’est envoyé sur internet. Le travail se fait directement dans votre navigateur, sur votre ordinateur ou votre téléphone. Il n’existe aucun serveur qui recevrait vos fichiers. Vous pouvez même couper le wifi ou passer en mode avion une fois la page chargée : tout continue de fonctionner. C’est gratuit, sans compte et sans pistage.",
+      },
+      {
+        type: "p",
+        text: "Soyons honnêtes : un filigrane ne rend pas toute fraude impossible. Quelqu’un de déterminé peut toujours photographier un document. Mais il décourage la plupart des abus et rend une fuite traçable, ce qui est déjà beaucoup.",
+      },
+    ],
+    faq: [
+      {
+        q: "Une agence peut-elle refuser un dossier filigrané ?",
+        a: "En pratique, c’est rare : le filigrane n’empêche pas de lire et de vérifier vos documents. Gardez un texte discret et une opacité modérée pour que les montants et les noms restent bien lisibles.",
+      },
+      {
+        q: "Que faut-il écrire dans le filigrane ?",
+        a: "L’objet, le destinataire et la date : « Dossier de location – Agence Martin – 12/10/2026 ». Pour un particulier, mettez son nom à la place de l’agence.",
+      },
+      {
+        q: "Le propriétaire peut-il enlever le filigrane ?",
+        a: "Le texte est fondu dans l’image de chaque page, répété en diagonale. On ne peut pas l’effacer simplement en modifiant le PDF. Cela reste une protection dissuasive, pas une garantie absolue.",
+      },
+      {
+        q: "Mon dossier est-il envoyé quelque part ?",
+        a: "Non. Les fichiers sont traités sur votre appareil, dans le navigateur, et ne sont jamais envoyés en ligne. Vous seul choisissez ensuite à qui transmettre le résultat.",
+      },
+    ],
+    updated: UPDATED,
+  },
+
+  // ------------------------------------------------------------------
+  {
+    slug: "filigrane-carte-identite",
+    topic: "id-card",
+    title: "Comment mettre un filigrane sur sa carte d’identité",
+    metaTitle: "Filigrane sur une copie de carte d’identité",
+    description:
+      "Mettez un filigrane sur la copie de votre carte d’identité ou de votre passeport en deux minutes, gratuitement, sans envoyer vos papiers en ligne.",
+    intro:
+      "On vous demande souvent une copie de votre carte nationale d’identité ou de votre passeport. Avant de l’envoyer, ajoutez un filigrane : c’est rapide, gratuit, et cela protège votre identité.",
+    example: "Ouverture de compte – Banque Durand – 12/10/2026",
+    body: [
+      { type: "h2", text: "Pourquoi filigraner une copie de pièce d’identité" },
+      {
+        type: "p",
+        text: "Banque, location, inscription, nouvel emploi : la copie de la carte d’identité est demandée partout. Une fois envoyée, elle peut rester des années dans une boîte mail, être transférée ou tomber entre de mauvaises mains. Avec votre nom, votre date de naissance et votre photo, un escroc a de quoi ouvrir un compte ou souscrire un crédit à votre place.",
+      },
+      {
+        type: "p",
+        text: "Le filigrane indique noir sur blanc à quoi sert la copie. Une copie marquée « Ouverture de compte – Banque Durand » sera bien plus difficile à réutiliser pour autre chose. Cybermalveillance.gouv.fr, le dispositif public d’aide aux victimes, conseille d’ailleurs de filigraner les copies de ses papiers.",
+      },
+      { type: "h2", text: "Un bon filigrane en trois éléments" },
+      {
+        type: "list",
+        items: [
+          "L’objet : pourquoi vous envoyez cette copie (location, ouverture de compte, inscription).",
+          "Le destinataire : le nom de l’organisme ou de la personne.",
+          "La date du jour : elle montre que la copie a été faite pour une démarche précise, à un moment précis.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Le texte doit passer sur la photo et sur les informations principales, sans les rendre illisibles. Le destinataire doit pouvoir vérifier votre identité ; un fraudeur, lui, ne doit pas pouvoir réutiliser l’image proprement.",
+      },
+      { type: "h2", text: "La marche à suivre avec Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com dans votre navigateur.",
+          "Déposez le scan ou la photo de votre carte, recto et verso, ou de votre passeport. Les PDF, les photos JPG et les photos d’iPhone (HEIC) sont acceptés.",
+          "Tapez votre texte, par exemple « Ouverture de compte – Banque Durand – 12/10/2026 », ou choisissez un modèle comme « Banque ».",
+          "Regardez l’aperçu : le texte est répété en diagonale sur toute la page. Ajustez la taille ou l’opacité si besoin.",
+          "Téléchargez votre copie filigranée et envoyez-la.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Ne réutilisez pas la même copie pour deux démarches. Refaites-en une nouvelle à chaque fois, avec le bon destinataire et la date du jour : cela ne prend qu’une minute.",
+      },
+      { type: "h2", text: "Ce qui se passe avec vos fichiers" },
+      {
+        type: "p",
+        text: "Rien ne part sur internet. Cachety fonctionne entièrement dans votre navigateur, sur votre propre appareil : vos papiers ne sont jamais envoyés sur un serveur. Vous pouvez le vérifier en passant en mode avion une fois la page ouverte, tout continue de marcher. Le fichier final est aussi nettoyé de ses données cachées, comme la position GPS d’une photo prise au téléphone.",
+      },
+      {
+        type: "p",
+        text: "Un dernier mot, en toute franchise : un filigrane décourage les abus et permet de savoir d’où vient une copie qui fuite, mais il ne rend pas la réutilisation physiquement impossible. C’est une précaution simple, à combiner avec un peu de vigilance sur la personne à qui vous envoyez vos papiers.",
+      },
+    ],
+    faq: [
+      {
+        q: "Une banque ou une administration accepte-t-elle une copie filigranée ?",
+        a: "En général oui, tant que la copie reste lisible. Gardez une opacité modérée pour que la photo, le nom et le numéro restent bien visibles.",
+      },
+      {
+        q: "Faut-il filigraner le recto et le verso ?",
+        a: "Oui. Déposez les deux faces en même temps : Cachety applique le même filigrane à chaque fichier, et vous pouvez les réunir en un seul PDF.",
+      },
+      {
+        q: "Et pour un passeport ?",
+        a: "Exactement la même méthode. Pensez à faire passer le texte sur la page avec votre photo, c’est elle qui intéresse les fraudeurs.",
+      },
+      {
+        q: "Est-ce vraiment gratuit ?",
+        a: "Oui : gratuit, sans compte, sans pistage. Cachety est un logiciel libre, conçu en France.",
+      },
+    ],
+    updated: UPDATED,
+  },
+
+  // ------------------------------------------------------------------
+  {
+    slug: "filigrane-avis-imposition-fiche-de-paie",
+    topic: "tax-payslip",
+    title: "Avis d’imposition, fiches de paie, RIB : que filigraner, que masquer ?",
+    metaTitle: "Filigrane avis d’imposition, fiche de paie et RIB",
+    description:
+      "Avis d’imposition, fiche de paie, RIB : ce qu’il faut filigraner, ce qu’on peut masquer avant de les envoyer. Gratuit, vos papiers restent chez vous.",
+    intro:
+      "Votre avis d’imposition, vos bulletins de salaire et votre RIB disent beaucoup de choses sur vous. Avant de les envoyer, deux gestes simples : ajouter un filigrane et masquer ce qui n’est pas nécessaire.",
+    example: "Dossier de prêt – Banque Durand – 12/10/2026",
+    body: [
+      { type: "h2", text: "Des documents très convoités" },
+      {
+        type: "p",
+        text: "Un avis d’imposition donne votre adresse, votre situation familiale, vos revenus et votre numéro fiscal. Une fiche de paie contient votre salaire, le nom de votre employeur et souvent votre numéro de sécurité sociale. Un RIB, enfin, donne vos coordonnées bancaires. Ensemble, ils permettent de monter un faux dossier très crédible.",
+      },
+      { type: "h2", text: "Filigraner : toujours" },
+      {
+        type: "p",
+        text: "Chaque fois que vous envoyez l’un de ces documents, ajoutez un filigrane qui précise l’objet, le destinataire et la date : « Dossier de prêt – Banque Durand – 12/10/2026 » ou « Dossier de location – M. Petit – 12/10/2026 ». Le destinataire peut tout lire, mais la copie est clairement liée à une démarche.",
+      },
+      { type: "h2", text: "Masquer : seulement ce qui n’est pas demandé" },
+      {
+        type: "list",
+        items: [
+          "Fiche de paie : le numéro de sécurité sociale est rarement utile à un propriétaire. Vous pouvez le masquer. Gardez le salaire, l’employeur et la date, qui sont ce que l’on vérifie.",
+          "Avis d’imposition : le revenu fiscal de référence doit rester visible. Le numéro fiscal et la référence de l’avis servent parfois à vérifier l’authenticité du document : si vous les masquez, on pourra vous les redemander.",
+          "RIB : ne masquez pas l’IBAN si l’on vous le demande pour un prélèvement ou un virement, il ne servirait plus à rien. Filigranez-le simplement.",
+          "Relevés de compte : si vous devez en envoyer un, masquez les opérations qui ne regardent personne.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Pour un dossier de location, un bailleur n’a pas le droit de tout demander : la loi fixe une liste de pièces autorisées. Un relevé de compte bancaire, par exemple, n’en fait pas partie. Vous pouvez refuser poliment.",
+      },
+      { type: "h2", text: "Avec Cachety, pas à pas" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com.",
+          "Déposez vos documents, PDF ou photos. Vous pouvez en ajouter plusieurs d’un coup, ou coller une capture d’écran avec Ctrl+V.",
+          "Choisissez un modèle (« Impôts », « Banque », « Logement ») ou tapez votre texte, puis ajoutez la date du jour d’un clic.",
+          "Si besoin, dessinez un rectangle sur l’aperçu par-dessus le numéro à cacher. La zone masquée est réellement retirée du fichier, pas seulement recouverte.",
+          "Vérifiez l’aperçu, puis téléchargez. Si un site limite la taille des fichiers, choisissez une taille maximale (1, 2, 5 ou 10 Mo).",
+        ],
+      },
+      { type: "h2", text: "Vos documents restent chez vous" },
+      {
+        type: "p",
+        text: "Tout se passe dans votre navigateur, sur votre ordinateur ou votre téléphone. Vos fichiers ne sont jamais envoyés en ligne, et la page fonctionne même sans connexion une fois chargée. Le texte sélectionnable et les informations cachées du fichier d’origine sont aussi retirés de la copie.",
+      },
+      {
+        type: "p",
+        text: "Gardez en tête qu’un filigrane ne rend pas la réutilisation impossible : quelqu’un peut toujours photographier un document. Il dissuade et rend une fuite traçable, et c’est déjà une vraie protection.",
+      },
+    ],
+    faq: [
+      {
+        q: "Puis-je masquer mon numéro fiscal sur mon avis d’imposition ?",
+        a: "Vous pouvez, mais sachez qu’il sert parfois, avec la référence de l’avis, à vérifier que le document est authentique. Si le destinataire en a besoin, il vous le redemandera.",
+      },
+      {
+        q: "Combien de fiches de paie faut-il filigraner ?",
+        a: "Toutes celles que vous envoyez. Déposez-les ensemble : le même texte est appliqué à chaque fichier, et vous pouvez les réunir en un seul PDF.",
+      },
+      {
+        q: "Un RIB filigrané reste-t-il valable ?",
+        a: "Oui. Le filigrane n’empêche pas de lire l’IBAN. Il indique seulement pour quoi et pour qui vous l’avez transmis.",
+      },
+      {
+        q: "Puis-je protéger le PDF par un mot de passe ?",
+        a: "Oui, c’est une option. Le PDF est alors protégé par un chiffrement fort (AES-256), le même niveau que les banques. Envoyez le mot de passe par un autre moyen que le fichier, par SMS par exemple.",
+      },
+    ],
+    updated: UPDATED,
+  },
+
+  // ------------------------------------------------------------------
+  {
+    slug: "masquer-information-pdf",
+    topic: "redact",
+    title: "Masquer un numéro, un IBAN ou une photo dans un PDF",
+    metaTitle: "Masquer une information dans un PDF ou une image",
+    description:
+      "Masquer une information dans un PDF ou une photo : IBAN, numéro, visage. Pourquoi un rectangle noir ne suffit pas, et comment la retirer vraiment.",
+    intro:
+      "Vous voulez cacher un numéro de sécurité sociale, un IBAN ou une photo avant d’envoyer un document ? Attention : poser un rectangle noir dans un éditeur de PDF ne suffit pas toujours. Voici comment masquer pour de bon.",
+    example: "Justificatif – Mutuelle Bernard – 12/10/2026",
+    body: [
+      { type: "h2", text: "Le piège du rectangle noir" },
+      {
+        type: "p",
+        text: "Beaucoup de gens ouvrent leur PDF, dessinent un rectangle noir sur le numéro à cacher, et enregistrent. À l’écran, tout semble parfait. Pourtant, dans bien des cas, le texte est toujours là, simplement recouvert. Il suffit de le sélectionner, de faire copier-coller, ou de supprimer le rectangle, pour le voir réapparaître.",
+      },
+      {
+        type: "warning",
+        text: "Un test simple : dans votre PDF « masqué », essayez de sélectionner le texte sous le rectangle noir et de le coller dans un message. Si le numéro apparaît, il n’a jamais été retiré.",
+      },
+      {
+        type: "p",
+        text: "Masquer vraiment, on dit aussi « caviarder », c’est faire disparaître l’information du fichier lui-même, pas seulement la cacher sous une forme.",
+      },
+      { type: "h2", text: "Ce qu’on masque le plus souvent" },
+      {
+        type: "list",
+        items: [
+          "Le numéro de sécurité sociale sur une fiche de paie ou une attestation.",
+          "Un IBAN sur un relevé, quand le destinataire n’en a pas besoin.",
+          "La photo ou le numéro d’une pièce d’identité, quand seul le nom compte.",
+          "Les opérations d’un relevé de compte qui ne regardent personne.",
+          "Les informations d’une autre personne : conjoint, enfant, colocataire.",
+        ],
+      },
+      { type: "h2", text: "Masquer avec Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com dans votre navigateur.",
+          "Déposez votre PDF ou votre photo (JPG, PNG, HEIC d’iPhone…).",
+          "Sur l’aperçu, dessinez un rectangle par-dessus chaque zone à cacher : numéro, IBAN, photo. Vous pouvez en tracer plusieurs.",
+          "Ajoutez un filigrane, par exemple « Justificatif – Mutuelle Bernard – 12/10/2026 ».",
+          "Vérifiez l’aperçu, puis téléchargez le document.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Ici, la zone masquée est réellement retirée du fichier. Chaque page est transformée en image, avec le masque et le filigrane fondus dedans : il n’y a plus de texte caché à sélectionner sous le noir. Les données invisibles du fichier d’origine, comme l’auteur ou la position GPS d’une photo, sont elles aussi effacées.",
+      },
+      {
+        type: "tip",
+        text: "Avant d’envoyer, refaites le test du copier-coller sur le fichier téléchargé. Vous verrez qu’il n’y a plus rien à sélectionner : c’est bon signe.",
+      },
+      { type: "h2", text: "Et vos fichiers dans tout ça ?" },
+      {
+        type: "p",
+        text: "Ils restent sur votre appareil. Cachety fonctionne dans votre navigateur, sans jamais envoyer vos documents sur internet : il n’y a aucun serveur pour les recevoir. Une fois la page ouverte, vous pouvez même couper la connexion. C’est gratuit, sans compte et sans pistage.",
+      },
+      {
+        type: "p",
+        text: "Une précision honnête : ce que vous masquez disparaît bien du fichier, mais le filigrane, lui, est une protection dissuasive. Il rend une copie difficile à réutiliser et facile à tracer, sans pouvoir empêcher qu’on la photographie.",
+      },
+    ],
+    faq: [
+      {
+        q: "Pourquoi mon rectangle noir dans un éditeur PDF ne suffit-il pas ?",
+        a: "Parce que beaucoup d’éditeurs ajoutent simplement une forme par-dessus le texte. Le texte reste dans le fichier et peut être copié ou révélé. Il faut un outil qui retire réellement l’information.",
+      },
+      {
+        q: "Peut-on masquer une partie d’une photo prise au téléphone ?",
+        a: "Oui. Déposez la photo, même au format HEIC de l’iPhone, et dessinez un rectangle sur la zone à cacher. La position GPS de la photo est aussi retirée.",
+      },
+      {
+        q: "Le texte du PDF reste-t-il sélectionnable après ?",
+        a: "Non. Le document téléchargé ne contient plus de texte sélectionnable, ce qui garantit que rien ne se cache sous les zones noires.",
+      },
+      {
+        q: "Faut-il un logiciel payant pour caviarder un PDF ?",
+        a: "Non. Cachety est gratuit, sans compte et sans pistage. Il fonctionne dans votre navigateur, sur ordinateur comme sur téléphone, sans rien installer.",
+      },
+    ],
+    updated: UPDATED,
+  },
+
+  // ------------------------------------------------------------------
+  {
+    slug: "filigrane-sur-telephone",
+    topic: "phone",
+    title: "Mettre un filigrane depuis son téléphone (iPhone et Android)",
+    metaTitle: "Filigrane sur téléphone : iPhone et Android",
+    description:
+      "Ajoutez un filigrane sur vos papiers depuis votre téléphone, iPhone ou Android, photos HEIC comprises. Gratuit, sans application à télécharger.",
+    intro:
+      "Pas besoin d’ordinateur pour protéger vos papiers. Depuis votre iPhone ou votre téléphone Android, vous pouvez filigraner une photo de carte d’identité ou un PDF en quelques gestes.",
+    example: "Inscription club de sport – Club Leroy – 12/10/2026",
+    body: [
+      { type: "h2", text: "Tout se fait dans le navigateur" },
+      {
+        type: "p",
+        text: "Cachety s’ouvre dans Safari, Chrome ou tout autre navigateur. Il n’y a rien à télécharger depuis une boutique d’applications, aucun compte à créer. Et comme sur ordinateur, vos photos ne quittent jamais votre téléphone : elles sont traitées sur l’appareil, jamais envoyées sur internet.",
+      },
+      { type: "h2", text: "Pas à pas sur votre téléphone" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com dans votre navigateur.",
+          "Touchez la zone d’ajout et choisissez vos fichiers : une photo de votre galerie ou un PDF enregistré sur le téléphone.",
+          "Tapez votre texte, par exemple « Inscription club de sport – Club Leroy – 12/10/2026 », ou choisissez un modèle et ajoutez la date du jour.",
+          "Vérifiez l’aperçu en zoomant si besoin.",
+          "Téléchargez le résultat, puis envoyez-le par mail ou par messagerie.",
+        ],
+      },
+      { type: "h2", text: "Sur iPhone : les photos HEIC passent sans souci" },
+      {
+        type: "p",
+        text: "Les iPhone enregistrent souvent les photos au format HEIC, que beaucoup de sites refusent. Cachety les accepte directement : pas besoin de les convertir avant. Le fichier téléchargé est dans un format que tout le monde peut ouvrir.",
+      },
+      {
+        type: "tip",
+        text: "Ajoutez Cachety à votre écran d’accueil pour l’avoir sous la main comme une application. Sur iPhone, dans Safari, touchez le bouton de partage puis « Sur l’écran d’accueil ». Sur Android, dans Chrome, ouvrez le menu puis « Installer l’application » ou « Ajouter à l’écran d’accueil ».",
+      },
+      { type: "h2", text: "Sur Android : filigraner depuis « Partager »" },
+      {
+        type: "p",
+        text: "Une fois Cachety installé sur un téléphone Android, il apparaît dans le menu « Partager ». Depuis votre galerie ou un PDF reçu par mail, touchez « Partager », choisissez Cachety, et le fichier s’ouvre directement, prêt à être filigrané.",
+      },
+      { type: "h2", text: "Même en mode avion" },
+      {
+        type: "p",
+        text: "Une fois la page chargée, Cachety continue de fonctionner sans réseau. Vous pouvez passer en mode avion avant de déposer vos papiers : c’est la meilleure preuve que rien n’est envoyé nulle part. Les données cachées des photos, comme la position GPS enregistrée par le téléphone, sont aussi retirées de la copie.",
+      },
+      {
+        type: "p",
+        text: "Pour rester honnête : le filigrane décourage les abus et permet de retrouver l’origine d’une fuite, mais il ne peut pas empêcher quelqu’un de photographier votre document. C’est une précaution simple et efficace, pas une garantie absolue.",
+      },
+    ],
+    faq: [
+      {
+        q: "Faut-il installer une application ?",
+        a: "Non. Cachety fonctionne dans le navigateur. Vous pouvez l’ajouter à l’écran d’accueil si vous voulez y accéder plus vite, mais ce n’est pas obligatoire.",
+      },
+      {
+        q: "Mes photos sont-elles envoyées sur internet ?",
+        a: "Non. Elles sont traitées sur votre téléphone, dans le navigateur. Essayez en mode avion : tout fonctionne.",
+      },
+      {
+        q: "Cachety lit-il les photos HEIC de l’iPhone ?",
+        a: "Oui, directement, sans conversion préalable.",
+      },
+      {
+        q: "Puis-je filigraner plusieurs photos à la fois ?",
+        a: "Oui. Sélectionnez-en plusieurs : le même filigrane est appliqué à toutes. Vous pouvez ensuite les réunir en un seul PDF ou les télécharger dans un fichier ZIP.",
+      },
+    ],
+    updated: UPDATED,
+  },
+
+  // ------------------------------------------------------------------
+  {
+    slug: "usurpation-identite-copie-papiers",
+    topic: "identity-theft",
+    title: "Usurpation d’identité : protéger les copies de vos papiers",
+    metaTitle: "Usurpation d’identité : protéger ses copies de papiers",
+    description:
+      "Usurpation d’identité : comment protéger les copies de vos papiers avec un filigrane, et que faire si l’une d’elles a fuité. Conseils simples.",
+    intro:
+      "Une copie de pièce d’identité envoyée un peu vite peut suffire à un escroc. Voici comment limiter les risques au quotidien, et comment réagir si une copie de vos papiers circule sans votre accord.",
+    example: "Candidature – Société Garnier – 12/10/2026",
+    body: [
+      { type: "h2", text: "Comment les copies servent aux escrocs" },
+      {
+        type: "p",
+        text: "Avec une copie de carte d’identité, une fiche de paie et un justificatif de domicile, un fraudeur peut ouvrir un compte, demander un crédit, souscrire un forfait téléphonique ou louer un logement à votre nom. Ces copies sont récupérées par de fausses annonces, de faux recruteurs, des messages piégés, ou dans des boîtes mail piratées.",
+      },
+      { type: "h2", text: "Les bons réflexes avant d’envoyer vos papiers" },
+      {
+        type: "list",
+        items: [
+          "Vérifiez à qui vous envoyez : une vraie agence, un vrai employeur, un organisme que vous connaissez.",
+          "N’envoyez que ce qui est demandé, et masquez ce qui ne sert pas, comme le numéro de sécurité sociale.",
+          "Ajoutez toujours un filigrane : objet, destinataire, date.",
+          "Faites une copie différente pour chaque destinataire, pour savoir d’où viendrait une fuite.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Cybermalveillance.gouv.fr, le dispositif public d’assistance aux victimes, recommande justement d’ajouter un filigrane sur les copies de ses documents d’identité. C’est simple et cela rend une copie bien moins utile à un fraudeur.",
+      },
+      { type: "h2", text: "Protéger vos copies avec Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com.",
+          "Déposez vos documents : carte d’identité, passeport, justificatifs, en PDF ou en photo.",
+          "Tapez votre texte, par exemple « Candidature – Société Garnier – 12/10/2026 ».",
+          "Activez la copie traçable : chaque copie reçoit la date et une référence unique, et vous gardez un journal de vos envois. Ce journal reste chez vous, il n’est enregistré nulle part.",
+          "Vérifiez l’aperçu, puis téléchargez et envoyez.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Vos fichiers ne sont jamais envoyés sur internet : Cachety travaille directement sur votre appareil, et fonctionne même en mode avion une fois la page ouverte. Vous ne confiez vos papiers à personne de plus.",
+      },
+      { type: "h2", text: "Une copie a fuité : que faire ?" },
+      {
+        type: "steps",
+        items: [
+          "Gardez des preuves : captures d’écran, messages, courriers reçus pour des contrats que vous n’avez pas signés.",
+          "Regardez le filigrane ou la référence de la copie retrouvée : vous saurez à qui vous l’aviez envoyée.",
+          "Prévenez votre banque au plus vite si des opérations ou un crédit vous semblent suspects.",
+          "Portez plainte au commissariat ou à la gendarmerie, avec vos preuves.",
+          "Contactez les organismes concernés (opérateur, organisme de crédit) pour contester ce qui a été fait en votre nom.",
+          "Si votre pièce d’identité a été perdue ou volée, déclarez-le et faites-la refaire.",
+        ],
+      },
+      {
+        type: "warning",
+        text: "Si l’on vous appelle de la part de votre banque pour « sécuriser » votre compte, raccrochez et rappelez vous-même le numéro habituel. Les escrocs profitent souvent d’une première fuite pour en provoquer une seconde.",
+      },
+      {
+        type: "p",
+        text: "Pour finir, un mot de franchise : un filigrane ne peut pas empêcher toute fraude, et quelqu’un peut toujours photographier un document. Mais il décourage la plupart des tentatives et vous aide à remonter la piste si une copie circule. Pour vous faire accompagner, Cybermalveillance.gouv.fr propose aussi des conseils aux victimes.",
+      },
+    ],
+    faq: [
+      {
+        q: "Un filigrane suffit-il à empêcher une usurpation d’identité ?",
+        a: "Non, aucune mesure n’est infaillible. Le filigrane rend une copie beaucoup moins réutilisable et permet de savoir d’où vient une fuite. Associé à un peu de vigilance, il réduit nettement les risques.",
+      },
+      {
+        q: "Comment savoir qui a laissé fuiter ma copie ?",
+        a: "Si chaque copie porte le nom du destinataire, ou une référence unique avec la copie traçable, il suffit de lire le filigrane de la copie retrouvée et de la comparer à votre journal d’envois.",
+      },
+      {
+        q: "Où porter plainte pour usurpation d’identité ?",
+        a: "Au commissariat de police ou à la brigade de gendarmerie. Apportez toutes vos preuves. Prévenez aussi votre banque si vos comptes sont concernés.",
+      },
+      {
+        q: "Mes papiers sont-ils envoyés à Cachety ?",
+        a: "Non. Le traitement se fait sur votre appareil, dans le navigateur. Aucun serveur ne reçoit vos fichiers.",
+      },
+    ],
+    updated: UPDATED,
+  },
+];

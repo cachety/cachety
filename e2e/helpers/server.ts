@@ -6,8 +6,9 @@
 // Port 4181 UNIQUEMENT — réservé à cette suite, d'autres agents utilisent
 // d'autres ports.
 
-import { existsSync } from "node:fs";
-import { join, extname } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { extname, join, resolve, sep } from "node:path";
+import { headersFor } from "../../lib/http-headers";
 import { MAP_UPSERT_POLYFILL } from "./browser";
 
 export const E2E_PORT = 4181;
@@ -36,12 +37,32 @@ function contentType(path: string) {
 
 export type E2eServer = { stop: () => void };
 
+/**
+ * En-têtes de out/_headers pour un chemin, comme Cloudflare Pages les
+ * appliquerait (CSP propre à chaque page comprise) : la suite navigateur
+ * tourne ainsi sous la politique de production.
+ */
+function productionHeaders(outDir: string): (path: string) => Record<string, string> {
+  const path = join(outDir, "_headers");
+  const text = existsSync(path) ? readFileSync(path, "utf8") : "";
+  return (p) => headersFor(text, p);
+}
+
+/** Résout `rel` sous `root`, ou null si le chemin s'en échappe (« %2e%2e/ »…). */
+function inside(root: string, rel: string) {
+  const base = resolve(root);
+  const full = resolve(base, rel);
+  return full === base || full.startsWith(base + sep) ? full : null;
+}
+
 export function startServer(outDir: string, extraDir?: string): E2eServer {
   if (!existsSync(join(outDir, "index.html"))) {
     throw new Error(
       `Export statique introuvable (${outDir}/index.html) : lancez \`bun run build\` ou \`bun run test:e2e\`.`
     );
   }
+
+  const prod = productionHeaders(outDir);
 
   const server = Bun.serve({
     port: E2E_PORT,
@@ -51,7 +72,9 @@ export function startServer(outDir: string, extraDir?: string): E2eServer {
 
       // Fichiers du harnais (bundle, page blanche…), hors export Next.
       if (extraDir && pathname.startsWith("/__e2e__/")) {
-        const file = Bun.file(join(extraDir, pathname.slice("/__e2e__/".length)));
+        const full = inside(extraDir, pathname.slice("/__e2e__/".length));
+        if (!full) return new Response("Forbidden", { status: 403 });
+        const file = Bun.file(full);
         if (!(await file.exists())) return new Response("Not found", { status: 404 });
         return new Response(file, { headers: { "Content-Type": contentType(pathname) } });
       }
@@ -62,7 +85,7 @@ export function startServer(outDir: string, extraDir?: string): E2eServer {
       if (pathname === "/pdfjs/pdf.worker.min.mjs") {
         const source = await Bun.file(join(outDir, pathname.slice(1))).text();
         return new Response(MAP_UPSERT_POLYFILL + source, {
-          headers: { "Content-Type": "text/javascript" },
+          headers: { ...prod(pathname), "Content-Type": "text/javascript" },
         });
       }
 
@@ -73,9 +96,11 @@ export function startServer(outDir: string, extraDir?: string): E2eServer {
           ? ["index.html"]
           : [clean.slice(1), `${clean.slice(1)}.html`, `${clean.slice(1)}/index.html`];
       for (const rel of candidates) {
-        const file = Bun.file(join(outDir, rel));
+        const full = inside(outDir, rel);
+        if (!full) return new Response("Forbidden", { status: 403 });
+        const file = Bun.file(full);
         if (await file.exists()) {
-          return new Response(file, { headers: { "Content-Type": contentType(rel) } });
+          return new Response(file, { headers: { ...prod(clean), "Content-Type": contentType(rel) } });
         }
       }
       return new Response("Not found", { status: 404 });

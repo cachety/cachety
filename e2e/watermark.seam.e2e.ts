@@ -19,10 +19,18 @@ import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
 import {
   ENCRYPTED_PDF_B64,
   ENCRYPTED_PDF_PASSWORD,
+  HEIC_320x240_B64,
+  makeBluePdf,
+  makeNoisePdf,
+  makeNoisePng,
   fromBase64,
+  makeHostilePdf,
   makePdf,
   makeRotatedPdf,
+  scanPdfForLeaks,
+  SECRET,
   toBase64,
+  withExif,
 } from "./helpers/fixtures";
 
 const ROOT = join(import.meta.dir, "..");
@@ -45,6 +53,8 @@ type PageResult =
       extension: string;
       blobType: string;
       outB64: string;
+      size: number;
+      overBudget?: boolean;
     }
   | { ok: false; error: string };
 
@@ -55,13 +65,22 @@ function runWatermark(input: {
   type: string;
   text: string;
   password?: string;
+  options?: unknown;
 }) {
   return page.evaluate(async (arg) => {
     const mod = (window as any).__wm;
     const bin = Uint8Array.from(atob(arg.b64), (c) => c.charCodeAt(0));
     const file = new File([bin], arg.name, { type: arg.type });
     try {
-      const res = await mod.watermarkFile(file, arg.text, undefined, arg.password);
+      const res = await mod.watermarkFile(
+        file,
+        arg.text,
+        undefined,
+        arg.password,
+        undefined,
+        undefined,
+        arg.options
+      );
       const bytes = new Uint8Array(await res.blob.arrayBuffer());
       let out = "";
       for (let i = 0; i < bytes.length; i += 0x8000) {
@@ -75,6 +94,8 @@ function runWatermark(input: {
         extension: res.extension,
         blobType: res.blob.type,
         outB64: btoa(out),
+        size: res.blob.size,
+        overBudget: res.overBudget,
       };
     } catch (e) {
       return { ok: false, error: e instanceof Error ? e.message : String(e) };
@@ -305,6 +326,37 @@ describe("contrat d'erreurs du moteur", () => {
     30_000
   );
 
+  test(
+    "un PDF de plus de 500 pages rejette avec « pdf_too_many_pages » (pas de rendu interminable)",
+    async () => {
+      const res = await runWatermark({
+        b64: toBase64(await makePdf(Array.from({ length: 501 }, () => [50, 50] as [number, number]))),
+        name: "annuaire.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+      });
+      expect(res.ok).toBe(false);
+      if (!res.ok) expect(res.error).toBe("pdf_too_many_pages");
+    },
+    30_000
+  );
+
+  test("un fichier de plus de 200 Mo rejette avec « file_too_large », sans être lu", async () => {
+    const error = await page.evaluate(async () => {
+      const mb = new Uint8Array(1024 * 1024);
+      const file = new File(Array.from({ length: 201 }, () => mb), "enorme.pdf", {
+        type: "application/pdf",
+      });
+      try {
+        await (window as any).__wm.watermarkFile(file, "x");
+        return "accepté";
+      } catch (e) {
+        return e instanceof Error ? e.message : String(e);
+      }
+    });
+    expect(error).toBe("file_too_large");
+  }, 30_000);
+
   test("un type non géré rejette avec « unsupported »", async () => {
     const res = await runWatermark({
       b64: toBase64(new TextEncoder().encode("bonjour")),
@@ -435,5 +487,191 @@ describe("corpus adversarial (défenses vérifiées)", () => {
       expect(red).toBeGreaterThan(50);
     },
     60_000
+  );
+});
+
+// Le document produit est destiné à être transmis : rien du fichier
+// d'origine ne doit y survivre hormis ses pixels. C'est la propriété de
+// sécurité centrale (docs/security.md, « Assainissement des sorties »).
+describe("assainissement : rien ne fuit du document d'origine", () => {
+  test(
+    "PDF hostile → ni texte, ni métadonnées, ni pièce jointe, ni JavaScript, ni lien, ni police",
+    async () => {
+      const hostile = await makeHostilePdf();
+      // Témoin : le scanner voit bien tout ce qui a été planté.
+      const before = await scanPdfForLeaks(hostile);
+      expect(before.markerHits).toBeGreaterThan(0);
+      expect(before.keys).toEqual(["EmbeddedFiles", "Font", "JS", "Metadata", "OpenAction", "URI"]);
+
+      const res = await runWatermark({
+        b64: toBase64(hostile),
+        name: "hostile.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      const after = await scanPdfForLeaks(fromBase64(res.outB64));
+      expect(after.markerHits).toBe(0);
+      expect(after.keys).toEqual([]);
+      // Chaque page de sortie n'est qu'une image : la couche texte a disparu.
+      const out = await PDFDocument.load(fromBase64(res.outB64));
+      expect(out.getPageCount()).toBe(1);
+    },
+    60_000
+  );
+
+  test(
+    "image JPEG avec EXIF (GPS…) → PNG ré-encodé sans aucune métadonnée d'origine",
+    async () => {
+      const jpegB64 = await page.evaluate(async () => {
+        const c = document.createElement("canvas");
+        c.width = 320;
+        c.height = 240;
+        const ctx = c.getContext("2d")!;
+        ctx.fillStyle = "#88aacc";
+        ctx.fillRect(0, 0, c.width, c.height);
+        const blob: Blob = await new Promise((r) => c.toBlob((b) => r(b!), "image/jpeg", 0.9));
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        return btoa(String.fromCharCode(...bytes));
+      });
+      const jpeg = withExif(fromBase64(jpegB64));
+      expect(new TextDecoder("latin1").decode(jpeg)).toContain(SECRET);
+
+      const res = await runWatermark({
+        b64: toBase64(jpeg),
+        name: "photo.jpg",
+        type: "image/jpeg",
+        text: WATERMARK_TEXT,
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      expect(res.extension).toBe("png");
+      const out = new TextDecoder("latin1").decode(fromBase64(res.outB64));
+      expect(out).not.toContain(SECRET);
+      expect(out).not.toContain("Exif");
+    },
+    30_000
+  );
+});
+
+describe("HEIC (photos d'iPhone)", () => {
+  test(
+    "un HEIC est décodé localement (libheif) puis filigrané, couleurs d'origine préservées",
+    async () => {
+      const res = await runWatermark({
+        b64: HEIC_320x240_B64,
+        name: "IMG_0001.HEIC",
+        type: "image/heic",
+        text: WATERMARK_TEXT,
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      expect(res.extension).toBe("png");
+      // Agrandie à 800 px de large au minimum (MIN_IMAGE_SIDE), proportions gardées.
+      const colors = await page.evaluate(async (src) => {
+        const bmp = await createImageBitmap(await (await fetch(src)).blob());
+        const c = document.createElement("canvas");
+        c.width = bmp.width;
+        c.height = bmp.height;
+        const ctx = c.getContext("2d")!;
+        ctx.drawImage(bmp, 0, 0);
+        const at = (x: number, y: number) => Array.from(ctx.getImageData(x, y, 1, 1).data.slice(0, 3));
+        return { w: bmp.width, h: bmp.height, left: at(8, 8), right: at(bmp.width - 8, 8) };
+      }, res.previews[0]);
+      expect(colors.w).toBe(800);
+      expect(colors.h).toBe(600);
+      // Bleu à gauche, vert à droite (coin : loin du filigrane centré).
+      expect(colors.left[2]).toBeGreaterThan(colors.left[1]);
+      expect(colors.right[1]).toBeGreaterThan(colors.right[2]);
+    },
+    60_000
+  );
+
+  test("un faux HEIC (octets quelconques) rejette avec « image_unreadable »", async () => {
+    const res = await runWatermark({
+      b64: toBase64(new TextEncoder().encode("ftypheic mais pas vraiment")),
+      name: "faux.heic",
+      type: "image/heic",
+      text: WATERMARK_TEXT,
+    });
+    expect(res.ok).toBe(false);
+    if (!res.ok) expect(res.error).toBe("image_unreadable");
+  }, 30_000);
+});
+
+describe("masquage (caviardage)", () => {
+  test(
+    "la zone masquée ne contient plus aucun pixel d'origine ; le reste est intact",
+    async () => {
+      const res = await runWatermark({
+        b64: toBase64(await makeBluePdf()),
+        name: "bleu.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+        options: { masks: { 0: [{ x: 0, y: 0, w: 0.5, h: 0.5 }] } },
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      const blue = await page.evaluate(async (src) => {
+        const bmp = await createImageBitmap(await (await fetch(src)).blob());
+        const c = document.createElement("canvas");
+        c.width = bmp.width;
+        c.height = bmp.height;
+        const ctx = c.getContext("2d")!;
+        ctx.drawImage(bmp, 0, 0);
+        const count = (x0: number, y0: number, w: number, h: number) => {
+          const d = ctx.getImageData(x0, y0, w, h).data;
+          let n = 0;
+          for (let i = 0; i < d.length; i += 4) if (d[i + 2] > 120 && d[i + 2] > d[i] + 40) n++;
+          return n;
+        };
+        const hw = Math.floor(bmp.width / 2) - 2;
+        const hh = Math.floor(bmp.height / 2) - 2;
+        return { masked: count(0, 0, hw, hh), open: count(bmp.width - hw, bmp.height - hh, hw, hh) };
+      }, res.previews[0]);
+      expect(blue.masked).toBe(0);
+      expect(blue.open).toBeGreaterThan(10_000);
+    },
+    60_000
+  );
+});
+
+describe("taille cible", () => {
+  test(
+    "image de bruit (PNG de plusieurs Mo) → JPEG sous 300 Ko",
+    async () => {
+      const noise = makeNoisePng(1200, 1200);
+      expect(noise.length).toBeGreaterThan(3_000_000);
+      const res = await runWatermark({
+        b64: toBase64(noise),
+        name: "bruit.png",
+        type: "image/png",
+        text: WATERMARK_TEXT,
+        options: { maxBytes: 300 * 1024 },
+      });
+      if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+      expect(res.extension).toBe("jpg");
+      expect(res.size).toBeLessThanOrEqual(300 * 1024);
+      expect(res.overBudget).toBe(false);
+    },
+    60_000
+  );
+
+  test(
+    "PDF de bruit → sous 250 Ko ; sans taille cible, nettement plus lourd",
+    async () => {
+      const b64 = toBase64(await makeNoisePdf());
+      const free = await runWatermark({ b64, name: "bruit.pdf", type: "application/pdf", text: WATERMARK_TEXT });
+      const capped = await runWatermark({
+        b64,
+        name: "bruit.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+        options: { maxBytes: 250 * 1024 },
+      });
+      if (!free.ok || !capped.ok) throw new Error("watermarkFile a rejeté");
+      expect(free.size).toBeGreaterThan(250 * 1024);
+      expect(capped.size).toBeLessThanOrEqual(250 * 1024);
+      expect(capped.overBudget).toBe(false);
+      expect((await PDFDocument.load(fromBase64(capped.outB64))).getPageCount()).toBe(1);
+    },
+    90_000
   );
 });

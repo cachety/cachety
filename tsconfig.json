@@ -16,6 +16,9 @@
     "jsx": "react-jsx",
     "incremental": true,
     "strict": true,
+    // @types/bun 1.4 ne fait que référencer le paquet bun-types.
+    // TypeScript 7 ne l'inclut plus automatiquement.
+    "types": ["bun-types"],
     "plugins": [
       {
         "name": "next"
@@ -33,7 +36,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules"

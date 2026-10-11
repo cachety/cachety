@@ -1,37 +1,54 @@
 {
-  "name": "filigrane-local",
+  "name": "cachety",
   "version": "1.0.0",
   "private": true,
+  "description": "Watermark ID documents and other files privately, in your browser. Nothing is uploaded.",
+  "homepage": "https://cachety.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cachety/cachety.git"
+  },
+  "bugs": "https://github.com/cachety/cachety/issues",
+  "author": "Amir Moradi (https://amirmoradi.com)",
+  "funding": "https://github.com/sponsors/amirhmoradi",
+  "license": "AGPL-3.0-only",
   "scripts": {
-    "assets": "mkdir -p public/pdfjs && cp -r node_modules/pdfjs-dist/cmaps node_modules/pdfjs-dist/standard_fonts node_modules/pdfjs-dist/wasm node_modules/pdfjs-dist/iccs node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdfjs/",
+    "assets": "mkdir -p public/pdfjs && cp -r node_modules/pdfjs-dist/cmaps node_modules/pdfjs-dist/standard_fonts node_modules/pdfjs-dist/wasm node_modules/pdfjs-dist/iccs node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdfjs/ && bun run scripts/fonts.mjs",
     "predev": "bun run assets",
     "dev": "next dev",
     "prebuild": "bun run assets",
     "build": "next build",
-    "postbuild": "bun run scripts/gen-sw.mjs",
+    "postbuild": "bun run scripts/seo.ts && bun run scripts/gen-sw.mjs",
     "preview": "bunx wrangler pages dev out",
-    "deploy": "bun run build && bunx wrangler pages deploy out --project-name filigrane-local --branch main",
+    "deploy": "bun run build && bunx wrangler pages deploy out --project-name cachety --branch main",
     "test": "bun test",
     "test:e2e": "bun e2e/run.ts"
   },
   "dependencies": {
-    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@fontsource-variable/cairo": "5.3.0",
+    "@fontsource-variable/noto-sans-jp": "5.3.1",
+    "@fontsource-variable/noto-sans-sc": "5.3.1",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@fontsource-variable/vazirmatn": "5.3.0",
     "fflate": "^0.8.3",
-    "next": "16.2.10",
+    "libheif-js": "1.23.5",
+    "next": "16.4.0",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^6.1.200",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "pdf-lib-encrypt": "1.0.3",
+    "pdfjs-dist": "^6.4.299",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.2",
-    "@types/bun": "^1.3.14",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/bun": "^1.4.2",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "playwright-core": "^1.61.1",
+    "playwright-core": "^1.64.0",
     "postcss": "^8",
-    "tailwindcss": "^4.3.2",
-    "typescript": "^5"
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "wrangler": "4.149.0"
   }
 }

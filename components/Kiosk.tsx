@@ -3,28 +3,91 @@
 import { useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
 import { outName, size, type Doc } from "@/lib/doc";
+import { protectFile } from "@/lib/file-password";
 import { ChevronIcon, CloseIcon, DownloadIcon } from "@/components/icons";
+import { MaskEditor } from "@/components/MaskEditor";
+import { addMask, clearPageMasks, type PageMasks } from "@/lib/masks";
 
-export function Kiosk({ doc }: { doc: Doc }) {
+function triggerDownload(url: string, name: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+export function Kiosk({
+  doc,
+  password,
+  onMasks,
+  hideDownload = false,
+}: {
+  doc: Doc;
+  password: string;
+  onMasks: (masks: PageMasks) => void;
+  /** Plusieurs destinataires : l'aperçu n'est qu'une des versions, on télécharge par destinataire. */
+  hideDownload?: boolean;
+}) {
   const t = useT();
   const [page, setPage] = useState(0);
+  const [encrypting, setEncrypting] = useState(false);
+  const [encryptError, setEncryptError] = useState(false);
   const zoomRef = useRef<HTMLDialogElement>(null);
   const result = doc.result!;
   const shownPages = result.previews.length;
+  const downloadExt = password && result.extension !== "pdf" ? "pdf" : result.extension;
+  const name = outName(doc, t, downloadExt);
+
+  const downloadProtected = async () => {
+    setEncrypting(true);
+    setEncryptError(false);
+    try {
+      const protectedFile = await protectFile(result.blob, result.extension, password);
+      const url = URL.createObjectURL(
+        new Blob([Uint8Array.from(protectedFile.bytes)], { type: "application/pdf" })
+      );
+      triggerDownload(url, outName(doc, t, protectedFile.extension));
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    } catch {
+      setEncryptError(true);
+    } finally {
+      setEncrypting(false);
+    }
+  };
 
   return (
     <div className="rounded-2xl border border-trait bg-feuille p-4">
-      <a
-        href={result.url}
-        download={outName(doc, t)}
-        className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2"
-      >
-        <DownloadIcon className="h-5 w-5 shrink-0" />
-        <span className="truncate">{outName(doc, t)}</span>
-        <span className="shrink-0 font-normal opacity-80">
-          ({size(result.blob.size, t)})
-        </span>
-      </a>
+      {hideDownload ? null : password ? (
+        <button
+          type="button"
+          onClick={downloadProtected}
+          disabled={encrypting}
+          aria-busy={encrypting || undefined}
+          className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2 disabled:opacity-50"
+        >
+          <DownloadIcon className="h-5 w-5 shrink-0" />
+          {/* Pas de taille ici : celle du fichier chiffré n'est connue qu'après
+              chiffrement, et celle du fichier en clair serait fausse. */}
+          <span className="truncate">{encrypting ? t.filePassword.encrypting : name}</span>
+
+        </button>
+      ) : (
+        <a
+          href={result.url}
+          download={name}
+          className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2"
+        >
+          <DownloadIcon className="h-5 w-5 shrink-0" />
+          <span className="truncate">{name}</span>
+          <span className="shrink-0 font-normal opacity-80">({size(result.blob.size, t)})</span>
+        </a>
+      )}
+      {encryptError && (
+        <p role="alert" className="mt-2 text-sm text-sceau-fonce">
+          {t.filePassword.encryptFailed}
+        </p>
+      )}
 
       {shownPages > 1 && (
         <nav
@@ -47,17 +110,28 @@ export function Kiosk({ doc }: { doc: Doc }) {
         </nav>
       )}
 
-      <button
-        onClick={() => zoomRef.current?.showModal()}
-        className="mt-4 block w-full cursor-zoom-in rounded-lg focus:outline-none focus:ring-2 focus:ring-bleu"
-        aria-label={t.zoomOpen(page + 1)}
+      <MaskEditor
+        key={page}
+        src={result.previews[page]}
+        alt={t.previewAlt(doc.file.name, page + 1)}
+        page={page}
+        committed={doc.masks?.[page]?.length ?? 0}
+        maskable={page < shownPages}
+        onApply={(rects) => onMasks(rects.reduce((m, r) => addMask(m, page, r), doc.masks ?? {}))}
+        onClearPage={() => onMasks(clearPageMasks(doc.masks, page))}
       >
-        <img
-          src={result.previews[page]}
-          alt={t.previewAlt(doc.file.name, page + 1)}
-          className="mx-auto max-h-[70vh] w-auto max-w-full rounded-lg border border-trait shadow-sm"
-        />
-      </button>
+        <button
+          onClick={() => zoomRef.current?.showModal()}
+          className="mt-3 block w-full cursor-zoom-in rounded-lg focus:outline-none focus:ring-2 focus:ring-bleu"
+          aria-label={t.zoomOpen(page + 1)}
+        >
+          <img
+            src={result.previews[page]}
+            alt={t.previewAlt(doc.file.name, page + 1)}
+            className="mx-auto max-h-[70vh] w-auto max-w-full rounded-lg border border-trait shadow-sm"
+          />
+        </button>
+      </MaskEditor>
 
       <dialog
         ref={zoomRef}
@@ -69,7 +143,7 @@ export function Kiosk({ doc }: { doc: Doc }) {
           <button
             onClick={() => zoomRef.current?.close()}
             aria-label={t.zoomClose}
-            className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-encre/70 text-white transition-colors hover:bg-encre focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute end-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-encre/70 text-white transition-colors hover:bg-encre focus:outline-none focus:ring-2 focus:ring-white"
           >
             <CloseIcon className="h-5 w-5" />
           </button>
@@ -83,7 +157,7 @@ export function Kiosk({ doc }: { doc: Doc }) {
 
       {result.pageCount > shownPages && (
         <p className="mt-3 text-center text-sm text-encre-2">
-          {t.previewLimit(shownPages, result.pageCount)}
+          {t.previewLimit(shownPages, result.pageCount)} {t.mask.limit(shownPages)}
         </p>
       )}
     </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BRAND } from "@/lib/brand";
 import HomeApp from "@/components/HomeApp";
 import {
   LANG_CODES,
@@ -8,7 +9,7 @@ import {
   type Lang,
 } from "@/lib/site-meta";
 
-// Export statique : seules /fr, /en et /ja existent.
+// Export statique : seules /fr, /en, /ja et /zh existent.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical: m.path, languages: LANGUAGE_ALTERNATES },
     openGraph: {
       type: "website",
-      siteName: "Filigrane Local",
+      siteName: BRAND,
       locale: m.ogLocale,
       alternateLocale: LANG_CODES.filter((l) => l !== lang).map(
         (l) => SITE_META[l].ogLocale

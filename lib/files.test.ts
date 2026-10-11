@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { unzipSync, strToU8 } from "fflate";
-import { hasVisibleText, isSupported, outputName, uniqueName, zipDocuments } from "./files";
+import { fileKind, hasVisibleText, isSupported, outputName, uniqueName, zipDocuments } from "./files";
 
 describe("isSupported (whitelist des formats)", () => {
   test("accepte PDF et les images réellement décodables", () => {
@@ -17,10 +17,39 @@ describe("isSupported (whitelist des formats)", () => {
     }
   });
 
-  test("refuse HEIC, SVG, TIFF, bureautique et type vide", () => {
+  test("un type vide ou octet-stream retombe sur l'extension (dépôt mixte)", () => {
+    expect(fileKind({ type: "", name: "photo.jpg" })).toBe("image");
+    expect(fileKind({ type: "", name: "photo.JPEG" })).toBe("image");
+    expect(fileKind({ type: "application/octet-stream", name: "scan.PDF" })).toBe("pdf");
+    expect(fileKind({ type: "image/jpg", name: "a.jpg" })).toBe("image");
+    expect(isSupported({ type: "", name: "photo.png" })).toBe(true);
+    expect(fileKind({ type: "", name: "notes.txt" })).toBe("unsupported");
+    expect(fileKind({ type: "", name: "archive.zip" })).toBe("unsupported");
+  });
+
+  test("alias historiques acceptés ; un type explicite d'un autre format n'est jamais rattrapé par l'extension", () => {
+    expect(fileKind({ type: "application/x-pdf", name: "a.pdf" })).toBe("pdf");
+    expect(fileKind({ type: "image/x-png", name: "a.png" })).toBe("image");
+    expect(fileKind({ type: "image/x-ms-bmp", name: "a.bmp" })).toBe("image");
+    expect(fileKind({ type: "image/svg+xml", name: "piege.png" })).toBe("unsupported");
+    expect(fileKind({ type: "text/html", name: "piege.pdf" })).toBe("unsupported");
+  });
+
+  test("sans extension réelle, un type vide est refusé (fichier nommé « pdf », « .png »)", () => {
+    expect(fileKind({ type: "", name: "pdf" })).toBe("unsupported");
+    expect(fileKind({ type: "", name: ".png" })).toBe("unsupported");
+    expect(fileKind({ type: "", name: "x" })).toBe("unsupported");
+  });
+
+  // Type seul, sans nom : un type vide n'a pas d'extension sur laquelle retomber.
+  test("accepte HEIC/HEIF (photos d'iPhone), par type ou par extension", () => {
+    expect(fileKind({ type: "image/heic", name: "IMG_0001.HEIC" })).toBe("image");
+    expect(fileKind({ type: "image/heif", name: "x" })).toBe("image");
+    expect(fileKind({ type: "", name: "IMG_0001.heic" })).toBe("image");
+  });
+
+  test("refuse SVG, TIFF, bureautique, et un type vide sans nom", () => {
     for (const type of [
-      "image/heic",
-      "image/heif",
       "image/svg+xml",
       "image/tiff",
       "application/msword",
@@ -105,5 +134,22 @@ describe("zipDocuments", () => {
       expect(entry).not.toContain("..");
     }
     expect(Object.keys(zip).sort()).toEqual(["c.pdf", "evil.pdf", "passwd.png"]);
+  });
+});
+
+describe("zipDocuments, un dossier par destinataire", () => {
+  test("dossiers séparés ; un nom de dossier hostile est réduit à un seul segment", () => {
+    const zip = zipDocuments([
+      { name: "a.pdf", bytes: strToU8("1"), folder: "agence-martin" },
+      { name: "a.pdf", bytes: strToU8("2"), folder: "foncia" },
+      { name: "b.pdf", bytes: strToU8("3"), folder: "../../etc" },
+      { name: "c.pdf", bytes: strToU8("4"), folder: ".." },
+    ]);
+    expect(Object.keys(unzipSync(zip)).sort()).toEqual([
+      "agence-martin/a.pdf",
+      "c.pdf",
+      "etc/b.pdf",
+      "foncia/a.pdf",
+    ]);
   });
 });

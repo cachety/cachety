@@ -42,6 +42,19 @@ export const FlagJP = ({ className }: IconProps) => (
   </svg>
 );
 
+export const FlagCN = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden>
+    <rect width="30" height="20" fill="#de2910" />
+    <g fill="#ffde00">
+      <polygon points="5.00,1.70 6.18,4.82 9.54,4.94 6.90,7.01 7.82,10.20 5.00,8.32 2.18,10.20 3.10,7.01 0.46,4.94 3.82,4.82" />
+      <polygon points="10.20,0.70 10.62,1.78 11.76,1.82 10.86,2.54 11.18,3.64 10.20,3.00 9.22,3.64 9.54,2.54 8.64,1.82 9.78,1.78" />
+      <polygon points="12.20,2.90 12.62,3.98 13.76,4.02 12.86,4.74 13.18,5.84 12.20,5.20 11.22,5.84 11.54,4.74 10.64,4.02 11.78,3.98" />
+      <polygon points="12.20,5.90 12.62,6.98 13.76,7.02 12.86,7.74 13.18,8.84 12.20,8.20 11.22,8.84 11.54,7.74 10.64,7.02 11.78,6.98" />
+      <polygon points="10.20,8.10 10.62,9.18 11.76,9.22 10.86,9.94 11.18,11.04 10.20,10.40 9.22,11.04 9.54,9.94 8.64,9.22 9.78,9.18" />
+    </g>
+  </svg>
+);
+
 export const ChevronDownIcon = ({ className }: IconProps) => (
   <Stroke className={className}>
     <path d="M6 9l6 6 6-6" />
@@ -122,11 +135,104 @@ export const CloseIcon = ({ className }: IconProps) => (
   </Stroke>
 );
 
+/**
+ * « left » et « right » suivent le sens de lecture : en arabe ou en persan
+ * (dir="rtl"), la flèche est retournée (« suivant » pointe vers la gauche).
+ */
 export const ChevronIcon = ({
   className,
   direction,
 }: IconProps & { direction: "left" | "right" }) => (
-  <Stroke className={className}>
+  <Stroke className={`rtl:-scale-x-100 ${className ?? ""}`}>
     {direction === "left" ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
+  </Stroke>
+);
+
+/** Poignée de glisser-déposer : deux colonnes de trois points. */
+export const GripIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    {[6, 12, 18].map((y) =>
+      [9, 15].map((x) => <circle key={`${x}-${y}`} cx={x} cy={y} r={1.6} />)
+    )}
+  </svg>
+);
+
+/** Logo Cachety : la feuille filigranée de l'icône d'application, en vectoriel. */
+export const Logo = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 48 48" aria-hidden>
+    <rect width="48" height="48" rx="11" fill="#1a1e33" />
+    <defs>
+      <clipPath id="logo-sheet">
+        <path d="M12 8h17l7 7v25a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" />
+      </clipPath>
+    </defs>
+    <path d="M12 8h17l7 7v25a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" fill="#f2f3f0" />
+    <g clipPath="url(#logo-sheet)" stroke="#c4262e" strokeWidth="2.4" strokeLinecap="round">
+      <path d="M8 22L26 8" />
+      <path d="M8 30L36 10" opacity="0.85" />
+      <path d="M8 38L38 16" opacity="0.7" />
+      <path d="M14 42L38 24" opacity="0.55" />
+      <path d="M24 42L38 32" opacity="0.4" />
+    </g>
+    <path d="M29 8v5a2 2 0 0 0 2 2h5z" fill="#c9cbc4" />
+  </svg>
+);
+
+export const MenuIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M4 7h16M4 12h16M4 17h16" />
+  </Stroke>
+);
+
+export const WifiOffIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M2 2l20 20" />
+    <path d="M8.5 16.5a5 5 0 0 1 7 0" />
+    <path d="M2 8.8a15 15 0 0 1 4.2-2.6M10.7 5.1A15 15 0 0 1 22 8.8" />
+    <path d="M5 12.6a10 10 0 0 1 5.2-2.7M16.8 11.2A10 10 0 0 1 19 12.6" />
+    <path d="M12 20h.01" />
+  </Stroke>
+);
+
+export const CpuIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <rect x="5" y="4" width="14" height="10" rx="1.5" />
+    <path d="M3 18h18M9 18v-4M15 18v-4" />
+  </Stroke>
+);
+
+export const UserOffIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 21c0-4 3.6-7 8-7 1.4 0 2.7.3 3.8.8" />
+    <path d="M17 17l4 4M21 17l-4 4" />
+  </Stroke>
+);
+
+export const CodeIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M8 6l-6 6 6 6M16 6l6 6-6 6" />
+  </Stroke>
+);
+
+export const HeartIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z" />
+  </Stroke>
+);
+
+export const GlobeIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z" />
+  </Stroke>
+);
+
+export const QuestionIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9.5 9.5a2.5 2.5 0 0 1 4.9.7c0 1.7-2.4 2.2-2.4 3.8" />
+    <path d="M12 17h.01" />
   </Stroke>
 );

@@ -1,36 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { exampleStamp, useT } from "@/lib/i18n";
-import LangToggle from "@/components/LangToggle";
+import { exampleStamp, useLang } from "@/lib/i18n";
+import SiteNav from "@/components/SiteNav";
+import { LANG_CODES, type Lang } from "@/lib/site-meta";
 import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
-import { CheckIcon, ChevronIcon, CloseIcon, Flag } from "@/components/icons";
+import { CheckIcon, ChevronIcon, CloseIcon } from "@/components/icons";
+
+const ABOUT_LINKS = Object.fromEntries(LANG_CODES.map((l) => [l, `/${l}/about`])) as Record<Lang, string>;
 
 export default function About() {
-  const t = useT();
+  const { lang, t } = useLang();
   const a = t.about;
   return (
     <>
-      <header className="mx-auto flex w-full max-w-4xl items-center justify-between gap-3 py-5">
-        <Link href="/" className="flex min-w-0 items-center gap-2.5">
-          <Flag className="h-5 w-7 shrink-0 rounded-sm border border-trait" />
-          <span className="truncate text-lg font-bold tracking-tight">Filigrane Local</span>
-        </Link>
-        <div className="flex shrink-0 items-center gap-3">
-          {/* Même pastille que dans l'en-tête de l'outil : la navigation entre
-              les deux pages est un seul et même objet. */}
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 rounded-full border border-trait bg-feuille px-3.5 py-1.5 text-sm font-medium text-bleu transition-colors hover:border-bleu focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-          >
-            {a.navTool}
-            <ChevronIcon direction="right" className="h-3.5 w-3.5" />
-          </Link>
-          <LangToggle />
-        </div>
-      </header>
+      <SiteNav current="about" links={ABOUT_LINKS} />
 
-      <main className="mx-auto w-full max-w-4xl flex-1 pb-4">
+      <main className="mx-auto w-full max-w-4xl flex-1 pb-4 pt-6 sm:pt-10">
         <h1 className="max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
           {a.title}
         </h1>
@@ -94,7 +80,7 @@ export default function About() {
                     troisième coloris n'apporterait rien : chaque segment est
                     déjà collé à son explication (et le vert veut dire « prêt »
                     ailleurs dans l'outil). */}
-                <p className="font-mono text-sm uppercase tracking-wide text-encre">
+                <p className="font-mono rtl:font-sans text-sm uppercase tracking-wide text-encre">
                   {w.part}
                 </p>
                 <span className="mt-2 block h-0.5 w-full rounded-full bg-sceau/70" aria-hidden />
@@ -111,7 +97,7 @@ export default function About() {
             promesse (« ça prend dix secondes ») : le bouton dit ce qu'il fait. */}
         <div className="mt-14 flex flex-col items-start gap-3 border-t border-trait pt-8 sm:flex-row sm:items-center sm:gap-4">
           <Link
-            href="/"
+            href={`/${lang}`}
             className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus-visible:ring-2 focus-visible:ring-sceau focus-visible:ring-offset-2"
           >
             {a.backToTool}

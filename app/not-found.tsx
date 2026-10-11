@@ -3,19 +3,24 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { detectLang, type Lang } from "@/lib/i18n";
+import { readPref } from "@/lib/storage";
 
 const NOT_FOUND: Record<Lang, { message: string; back: string }> = {
-  fr: { message: "Cette page n'existe pas.", back: "Retour à Filigrane Local" },
-  en: { message: "This page does not exist.", back: "Back to Filigrane Local" },
-  ja: { message: "このページは存在しません。", back: "Filigrane Local に戻る" },
+  fr: { message: "Cette page n'existe pas.", back: "Retour à Cachety" },
+  en: { message: "This page does not exist.", back: "Back to Cachety" },
+  ja: { message: "このページは存在しません。", back: "Cachety に戻る" },
+  zh: { message: "这个页面不存在。", back: "返回 Cachety" },
+  es: { message: "Esta página no existe.", back: "Volver a Cachety" },
+  ar: { message: "هذه الصفحة غير موجودة.", back: "العودة إلى Cachety" },
+  fa: { message: "این صفحه وجود ندارد.", back: "بازگشت به Cachety" },
 };
 
 export default function NotFound() {
-  // Prérendu en français (une seule page 404 statique) ; la langue de
+  // Prérendu en anglais (une seule page 404 statique) ; la langue de
   // l'utilisateur est appliquée après montage, comme sur la racine.
-  const [lang, setLang] = useState<Lang>("fr");
+  const [lang, setLang] = useState<Lang>("en");
   useEffect(() => {
-    setLang(detectLang(localStorage.getItem("lang"), navigator.language));
+    setLang(detectLang(readPref("lang"), navigator.language));
   }, []);
   const t = NOT_FOUND[lang];
 

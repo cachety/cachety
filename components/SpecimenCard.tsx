@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { drawWatermark } from "@/lib/watermark";
+import { DEFAULT_WATERMARK_STYLE, fontCss, type WatermarkStyle } from "@/lib/watermark-style";
 
 export function SpecimenCard({
   title,
@@ -44,16 +45,35 @@ export function SpecimenCard({
   );
 }
 
-export function WatermarkLayer({ text }: { text: string }) {
+export function WatermarkLayer({
+  text,
+  style = DEFAULT_WATERMARK_STYLE,
+}: {
+  text: string;
+  style?: WatermarkStyle;
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawWatermark(ctx, canvas.width, canvas.height, text);
-  }, [text]);
+    let cancelled = false;
+    const draw = () => {
+      if (cancelled) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawWatermark(ctx, canvas.width, canvas.height, text, style);
+    };
+    // Dessin immédiat, puis redessin une fois la police chargée : sans cela,
+    // un premier rendu avant Space Grotesk restait figé dans la police de repli.
+    draw();
+    Promise.resolve(document.fonts?.load(fontCss(style, 32, text), text || " "))
+      .catch(() => undefined)
+      .then(draw);
+    return () => {
+      cancelled = true;
+    };
+  }, [text, style]);
   return (
     <canvas
       ref={ref}

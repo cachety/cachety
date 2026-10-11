@@ -1,0 +1,35 @@
+Cachety
+Copyright (C) 2026 Amir Moradi (https://amirmoradi.com)
+
+This program is a modified version of "Filigrane Local"
+  Copyright (C) Hugo Sibony (KazeTachinuu)
+  https://github.com/KazeTachinuu/filigrane-local
+which was itself inspired by "Filigraneur"
+  by CyberClarence
+  https://github.com/cyberclarence/filigraneur
+
+Both Cachety and Filigrane Local are distributed under the GNU Affero General
+Public License, version 3 (see LICENSE). This program is free software: you
+can redistribute it and/or modify it under the terms of that licence.
+
+Modifications made in Cachety (from 2026-10-10), relative to Filigrane Local:
+  - Renamed and rebranded as Cachety (cachety.com); international default
+    language (English) alongside French, Spanish, Arabic, Persian, Japanese
+    and Chinese, with right-to-left layout for Arabic and Persian.
+  - Guided help tour for first-time visitors, and an optional donation link.
+  - Fact-checked comparison pages with other watermark tools (lib/compare).
+  - New website around the tool: landing sections, privacy page, and
+    practical guides per country (lib/guides, lib/site-copy.ts).
+  - Mobile layout improvements (collapsible templates, jump-to-preview button).
+  - Per-page Content-Security-Policy generation (one rule per page, within
+    Cloudflare Pages limits), JSON-LD structured data and generated sitemap.
+  - Continuous deployment to Cloudflare Pages from GitHub Actions.
+  - Documentation translated to English and updated.
+  - Security and feature work (file password, masking, traceable copies,
+    several recipients, size budget, HEIC support, hardened headers and
+    tests); see the git history for details.
+
+Third-party components keep their own licences, notably PDF.js (Apache-2.0),
+pdf-lib (MIT), pdf-lib-encrypt (MIT), libheif-js (LGPL-3.0), fflate (MIT),
+React and Next.js (MIT), and the fonts Space Grotesk, Cairo, Vazirmatn,
+Noto Sans JP and Noto Sans SC (SIL Open Font License 1.1).

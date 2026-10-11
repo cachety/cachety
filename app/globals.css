@@ -14,8 +14,72 @@
   --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", monospace;
 }
 
+/*
+ * Arabe et persan : polices dédiées, auto-hébergées (la CSP interdit toute
+ * police externe). Seul le sous-ensemble arabe est déclaré : le latin reste
+ * en Space Grotesk, et le navigateur ne télécharge ces fichiers (30 et 45 Ko)
+ * que sur une page qui affiche de l'arabe ou du persan.
+ * Cairo pour l'arabe, Vazirmatn pour le persan (licence SIL OFL 1.1).
+ */
+/* cairo-arabic-wght-normal */
+@font-face {
+  font-family: 'Cairo Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 1000;
+  src: url(../node_modules/@fontsource-variable/cairo/files/cairo-arabic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1;
+}
+/* vazirmatn-arabic-wght-normal */
+@font-face {
+  font-family: 'Vazirmatn Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(../node_modules/@fontsource-variable/vazirmatn/files/vazirmatn-arabic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC,U+102E0-102FB,U+10E60-10E7E,U+10EC2-10EC4,U+10EFC-10EFF,U+1EE00-1EE03,U+1EE05-1EE1F,U+1EE21-1EE22,U+1EE24,U+1EE27,U+1EE29-1EE32,U+1EE34-1EE37,U+1EE39,U+1EE3B,U+1EE42,U+1EE47,U+1EE49,U+1EE4B,U+1EE4D-1EE4F,U+1EE51-1EE52,U+1EE54,U+1EE57,U+1EE59,U+1EE5B,U+1EE5D,U+1EE5F,U+1EE61-1EE62,U+1EE64,U+1EE67-1EE6A,U+1EE6C-1EE72,U+1EE74-1EE77,U+1EE79-1EE7C,U+1EE7E,U+1EE80-1EE89,U+1EE8B-1EE9B,U+1EEA1-1EEA3,U+1EEA5-1EEA9,U+1EEAB-1EEBB,U+1EEF0-1EEF1;
+}
+
+@layer base {
+  :lang(ar) {
+    --font-sans: "Space Grotesk Variable", "Cairo Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  :lang(fa) {
+    --font-sans: "Space Grotesk Variable", "Vazirmatn Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  /* Japonais et chinois : Noto Sans JP / SC (public/fonts, liées par LangProvider
+     sur ces seules pages), puis les polices système les plus répandues. */
+  :lang(ja) {
+    --font-sans: "Space Grotesk Variable", "Noto Sans JP Variable", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Yu Gothic", Meiryo, system-ui, sans-serif;
+  }
+  :lang(zh) {
+    --font-sans: "Space Grotesk Variable", "Noto Sans SC Variable", "PingFang SC", "Microsoft YaHei", system-ui,
+      sans-serif;
+  }
+  /* Un passage dans une autre langue (menu des langues…) prend sa police. */
+  [lang]:not(html) {
+    font-family: var(--font-sans);
+  }
+}
+
+/* Titres arabes et persans : des lettres plus hautes que le latin, et pas
+   d'espacement serré (il desserre les liaisons). Hors @layer : prime sur
+   les utilitaires leading-* et tracking-* des titres. */
+:lang(ar) :is(h1, h2, h3),
+:lang(fa) :is(h1, h2, h3) {
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
+/* Japonais : coupure des titres entre groupes de mots, pas au milieu d'un
+   verbe (« 送ら / ずに »). Ignoré par les navigateurs qui ne le gèrent pas. */
+:lang(ja) :is(h1, h2, h3) {
+  word-break: auto-phrase;
+}
+
 .motif-filigrane {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='180'%3E%3Ctext x='130' y='90' font-family='monospace' font-size='17' font-weight='600' fill='%23c4262e' fill-opacity='0.09' text-anchor='middle' transform='rotate(-30 130 90)'%3EDOCUMENT%20PROT%C3%89G%C3%89%3C/text%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='180'%3E%3Ctext x='130' y='90' font-family='monospace' font-size='17' font-weight='600' fill='%23c4262e' fill-opacity='0.09' text-anchor='middle' transform='rotate(-30 130 90)'%3ECACHETY%20%C2%B7%20COPY%3C/text%3E%3C/svg%3E");
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,7 +3,7 @@
 import { memo, useState } from "react";
 import { useT } from "@/lib/i18n";
 import { needsPassword, size, type Doc, type Status } from "@/lib/doc";
-import { CloseIcon, EyeIcon, EyeOffIcon, LockIcon } from "@/components/icons";
+import { CloseIcon, EyeIcon, EyeOffIcon, GripIcon, LockIcon } from "@/components/icons";
 
 // Mémoïsée : pendant un lot, chaque page rendue re-rend CoreProduct. Sans
 // cette barrière, les mille lignes seraient re-diffées plusieurs fois par
@@ -14,28 +14,85 @@ export const DocRow = memo(function DocRow({
   onSelect,
   onRemove,
   onUnlock,
+  index,
+  total,
+  onMoveTo,
+  onDragStart,
+  dragging,
+  dropEdge,
 }: {
   doc: Doc;
   selected: boolean;
   onSelect: (id: string) => void;
   onRemove: (id: string) => void;
   onUnlock: (id: string, password: string) => void;
+  /** Position dans le lot (0 = premier). */
+  index: number;
+  total: number;
+  /** Absent : réordonnancement indisponible (liste filtrée, document seul). */
+  onMoveTo?: (id: string, to: number) => void;
+  onDragStart?: (id: string, from: number, e: React.PointerEvent) => void;
+  dragging?: boolean;
+  /** Où la ligne glissée atterrira, s'il s'agit de cette ligne. */
+  dropEdge?: "before" | "after";
 }) {
   const t = useT();
+  const reorder = !!onMoveTo && !!onDragStart;
   return (
     // Le bouton « retirer » vit dans la carte : en colonne séparée, il volait
     // 56 px de large à chaque ligne, d'où des noms tronqués très tôt.
     <li
-      className={`rounded-xl border bg-feuille transition-colors ${
+      data-doc-index={index}
+      className={`relative rounded-xl border bg-feuille transition-colors ${
         selected ? "border-bleu ring-1 ring-bleu" : "border-trait hover:border-encre-2"
-      }`}
+      } ${dragging ? "opacity-50" : ""}`}
     >
+      {/* Trait d'insertion : où la ligne glissée va se poser. */}
+      {dropEdge && (
+        <span
+          aria-hidden
+          className={`pointer-events-none absolute inset-x-1 h-0.5 rounded-full bg-bleu ${
+            dropEdge === "before" ? "-top-[5px]" : "-bottom-[5px]"
+          }`}
+        />
+      )}
       <div className="flex items-center">
+        {reorder && (
+          <div className="flex shrink-0 items-center gap-0.5 py-1 ps-1">
+            <button
+              type="button"
+              aria-label={t.dragHandle(doc.file.name)}
+              onPointerDown={(e) => onDragStart!(doc.id, index, e)}
+              onKeyDown={(e) => {
+                const to =
+                  e.key === "ArrowUp" ? index - 1
+                  : e.key === "ArrowDown" ? index + 1
+                  : e.key === "Home" ? 0
+                  : e.key === "End" ? total - 1
+                  : null;
+                if (to === null) return;
+                e.preventDefault();
+                onMoveTo!(doc.id, to);
+              }}
+              className="flex h-11 w-7 cursor-grab touch-none select-none items-center justify-center rounded-md text-encre-2 hover:bg-bleu/10 hover:text-bleu focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu active:cursor-grabbing"
+            >
+              <GripIcon className="h-5 w-5" />
+            </button>
+            <PositionInput
+              name={doc.file.name}
+              position={index + 1}
+              total={total}
+              onCommit={(n) => onMoveTo!(doc.id, n - 1)}
+            />
+          </div>
+        )}
         <button
           id={`doc-${doc.id}`}
           onClick={() => onSelect(doc.id)}
           aria-current={selected || undefined}
-          className="flex min-w-0 flex-1 items-center justify-between gap-3 rounded-l-xl py-3 pl-4 pr-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+          className={`flex min-w-0 flex-1 items-center justify-between gap-3 py-3 ps-4 pe-2 text-start focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu ${
+            reorder ? "" : "rounded-s-xl"
+          }`}
         >
           <span className="min-w-0">
             <span className="block truncate font-medium">{doc.file.name}</span>
@@ -56,7 +113,7 @@ export const DocRow = memo(function DocRow({
         <button
           onClick={() => onRemove(doc.id)}
           aria-label={t.remove(doc.file.name)}
-          className="mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-encre-2 transition-colors hover:bg-sceau/10 hover:text-sceau focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+          className="me-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-encre-2 transition-colors hover:bg-sceau/10 hover:text-sceau focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
         >
           <CloseIcon className="h-4 w-4" />
         </button>
@@ -79,6 +136,59 @@ const STATUS_STYLES: Record<Status, string> = {
   ready: "bg-green-700/10 text-green-800",
   error: "bg-sceau/10 text-sceau-fonce",
 };
+
+/**
+ * Position éditable : taper « 1 » puis Entrée envoie le document en tête.
+ * Validée à Entrée ou en quittant le champ ; Échap annule. Une valeur hors
+ * limites est bornée, une saisie vide ou illisible est ignorée.
+ */
+function PositionInput({
+  name,
+  position,
+  total,
+  onCommit,
+}: {
+  name: string;
+  position: number;
+  total: number;
+  onCommit: (position: number) => void;
+}) {
+  const t = useT();
+  // Brouillon seulement pendant une saisie : hors saisie, le champ montre
+  // toujours la place réelle. Un brouillon synchronisé après coup (effet)
+  // était en retard d'une image ; si la ligne bougeait (glisser) puis que le
+  // champ perdait le focus, l'ancienne valeur était « validée » à tort.
+  const [draft, setDraft] = useState<string | null>(null);
+  const commit = () => {
+    if (draft === null) return;
+    const n = Number.parseInt(draft, 10);
+    setDraft(null);
+    if (Number.isInteger(n) && n !== position) onCommit(Math.min(total, Math.max(1, n)));
+  };
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      value={draft ?? String(position)}
+      onChange={(e) => setDraft(e.target.value.replace(/\D/g, "").slice(0, 5))}
+      onFocus={(e) => e.target.select()}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          commit();
+        } else if (e.key === "Escape") {
+          setDraft(null);
+          e.currentTarget.blur();
+        }
+      }}
+      aria-label={t.positionOf(name, total)}
+      // text-base sous sm : sous 16 px, iOS Safari zoome la page au focus.
+      className="h-8 w-10 rounded-md border border-transparent bg-transparent text-center text-base font-semibold tabular-nums text-encre-2 hover:border-trait focus:border-bleu focus:bg-white focus:text-encre focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm"
+    />
+  );
+}
 
 function DocStatus({ doc }: { doc: Doc }) {
   const t = useT();
@@ -142,7 +252,7 @@ function UnlockForm({
             autoCorrect="off"
             spellCheck={false}
             // text-base : sous 16px, iOS Safari zoome la page au focus.
-            className={`w-full rounded-lg border bg-white py-1.5 pl-3 pr-9 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm ${
+            className={`w-full rounded-lg border bg-white py-1.5 ps-3 pe-9 text-base transition-colors focus:outline-none focus:ring-2 focus:ring-bleu sm:text-sm ${
               wrong ? "border-sceau/60" : "border-trait"
             }`}
           />
@@ -152,7 +262,7 @@ function UnlockForm({
               onClick={() => setVisible(!visible)}
               aria-label={visible ? t.unlock.hide : t.unlock.show}
               aria-pressed={visible}
-              className="absolute right-1 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-encre-2 transition-colors hover:text-encre focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+              className="absolute end-1 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md text-encre-2 transition-colors hover:text-encre focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
             >
               {visible ? (
                 <EyeOffIcon className="h-4 w-4" />

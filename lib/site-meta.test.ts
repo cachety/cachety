@@ -14,6 +14,7 @@ describe("site-meta (liens partageables par langue)", () => {
     expect(SITE_META.fr.ogLocale).toBe("fr_FR");
     expect(SITE_META.en.ogLocale).toBe("en_GB");
     expect(SITE_META.ja.ogLocale).toBe("ja_JP");
+    expect(SITE_META.zh.ogLocale).toBe("zh_CN");
   });
 
   test("titre et description OG non vides pour chaque langue", () => {
@@ -23,7 +24,7 @@ describe("site-meta (liens partageables par langue)", () => {
     }
   });
 
-  test("isLang ne reconnaît que fr, en, ja", () => {
+  test("isLang ne reconnaît que fr, en, ja, zh", () => {
     for (const code of LANG_CODES) expect(isLang(code)).toBe(true);
     expect(isLang("about")).toBe(false);
     expect(isLang("")).toBe(false);
