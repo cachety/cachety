@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability (privately)
+    url: https://github.com/cachety/cachety/security/advisories/new
+    about: Please do not open a public issue for security problems. See SECURITY.md.

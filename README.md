@@ -90,7 +90,7 @@ Stack: Next.js (static export), React, Tailwind CSS, PDF.js, pdf-lib, libheif.
 - Comparison pages ("Cachety vs X"): `lib/compare/<lang>.ts`. Every claim about another tool must cite its source (`sources`) and carry the date it was checked (`checked`), and each page must say when the other tool is the better choice. Re-check these facts regularly: services change.
 - Right-to-left languages use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`…) rather than `ml-`, `pr-`, `left-`, `right-`.
 
-Every language must keep the same structure; tests check this.
+Every language must keep the same structure; tests check this. Contribution rules and file map: **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ## Support the project
 

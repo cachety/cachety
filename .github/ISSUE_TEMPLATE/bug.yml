@@ -1,0 +1,32 @@
+name: Bug report
+description: Something doesn't work as expected on cachety.com.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping! **Never attach a real ID or personal document.** Use a sample file, or describe it (type, number of pages, size).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: e.g. Safari on iPhone 15 (iOS 19), Chrome 140 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: File type
+      placeholder: e.g. PDF, 3 pages, 2 MB / HEIC photo
+  - type: dropdown
+    id: lang
+    attributes:
+      label: Interface language
+      options: [English, Français, Español, العربية, فارسی, 日本語, 简体中文]

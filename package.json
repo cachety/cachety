@@ -12,6 +12,9 @@
   "author": "Amir Moradi (https://amirmoradi.com)",
   "funding": "https://github.com/sponsors/amirhmoradi",
   "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "assets": "mkdir -p public/pdfjs && cp -r node_modules/pdfjs-dist/cmaps node_modules/pdfjs-dist/standard_fonts node_modules/pdfjs-dist/wasm node_modules/pdfjs-dist/iccs node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdfjs/ && bun run scripts/fonts.mjs",
     "predev": "bun run assets",

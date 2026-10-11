@@ -1,0 +1,34 @@
+name: Outdated or wrong fact on a comparison page
+description: A "Cachety vs X" page says something that is no longer true, or never was.
+labels: ["comparison", "facts"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Comparison pages must be factual and fair. Thank you for helping keep them accurate. Please point to a public source (the vendor's own page is best).
+  - type: input
+    id: page
+    attributes:
+      label: Page URL
+      placeholder: https://cachety.com/en/compare/cachety-vs-...
+    validations:
+      required: true
+  - type: textarea
+    id: claim
+    attributes:
+      label: What does the page say, and what is correct?
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Link to the vendor's page (privacy policy, FAQ, pricing…) that shows the correct information.
+    validations:
+      required: true
+  - type: checkboxes
+    id: vendor
+    attributes:
+      label: Are you affiliated with the tool being compared?
+      options:
+        - label: Yes, I work for or represent this vendor.

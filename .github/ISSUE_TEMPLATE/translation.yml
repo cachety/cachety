@@ -1,0 +1,24 @@
+name: Translation or wording fix
+description: A mistranslation, typo or awkward wording in any language.
+labels: ["translation"]
+body:
+  - type: dropdown
+    id: lang
+    attributes:
+      label: Language
+      options: [English, Français, Español, العربية, فارسی, 日本語, 简体中文]
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where?
+      placeholder: Page URL, or the screen and button in the tool
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: Current text and suggested text
+    validations:
+      required: true

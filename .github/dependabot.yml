@@ -9,7 +9,17 @@ updates:
     groups:
       minor-and-patch:
         update-types: ["minor", "patch"]
+    ignore:
+      # Les types suivent la version de Node utilisée (24, épinglée en CI),
+      # pas la dernière : une API de Node 26 typée passerait la compilation
+      # puis casserait à l'exécution. À relever avec node-version dans ci.yml.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    # Une seule PR pour toutes les actions : elles se testent ensemble.
+    groups:
+      actions:
+        patterns: ["*"]

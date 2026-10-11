@@ -25,36 +25,6 @@ export const Flag = ({ className }: IconProps) => (
   </svg>
 );
 
-export const FlagGB = ({ className }: IconProps) => (
-  <svg className={className} viewBox="0 0 60 40" preserveAspectRatio="xMidYMid slice" aria-hidden>
-    <rect width="60" height="40" fill="#012169" />
-    <path d="M0 0L60 40M60 0L0 40" stroke="#ffffff" strokeWidth="8" />
-    <path d="M0 0L60 40M60 0L0 40" stroke="#c8102e" strokeWidth="3.5" />
-    <path d="M30 0V40M0 20H60" stroke="#ffffff" strokeWidth="12" />
-    <path d="M30 0V40M0 20H60" stroke="#c8102e" strokeWidth="7" />
-  </svg>
-);
-
-export const FlagJP = ({ className }: IconProps) => (
-  <svg className={className} viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" aria-hidden>
-    <rect width="3" height="2" fill="#ffffff" />
-    <circle cx="1.5" cy="1" r="0.6" fill="#bc002d" />
-  </svg>
-);
-
-export const FlagCN = ({ className }: IconProps) => (
-  <svg className={className} viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden>
-    <rect width="30" height="20" fill="#de2910" />
-    <g fill="#ffde00">
-      <polygon points="5.00,1.70 6.18,4.82 9.54,4.94 6.90,7.01 7.82,10.20 5.00,8.32 2.18,10.20 3.10,7.01 0.46,4.94 3.82,4.82" />
-      <polygon points="10.20,0.70 10.62,1.78 11.76,1.82 10.86,2.54 11.18,3.64 10.20,3.00 9.22,3.64 9.54,2.54 8.64,1.82 9.78,1.78" />
-      <polygon points="12.20,2.90 12.62,3.98 13.76,4.02 12.86,4.74 13.18,5.84 12.20,5.20 11.22,5.84 11.54,4.74 10.64,4.02 11.78,3.98" />
-      <polygon points="12.20,5.90 12.62,6.98 13.76,7.02 12.86,7.74 13.18,8.84 12.20,8.20 11.22,8.84 11.54,7.74 10.64,7.02 11.78,6.98" />
-      <polygon points="10.20,8.10 10.62,9.18 11.76,9.22 10.86,9.94 11.18,11.04 10.20,10.40 9.22,11.04 9.54,9.94 8.64,9.22 9.78,9.18" />
-    </g>
-  </svg>
-);
-
 export const ChevronDownIcon = ({ className }: IconProps) => (
   <Stroke className={className}>
     <path d="M6 9l6 6 6-6" />
