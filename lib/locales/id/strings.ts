@@ -205,7 +205,7 @@ export const STRINGS_ID: Strings = {
     customColor: "Warna khusus",
     sample: "Watermark",
     swatches: { seal: "Merah", ink: "Tinta", blue: "Biru", black: "Hitam", white: "Putih" },
-    presets: { light: "Tipis", normal: "Normal", strong: "Tebal" },
+    presets: { light: "Tipis", medium: "Sedang", strong: "Tebal" },
     strength: "Ketebalan",
     more: "Pengaturan lainnya",
     fewer: "Lebih sedikit pengaturan",

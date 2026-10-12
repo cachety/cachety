@@ -206,7 +206,7 @@ export const STRINGS_NL: Strings = {
     customColor: "Eigen kleur",
     sample: "Watermerk",
     swatches: { seal: "Rood", ink: "Inkt", blue: "Blauw", black: "Zwart", white: "Wit" },
-    presets: { light: "Licht", normal: "Normaal", strong: "Sterk" },
+    presets: { light: "Licht", medium: "Middel", strong: "Sterk" },
     strength: "Sterkte",
     more: "Meer instellingen",
     fewer: "Minder instellingen",

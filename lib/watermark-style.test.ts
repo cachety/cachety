@@ -11,12 +11,14 @@ import {
 } from "./watermark-style";
 
 describe("apparence du filigrane", () => {
-  // Valeurs de lib/watermark.ts avant le panneau d'apparence (600, 0,45, halo 0,35) :
-  // un utilisateur qui n'ouvre jamais le panneau ne doit voir aucun changement.
-  test("le défaut reproduit le rendu historique : mono 600, rouge sceau à 45 %", () => {
+  // Défaut : le réglage « Léger » (mono 600, rouge sceau à 25 %, taille 50 %),
+  // halo proportionnel à l'opacité (0,35 à 45 %, le rendu historique).
+  test("le défaut est le réglage Léger : mono 600, rouge sceau à 25 %, taille 50 %", () => {
     expect(fontCss(DEFAULT_WATERMARK_STYLE, 40)).toBe("600 40px ui-monospace, monospace");
-    expect(fillRgba(DEFAULT_WATERMARK_STYLE)).toBe("rgba(196, 38, 46, 0.45)");
-    expect(haloRgba(DEFAULT_WATERMARK_STYLE)).toBe("rgba(255, 255, 255, 0.35)");
+    expect(fillRgba(DEFAULT_WATERMARK_STYLE)).toBe("rgba(196, 38, 46, 0.25)");
+    expect(DEFAULT_WATERMARK_STYLE.scale).toBe(0.5);
+    expect(haloRgba(DEFAULT_WATERMARK_STYLE)).toBe("rgba(255, 255, 255, 0.194)");
+    expect(haloRgba({ ...DEFAULT_WATERMARK_STYLE, opacity: 0.45 })).toBe("rgba(255, 255, 255, 0.35)");
   });
 
   test("arabe ou persan : « Mono » passe en sans-serif (lettres liées), le latin reste mono", () => {

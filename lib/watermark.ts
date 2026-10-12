@@ -296,8 +296,18 @@ export function layoutVariation(seed: number) {
  */
 export function outlineRgba(style: WatermarkStyle) {
   const s = normalizeStyle(style);
-  return `rgba(28, 28, 32, ${Math.min(0.9, Math.round(s.opacity * 1.6 * 1000) / 1000)})`;
+  return `rgba(28, 28, 32, ${Math.min(0.9, Math.max(OUTLINE_MIN_ALPHA, Math.round(s.opacity * 1.6 * 1000) / 1000))})`;
 }
+
+/**
+ * Plancher du contour (celui de l'ancien réglage par défaut, 45 %), quelle que soit
+ * l'opacité choisie : sur fond blanc, un
+ * contour moins dense passe au-dessus du seuil « sombre » (≈ 110 sur 255) et
+ * disparaît avec les niveaux (blanchir tout sauf le sombre). Le réglage
+ * « Léger » reste léger (remplissage pâle, petite taille) sans devenir
+ * effaçable d'un geste.
+ */
+export const OUTLINE_MIN_ALPHA = 0.72;
 
 export const outlineWidth = (fontSize: number) => Math.max(1.5, fontSize / 15);
 

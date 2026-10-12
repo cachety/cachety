@@ -20,7 +20,7 @@ import {
 // Raccourcis : opacité et taille réglées ensemble (dans les bornes de lib/watermark-style.ts).
 const PRESETS = {
   light: { opacity: 0.25, scale: 0.5 },
-  normal: { opacity: 0.45, scale: 1 },
+  medium: { opacity: 0.45, scale: 1 },
   strong: { opacity: 0.7, scale: 1.25 },
 } as const;
 type PresetId = keyof typeof PRESETS;
@@ -58,7 +58,7 @@ export function WatermarkAppearance({
             aria-checked={preset === k}
             onClick={() => onChange({ ...style, ...PRESETS[k] })}
             className={`min-h-10 flex-1 rounded-lg text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu ${
-              preset === k ? "bg-white font-semibold text-encre shadow-sm" : "text-encre-2 hover:text-encre"
+              preset === k ? "bg-bleu font-semibold text-white shadow-sm" : "text-encre-2 hover:bg-white hover:text-encre"
             }`}
           >
             {s.presets[k]}

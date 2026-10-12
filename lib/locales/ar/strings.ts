@@ -219,7 +219,7 @@ export const STRINGS_AR: Strings = {
     customColor: "لون مخصص",
     sample: "علامة مائية",
     swatches: { seal: "أحمر", ink: "كحلي", blue: "أزرق", black: "أسود", white: "أبيض" },
-    presets: { light: "خفيفة", normal: "عادية", strong: "واضحة" },
+    presets: { light: "خفيفة", medium: "متوسطة", strong: "واضحة" },
     strength: "الشدة",
     more: "إعدادات أكثر",
     fewer: "إعدادات أقل",

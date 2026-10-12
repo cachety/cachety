@@ -66,6 +66,8 @@ function runWatermark(input: {
   text: string;
   password?: string;
   options?: unknown;
+  /** Apparence ; par défaut celle de l'outil (réglage « Léger »). */
+  style?: unknown;
 }) {
   return page.evaluate(async (arg) => {
     const mod = (window as any).__wm;
@@ -78,7 +80,7 @@ function runWatermark(input: {
         undefined,
         arg.password,
         undefined,
-        undefined,
+        arg.style,
         arg.options
       );
       const bytes = new Uint8Array(await res.blob.arrayBuffer());
@@ -408,6 +410,9 @@ describe("contrat d'erreurs du moteur", () => {
         type: "application/pdf",
         text: WATERMARK_TEXT,
         password: ENCRYPTED_PDF_PASSWORD,
+        // Page du fichier de test minuscule : au réglage « Léger » (texte à 50 %),
+        // le contour sombre recouvre presque tout le remplissage rouge compté ici.
+        style: { font: "mono", scale: 1, color: "#c4262e", opacity: 0.45, wave: 0 },
       });
       if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
       expect(res.pageCount).toBe(1);

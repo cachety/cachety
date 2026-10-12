@@ -206,7 +206,7 @@ export const STRINGS_DE: Strings = {
     customColor: "Eigene Farbe",
     sample: "Wasserzeichen",
     swatches: { seal: "Rot", ink: "Tinte", blue: "Blau", black: "Schwarz", white: "Weiß" },
-    presets: { light: "Leicht", normal: "Normal", strong: "Kräftig" },
+    presets: { light: "Leicht", medium: "Mittel", strong: "Kräftig" },
     strength: "Stärke",
     more: "Mehr Einstellungen",
     fewer: "Weniger Einstellungen",

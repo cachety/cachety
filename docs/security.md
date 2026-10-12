@@ -244,10 +244,12 @@ identifies the copy.
   form (macOS) made the file impossible to open in Acrobat. Limitation
   inherent to the format: unauthenticated AES-CBC; a third party can
   corrupt the file, not read it.
-- The password copied with "Copy" is **cleared from the clipboard after
-  60 s** (when the user returns to the tab if it does not have focus),
+- The password copied with "Copy" is **cleared from the clipboard once
+  60 s have passed, at the user's next click or key press in the page**,
   unless the user copied something else in the page in the meantime
-  (`lib/clipboard.ts`).
+  (`lib/clipboard.ts`). The site never accesses the clipboard outside a user
+  gesture and never reads it: a background access makes some browsers and
+  systems ask for clipboard permission.
 - Ticking "Lock with a password" makes a password of **12 words** from the
   BIP39 English list (2,048 words, `lib/bip39-english.ts`), drawn with
   `crypto.getRandomValues`: 11 bits per word with no modulo bias, **132 bits**

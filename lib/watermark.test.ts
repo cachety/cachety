@@ -84,6 +84,8 @@ describe("contour sombre (résistance à la sélection par couleur)", () => {
     expect(outlineRgba(base)).toBe("rgba(28, 28, 32, 0.72)");
     expect(outlineRgba({ ...base, color: "#223f92" })).toBe(outlineRgba(base));
     expect(outlineRgba({ ...base, opacity: 1 })).toBe("rgba(28, 28, 32, 0.9)");
+    // Réglage « Léger » (25 %) : le contour garde son plancher, sinon les niveaux l'effacent.
+    expect(outlineRgba({ ...base, opacity: 0.25 })).toBe("rgba(28, 28, 32, 0.72)");
   });
 
   test("assez épais pour garder un cœur neutre après le sous-échantillonnage JPEG", () => {

@@ -201,7 +201,7 @@ export const STRINGS_FA: Strings = {
     customColor: "رنگ دلخواه",
     sample: "واترمارک",
     swatches: { seal: "قرمز", ink: "جوهری", blue: "آبی", black: "مشکی", white: "سفید" },
-    presets: { light: "کم‌رنگ", normal: "معمولی", strong: "پررنگ" },
+    presets: { light: "کم‌رنگ", medium: "متوسط", strong: "پررنگ" },
     strength: "شدت",
     more: "تنظیمات بیشتر",
     fewer: "تنظیمات کمتر",

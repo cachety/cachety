@@ -205,7 +205,7 @@ export const STRINGS_PT: Strings = {
     customColor: "Cor personalizada",
     sample: "Marca d'água",
     swatches: { seal: "Vermelho", ink: "Tinta", blue: "Azul", black: "Preto", white: "Branco" },
-    presets: { light: "Suave", normal: "Normal", strong: "Forte" },
+    presets: { light: "Suave", medium: "Médio", strong: "Forte" },
     strength: "Intensidade",
     more: "Mais ajustes",
     fewer: "Menos ajustes",

@@ -60,7 +60,7 @@ export function SendOptions({
                 aria-checked={format === f}
                 onClick={() => onFormat(f)}
                 className={`min-h-10 flex-1 rounded-lg px-2 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu ${
-                  format === f ? "bg-white font-semibold text-encre shadow-sm" : "text-encre-2 hover:text-encre"
+                  format === f ? "bg-bleu font-semibold text-white shadow-sm" : "text-encre-2 hover:bg-white hover:text-encre"
                 }`}
               >
                 {f === "pdf" ? s.onePdf : s.zip}
