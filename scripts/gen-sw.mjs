@@ -98,12 +98,18 @@ console.log(`lang: ${retagged} pages réétiquetées (hors anglais)`);
 // deux appliquées) : la CSP est donc retirée du bloc « /* » et posée par des
 // règles exactes, une par page, plus une stricte pour les scripts et workers.
 //
-// Limite de 100 règles : les pages de contenu nombreuses (guides, comparatifs)
-// partagent une règle par langue et par section (« /fr/guides/* ») qui réunit
-// les hachages de ces seules pages. La <meta> de chaque page, elle, reste
-// exacte (ses seuls hachages) : le navigateur applique les deux politiques,
-// donc chaque page n'exécute que ses propres scripts.
-const GROUPED = new RegExp(`^/(${LANG_ALT})/(guides|compare)/[^/]+$`);
+// Limite de 100 règles : les pages d'une langue sont regroupées. De préférence
+// une seule règle « /fr/* » réunissant les hachages de toutes les pages sous
+// /fr/ (plus la règle exacte de l'accueil /fr). Si cette ligne dépasse la
+// limite de longueur, la langue retombe sur un regroupement plus fin : une
+// règle par section de guides/comparatifs (« /fr/guides/* ») et une règle
+// exacte par autre page. La <meta> de chaque page, elle, reste exacte (ses
+// seuls hachages) : le navigateur applique les deux politiques, donc chaque
+// page n'exécute que ses propres scripts, quel que soit le regroupement.
+const SECTION = new RegExp(`^/(${LANG_ALT})/(guides|compare)/[^/]+$`);
+const UNDER_LANG = new RegExp(`^/(${LANG_ALT})/.+$`);
+/** Marge sous la limite Cloudflare de 2 000 caractères par ligne. */
+const LINE_BUDGET = 1950;
 const htmlFiles = files.filter((f) => f.endsWith(".html"));
 
 /** Hachages des scripts inline exécutables d'une page. */
@@ -162,7 +168,8 @@ const rules = ["/_next/*", "/pdfjs/*", "/sw.js"].map((path) => [path, policyWith
 // ignoré (avec avertissement) dans une balise <meta>.
 const CHARSET = '<meta charSet="utf-8"/>';
 let total = 0;
-const groups = new Map();
+/** Pages sous /<langue>/ : chemin servi et hachages, par langue. */
+const byLang = new Map();
 for (const f of htmlFiles) {
   const html = await readFile(f, "utf8");
   const hashes = inlineHashes(f, html);
@@ -170,11 +177,9 @@ for (const f of htmlFiles) {
   total += hashes.length;
   const policy = policyWith(hashes);
   const route = routeOf(f);
-  const group = route?.match(GROUPED);
-  if (group) {
-    const key = `/${group[1]}/${group[2]}/*`;
-    groups.set(key, new Set([...(groups.get(key) ?? []), ...hashes]));
-  } else if (route) rules.push([route, policy]);
+  const lang = route?.match(UNDER_LANG)?.[1];
+  if (lang) byLang.set(lang, [...(byLang.get(lang) ?? []), { route, hashes }]);
+  else if (route) rules.push([route, policy]);
   if (!html.includes(CHARSET)) throw new Error(`${f} : ${CHARSET} introuvable, <meta> CSP non injecté`);
   // Juste après le charset : avant tout <script>, sinon il échapperait à la politique.
   await writeFile(
@@ -183,12 +188,31 @@ for (const f of htmlFiles) {
   );
 }
 
-for (const [key, hashes] of [...groups].sort()) rules.push([key, policyWith([...hashes].sort())]);
+const union = (pages) => [...new Set(pages.flatMap((p) => p.hashes))].sort();
+const fits = (path, hashes) => `  Content-Security-Policy: ${policyWith(hashes)}`.length <= LINE_BUDGET && path.length < 100;
+const fineGrained = [];
+for (const [lang, pages] of [...byLang].sort()) {
+  const all = union(pages);
+  if (fits(`/${lang}/*`, all)) {
+    rules.push([`/${lang}/*`, policyWith(all)]);
+    continue;
+  }
+  // Trop de hachages pour une ligne : une règle par section, une par autre page.
+  fineGrained.push(lang);
+  const sections = new Map();
+  for (const page of pages) {
+    const m = page.route.match(SECTION);
+    if (m) sections.set(`/${m[1]}/${m[2]}/*`, [...(sections.get(`/${m[1]}/${m[2]}/*`) ?? []), page]);
+    else rules.push([page.route, policyWith(page.hashes)]);
+  }
+  for (const [key, list] of [...sections].sort()) rules.push([key, policyWith(union(list))]);
+}
+if (fineGrained.length) console.log(`_headers : regroupement fin pour ${fineGrained.join(", ")} (ligne par langue trop longue)`);
 
 const generated = rules.map(([path, policy]) => `${path}\n  Content-Security-Policy: ${policy}`).join("\n");
 const output =
   template.replace(/^\s*Content-Security-Policy:.*\n/m, "") +
-  "\n# --- Généré par scripts/gen-sw.mjs : une CSP par page, ou par section de guides/comparatifs (hachages de leurs seuls scripts inline).\n" +
+  "\n# --- Généré par scripts/gen-sw.mjs : une CSP par langue (hachages des scripts inline de ses pages), ou par section et par page si la ligne serait trop longue.\n" +
   generated +
   "\n";
 

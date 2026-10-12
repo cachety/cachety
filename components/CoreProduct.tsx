@@ -670,6 +670,7 @@ export default function CoreProduct() {
     ...(sizeMb ? [t.summary.under(sizeMb)] : []),
   ].join(" · ");
   // En mode masquage, les zones tracées ne sont pas encore appliquées : « Terminé » d'abord.
+  const fresh = !!shown && isFresh(shown, stamp);
   const canDownload = ready.length > 0 && !bundling && !processing && tool !== "hide";
   const downloadLabel = bundling
     ? bundleProgress || (filePassword ? t.filePassword.encrypting : t.processingGeneric)
@@ -970,47 +971,24 @@ export default function CoreProduct() {
               <div role="alert" className="rounded-2xl border border-sceau/40 bg-sceau/5 px-5 py-4 text-sceau-fonce">
                 {t.docError(shown.file.name, t.errors[shown.error])}
               </div>
-            ) : shown && isFresh(shown, stamp) ? (
+            ) : shown?.result ? (
               <>
-                {shown.result?.overBudget && sizeMb > 0 && (
+                {shown.result.overBudget && sizeMb > 0 && (
                   <p role="status" className="mb-3 rounded-xl border border-amber-600/40 bg-amber-500/10 px-4 py-2 text-sm text-amber-900">
                     {t.size.over(sizeMb)}
                   </p>
                 )}
+                {/* Pendant un nouveau rendu (réglage changé), l'aperçu précédent
+                    reste affiché : rien ne saute, et les panneaux ouverts sous
+                    l'aperçu restent ouverts. */}
                 <Kiosk
                   key={shown.id}
                   doc={shown}
                   onMasks={(masks) => setMasks(shown.id, masks)}
-                  maskEditing={tool === "hide"}
+                  maskEditing={tool === "hide" && fresh}
                   onMaskEditing={(on) => setTool(on ? "hide" : null)}
-                >
-                  {tool !== "hide" && (
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setTool("hide")}
-                      className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-trait bg-white px-3 text-sm font-semibold text-encre transition-colors hover:border-bleu"
-                    >
-                      <HideIcon className="h-4 w-4 shrink-0" />
-                      {hiddenCount ? t.tools.hidden(hiddenCount) : t.tools.hide}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setTool(tool === "adjust" ? null : "adjust")}
-                      aria-expanded={tool === "adjust"}
-                      className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors ${
-                        tool === "adjust" ? "border-bleu bg-bleu text-white" : "border-trait bg-white text-encre hover:border-bleu"
-                      }`}
-                    >
-                      <SlidersIcon className="h-4 w-4 shrink-0" />
-                      {t.tools.adjust}
-                    </button>
-                  </div>
-                  )}
-                  {tool === "adjust" && (
-                    <WatermarkAppearance style={style} sample={previewText || t.style.sample} onChange={updateStyle} />
-                  )}
-                </Kiosk>
+                  updating={!fresh}
+                />
               </>
             ) : (
               <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2">
@@ -1020,6 +998,36 @@ export default function CoreProduct() {
               </div>
             )}
           </div>
+
+          {shown?.result && meaningful && tool !== "hide" && (
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setTool("hide")}
+                  disabled={!fresh}
+                  className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-trait bg-white px-3 text-sm font-semibold text-encre transition-colors hover:border-bleu disabled:opacity-50"
+                >
+                  <HideIcon className="h-4 w-4 shrink-0" />
+                  {hiddenCount ? t.tools.hidden(hiddenCount) : t.tools.hide}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTool(tool === "adjust" ? null : "adjust")}
+                  aria-expanded={tool === "adjust"}
+                  className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors ${
+                    tool === "adjust" ? "border-bleu bg-bleu text-white" : "border-trait bg-white text-encre hover:border-bleu"
+                  }`}
+                >
+                  <SlidersIcon className="h-4 w-4 shrink-0" />
+                  {t.tools.adjust}
+                </button>
+              </div>
+              {tool === "adjust" && (
+                <WatermarkAppearance style={style} sample={previewText || t.style.sample} onChange={updateStyle} />
+              )}
+            </div>
+          )}
 
           {docs.length > 0 && meaningful && (
             <section aria-labelledby="before-download" className="rounded-2xl border border-trait bg-feuille p-4">

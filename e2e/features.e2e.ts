@@ -153,8 +153,10 @@ describe("masquage depuis l'aperçu", () => {
       await page.getByRole("button", { name: t.mask.remove(1) }).waitFor();
       await page.getByRole("button", { name: t.mask.done }).click();
 
-      // Re-rendu du document, puis l'aperçu porte la zone noire.
+      // Re-rendu du document (l'aperçu précédent reste affiché, marqué
+      // aria-busy, jusqu'au nouveau), puis l'aperçu porte la zone noire.
       await page.getByRole("button", { name: t.tools.hidden(1) }).waitFor({ timeout: 30_000 });
+      await page.waitForFunction(() => !document.querySelector('#apercu [aria-busy="true"]'), null, { timeout: 30_000 });
       const preview = page.locator(`img[alt="${t.previewAlt("bleu.pdf", 1)}"]`).first();
       await page.waitForFunction(
         (alt) => {

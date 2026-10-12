@@ -19,7 +19,7 @@ import {
 
 // Raccourcis : opacité et taille réglées ensemble (dans les bornes de lib/watermark-style.ts).
 const PRESETS = {
-  light: { opacity: 0.25, scale: 0.85 },
+  light: { opacity: 0.25, scale: 0.5 },
   normal: { opacity: 0.45, scale: 1 },
   strong: { opacity: 0.7, scale: 1.25 },
 } as const;

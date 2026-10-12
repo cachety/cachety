@@ -12,6 +12,7 @@ export function Kiosk({
   onMasks,
   maskEditing,
   onMaskEditing,
+  updating = false,
   children,
 }: {
   doc: Doc;
@@ -19,6 +20,8 @@ export function Kiosk({
   /** Mode tracé des masques, piloté par le bouton « Masquer quelque chose ». */
   maskEditing: boolean;
   onMaskEditing: (on: boolean) => void;
+  /** Nouveau rendu en cours : l'aperçu affiché est le précédent. */
+  updating?: boolean;
   /** Outils sous l'aperçu (masquer, ajuster) et leurs panneaux. */
   children?: React.ReactNode;
 }) {
@@ -29,7 +32,12 @@ export function Kiosk({
   const shownPages = result.previews.length;
 
   return (
-    <div className="rounded-2xl border border-trait bg-feuille p-4">
+    <div className="relative rounded-2xl border border-trait bg-feuille p-4" aria-busy={updating || undefined}>
+      {updating && (
+        <span className="absolute start-1/2 top-3 z-10 -translate-x-1/2 rounded-full bg-encre/85 px-3 py-1 text-xs font-medium text-white rtl:translate-x-1/2">
+          {t.processingGeneric}
+        </span>
+      )}
       {shownPages > 1 && (
         <nav
           aria-label={t.pagerNav}
@@ -70,7 +78,9 @@ export function Kiosk({
           <img
             src={result.previews[page]}
             alt={t.previewAlt(doc.file.name, page + 1)}
-            className="mx-auto max-h-[70vh] w-auto max-w-full rounded-lg border border-trait shadow-sm"
+            className={`mx-auto max-h-[70vh] w-auto max-w-full rounded-lg border border-trait shadow-sm transition-opacity ${
+              updating ? "opacity-60" : ""
+            }`}
           />
         </button>
       </MaskEditor>

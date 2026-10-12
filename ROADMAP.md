@@ -27,6 +27,13 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 - **Tests:** each recipient's file opens only with its own password; the list
   matches the files.
 
+### `partner-embed`: the tool inside partner websites
+- **Status:** next (not yet on the public page)
+- **Spec:** [docs/embed.md](docs/embed.md). Approved partners only (list in
+  the repo), full tool in an iframe on cachety.com, pre-filled purpose and
+  recipient, accent colour, auto-resize, language set by the partner, free
+  with a donation suggestion, partner page with embed code and wording.
+
 ### `suggested-areas`: suggested areas to hide
 - **Status:** next
 - **Why:** people don't always know what to hide (account number, tax number,
@@ -36,10 +43,8 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 
 ### `more-languages`: Italian, Korean, Turkish
 - **Status:** next
-- **Constraint:** Cloudflare allows 100 header rules; the build uses 96 (about
-  8 per language, see `docs/deploy.md`). No new language fits until the CSP
-  rules are grouped differently (for example one rule per language for all
-  simple pages): that change comes first.
+- **Constraint:** none left on headers: rules are grouped per language
+  (30 of 100 used; a language adds 2). See `docs/deploy.md`.
 
 ## Ideas
 

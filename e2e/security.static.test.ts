@@ -87,13 +87,14 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
     }
   });
 
-  // Guides et comparatifs : une règle par langue et par section (limite des
-  // 100 règles), qui réunit les hachages des pages de cette section, et d'elles
-  // seules. La <meta> de chaque page reste exacte (test suivant).
-  const SECTION = /^\/([a-z]{2})\/(guides|compare)\/[^/]+$/;
+  // Pages sous /<langue>/ : regroupées (limite des 100 règles), de préférence
+  // une règle par langue (« /fr/* »), sinon par section et par page. La règle
+  // d'une page autorise donc ses scripts, et seulement des scripts de pages de
+  // sa langue. La <meta> de chaque page reste exacte (test suivant).
+  const UNDER_LANG = /^\/([a-z]{2})\/.+$/;
 
-  test("chaque page : une seule CSP ; exactement ses scripts, ou ceux de sa section", () => {
-    const sectionHashes = new Map<string, Set<string>>();
+  test("chaque page : une seule CSP ; ses scripts, et seulement des scripts de sa langue", () => {
+    const langHashes = new Map<string, Set<string>>();
     const emittedOf = new Map<string, string[]>();
     for (const f of htmlFiles) {
       const rel = relative(OUT_DIR, f);
@@ -101,19 +102,21 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
       if (!route) continue;
       const emitted = [...new Set(inlineScriptHashes(readFileSync(f, "utf8")))].sort();
       emittedOf.set(route, emitted);
-      const m = route.match(SECTION);
-      if (m) {
-        const key = `${m[1]}/${m[2]}`;
-        sectionHashes.set(key, new Set([...(sectionHashes.get(key) ?? []), ...emitted]));
-      }
+      const m = route.match(UNDER_LANG);
+      if (m) langHashes.set(m[1], new Set([...(langHashes.get(m[1]) ?? []), ...emitted]));
     }
     for (const [route, emitted] of emittedOf) {
       const csp = headersFor(headersText, route)["content-security-policy"] ?? "";
       expect(csp, route).not.toContain(", "); // une seule règle : pas de politiques jointes
       const allowed = (parseCsp(csp)["script-src"] ?? []).filter((v) => v.startsWith("'sha256-")).sort();
-      const m = route.match(SECTION);
-      const expected = m ? [...sectionHashes.get(`${m[1]}/${m[2]}`)!].sort() : emitted;
-      expect(allowed, route).toEqual(expected);
+      const m = route.match(UNDER_LANG);
+      if (!m) {
+        expect(allowed, route).toEqual(emitted);
+        continue;
+      }
+      for (const h of emitted) expect(allowed, route).toContain(h);
+      const own = langHashes.get(m[1])!;
+      for (const h of allowed) expect(own.has(h), `${route} ${h}`).toBe(true);
     }
   });
 
@@ -129,8 +132,8 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
       const allowed = (metaCsp["script-src"] ?? []).filter((v) => v.startsWith("'sha256-")).sort();
       expect(allowed, rel).toEqual([...new Set(inlineScriptHashes(html))].sort());
       const route = routeOf(rel);
-      // Hors guides et comparatifs, la <meta> est la copie exacte de l'en-tête.
-      if (route && !SECTION.test(route)) {
+      // Hors pages regroupées (accueils, racine), la <meta> est la copie exacte de l'en-tête.
+      if (route && !UNDER_LANG.test(route)) {
         const header = headersFor(headersText, route)["content-security-policy"] ?? "";
         expect(meta![1], rel).toBe(withoutFrameAncestors(header));
       }
