@@ -142,6 +142,11 @@ export const STRINGS_DE: Strings = {
     another: "Noch ein Dokument mit Wasserzeichen versehen",
     close: "Schließen",
     again: "Erneut herunterladen",
+    pwCheckTitle: "Hast du das Passwort notiert?",
+    pwCheckBody: "Ohne Passwort kann niemand die Datei öffnen, auch du nicht. Cachety speichert es nicht.",
+    pwCopyClose: "Kopieren und schließen",
+    pwNoted: "Habe ich notiert",
+    pwBack: "Zurück",
   },
   zipName: "dokumente-mit-wasserzeichen",
   bundlePassword:

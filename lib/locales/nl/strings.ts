@@ -142,6 +142,11 @@ export const STRINGS_NL: Strings = {
     another: "Nog een document watermerken",
     close: "Sluiten",
     again: "Opnieuw downloaden",
+    pwCheckTitle: "Heb je het wachtwoord bewaard?",
+    pwCheckBody: "Zonder wachtwoord kan niemand het bestand openen, jij ook niet. Cachety bewaart het niet.",
+    pwCopyClose: "Kopiëren en sluiten",
+    pwNoted: "Ik heb het genoteerd",
+    pwBack: "Terug",
   },
   zipName: "documenten-met-watermerk",
   bundlePassword:

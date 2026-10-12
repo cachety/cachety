@@ -157,6 +157,32 @@ describe("après le téléchargement", () => {
     },
     90_000
   );
+
+  test(
+    "fichier verrouillé : quitter sans avoir gardé le mot de passe demande confirmation",
+    async () => {
+      const page = await openPage("/fr");
+      await addPdf(page, "bulletin.pdf", await makePdf([[300, 400]]));
+      await page.getByLabel(t.purpose.label).fill("Dossier location");
+      await page.getByText(t.filePassword.lock).click();
+      const button = page.getByRole("button", { name: t.download.one, exact: true });
+      await button.and(page.locator(":enabled")).waitFor({ timeout: 30_000 });
+      await download(page, t.download.one);
+      await page.getByText(t.done.pwTitle).waitFor();
+
+      // Fermer : le panneau demande d'abord si le mot de passe est gardé.
+      await page.getByRole("button", { name: t.done.close }).click();
+      await page.getByText(t.done.pwCheckTitle).waitFor();
+      await page.getByRole("button", { name: t.done.pwBack }).click();
+      await page.getByText(t.done.pwCheckTitle).waitFor({ state: "detached" });
+      await page.getByText(t.done.pwTitle).waitFor(); // toujours là
+
+      await page.getByRole("button", { name: t.done.close }).click();
+      await page.getByRole("button", { name: t.done.pwNoted }).click();
+      await page.getByText(t.done.pwTitle).waitFor({ state: "detached" });
+    },
+    90_000
+  );
 });
 
 describe("masquage depuis l'aperçu", () => {

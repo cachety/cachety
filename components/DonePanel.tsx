@@ -25,6 +25,12 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
   const t = useT();
   const d = t.done;
   const [copied, setCopied] = useState(false);
+  // Mot de passe gardé (copié, ou noté de l'aveu de l'utilisateur). Tant que
+  // ce n'est pas le cas, quitter le panneau demande d'abord confirmation :
+  // le mot de passe n'est conservé nulle part, le perdre rend le fichier inutilisable.
+  const [saved, setSaved] = useState(!info.password);
+  const [confirm, setConfirm] = useState<null | (() => void)>(null);
+  const confirmRef = useRef<HTMLButtonElement>(null);
   const ref = useRef<HTMLElement>(null);
   // Sur téléphone, le panneau apparaît sous l'aperçu : on l'amène à l'écran.
   // Accolades obligatoires : un effet ne doit rien renvoyer d'autre qu'une
@@ -39,11 +45,18 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
     try {
       await copySecret(info.password);
       setCopied(true);
+      setSaved(true);
       setTimeout(() => setCopied(false), 4000);
+      return true;
     } catch {
       setCopied(false);
+      return false;
     }
   };
+  const leave = (action: () => void) => (saved ? action() : setConfirm(() => action));
+  useEffect(() => {
+    if (confirm) confirmRef.current?.focus();
+  }, [confirm]);
 
   const saveList = () => {
     const text = info.codes.map((c) => t.trace.line(c.name, c.code, info.date)).join("\n") + "\n";
@@ -129,22 +142,58 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
         </div>
       )}
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={onAnother}
-          className="rounded-xl bg-encre px-4 py-2.5 text-sm font-semibold text-white hover:bg-encre/85"
-        >
-          {d.another}
-        </button>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-xl border border-trait bg-white px-4 py-2.5 text-sm font-medium hover:border-bleu hover:text-bleu"
-        >
-          {d.close}
-        </button>
-      </div>
+      {confirm ? (
+        <div role="alert" className="mt-4 rounded-xl border-2 border-amber-600/50 bg-amber-50 p-3">
+          <p className="font-semibold">{d.pwCheckTitle}</p>
+          <p className="mt-1 text-sm text-amber-900">{d.pwCheckBody}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              ref={confirmRef}
+              type="button"
+              onClick={async () => {
+                if (await copy()) confirm();
+              }}
+              className="rounded-xl bg-encre px-4 py-2.5 text-sm font-semibold text-white hover:bg-encre/85"
+            >
+              {d.pwCopyClose}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setSaved(true);
+                confirm();
+              }}
+              className="rounded-xl border border-trait bg-white px-4 py-2.5 text-sm font-medium hover:border-bleu hover:text-bleu"
+            >
+              {d.pwNoted}
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirm(null)}
+              className="px-2 py-2.5 text-sm text-bleu underline underline-offset-2 hover:no-underline"
+            >
+              {d.pwBack}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => leave(onAnother)}
+            className="rounded-xl bg-encre px-4 py-2.5 text-sm font-semibold text-white hover:bg-encre/85"
+          >
+            {d.another}
+          </button>
+          <button
+            type="button"
+            onClick={() => leave(onClose)}
+            className="rounded-xl border border-trait bg-white px-4 py-2.5 text-sm font-medium hover:border-bleu hover:text-bleu"
+          >
+            {d.close}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

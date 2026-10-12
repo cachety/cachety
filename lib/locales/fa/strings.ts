@@ -138,6 +138,11 @@ export const STRINGS_FA: Strings = {
     another: "واترمارک روی سندی دیگر",
     close: "بستن",
     again: "دانلود دوباره",
+    pwCheckTitle: "رمز را نگه داشتید؟",
+    pwCheckBody: "بدون رمز هیچ‌کس نمی‌تواند فایل را باز کند، حتی خودتان. Cachety رمز را نگه نمی‌دارد.",
+    pwCopyClose: "کپی و بستن",
+    pwNoted: "یادداشتش کردم",
+    pwBack: "بازگشت",
   },
   zipName: "watermarked-documents",
   bundlePassword:

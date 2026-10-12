@@ -142,6 +142,11 @@ export const STRINGS_ID: Strings = {
     another: "Beri watermark dokumen lain",
     close: "Tutup",
     again: "Unduh lagi",
+    pwCheckTitle: "Sudah menyimpan kata sandinya?",
+    pwCheckBody: "Tanpa kata sandi, tidak ada yang bisa membuka file ini, termasuk Anda. Cachety tidak menyimpannya.",
+    pwCopyClose: "Salin dan tutup",
+    pwNoted: "Sudah saya catat",
+    pwBack: "Kembali",
   },
   zipName: "dokumen-watermark",
   bundlePassword:

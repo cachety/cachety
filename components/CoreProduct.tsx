@@ -1102,7 +1102,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
             )}
           </div>
 
-          {done && <DonePanel info={done} onClose={() => setDone(null)} onAnother={startOver} />}
+          {done && <DonePanel key={done.file?.url} info={done} onClose={() => setDone(null)} onAnother={startOver} />}
         </section>
       </div>
 

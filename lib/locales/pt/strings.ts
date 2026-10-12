@@ -141,6 +141,11 @@ export const STRINGS_PT: Strings = {
     another: "Colocar marca d'água em outro documento",
     close: "Fechar",
     again: "Baixar de novo",
+    pwCheckTitle: "Você guardou a senha?",
+    pwCheckBody: "Sem ela, ninguém consegue abrir o arquivo, nem você. O Cachety não guarda a senha.",
+    pwCopyClose: "Copiar e fechar",
+    pwNoted: "Já anotei",
+    pwBack: "Voltar",
   },
   zipName: "documentos-com-marca-dagua",
   bundlePassword:

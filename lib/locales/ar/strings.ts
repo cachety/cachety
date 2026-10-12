@@ -155,6 +155,11 @@ export const STRINGS_AR: Strings = {
     another: "ضع علامة مائية على مستند آخر",
     close: "إغلاق",
     again: "التنزيل مرة أخرى",
+    pwCheckTitle: "هل احتفظت بكلمة المرور؟",
+    pwCheckBody: "بدونها لن يستطيع أحد فتح الملف، ولا أنت أيضًا. لا يحتفظ Cachety بكلمة المرور.",
+    pwCopyClose: "انسخها وأغلق",
+    pwNoted: "دوّنتها",
+    pwBack: "رجوع",
   },
   zipName: "watermarked-documents",
   bundlePassword:
