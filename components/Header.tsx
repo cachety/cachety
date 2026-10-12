@@ -20,7 +20,7 @@ export default function Header() {
       <div className="mx-auto w-full max-w-3xl pb-6 pt-2 text-center sm:pb-10 sm:pt-6">
         {/* Sous 1280 px, la barre n'a pas la place pour l'étymologie du nom. */}
         <p className="mb-2 text-xs text-encre-2 sm:text-sm xl:hidden">
-          <span className="font-semibold text-encre">{BRAND}</span> · {c.nav.nameShort}
+          <bdi className="font-semibold text-encre">{BRAND}</bdi> · {c.nav.nameShort}
         </p>
         <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-4xl lg:text-5xl">{h.title}</h1>
         <p className="mx-auto mt-3 max-w-2xl text-pretty text-base text-encre-2 sm:mt-4 sm:text-xl">{h.lead}</p>
