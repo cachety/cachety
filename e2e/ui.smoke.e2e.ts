@@ -12,6 +12,7 @@ import { browserName, launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/brows
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
 import { ENCRYPTED_PDF_B64, ENCRYPTED_PDF_PASSWORD, fromBase64, makePdf } from "./helpers/fixtures";
 import { STRINGS } from "../lib/i18n";
+import { SITE_META } from "../lib/site-meta";
 
 const OUT_DIR = join(import.meta.dir, "..", "out");
 
@@ -76,6 +77,21 @@ describe("fumée : interface", () => {
       await page.getByRole("button", { name: t.download.one }).and(page.locator(":enabled")).waitFor({ state: "visible" });
     },
     60_000
+  );
+
+  test(
+    "racine : un navigateur en français arrive sur /fr (titre français), un navigateur anglais reste à la racine",
+    async () => {
+      const fr = await openPage("/?x=1#for=Test", { locale: "fr-FR" });
+      await fr.waitForURL(`${E2E_ORIGIN}/fr?x=1#for=Test`);
+      expect(await fr.title()).toBe(SITE_META.fr.title);
+      await context?.close();
+      const en = await openPage("/", { locale: "en-US" });
+      await en.getByText(STRINGS.en.dropTitle).waitFor({ state: "visible" });
+      expect(new URL(en.url()).pathname).toBe("/");
+      expect(await en.title()).toBe(SITE_META.en.title);
+    },
+    30_000
   );
 
   test(

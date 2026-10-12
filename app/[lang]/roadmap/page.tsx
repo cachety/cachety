@@ -44,7 +44,7 @@ export default async function RoadmapPage({ params }: Props) {
     new Date(`${ym}-01T12:00:00Z`).toLocaleDateString(HREFLANG[lang], { month: "long", year: "numeric" });
   return (
     <ContentPage lang={lang} links={links}>
-      <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{c.title}</h1>
+      <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{c.meta.title}</h1>
       <p className="mt-5 text-pretty text-xl text-encre-2">{c.lead}</p>
 
       <div className="mt-10 flex flex-col gap-10">

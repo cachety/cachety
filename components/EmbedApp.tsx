@@ -14,6 +14,7 @@ import CoreProduct from "@/components/CoreProduct";
 import { Logo, ShieldIcon } from "@/components/icons";
 import { LangProvider } from "@/lib/i18n";
 import { PARTNERS_COPY } from "@/lib/partners-copy";
+import { SITE_COPY } from "@/lib/site-copy";
 import { darker, EMBED_PARENTS, heightMessage, readPrefill } from "@/lib/partners";
 import { BRAND, SITE_URL } from "@/lib/brand";
 import type { Lang } from "@/lib/site-meta";
@@ -58,6 +59,7 @@ export default function EmbedApp({ lang }: { lang: Lang }) {
   return (
     <LangProvider forcedLang={lang}>
       <div ref={root} className="mx-auto w-full max-w-7xl">
+        <h1 className="sr-only">{SITE_COPY[lang].hero.title}</h1>
         <a
           href={`${SITE_URL}/${lang}`}
           target="_blank"

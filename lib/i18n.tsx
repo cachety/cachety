@@ -1371,6 +1371,17 @@ const LangContext = createContext<{
   t: Strings;
 }>({ lang: "en", setLang: () => {}, t: STRINGS.en });
 
+/** Accueil : la racine ou une page de langue (/fr, /ja…). */
+function isHomePath() {
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  return path === "/" || isLang(path.slice(1));
+}
+
+/** Adresse de l'accueil dans une langue, sans rechargement ; garde « ?… » et « #… » (pré-remplissage, partage). */
+function goHome(l: Lang) {
+  window.history.replaceState(null, "", SITE_META[l].path + window.location.search + window.location.hash);
+}
+
 export function LangProvider({
   children,
   forcedLang,
@@ -1387,12 +1398,23 @@ export function LangProvider({
       writePref("lang", forcedLang);
       return;
     }
-    setLangState(detectLang(readPref("lang"), navigator.language));
+    const detected = detectLang(readPref("lang"), navigator.language);
+    setLangState(detected);
+    // Racine affichée dans une autre langue que l'anglais : l'adresse devient
+    // celle de la langue (/fr…), sans rechargement, pour qu'un lien copié ou
+    // partagé ouvre la bonne langue et en montre le bon aperçu. Les robots,
+    // sans préférence, gardent la racine anglaise (x-default).
+    if (detected !== "en" && isHomePath()) goHome(detected);
   }, [forcedLang]);
 
   useEffect(() => {
     document.documentElement.lang = htmlLang(lang);
     document.documentElement.dir = dirOf(lang);
+    // Sur l'accueil, l'onglet et la description suivent la langue affichée.
+    if (isHomePath()) {
+      document.title = SITE_META[lang].title;
+      document.querySelector('meta[name="description"]')?.setAttribute("content", SITE_META[lang].description);
+    }
   }, [lang]);
 
   const setLang = (l: Lang) => {
@@ -1401,10 +1423,7 @@ export function LangProvider({
     // Sur l'accueil, l'URL reflète la langue affichée : l'adresse reste
     // partageable telle quelle. replaceState évite de démonter l'app
     // (les documents chargés seraient perdus avec une vraie navigation).
-    const path = window.location.pathname.replace(/\/+$/, "") || "/";
-    if (path === "/" || isLang(path.slice(1))) {
-      window.history.replaceState(null, "", SITE_META[l].path);
-    }
+    if (isHomePath()) goHome(l);
   };
 
   return (
