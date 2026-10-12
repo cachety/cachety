@@ -158,7 +158,7 @@ export function StampDetails({
       <p id={`${id}-who-help`} className="mt-1 text-sm text-encre-2">
         {r.help}
       </p>
-      <ul aria-labelledby={`${id}-who`} className="mt-2 grid gap-2 xl:grid-cols-2">
+      <ul aria-labelledby={`${id}-who`} className={`mt-2 grid gap-2 ${fields.length > 1 ? "xl:grid-cols-2" : ""}`}>
         {fields.map((value, i) => (
           <li key={i} className="flex gap-2">
             <div className="relative min-w-0 flex-1">

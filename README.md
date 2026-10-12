@@ -90,6 +90,7 @@ Stack: Next.js (static export), React, Tailwind CSS, PDF.js, pdf-lib, libheif.
 - Guides: `lib/guides/<lang>.ts`.
 - Comparison pages ("Cachety vs X"): `lib/compare/<lang>.ts`. Every claim about another tool must cite its source (`sources`) and carry the date it was checked (`checked`), and each page must say when the other tool is the better choice. Re-check these facts regularly: services change.
 - Social sharing images (`public/og/<lang>.png`, 1200×630) are generated from the site's own text and fonts with `bun run og` (needs Chrome: set `CHROMIUM_EXE`). Re-run it when the headline or the promises change.
+- The README screenshot (`docs/preview.png`, 1600×1075) is taken from the built site with `bun run build && bun run screenshot` (same `CHROMIUM_EXE`). Re-run it when the interface changes.
 - Right-to-left languages use logical Tailwind classes (`ms-`, `pe-`, `start-`, `end-`…) rather than `ml-`, `pr-`, `left-`, `right-`.
 
 Every language must keep the same structure; tests check this. Contribution rules and file map: **[CONTRIBUTING.md](CONTRIBUTING.md)**.

@@ -26,7 +26,8 @@
     "deploy": "bun run build && bunx wrangler pages deploy out --project-name cachety --branch main",
     "test": "bun test",
     "test:e2e": "bun e2e/run.ts",
-    "og": "bun run assets && bun run scripts/og.ts"
+    "og": "bun run assets && bun run scripts/og.ts",
+    "screenshot": "bun run scripts/screenshot.ts"
   },
   "dependencies": {
     "@fontsource-variable/cairo": "5.3.0",
