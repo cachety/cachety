@@ -245,26 +245,41 @@ describe("file de traitement", () => {
     async () => {
       const t = STRINGS.fr;
       const page = await openPage("/fr");
-      await page.getByLabel(t.purpose.label).fill("Copie e2e");
       const long = Buffer.from(await makePdf(Array.from({ length: 60 }, () => [595, 842] as [number, number])));
       const input = page.locator(`input[aria-label="${t.inputAria}"]`);
       await input.setInputFiles({ name: "long.pdf", mimeType: "application/pdf", buffer: long });
+      // Texte saisi après le fichier, comme un vrai visiteur, et vérifié :
+      // sans texte, rien n'est rendu et la progression resterait à 0.
+      const purpose = page.getByLabel(t.purpose.label);
+      await purpose.fill("Copie e2e");
+      expect(await purpose.inputValue()).toBe("Copie e2e");
 
-      // Page en cours de long.pdf, lue dans sa pastille de progression.
-      const progress = () =>
-        page.evaluate(() => {
-          const row = [...document.querySelectorAll("li[data-doc-index], li")].find((li) =>
-            li.textContent?.includes("long.pdf")
-          );
-          const m = row?.textContent?.match(/(\d+)\s*\/\s*60/);
-          return m ? Number(m[1]) : 0;
-        });
+      // Ligne de long.pdf : la pastille de progression (« page 7 / 60 »).
+      const row = () =>
+        page.evaluate(
+          () =>
+            [...document.querySelectorAll("li")].find((li) => li.textContent?.includes("long.pdf"))?.textContent ??
+            "(ligne absente)"
+        );
+      const progress = async () => {
+        const m = (await row()).match(/(\d+)\s*\/\s*60/);
+        return m ? Number(m[1]) : 0;
+      };
       // Délai en temps, pas en nombre d'essais : les machines de CI (WebKit
-      // sous Linux surtout) rendent les pages A4 bien plus lentement.
+      // sous Linux surtout) rendent les pages A4 bien plus lentement. Deux
+      // pages suffisent : il en reste 58, le rendu est bien en cours.
       const deadline = Date.now() + 45_000;
-      while (Date.now() < deadline && (await progress()) < 5) await page.waitForTimeout(100);
+      while (Date.now() < deadline && (await progress()) < 2) await page.waitForTimeout(100);
       const before = await progress();
-      expect(before).toBeGreaterThanOrEqual(5);
+      // En cas d'échec, l'état réel de la ligne (en attente, erreur…) et le
+      // champ de texte, pour diagnostiquer depuis le journal de CI.
+      if (before < 2) {
+        throw new Error(
+          `long.pdf n'a pas avancé en 45 s. Ligne : « ${await row()} » ; texte : « ${await purpose
+            .inputValue()
+            .catch(() => "?")} »`
+        );
+      }
 
       await input.setInputFiles({
         name: "court.pdf",
