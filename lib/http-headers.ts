@@ -37,6 +37,12 @@ export function headerRules(text: string): { pattern: string; headers: [string, 
       rules.push({ pattern: line.trim(), headers: [] });
       continue;
     }
+    // « ! Nom » : retire un en-tête posé par une autre règle (syntaxe Cloudflare).
+    const detach = line.match(/^\s+!\s*([^:\s]+)\s*$/);
+    if (detach && rules.length) {
+      rules.at(-1)!.headers.push([`!${detach[1].toLowerCase()}`, ""]);
+      continue;
+    }
     const m = line.match(/^\s+([^:]+):\s*(.*)$/);
     if (m && rules.length) rules.at(-1)!.headers.push([m[1].trim().toLowerCase(), m[2].trim()]);
   }
@@ -45,15 +51,19 @@ export function headerRules(text: string): { pattern: string; headers: [string, 
 
 /**
  * En-têtes qu'appliquerait Cloudflare Pages à `path` : toutes les règles qui
- * correspondent (chemin exact, ou « * » pour n'importe quelle suite), et un
- * même en-tête posé par deux règles est joint par une virgule.
+ * correspondent (chemin exact, ou « * » pour n'importe quelle suite), un
+ * même en-tête posé par deux règles est joint par une virgule, et « ! Nom »
+ * retire un en-tête posé par une règle précédente.
  */
 export function headersFor(text: string, path: string): Record<string, string> {
   const out: Record<string, string> = {};
   for (const { pattern, headers } of headerRules(text)) {
     const re = new RegExp(`^${pattern.split("*").map((p) => p.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*")}$`);
     if (!re.test(path)) continue;
-    for (const [name, value] of headers) out[name] = name in out ? `${out[name]}, ${value}` : value;
+    for (const [name, value] of headers) {
+      if (name.startsWith("!")) delete out[name.slice(1)];
+      else out[name] = name in out ? `${out[name]}, ${value}` : value;
+    }
   }
   return out;
 }

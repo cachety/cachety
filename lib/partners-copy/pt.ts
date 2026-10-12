@@ -1,0 +1,52 @@
+import type { PartnersCopy } from "./types";
+
+const COPY: PartnersCopy = {
+  nav: "Para sites",
+  meta: {
+    title: "Coloque o Cachety no seu site",
+    description: "Adicione de graça a ferramenta de marca d'água do Cachety ao seu site. Os documentos dos visitantes ficam no aparelho deles: nem seu site nem o Cachety os veem.",
+  },
+  title: "Coloque o Cachety no seu site",
+  lead: "Imobiliárias, plataformas de RH, associações: deixe quem envia RG ou holerites para você colocar a marca d'água neles direto na sua página. De graça, e os documentos nunca saem do aparelho da pessoa.",
+  privacyTitle: "Por que continua privado",
+  privacy: [
+    "A ferramenta roda em um quadro servido por cachety.com. Sua página, e qualquer script nela, não consegue ler o que tem dentro.",
+    "Os documentos são processados no aparelho do visitante. Nada é enviado, nem para você, nem para nós.",
+    "Só sites aprovados podem exibir a ferramenta, então ninguém consegue colocá-la numa página enganosa.",
+  ],
+  codeTitle: "Pegue o código",
+  codeLead: "Escolha as opções e cole os dois trechos de código na sua página.",
+  options: {
+    lang: "Idioma",
+    purpose: "Finalidade, já preenchida para os visitantes",
+    purposePlaceholder: "ex.: Cadastro para aluguel",
+    recipient: "Destinatário, já preenchido para os visitantes",
+    recipientPlaceholder: "ex.: o nome da sua empresa",
+    accent: "Cor dos botões",
+    accentHint: "Uma cor clara demais é ignorada, para que os botões continuem legíveis.",
+  },
+  embedCode: "1. O quadro",
+  resizeCode: "2. Altura automática",
+  resizeHelp: "Este pequeno script ajusta a altura do quadro. Ele só recebe um número: a altura.",
+  copy: "Copiar",
+  copied: "Copiado",
+  previewTitle: "Prévia",
+  previewNote: "É assim que seus visitantes vão ver a ferramenta. Eles ainda podem mudar o que você preencheu.",
+  wordingTitle: "Um texto para usar",
+  wordingLead: "Um texto curto e correto para colocar ao lado da ferramenta:",
+  wording: "Esta ferramenta funciona em cachety.com. Seus documentos nunca saem do seu aparelho: nem este site nem o Cachety conseguem vê-los.",
+  joinTitle: "Como participar",
+  join: [
+    "Abra uma solicitação no GitHub com o endereço do seu site.",
+    "Nós verificamos e adicionamos seu site à lista de sites aprovados.",
+    "Assim que a atualização estiver no ar, a ferramenta funciona nas suas páginas.",
+  ],
+  joinCta: "Pedir para ser parceiro",
+  freeTitle: "Grátis",
+  free: "Incorporar o Cachety é grátis, como o resto do site. Se ele for útil para você e seus visitantes, uma doação ajuda a mantê-lo.",
+  donateCta: "Apoiar o Cachety",
+  usedBy: "Quem usa",
+  embed: { runsOn: "Funciona em cachety.com", private: "Seus arquivos ficam no seu aparelho" },
+};
+
+export default COPY;

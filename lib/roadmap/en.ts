@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Easy-to-read passwords",
     body: "Locking a file now makes a password of 12 random words, as strong as a crypto wallet recovery phrase.",
   },
+  "partner-embed": {
+    title: "Cachety on partner websites",
+    body: "Approved websites can show the tool in their own pages. It still runs on cachety.com, so the documents stay on the visitor's device, out of reach of the host site.",
+  },
 };
 
 const COPY: RoadmapCopy = {

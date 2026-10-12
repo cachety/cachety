@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Gut lesbare Passwörter",
     body: "Wer eine Datei schützt, bekommt jetzt ein Passwort aus 12 zufälligen Wörtern, so stark wie die Wiederherstellungsphrase einer Krypto-Wallet.",
   },
+  "partner-embed": {
+    title: "Cachety auf Partner-Websites",
+    body: "Freigegebene Websites können das Tool in ihre eigenen Seiten einbinden. Es läuft weiterhin auf cachety.com: Die Dokumente bleiben auf dem Gerät der Besucher, außer Reichweite der einbindenden Website.",
+  },
 };
 
 const COPY: RoadmapCopy = {

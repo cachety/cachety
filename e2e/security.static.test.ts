@@ -92,6 +92,8 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
   // d'une page autorise donc ses scripts, et seulement des scripts de pages de
   // sa langue. La <meta> de chaque page reste exacte (test suivant).
   const UNDER_LANG = /^\/([a-z]{2})\/.+$/;
+  // Page intégrée des partenaires : une règle commune « /embed/* ».
+  const EMBED = /^\/embed\/[a-z]{2}$/;
 
   test("chaque page : une seule CSP ; ses scripts, et seulement des scripts de sa langue", () => {
     const langHashes = new Map<string, Set<string>>();
@@ -102,14 +104,14 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
       if (!route) continue;
       const emitted = [...new Set(inlineScriptHashes(readFileSync(f, "utf8")))].sort();
       emittedOf.set(route, emitted);
-      const m = route.match(UNDER_LANG);
+      const m = route.match(UNDER_LANG) ?? (EMBED.test(route) ? [route, "embed"] : null);
       if (m) langHashes.set(m[1], new Set([...(langHashes.get(m[1]) ?? []), ...emitted]));
     }
     for (const [route, emitted] of emittedOf) {
       const csp = headersFor(headersText, route)["content-security-policy"] ?? "";
       expect(csp, route).not.toContain(", "); // une seule règle : pas de politiques jointes
       const allowed = (parseCsp(csp)["script-src"] ?? []).filter((v) => v.startsWith("'sha256-")).sort();
-      const m = route.match(UNDER_LANG);
+      const m = route.match(UNDER_LANG) ?? (EMBED.test(route) ? [route, "embed"] : null);
       if (!m) {
         expect(allowed, route).toEqual(emitted);
         continue;
@@ -133,12 +135,38 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
       expect(allowed, rel).toEqual([...new Set(inlineScriptHashes(html))].sort());
       const route = routeOf(rel);
       // Hors pages regroupées (accueils, racine), la <meta> est la copie exacte de l'en-tête.
-      if (route && !UNDER_LANG.test(route)) {
+      if (route && !UNDER_LANG.test(route) && !EMBED.test(route)) {
         const header = headersFor(headersText, route)["content-security-policy"] ?? "";
         expect(meta![1], rel).toBe(withoutFrameAncestors(header));
       }
       expect(meta!.index!, rel).toBeLessThan(html.search(/<script\b/i));
     }
+  });
+
+  test("seule la page intégrée peut s'afficher en cadre, et seulement chez le site et ses partenaires", () => {
+    const partners: { domain: string }[] = JSON.parse(readFileSync(join(OUT_DIR, "..", "partners.json"), "utf8"));
+    for (const path of ["/embed/en", "/embed/ar"]) {
+      const h = headersFor(headersText, path);
+      expect(parseCsp(h["content-security-policy"])["frame-ancestors"], path).toEqual([
+        "'self'",
+        ...partners.map((p) => p.domain),
+      ]);
+      expect(h["x-frame-options"], path).toBeUndefined();
+      expect(h["cross-origin-resource-policy"], path).toBe("cross-origin");
+      expect(h["x-robots-tag"], path).toBe("noindex, nofollow");
+    }
+    for (const path of ["/", "/en", "/fr/partners", "/en/guides/x", "/about"]) {
+      const h = headersFor(headersText, path);
+      expect(parseCsp(h["content-security-policy"])["frame-ancestors"], path).toEqual(["'none'"]);
+      expect(h["x-frame-options"], path).toBe("DENY");
+      expect(h["x-robots-tag"], path).toBeUndefined();
+    }
+  });
+
+  test("page intégrée : noindex, et absente du plan du site", () => {
+    const html = readFileSync(join(OUT_DIR, "embed", "en.html"), "utf8");
+    expect(html).toMatch(/<meta name="robots" content="noindex, nofollow"\/>/);
+    expect(readFileSync(join(OUT_DIR, "sitemap.xml"), "utf8")).not.toContain("/embed/");
   });
 
   test("aucune ressource externe référencée par les pages", () => {

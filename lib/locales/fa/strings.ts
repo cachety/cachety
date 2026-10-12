@@ -137,6 +137,7 @@ export const STRINGS_FA: Strings = {
     saveList: "ذخیرهٔ فهرست",
     another: "واترمارک روی سندی دیگر",
     close: "بستن",
+    again: "دانلود دوباره",
   },
   zipName: "watermarked-documents",
   bundlePassword:

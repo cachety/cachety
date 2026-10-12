@@ -1,0 +1,52 @@
+import type { PartnersCopy } from "./types";
+
+const COPY: PartnersCopy = {
+  nav: "网站合作",
+  meta: {
+    title: "把 Cachety 放到您的网站上",
+    description: "免费把 Cachety 的水印工具加到您的网站上。访客的文件始终留在他们自己的设备上，您的网站和 Cachety 都看不到这些文件。",
+  },
+  title: "把 Cachety 放到您的网站上",
+  lead: "房产中介、人力资源平台、社团组织：让向您发送身份证或工资单的人，直接在您的页面上给文件加水印。免费，而且文件始终不会离开他们的设备。",
+  privacyTitle: "为什么能保护隐私",
+  privacy: [
+    "工具运行在由 cachety.com 提供的框架中。您的页面以及页面上的任何脚本，都无法读取其中的内容。",
+    "文件在访客的设备上处理。不会上传任何内容，既不传给您，也不传给我们。",
+    "只有经过批准的网站才能显示这个工具，因此没人能把它嵌进误导性的页面。",
+  ],
+  codeTitle: "获取代码",
+  codeLead: "选好选项，然后把两段代码粘贴到您的页面中。",
+  options: {
+    lang: "语言",
+    purpose: "用途（为访客预先填好）",
+    purposePlaceholder: "例如：租房登记",
+    recipient: "接收方（为访客预先填好）",
+    recipientPlaceholder: "例如：您的公司名称",
+    accent: "按钮颜色",
+    accentHint: "颜色太浅会被忽略，以保证按钮清晰可读。",
+  },
+  embedCode: "1. 框架",
+  resizeCode: "2. 自动高度",
+  resizeHelp: "这段简短的脚本会调整框架的高度。它只接收一个数字：高度。",
+  copy: "复制",
+  copied: "已复制",
+  previewTitle: "预览",
+  previewNote: "这就是访客看到的工具。访客仍可修改您预先填好的内容。",
+  wordingTitle: "可直接使用的说明",
+  wordingLead: "放在工具旁边的一段简短、准确的说明：",
+  wording: "此工具运行在 cachety.com 上。您的文件始终不会离开您的设备，本网站和 Cachety 都无法看到。",
+  joinTitle: "如何加入",
+  join: [
+    "在 GitHub 上提交申请，并附上您的网站地址。",
+    "我们审核后，会把您的网站加入已批准网站列表。",
+    "更新上线后，工具即可在您的页面上使用。",
+  ],
+  joinCta: "申请成为合作伙伴",
+  freeTitle: "免费",
+  free: "嵌入 Cachety 是免费的，和网站的其他部分一样。如果它对您和您的访客有帮助，一笔捐助能让它继续下去。",
+  donateCta: "支持 Cachety",
+  usedBy: "正在使用的网站",
+  embed: { runsOn: "运行在 cachety.com 上", private: "您的文件留在您的设备上" },
+};
+
+export default COPY;

@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "読みやすいパスワード",
     body: "ファイルをロックすると、ランダムな12個の単語でできたパスワードが作られます。暗号資産ウォレットの復元フレーズと同じ強さです。",
   },
+  "partner-embed": {
+    title: "パートナーサイトでの Cachety",
+    body: "承認済みのサイトは、自分のページにツールを表示できます。ツールは引き続き cachety.com 上で動くため、書類は訪問者の端末に残り、設置先のサイトからは見えません。",
+  },
 };
 
 const COPY: RoadmapCopy = {

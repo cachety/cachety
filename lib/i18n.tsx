@@ -166,6 +166,7 @@ const BASE_STRINGS = {
       saveList: "Enregistrer la liste",
       another: "Filigraner un autre document",
       close: "Fermer",
+      again: "Télécharger à nouveau",
     },
     zipName: "documents-filigranes",
     bundlePassword:
@@ -482,6 +483,7 @@ const BASE_STRINGS = {
       saveList: "Save this list",
       another: "Watermark another document",
       close: "Close",
+      again: "Download again",
     },
     zipName: "watermarked-documents",
     bundlePassword:
@@ -797,6 +799,7 @@ const BASE_STRINGS = {
       saveList: "一覧を保存",
       another: "別の書類に透かしを入れる",
       close: "閉じる",
+      again: "もう一度ダウンロード",
     },
     zipName: "watermarked-documents",
     bundlePassword:
@@ -1110,6 +1113,7 @@ const BASE_STRINGS = {
       saveList: "保存清单",
       another: "给另一份文件加水印",
       close: "关闭",
+      again: "再次下载",
     },
     zipName: "watermarked-documents",
     bundlePassword:

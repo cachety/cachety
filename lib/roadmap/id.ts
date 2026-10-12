@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Kata sandi yang mudah dibaca",
     body: "Saat mengunci file, kini dibuatkan kata sandi dari 12 kata acak, sekuat frasa pemulihan dompet kripto.",
   },
+  "partner-embed": {
+    title: "Cachety di situs mitra",
+    body: "Situs yang disetujui bisa menampilkan alat ini di halaman mereka sendiri. Alat ini tetap berjalan di cachety.com, jadi dokumen tetap di perangkat pengunjung, di luar jangkauan situs tersebut.",
+  },
 };
 
 const COPY: RoadmapCopy = {

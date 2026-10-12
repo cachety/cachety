@@ -48,6 +48,7 @@ Selbst hosten ist weiterhin möglich und vollständig unterstützt (siehe unten)
 - **Geführte Hilfe-Tour** für neue Besucher, angeboten, wenn jemand unsicher wirkt, wo er anfangen soll.
 - **Praktische Ratgeber** für Alltagssituationen in Deutschland, Frankreich, Großbritannien, den Niederlanden, Spanien und Lateinamerika, Brasilien, Indonesien, der arabischen Welt, Iran, Japan und China.
 - **Geprüfte Vergleiche** mit anderen Wasserzeichen-Tools (PDF24, iLovePDF, Smallpdf, Adobe Acrobat und weitere), mit Quellen, auch dazu, wann ein anderes Tool die bessere Wahl ist.
+- **Auf Partner-Websites:** freigegebene Websites können das Tool in ihren Seiten zeigen (ein iframe von cachety.com, die einbindende Website sieht die Dokumente nicht). Siehe [docs/embed.md](docs/embed.md) und [cachety.com/de/partners](https://cachety.com/de/partners).
 
 ## Datenschutz von Grund auf, und überprüfbar
 

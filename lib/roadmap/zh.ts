@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "好读的密码",
     body: "现在给文件加密时，会生成由 12 个随机单词组成的密码，和加密货币钱包的助记词一样强。",
   },
+  "partner-embed": {
+    title: "Cachety 进入合作网站",
+    body: "经过批准的网站可以在自己的页面中显示这个工具。它仍然运行在 cachety.com 上，因此文件留在访客的设备上，所在网站无法接触。",
+  },
 };
 
 const COPY: RoadmapCopy = {

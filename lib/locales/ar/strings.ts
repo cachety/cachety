@@ -154,6 +154,7 @@ export const STRINGS_AR: Strings = {
     saveList: "حفظ القائمة",
     another: "ضع علامة مائية على مستند آخر",
     close: "إغلاق",
+    again: "التنزيل مرة أخرى",
   },
   zipName: "watermarked-documents",
   bundlePassword:

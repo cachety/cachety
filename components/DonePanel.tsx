@@ -17,6 +17,8 @@ export type DoneInfo = {
   /** Destinataire (ou libellé « sans destinataire ») et code de sa copie. */
   codes: { name: string; code: string }[];
   date: string;
+  /** Fichier produit, gardé pour « Télécharger à nouveau » (téléchargement bloqué, cadre intégré…). */
+  file?: { url: string; name: string };
 };
 
 export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClose: () => void; onAnother: () => void }) {
@@ -63,6 +65,16 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
           <p className="text-sm text-encre-2">{d.saved}</p>
         </div>
       </div>
+
+      {info.file && (
+        <a
+          href={info.file.url}
+          download={info.file.name}
+          className="mt-3 inline-flex text-sm font-medium text-bleu underline underline-offset-2 hover:no-underline"
+        >
+          {d.again}
+        </a>
+      )}
 
       <ul className="mt-3 flex flex-col gap-1.5">
         {info.files.map((f) => (

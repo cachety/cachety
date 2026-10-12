@@ -1,0 +1,52 @@
+import type { PartnersCopy } from "./types";
+
+const COPY: PartnersCopy = {
+  nav: "Untuk situs web",
+  meta: {
+    title: "Pasang Cachety di situs web Anda",
+    description: "Tambahkan alat watermark Cachety ke situs web Anda, gratis. Dokumen pengunjung tetap di perangkat mereka: baik situs Anda maupun Cachety tidak bisa melihatnya.",
+  },
+  title: "Pasang Cachety di situs web Anda",
+  lead: "Agen properti, platform HR, komunitas: biarkan orang yang mengirimkan KTP atau slip gaji kepada Anda memberi watermark langsung di halaman Anda. Gratis, dan dokumen mereka tidak pernah keluar dari perangkatnya.",
+  privacyTitle: "Mengapa tetap privat",
+  privacy: [
+    "Alat ini berjalan di dalam bingkai yang disajikan oleh cachety.com. Halaman Anda, dan skrip apa pun di dalamnya, tidak bisa membaca isinya.",
+    "Dokumen diproses di perangkat pengunjung. Tidak ada yang diunggah, baik ke Anda maupun ke kami.",
+    "Hanya situs yang disetujui yang bisa menampilkan alat ini, jadi tidak ada yang bisa membungkusnya dalam halaman yang menyesatkan.",
+  ],
+  codeTitle: "Ambil kodenya",
+  codeLead: "Pilih opsinya, lalu tempelkan kedua potongan kode ke halaman Anda.",
+  options: {
+    lang: "Bahasa",
+    purpose: "Keperluan, sudah diisikan untuk pengunjung",
+    purposePlaceholder: "mis. Pengajuan sewa rumah",
+    recipient: "Penerima, sudah diisikan untuk pengunjung",
+    recipientPlaceholder: "mis. nama perusahaan Anda",
+    accent: "Warna tombol",
+    accentHint: "Warna yang terlalu terang diabaikan, agar tombol tetap mudah dibaca.",
+  },
+  embedCode: "1. Bingkai",
+  resizeCode: "2. Tinggi otomatis",
+  resizeHelp: "Skrip pendek ini menyesuaikan tinggi bingkai. Skrip ini hanya menerima satu angka: tingginya.",
+  copy: "Salin",
+  copied: "Tersalin",
+  previewTitle: "Pratinjau",
+  previewNote: "Beginilah alat ini terlihat bagi pengunjung Anda. Pengunjung tetap bisa mengubah isian Anda.",
+  wordingTitle: "Teks yang bisa Anda pakai",
+  wordingLead: "Teks singkat dan akurat untuk dipasang di samping alat:",
+  wording: "Alat ini berjalan di cachety.com. Dokumen Anda tidak pernah keluar dari perangkat Anda: baik situs ini maupun Cachety tidak bisa melihatnya.",
+  joinTitle: "Cara bergabung",
+  join: [
+    "Buka permintaan di GitHub dengan menyertakan alamat situs web Anda.",
+    "Kami memeriksanya dan menambahkan situs Anda ke daftar situs yang disetujui.",
+    "Setelah pembaruan online, alat ini langsung berfungsi di halaman Anda.",
+  ],
+  joinCta: "Ajukan diri jadi mitra",
+  freeTitle: "Gratis",
+  free: "Memasang Cachety gratis, sama seperti bagian lain situs ini. Jika bermanfaat bagi Anda dan pengunjung Anda, donasi membantu Cachety tetap berjalan.",
+  donateCta: "Dukung Cachety",
+  usedBy: "Digunakan oleh",
+  embed: { runsOn: "Berjalan di cachety.com", private: "File Anda tetap di perangkat Anda" },
+};
+
+export default COPY;

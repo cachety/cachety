@@ -48,6 +48,7 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 - **Visite guidée** pour les nouveaux venus, proposée quand quelqu'un semble ne pas savoir par où commencer.
 - **70 guides pratiques** pour les situations de tous les jours en France, au Royaume-Uni, en Allemagne, aux Pays-Bas, en Espagne et en Amérique latine, au Brésil, en Indonésie, dans le monde arabe, en Iran, au Japon et en Chine.
 - **71 comparatifs vérifiés** avec d'autres outils de filigrane (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat, KopieID et d'autres), sources à l'appui, y compris quand un autre outil est le meilleur choix.
+- **Sur des sites partenaires :** les sites approuvés peuvent afficher l'outil dans leurs pages (une iframe servie par cachety.com : le site qui l'accueille ne voit pas les documents). Voir [docs/embed.md](docs/embed.md) et [cachety.com/fr/partners](https://cachety.com/fr/partners).
 
 ## Confidentialité dès la conception, et vérifiable
 

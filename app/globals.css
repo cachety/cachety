@@ -99,3 +99,13 @@
     display: none;
   }
 }
+
+/* Liste « Ils l'utilisent » de la page partenaires (deux copies côte à côte). */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -7,7 +7,7 @@ import { CheckIcon, ChevronDownIcon, GlobeIcon, LinkIcon } from "@/components/ic
 
 // Pas de drapeaux : une langue n'est pas un pays (l'arabe, l'espagnol, le
 // persan se parlent dans bien des pays). Nom natif et code court seulement.
-const LANGS: { code: Lang; name: string; short: string }[] = [
+export const LANGS: { code: Lang; name: string; short: string }[] = [
   { code: "en", name: "English", short: "EN" },
   { code: "fr", name: "Français", short: "FR" },
   { code: "es", name: "Español", short: "ES" },

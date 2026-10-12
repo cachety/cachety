@@ -27,13 +27,6 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 - **Tests:** each recipient's file opens only with its own password; the list
   matches the files.
 
-### `partner-embed`: the tool inside partner websites
-- **Status:** next (not yet on the public page)
-- **Spec:** [docs/embed.md](docs/embed.md). Approved partners only (list in
-  the repo), full tool in an iframe on cachety.com, pre-filled purpose and
-  recipient, accent colour, auto-resize, language set by the partner, free
-  with a donation suggestion, partner page with embed code and wording.
-
 ### `suggested-areas`: suggested areas to hide
 - **Status:** next
 - **Why:** people don't always know what to hide (account number, tax number,
@@ -79,3 +72,11 @@ Download, done screen with the password and codes.
 ### `easy-passwords`: easy-to-read passwords (2026-10)
 12 random words from the BIP39 English list (132 bits) by default; the 256-bit
 generator and your own password stay available.
+
+### `partner-embed`: Cachety on partner websites (2026-10)
+Approved partner sites (list in `partners.json`, requests by GitHub issue)
+show the full tool in an iframe served by `/embed/<lang>` on cachety.com:
+pre-filled purpose and recipient, accent colour, automatic height (only the
+height crosses), `noindex`. Partner page at `/<lang>/partners` with the
+embed code builder, reusable wording and a discreet "Used by" list.
+Spec: [docs/embed.md](docs/embed.md).

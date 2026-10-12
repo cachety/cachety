@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Senhas fáceis de ler",
     body: "Ao proteger um arquivo, agora é criada uma senha de 12 palavras aleatórias, tão forte quanto a frase de recuperação de uma carteira de criptomoedas.",
   },
+  "partner-embed": {
+    title: "Cachety em sites parceiros",
+    body: "Sites aprovados podem exibir a ferramenta nas próprias páginas. Ela continua rodando em cachety.com, então os documentos ficam no aparelho do visitante, fora do alcance do site que a exibe.",
+  },
 };
 
 const COPY: RoadmapCopy = {

@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Goed leesbare wachtwoorden",
     body: "Beveilig je een bestand, dan krijg je nu een wachtwoord van 12 willekeurige woorden, net zo sterk als de herstelzin van een cryptowallet.",
   },
+  "partner-embed": {
+    title: "Cachety op partnerwebsites",
+    body: "Goedgekeurde websites kunnen de tool op hun eigen pagina's tonen. Hij draait nog steeds op cachety.com, dus de documenten blijven op het apparaat van de bezoeker, buiten bereik van de website zelf.",
+  },
 };
 
 const COPY: RoadmapCopy = {

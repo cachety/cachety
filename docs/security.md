@@ -53,7 +53,7 @@ The remaining attack surface is therefore:
 | T5 | Removal of the watermark by editing the PDF | Recipient | The watermark is blended into the pixels, not a layer (§4.4) | same |
 | T6 | Cryptographic attack on the protected PDF | Recipient, thief of the file | AES-256 (PDF 2.0, /V 5 /R 6), never RC4, generated secret of 132 bits (12 words) or 256 bits (§4.5) | `file-password.test.ts` |
 | T7 | Zip-Slip when extracting the downloaded archive | Forged file name | Only the basename is kept, names de-duplicated (§4.6) | `files.test.ts` |
-| T8 | Clickjacking, tab-nabbing, Referer leakage | Third-party site | `frame-ancestors 'none'`, `X-Frame-Options`, COOP, `noopener noreferrer`, `Referrer-Policy` (§4.7) | `security-headers.test.ts` |
+| T8 | Clickjacking, tab-nabbing, Referer leakage | Third-party site | `frame-ancestors 'none'`, `X-Frame-Options`, COOP, `noopener noreferrer`, `Referrer-Policy` (§4.7); only `/embed/*` can be framed, and only by cachety.com and the sites in `partners.json` ([embed.md](embed.md)) | `security-headers.test.ts`, `security.static.test.ts`, `embed.e2e.ts` |
 | T9 | Vulnerable or compromised dependency | Supply chain | Frozen lockfile, `bun audit` in CI + weekly, Dependabot, actions pinned by SHA (§4.8) | CI |
 | T10 | Poisoned or stale service worker | Network, old deployment | Same origin, GET only, revalidation of `sw.js` (§4.9) | `security-headers.test.ts` |
 
@@ -97,6 +97,11 @@ policies. The build ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)) therefore:
   (`/fr/guides/*`) and one exact rule per other page. Each page still carries
   its exact `<meta>` policy, and the browser enforces both, so a page can only
   run its own scripts;
+- adds one rule for the partner embed pages (`/embed/*`), the only ones that
+  may be framed: `frame-ancestors 'self'` plus the origins of `partners.json`,
+  `X-Frame-Options` removed there (`! X-Frame-Options`), and
+  `X-Robots-Tag: noindex, nofollow`. The embedded tool only sends its height
+  to the parent page (see [embed.md](embed.md));
 - adds a strict rule with no hash at all for `/_next/*`, `/pdfjs/*` and
   `/sw.js` (scripts, the pdf.js worker and the service worker);
 - fails the build if the result exceeds 100 rules or 2,000 characters per line.

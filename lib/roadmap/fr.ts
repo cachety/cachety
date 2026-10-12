@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Des mots de passe faciles à lire",
     body: "Verrouiller un fichier crée désormais un mot de passe de 12 mots aléatoires, aussi solide qu'une phrase de récupération de portefeuille crypto.",
   },
+  "partner-embed": {
+    title: "Cachety sur des sites partenaires",
+    body: "Les sites approuvés peuvent afficher l'outil dans leurs propres pages. Il fonctionne toujours sur cachety.com : les documents restent sur l'appareil du visiteur, hors de portée du site qui l'accueille.",
+  },
 };
 
 const COPY: RoadmapCopy = {

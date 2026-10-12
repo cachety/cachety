@@ -141,6 +141,7 @@ export const STRINGS_NL: Strings = {
     saveList: "Lijst opslaan",
     another: "Nog een document watermerken",
     close: "Sluiten",
+    again: "Opnieuw downloaden",
   },
   zipName: "documenten-met-watermerk",
   bundlePassword:

@@ -141,6 +141,7 @@ export const STRINGS_DE: Strings = {
     saveList: "Liste speichern",
     another: "Noch ein Dokument mit Wasserzeichen versehen",
     close: "Schließen",
+    again: "Erneut herunterladen",
   },
   zipName: "dokumente-mit-wasserzeichen",
   bundlePassword:

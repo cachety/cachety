@@ -48,6 +48,7 @@ Self-hosting tetap bisa dan didukung penuh (lihat di bawah), untuk organisasi ya
 - **Tur bantuan terpandu** untuk pengunjung baru, ditawarkan saat seseorang tampak bingung harus mulai dari mana.
 - **70 panduan praktis** untuk situasi sehari-hari di Indonesia, Prancis, Inggris, Jerman, Belanda, Spanyol dan Amerika Latin, Brasil, dunia Arab, Iran, Jepang, dan Tiongkok.
 - **71 perbandingan yang sudah dicek faktanya** dengan alat watermark lain (FiligraneFacile, iLovePDF, Smallpdf, PDF24, Adobe Acrobat, dan lainnya), lengkap dengan sumber, termasuk kapan alat lain justru lebih cocok.
+- **Di situs mitra:** situs yang disetujui bisa menampilkan alat ini di halamannya sendiri (iframe dari cachety.com, jadi situs tersebut tidak bisa melihat dokumen). Lihat [docs/embed.md](docs/embed.md) dan [cachety.com/id/partners](https://cachety.com/id/partners).
 
 ## Privasi sejak rancangan, dan bisa diperiksa
 

@@ -141,6 +141,7 @@ export const STRINGS_ID: Strings = {
     saveList: "Simpan daftar",
     another: "Beri watermark dokumen lain",
     close: "Tutup",
+    again: "Unduh lagi",
   },
   zipName: "dokumen-watermark",
   bundlePassword:

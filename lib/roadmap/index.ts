@@ -31,6 +31,7 @@ const ITEMS: { id: RoadmapId; status: RoadmapStatus; shipped?: string }[] = [
   { id: "local-word-lists", status: "idea" },
   { id: "simpler-tool", status: "shipped", shipped: "2026-10" },
   { id: "easy-passwords", status: "shipped", shipped: "2026-10" },
+  { id: "partner-embed", status: "shipped", shipped: "2026-10" },
 ];
 
 export type RoadmapItem = (typeof ITEMS)[number] & { text: Record<Lang, Text> };

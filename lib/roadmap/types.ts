@@ -9,6 +9,7 @@ export const ROADMAP_IDS = [
   "local-word-lists",
   "simpler-tool",
   "easy-passwords",
+  "partner-embed",
 ] as const;
 export type RoadmapId = (typeof ROADMAP_IDS)[number];
 

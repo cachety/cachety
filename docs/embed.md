@@ -1,6 +1,9 @@
 # Partner embed: specification
 
-Status: **defined, not built yet** (see `partner-embed` in [ROADMAP.md](../ROADMAP.md)).
+Status: **built** (2026-10). Code: `app/embed/[lang]/page.tsx`, `components/EmbedApp.tsx`,
+`app/[lang]/partners/page.tsx`, `components/EmbedBuilder.tsx`, `lib/partners.ts`, `partners.json`,
+`scripts/gen-sw.mjs` (headers). Tests: `lib/partners.test.ts`, `e2e/embed.e2e.ts`,
+`e2e/security.static.test.ts`.
 
 Partner websites (letting agencies, HR platforms, associations…) can show the
 Cachety tool inside their own pages, in an iframe served by cachety.com. The
@@ -56,12 +59,14 @@ and neither can we.
 
 ### Resizing
 
-- The frame posts `{ type: "cachety:height", height: <number> }` to its
-  parent, with the target origin set to the approved partner origin (taken
-  from `document.referrer`, checked against the list), never `*`.
+- The frame posts `{ type: "cachety:height", height: <number> }` to each
+  allowed origin (cachety.com and the partners), never `*`. The browser only
+  delivers it when the parent's origin matches, so no other site receives it.
 - A unit test checks that the message contains only those two fields.
-- Partners paste a 10-line script (shown on the partner page, no external
+- Partners paste a short script (shown on the partner page, no external
   file) that listens for that message and sets the iframe height.
+- The height is re-sent a few times during the first seconds, in case the
+  partner's listener starts after the frame.
 
 ### Partner list (`partners.json`)
 
@@ -93,9 +98,20 @@ and neither can we.
 - e2e: the embed page loaded in an iframe from an allowed origin works, and
   from a non-allowed origin is refused by the browser.
 
-## Open points
+## Settled points
 
-- Budget for the "Used by" list if partners grow (one line each, no logos at
-  first).
-- Whether the embed page should be indexed by search engines (proposal: no,
-  `noindex`, and canonical to the main tool).
+- The embed page is never indexed: `noindex, nofollow` (meta and
+  `X-Robots-Tag`), canonical to the main tool, absent from the sitemap.
+- "Used by" is a small, colourless scrolling line on the partners page only
+  (hidden while the list is empty, still under reduced motion).
+- Downloads from an embedded frame: browsers may block a download started
+  long after the click, so the done panel keeps a "Download again" link
+  that always works.
+
+## Adding a partner
+
+1. Check the request (GitHub issue with the `partner` label): exact https
+   origin, the site exists and matches the stated use.
+2. Add `{ "domain": "https://…", "name": "…", "since": "YYYY-MM" }` to
+   `partners.json`. The build fails on an invalid entry (`lib/partners.ts`).
+3. Deploy: `frame-ancestors` on `/embed/*` and the "Used by" list update.

@@ -51,6 +51,7 @@ import { BatchSummary } from "@/components/BatchSummary";
 import { DocRow } from "@/components/DocList";
 import { useDragReorder } from "@/components/useDragReorder";
 import { Kiosk } from "@/components/Kiosk";
+import { readPrefill } from "@/lib/partners";
 
 // Au-delà de ce nombre de documents, la liste passe en zone défilante bornée
 // avec résumé et filtres (sinon mille lignes poussent les étapes 2 et 3 à
@@ -68,7 +69,7 @@ function triggerDownload(url: string, name: string) {
   a.remove();
 }
 
-export default function CoreProduct() {
+export default function CoreProduct({ embed = false }: { embed?: boolean } = {}) {
   const t = useT();
   const [docs, setDocs] = useState<Doc[]>([]);
   // Étape 2 : motif, destinataires (un champ chacun), texte libre éventuel.
@@ -119,6 +120,14 @@ export default function CoreProduct() {
   const [unsupported, setUnsupported] = useState(false);
   useEffect(() => {
     if (!isBrowserSupported()) setUnsupported(true);
+  }, []);
+
+  // Lien pré-rempli (partenaires) : motif et destinataire dans le fragment de
+  // l'URL, après « # », jamais envoyé à un serveur. Le visiteur peut les modifier.
+  useEffect(() => {
+    const prefill = readPrefill(window.location.hash);
+    if (prefill.purpose) setPurpose(prefill.purpose);
+    if (prefill.recipient) setFields([prefill.recipient]);
   }, []);
 
   useEffect(() => {
@@ -526,6 +535,10 @@ export default function CoreProduct() {
   const bundleKeyRef = useRef(bundleKey);
   bundleKeyRef.current = bundleKey;
   const [bundleProgress, setBundleProgress] = useState("");
+  const lastFileUrl = useRef<string | null>(null);
+  useEffect(() => () => {
+    if (lastFileUrl.current) URL.revokeObjectURL(lastFileUrl.current);
+  }, []);
 
   type Rendered = { doc: Doc; result: WatermarkResult };
   /** Rend les documents prêts avec un autre texte (destinataire suivant, ou budget réduit). */
@@ -640,8 +653,12 @@ export default function CoreProduct() {
         return;
       }
       triggerDownload(url, out.name);
-      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      // Gardé jusqu'au téléchargement suivant : « Télécharger à nouveau » s'en sert
+      // (un navigateur peut bloquer un téléchargement lancé trop tard après le clic).
+      if (lastFileUrl.current) URL.revokeObjectURL(lastFileUrl.current);
+      lastFileUrl.current = url;
       setDone({
+        file: { url, name: out.name },
         files: single ? [out.name] : entries.map((e) => (e.folder ? `${out.name} › ${e.folder}/${e.name}` : `${out.name} › ${e.name}`)),
         copies: targets.length,
         password: filePassword,
@@ -1091,6 +1108,7 @@ export default function CoreProduct() {
         {processing ? t.srProcessing : ready.length > 0 ? t.srReady(ready.length) : ""}
       </p>
 
+      {!embed && (
       <HelpTour
         hasDocs={docs.length > 0}
         lifted
@@ -1098,6 +1116,7 @@ export default function CoreProduct() {
         hideOnPhone={step > 1}
         reveal={(i) => setStep((i + 1) as Step)}
       />
+      )}
 
       {/* Téléphone et tablette : le bouton de l'étape, toujours à portée de pouce. */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-trait bg-papier/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">

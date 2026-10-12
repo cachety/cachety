@@ -1,0 +1,42 @@
+name: Become a partner (embed Cachety)
+description: Ask for your website to be allowed to show the Cachety tool in its pages.
+labels: ["partner"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your interest. The embedded tool runs on cachety.com: your visitors' documents stay on their device, and neither your site nor Cachety can see them. Details: https://cachety.com/en/partners
+  - type: input
+    id: origin
+    attributes:
+      label: Website address (origin)
+      description: The exact address of the site that will show the tool, with https and without a path.
+      placeholder: https://www.example.com
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Name to show in the "Used by" list
+      placeholder: Example Lettings
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page where the tool will appear (optional)
+      placeholder: https://www.example.com/documents
+  - type: textarea
+    id: context
+    attributes:
+      label: What will your visitors use it for?
+      placeholder: For example, sending a watermarked ID with their rental application.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Commitments
+      options:
+        - label: The "Runs on cachety.com" bar stays visible, and we don't place anything over the tool.
+          required: true
+        - label: We describe the tool accurately (for example with the suggested wording on the partners page).
+          required: true

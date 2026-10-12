@@ -29,6 +29,10 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Contraseñas fáciles de leer",
     body: "Al proteger un archivo, ahora se crea una contraseña de 12 palabras al azar, tan segura como la frase de recuperación de un monedero de criptomonedas.",
   },
+  "partner-embed": {
+    title: "Cachety en sitios asociados",
+    body: "Los sitios aprobados pueden mostrar la herramienta en sus propias páginas. Sigue funcionando en cachety.com, así que los documentos se quedan en el dispositivo del visitante, fuera del alcance del sitio que la muestra.",
+  },
 };
 
 const COPY: RoadmapCopy = {

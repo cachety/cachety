@@ -1,6 +1,7 @@
 import { readdir, readFile, writeFile, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 
 const OUT = "out";
 
@@ -76,7 +77,7 @@ console.log(`sw.js: ${lazyChunks.size} module(s) HEIC laissé(s) au chargement �
 let retagged = 0;
 for (const f of files.filter((f) => f.endsWith(".html"))) {
   const rel = relative(OUT, f).split("\\").join("/");
-  const lang = LANGS.find((l) => rel === `${l}.html` || rel.startsWith(`${l}/`));
+  const lang = LANGS.find((l) => rel === `${l}.html` || rel.startsWith(`${l}/`) || rel === `embed/${l}.html`);
   if (!lang || lang === "en") continue;
   const html = await readFile(f, "utf8");
   if (!html.includes('<html lang="en"')) throw new Error(`${rel} : <html lang="en"> introuvable`);
@@ -108,6 +109,14 @@ console.log(`lang: ${retagged} pages réétiquetées (hors anglais)`);
 // page n'exécute que ses propres scripts, quel que soit le regroupement.
 const SECTION = new RegExp(`^/(${LANG_ALT})/(guides|compare)/[^/]+$`);
 const UNDER_LANG = new RegExp(`^/(${LANG_ALT})/.+$`);
+// Page intégrée des sites partenaires (/embed/<langue>) : une règle à part,
+// la seule à autoriser l'affichage en cadre, et seulement par le site et les
+// partenaires de partners.json (déjà validés par lib/partners.ts au build Next).
+const EMBED = new RegExp(`^/embed/(${LANG_ALT})$`);
+const PARTNER_ORIGINS = JSON.parse(readFileSync("partners.json", "utf8")).map((p) => p.domain);
+for (const o of PARTNER_ORIGINS) {
+  if (!/^https:\/\/[a-z0-9.-]+$/.test(o)) throw new Error(`partners.json : origine invalide ${o}`);
+}
 /** Marge sous la limite Cloudflare de 2 000 caractères par ligne. */
 const LINE_BUDGET = 1950;
 const htmlFiles = files.filter((f) => f.endsWith(".html"));
@@ -170,6 +179,7 @@ const CHARSET = '<meta charSet="utf-8"/>';
 let total = 0;
 /** Pages sous /<langue>/ : chemin servi et hachages, par langue. */
 const byLang = new Map();
+const embedPages = [];
 for (const f of htmlFiles) {
   const html = await readFile(f, "utf8");
   const hashes = inlineHashes(f, html);
@@ -179,6 +189,7 @@ for (const f of htmlFiles) {
   const route = routeOf(f);
   const lang = route?.match(UNDER_LANG)?.[1];
   if (lang) byLang.set(lang, [...(byLang.get(lang) ?? []), { route, hashes }]);
+  else if (route && EMBED.test(route)) embedPages.push({ route, hashes });
   else if (route) rules.push([route, policy]);
   if (!html.includes(CHARSET)) throw new Error(`${f} : ${CHARSET} introuvable, <meta> CSP non injecté`);
   // Juste après le charset : avant tout <script>, sinon il échapperait à la politique.
@@ -207,9 +218,28 @@ for (const [lang, pages] of [...byLang].sort()) {
   }
   for (const [key, list] of [...sections].sort()) rules.push([key, policyWith(union(list))]);
 }
+if (embedPages.length) {
+  const framePolicy = policyWith(union(embedPages)).replace(
+    "frame-ancestors 'none'",
+    ["frame-ancestors 'self'", ...PARTNER_ORIGINS].join(" ")
+  );
+  if (!framePolicy.includes("frame-ancestors 'self'")) throw new Error("_headers : frame-ancestors introuvable dans le gabarit");
+  rules.push([
+    "/embed/*",
+    framePolicy,
+    [
+      "! X-Frame-Options",
+      "! Cross-Origin-Resource-Policy",
+      "Cross-Origin-Resource-Policy: cross-origin",
+      "X-Robots-Tag: noindex, nofollow",
+    ],
+  ]);
+}
 if (fineGrained.length) console.log(`_headers : regroupement fin pour ${fineGrained.join(", ")} (ligne par langue trop longue)`);
 
-const generated = rules.map(([path, policy]) => `${path}\n  Content-Security-Policy: ${policy}`).join("\n");
+const generated = rules
+  .map(([path, policy, extra = []]) => [`${path}`, `  Content-Security-Policy: ${policy}`, ...extra.map((l) => `  ${l}`)].join("\n"))
+  .join("\n");
 const output =
   template.replace(/^\s*Content-Security-Policy:.*\n/m, "") +
   "\n# --- Généré par scripts/gen-sw.mjs : une CSP par langue (hachages des scripts inline de ses pages), ou par section et par page si la ligne serait trop longue.\n" +

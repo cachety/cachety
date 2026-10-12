@@ -1,0 +1,52 @@
+import type { PartnersCopy } from "./types";
+
+const COPY: PartnersCopy = {
+  nav: "Für Websites",
+  meta: {
+    title: "Cachety auf deiner Website einbinden",
+    description: "Binde das Wasserzeichen-Tool von Cachety kostenlos ein. Die Dokumente deiner Besucher bleiben auf ihrem Gerät: Weder deine Website noch Cachety sieht sie.",
+  },
+  title: "Cachety auf deiner Website einbinden",
+  lead: "Hausverwaltungen, HR-Plattformen, Vereine: Lass alle, die dir ihren Ausweis oder ihre Gehaltsabrechnungen schicken, diese direkt auf deiner Seite mit einem Wasserzeichen versehen. Kostenlos, und ihre Dokumente verlassen nie ihr Gerät.",
+  privacyTitle: "Warum alles privat bleibt",
+  privacy: [
+    "Das Tool läuft in einem Rahmen, den cachety.com ausliefert. Deine Seite und alle Skripte darauf können nicht lesen, was darin ist.",
+    "Die Dokumente werden auf dem Gerät der Besucher verarbeitet. Nichts wird hochgeladen, weder zu dir noch zu uns.",
+    "Nur freigegebene Websites können das Tool anzeigen. So kann niemand es in eine irreführende Seite packen.",
+  ],
+  codeTitle: "Code holen",
+  codeLead: "Wähle die Optionen und füge dann die beiden Code-Schnipsel in deine Seite ein.",
+  options: {
+    lang: "Sprache",
+    purpose: "Zweck, für Besucher vorausgefüllt",
+    purposePlaceholder: "z. B. Mietbewerbung",
+    recipient: "Empfänger, für Besucher vorausgefüllt",
+    recipientPlaceholder: "z. B. der Name deiner Firma",
+    accent: "Farbe der Schaltflächen",
+    accentHint: "Eine zu helle Farbe wird ignoriert, damit die Schaltflächen lesbar bleiben.",
+  },
+  embedCode: "1. Der Rahmen",
+  resizeCode: "2. Automatische Höhe",
+  resizeHelp: "Dieses kurze Skript passt die Höhe des Rahmens an. Es bekommt nur eine Zahl: die Höhe.",
+  copy: "Kopieren",
+  copied: "Kopiert",
+  previewTitle: "Vorschau",
+  previewNote: "So sehen deine Besucher das Tool. Was du vorausfüllst, können sie trotzdem ändern.",
+  wordingTitle: "Ein Text zum Übernehmen",
+  wordingLead: "Ein kurzer, zutreffender Hinweis, den du neben das Tool setzen kannst:",
+  wording: "Dieses Tool läuft auf cachety.com. Deine Dokumente verlassen nie dein Gerät: Weder diese Website noch Cachety kann sie sehen.",
+  joinTitle: "So wirst du Partner",
+  join: [
+    "Stelle auf GitHub eine Anfrage mit der Adresse deiner Website.",
+    "Wir prüfen sie und nehmen deine Website in die Liste der freigegebenen Websites auf.",
+    "Sobald das Update online ist, funktioniert das Tool auf deinen Seiten.",
+  ],
+  joinCta: "Partner werden",
+  freeTitle: "Kostenlos",
+  free: "Cachety einzubinden ist kostenlos, wie der Rest der Website. Wenn es dir und deinen Besuchern hilft, hält eine Spende das Projekt am Laufen.",
+  donateCta: "Cachety unterstützen",
+  usedBy: "Im Einsatz bei",
+  embed: { runsOn: "Läuft auf cachety.com", private: "Deine Dateien bleiben auf deinem Gerät" },
+};
+
+export default COPY;

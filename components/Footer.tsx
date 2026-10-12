@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useLang } from "@/lib/i18n";
 import { SITE_COPY } from "@/lib/site-copy";
 import { ROADMAP_COPY } from "@/lib/roadmap";
+import { PARTNERS_COPY } from "@/lib/partners-copy";
 import { BRAND, DONATE_URL, REPO_URL, UPSTREAM } from "@/lib/brand";
 import AuthorLink from "@/components/AuthorLink";
 import { Flag, HeartIcon, Logo, ShieldIcon } from "@/components/icons";
@@ -71,6 +72,9 @@ export default function Footer({ width = "max-w-7xl" }: { width?: string }) {
             </Link>
             <Link href={`/${lang}/roadmap`} className="hover:text-encre">
               {ROADMAP_COPY[lang].nav}
+            </Link>
+            <Link href={`/${lang}/partners`} className="hover:text-encre">
+              {PARTNERS_COPY[lang].nav}
             </Link>
           </nav>
           <a

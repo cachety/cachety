@@ -48,6 +48,7 @@ Zelf hosten kan nog steeds en wordt volledig ondersteund (zie hieronder), voor o
 - **Rondleiding met uitleg** voor nieuwe bezoekers, aangeboden als iemand niet goed weet waar te beginnen.
 - **70 praktische uitleggen** voor alledaagse situaties in Nederland, Frankrijk, het Verenigd Koninkrijk, Duitsland, Spanje en Latijns-Amerika, Brazilië, Indonesië, de Arabische wereld, Iran, Japan en China.
 - **71 gecontroleerde vergelijkingen** met andere watermerktools (KopieID, iLovePDF, Smallpdf, PDF24, Adobe Acrobat en meer), met bronnen, inclusief wanneer een andere tool de betere keuze is.
+- **Op partnersites:** goedgekeurde sites kunnen de tool op hun eigen pagina's tonen (een iframe van cachety.com, dus de site zelf ziet de documenten niet). Zie [docs/embed.md](docs/embed.md) en [cachety.com/nl/partners](https://cachety.com/nl/partners).
 
 ## Privacy by design, en controleerbaar
 

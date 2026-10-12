@@ -1,0 +1,52 @@
+import type { PartnersCopy } from "./types";
+
+const COPY: PartnersCopy = {
+  nav: "Para sitios web",
+  meta: {
+    title: "Pon Cachety en tu sitio web",
+    description: "Añade gratis la herramienta de marca de agua de Cachety a tu web. Los documentos de tus visitantes no salen de su dispositivo: ni tu web ni Cachety los ven.",
+  },
+  title: "Pon Cachety en tu sitio web",
+  lead: "Inmobiliarias, plataformas de RR. HH., asociaciones: deja que quienes te envían su documento de identidad o sus nóminas les pongan una marca de agua directamente en tu página. Gratis, y sus documentos nunca salen de su dispositivo.",
+  privacyTitle: "Por qué sigue siendo privado",
+  privacy: [
+    "La herramienta funciona en un marco servido por cachety.com. Tu página, y cualquier script que contenga, no puede leer lo que hay dentro.",
+    "Los documentos se procesan en el dispositivo del visitante. No se sube nada, ni a ti ni a nosotros.",
+    "Solo los sitios aprobados pueden mostrar la herramienta, así que nadie puede meterla en una página engañosa.",
+  ],
+  codeTitle: "Obtén el código",
+  codeLead: "Elige las opciones y pega los dos fragmentos de código en tu página.",
+  options: {
+    lang: "Idioma",
+    purpose: "Motivo, ya rellenado para los visitantes",
+    purposePlaceholder: "p. ej. Solicitud de alquiler",
+    recipient: "Destinatario, ya rellenado para los visitantes",
+    recipientPlaceholder: "p. ej. el nombre de tu empresa",
+    accent: "Color de los botones",
+    accentHint: "Si el color es demasiado claro, se ignora, para que los botones sigan siendo legibles.",
+  },
+  embedCode: "1. El marco",
+  resizeCode: "2. Altura automática",
+  resizeHelp: "Este pequeño script ajusta la altura del marco. Solo recibe un número: la altura.",
+  copy: "Copiar",
+  copied: "Copiado",
+  previewTitle: "Vista previa",
+  previewNote: "Así verán la herramienta tus visitantes. Aun así, pueden cambiar lo que hayas rellenado.",
+  wordingTitle: "Un texto que puedes usar",
+  wordingLead: "Un texto breve y exacto para poner junto a la herramienta:",
+  wording: "Esta herramienta funciona en cachety.com. Tus documentos nunca salen de tu dispositivo: ni este sitio ni Cachety pueden verlos.",
+  joinTitle: "Cómo unirte",
+  join: [
+    "Abre una solicitud en GitHub con la dirección de tu sitio web.",
+    "La revisamos y añadimos tu sitio a la lista de sitios aprobados.",
+    "Cuando la actualización esté en línea, la herramienta funcionará en tus páginas.",
+  ],
+  joinCta: "Pedir ser sitio asociado",
+  freeTitle: "Gratis",
+  free: "Integrar Cachety es gratis, como el resto del sitio. Si te resulta útil a ti y a tus visitantes, una donación ayuda a mantenerlo.",
+  donateCta: "Apoyar a Cachety",
+  usedBy: "Lo usan",
+  embed: { runsOn: "Funciona en cachety.com", private: "Tus archivos se quedan en tu dispositivo" },
+};
+
+export default COPY;

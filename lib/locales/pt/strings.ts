@@ -140,6 +140,7 @@ export const STRINGS_PT: Strings = {
     saveList: "Salvar a lista",
     another: "Colocar marca d'água em outro documento",
     close: "Fechar",
+    again: "Baixar de novo",
   },
   zipName: "documentos-com-marca-dagua",
   bundlePassword:

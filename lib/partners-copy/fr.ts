@@ -1,0 +1,52 @@
+import type { PartnersCopy } from "./types";
+
+const COPY: PartnersCopy = {
+  nav: "Pour les sites web",
+  meta: {
+    title: "Intégrer Cachety à votre site",
+    description: "Ajoutez gratuitement l'outil de filigrane Cachety à votre site. Les documents de vos visiteurs restent sur leur appareil : ni vous ni Cachety ne les voyez.",
+  },
+  title: "Intégrer Cachety à votre site",
+  lead: "Agences immobilières, plateformes RH, associations : laissez ceux qui vous envoient leur pièce d'identité ou leurs fiches de paie les filigraner directement sur votre page. Gratuit, et leurs documents ne quittent jamais leur appareil.",
+  privacyTitle: "Pourquoi cela reste privé",
+  privacy: [
+    "L'outil tourne dans un cadre servi par cachety.com. Votre page, et tout script qu'elle contient, ne peut pas lire ce qu'il y a dedans.",
+    "Les documents sont traités sur l'appareil du visiteur. Rien n'est envoyé, ni à vous, ni à nous.",
+    "Seuls les sites approuvés peuvent afficher l'outil : personne ne peut l'entourer d'une page trompeuse.",
+  ],
+  codeTitle: "Obtenir le code",
+  codeLead: "Choisissez les options, puis collez les deux extraits dans votre page.",
+  options: {
+    lang: "Langue",
+    purpose: "Motif, pré-rempli pour les visiteurs",
+    purposePlaceholder: "Ex. : Dossier de location",
+    recipient: "Destinataire, pré-rempli pour les visiteurs",
+    recipientPlaceholder: "Ex. : le nom de votre société",
+    accent: "Couleur des boutons",
+    accentHint: "Une couleur trop claire est ignorée, pour que les boutons restent lisibles.",
+  },
+  embedCode: "1. Le cadre",
+  resizeCode: "2. Hauteur automatique",
+  resizeHelp: "Ce court script ajuste la hauteur du cadre. Il ne reçoit qu'un nombre : la hauteur.",
+  copy: "Copier",
+  copied: "Copié",
+  previewTitle: "Aperçu",
+  previewNote: "Voici l'outil tel que vos visiteurs le verront. Ils peuvent toujours modifier ce que vous pré-remplissez.",
+  wordingTitle: "Un texte à reprendre",
+  wordingLead: "Quelques mots exacts à placer à côté de l'outil :",
+  wording: "Cet outil fonctionne sur cachety.com. Vos documents ne quittent jamais votre appareil : ni ce site ni Cachety ne peuvent les voir.",
+  joinTitle: "Comment devenir partenaire",
+  join: [
+    "Ouvrez une demande sur GitHub avec l'adresse de votre site.",
+    "Nous la vérifions et ajoutons votre site à la liste des sites approuvés.",
+    "Dès la mise à jour en ligne, l'outil fonctionne sur vos pages.",
+  ],
+  joinCta: "Demander à devenir partenaire",
+  freeTitle: "Gratuit",
+  free: "Intégrer Cachety est gratuit, comme le reste du site. S'il vous rend service, à vous et à vos visiteurs, un don aide à le faire vivre.",
+  donateCta: "Soutenir Cachety",
+  usedBy: "Ils l'utilisent",
+  embed: { runsOn: "Fonctionne sur cachety.com", private: "Vos fichiers restent sur votre appareil" },
+};
+
+export default COPY;
