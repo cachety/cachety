@@ -1,5 +1,11 @@
 "use client";
 
+// L'outil, en trois étapes : 1. documents, 2. détails (usage et destinataire),
+// 3. aperçu et téléchargement. Sur ordinateur, tout est sur un écran (étapes
+// 1 et 2 à gauche, aperçu et téléchargement à droite). Sur téléphone, une
+// étape à la fois, avec une barre d'étapes et un bouton en bas ; les sections
+// d'information de la page ne s'affichent qu'à l'étape 1.
+
 import HelpTour from "@/components/HelpTour";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ACCEPT, hasVisibleText, isSupported, zipDocuments } from "@/lib/files";
@@ -15,8 +21,10 @@ import {
   type WatermarkStyle,
 } from "@/lib/watermark-style";
 import { WatermarkAppearance } from "@/components/WatermarkAppearance";
-import { FilePassword } from "@/components/FilePassword";
-import { CopyOptions } from "@/components/CopyOptions";
+import { FilePassword, makePassphrase } from "@/components/FilePassword";
+import { StampDetails } from "@/components/StampDetails";
+import { SendOptions, type BundleFormat } from "@/components/SendOptions";
+import { DonePanel, type DoneInfo } from "@/components/DonePanel";
 import { combineAsPdf, encryptPdf, protectFile } from "@/lib/file-password";
 import { exampleStamp, useT, type ErrorKey } from "@/lib/i18n";
 import {
@@ -32,11 +40,11 @@ import {
   type Doc,
   type Filter,
 } from "@/lib/doc";
-import { DownloadIcon, LockIcon, UploadIcon } from "@/components/icons";
+import { DownloadIcon, HideIcon, LockIcon, SlidersIcon, UploadIcon } from "@/components/icons";
 import { readPref, writePref } from "@/lib/storage";
 import { masksKey, type PageMasks } from "@/lib/masks";
 import { mbToBytes, shareOfBudget, SIZE_TARGETS_MB, type SizeTargetMb } from "@/lib/size-budget";
-import { composeStamp, makeRef, MAX_RECIPIENTS, parseRecipients, recipientSlug } from "@/lib/stamp-text";
+import { cleanRecipients, composeSimple, fillTemplate, hasToken, makeRef, recipientSlug } from "@/lib/stamp-text";
 import { SHARE_PARAM, takeSharedFiles } from "@/lib/share-inbox";
 import { SpecimenCard, WatermarkLayer } from "@/components/SpecimenCard";
 import { BatchSummary } from "@/components/BatchSummary";
@@ -44,14 +52,12 @@ import { DocRow } from "@/components/DocList";
 import { useDragReorder } from "@/components/useDragReorder";
 import { Kiosk } from "@/components/Kiosk";
 
-// Sur téléphone, seuls les premiers modèles sont affichés (les 23 occupaient
-// un écran entier entre le texte et l'aperçu) ; un bouton déplie le reste.
-const PRESETS_MOBILE = 8;
-
 // Au-delà de ce nombre de documents, la liste passe en zone défilante bornée
 // avec résumé et filtres (sinon mille lignes poussent les étapes 2 et 3 à
 // 79 000 pixels du haut de la page).
 const LIST_COMPACT_FROM = 6;
+
+type Step = 1 | 2 | 3;
 
 function triggerDownload(url: string, name: string) {
   const a = document.createElement("a");
@@ -65,12 +71,22 @@ function triggerDownload(url: string, name: string) {
 export default function CoreProduct() {
   const t = useT();
   const [docs, setDocs] = useState<Doc[]>([]);
-  const [text, setText] = useState("");
+  // Étape 2 : motif, destinataires (un champ chacun), texte libre éventuel.
+  const [purpose, setPurpose] = useState("");
+  const [fields, setFields] = useState<string[]>([""]);
+  const [custom, setCustom] = useState(false);
+  const [customText, setCustomText] = useState("");
+  const [view, setView] = useState(0);
   const [style, setStyle] = useState<WatermarkStyle>(DEFAULT_WATERMARK_STYLE);
-  const [filePassword, setFilePassword] = useState("");
-  const [appliedStyle, setAppliedStyle] = useState<WatermarkStyle>(DEFAULT_WATERMARK_STYLE);
-  const [autoApply, setAutoApply] = useState(true);
-  const [appliedText, setAppliedText] = useState("");
+  // Verrou : mot de passe créé pour l'utilisateur (12 mots) ou choisi par lui.
+  const [lock, setLock] = useState(false);
+  const [lockPassword, setLockPassword] = useState("");
+  const [ownPassword, setOwnPassword] = useState(false);
+  const [isWords, setIsWords] = useState(false);
+  const filePassword = lock ? lockPassword : "";
+  const [format, setFormat] = useState<BundleFormat>("pdf");
+  const [tool, setTool] = useState<null | "hide" | "adjust">(null);
+  const [done, setDone] = useState<DoneInfo | null>(null);
   const [rejected, setRejected] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -78,29 +94,25 @@ export default function CoreProduct() {
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  // Plusieurs destinataires : une version filigranée par ligne.
-  const [multi, setMulti] = useState(false);
-  const [recipientsText, setRecipientsText] = useState("");
-  // Copie traçable : date + référence unique par destinataire.
-  const [trace, setTrace] = useState(false);
   const [sizeMb, setSizeMb] = useState<SizeTargetMb>(0);
   const [shareNotice, setShareNotice] = useState("");
-  const [allPresets, setAllPresets] = useState(false);
-  // Sur téléphone, l'aperçu et le téléchargement sont sous les options :
-  // tant que l'étape 3 n'est pas à l'écran, un bouton fixe y mène.
-  const step3Ref = useRef<HTMLElement>(null);
-  const [step3Visible, setStep3Visible] = useState(true);
+  // Étape affichée sur téléphone (sur ordinateur, tout est visible).
+  const [step, setStep] = useState<Step>(1);
+  const toolRef = useRef<HTMLDivElement>(null);
+
+  // Sur téléphone, les étapes 2 et 3 occupent l'écran : l'en-tête et les
+  // sections d'information de la page sont masqués (voir globals.css).
   useEffect(() => {
-    const el = step3Ref.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
-    // « Visible » aussi une fois dépassée (lecture des sections du bas) :
-    // le bouton ne sert qu'à descendre vers l'aperçu, jamais à remonter.
-    const io = new IntersectionObserver(([e]) => setStep3Visible(e.isIntersecting || e.boundingClientRect.top < 0), {
-      rootMargin: "0px 0px -35% 0px",
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+    document.documentElement.dataset.toolStep = String(step);
+    return () => {
+      delete document.documentElement.dataset.toolStep;
+    };
+  }, [step]);
+  const goTo = (s: Step) => {
+    setStep(s);
+    setTool(null);
+    requestAnimationFrame(() => toolRef.current?.scrollIntoView({ block: "start" }));
+  };
 
   // Vérifié après montage seulement : au build statique (SSR), window n'existe
   // pas et le HTML prérendu suppose un navigateur capable.
@@ -110,20 +122,10 @@ export default function CoreProduct() {
   }, []);
 
   useEffect(() => {
-    if (readPref("autoApply") === "0") setAutoApply(false);
     const savedSize = Number(readPref("sizeMb"));
     if ((SIZE_TARGETS_MB as readonly number[]).includes(savedSize)) setSizeMb(savedSize as SizeTargetMb);
-    const saved = readStyle(readPref(styleStorageKey));
-    setStyle(saved);
-    setAppliedStyle(saved);
+    setStyle(readStyle(readPref(styleStorageKey)));
   }, []);
-
-  const setAuto = (on: boolean) => {
-    setAutoApply(on);
-    setAppliedText(text.trim());
-    setAppliedStyle(style);
-    writePref("autoApply", on ? "1" : "0");
-  };
 
   const updateSize = (mb: SizeTargetMb) => {
     setSizeMb(mb);
@@ -134,6 +136,24 @@ export default function CoreProduct() {
     const clean = normalizeStyle(next);
     setStyle(clean);
     writePref(styleStorageKey, serializeStyle(clean));
+  };
+
+  const updateLock = async (on: boolean) => {
+    setLock(on);
+    if (on && !lockPassword && !ownPassword) {
+      setLockPassword(await makePassphrase());
+      setIsWords(true);
+    }
+  };
+  const updateOwn = async (own: boolean) => {
+    setOwnPassword(own);
+    if (own) {
+      setLockPassword("");
+      setIsWords(false);
+    } else {
+      setLockPassword(await makePassphrase());
+      setIsWords(true);
+    }
   };
 
   const addFiles = useCallback((list: FileList | File[] | null | undefined) => {
@@ -190,6 +210,8 @@ export default function CoreProduct() {
     setRejected([]);
     setQuery("");
     setFilter("all");
+    setDone(null);
+    setStep(1);
     inputRef.current?.focus();
   };
 
@@ -266,14 +288,11 @@ export default function CoreProduct() {
     []
   );
 
-  const value = text.trim();
-  const active = autoApply ? value : appliedText.trim();
-  const liveStyle = autoApply ? style : appliedStyle;
   const maxBytes = sizeMb ? mbToBytes(sizeMb) : undefined;
 
-  // Références de traçabilité, une par destinataire (clé "" sans destinataire).
-  // Tirées une fois puis stables : la même copie garde sa référence tant que
-  // l'utilisateur n'en demande pas de nouvelles. Jamais enregistrées.
+  // Références de traçabilité ({code}), une par destinataire (clé "" sans
+  // destinataire). Tirées une fois puis stables : la même copie garde sa
+  // référence tant que l'utilisateur n'en demande pas de nouvelles. Jamais enregistrées.
   const refs = useRef(new Map<string, string>());
   const [, renewRefs] = useState(0);
   const refFor = (key: string) => {
@@ -281,22 +300,25 @@ export default function CoreProduct() {
     if (!ref) refs.current.set(key, (ref = makeRef()));
     return ref;
   };
-  const recipients = multi ? parseRecipients(recipientsText) : [];
-  const recipientsTruncated =
-    multi && recipientsText.split(/\r?\n/).filter((l) => l.trim()).length > MAX_RECIPIENTS;
+  const recipients = cleanRecipients(fields);
+  const tokens = t.stampCard.tokens;
+  const trace = custom && hasToken(customText, "code", tokens);
   /** Texte réellement apposé pour un destinataire (ou sans destinataire). */
-  const stampFor = (base: string, recipient?: string) =>
-    composeStamp(base, {
-      recipient,
-      trace: trace ? { date: today(), ref: refFor(recipient ?? ""), refLabel: t.trace.refLabel } : undefined,
-    });
-  // Aperçu et rendu immédiat : premier destinataire. Les autres sont rendus
-  // au téléchargement.
-  const previewText = stampFor(active, recipients[0]);
+  const stampFor = (recipient?: string) =>
+    custom
+      ? fillTemplate(customText, { recipient, date: today(), code: trace ? refFor(recipient ?? "") : undefined }, tokens)
+      : composeSimple({ purpose, recipient, date: today() }, { sep: t.stampSep, onDate: t.onDate });
+  // Aperçu : le destinataire choisi (le premier par défaut). Les autres sont
+  // rendus au téléchargement.
+  const viewIndex = Math.min(view, Math.max(recipients.length - 1, 0));
+  const previewRecipient = recipients[viewIndex];
+  const previewText = stampFor(previewRecipient);
+  const liveStyle = style;
   const stamp = `${stampKey(previewText, liveStyle)}\0${sizeMb}`;
-  const meaningful = hasVisibleText(active) || recipients.length > 0;
-  const pending =
-    !autoApply && hasVisibleText(value) && stampKey(value, style) !== stampKey(appliedText.trim(), appliedStyle);
+  // Le formulaire simple porte toujours la date : il faut un motif ou un destinataire.
+  const meaningful = custom
+    ? hasVisibleText(fillTemplate(customText, { date: "" }, tokens))
+    : hasVisibleText(purpose) || recipients.length > 0;
   // Trié : réordonner la liste ne change pas la clé, donc ne relance pas
   // le filigrane. L'ordre n'intervient qu'au moment du PDF unique.
   const fileKey = docs
@@ -397,7 +419,7 @@ export default function CoreProduct() {
           inFlight.current.delete(job);
         }
       }
-    }, autoApply ? 500 : 0);
+    }, 500);
     return () => {
       cancelled = true;
       clearTimeout(timer);
@@ -409,10 +431,9 @@ export default function CoreProduct() {
           job.aborter.abort();
       }
     };
-    // Dépendances volontairement restreintes : `t` et `autoApply` sont lus
-    // ici mais ne doivent pas relancer le lot (changer de langue ou basculer
-    // l'aperçu auto retraiterait mille documents pour rien). `stamp` porte
-    // déjà le texte appliqué et l'apparence.
+    // Dépendances volontairement restreintes : `t` est lu ici mais ne doit
+    // pas relancer le lot (changer de langue retraiterait mille documents pour
+    // rien). `stamp` porte déjà le texte et l'apparence.
   }, [fileKey, unlockKey, stamp, meaningful]);
 
   // Des documents chargés seraient perdus par un rechargement accidentel :
@@ -438,10 +459,6 @@ export default function CoreProduct() {
     requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
   }, []);
 
-  const apply = () => {
-    setAppliedText(value);
-    setAppliedStyle(style);
-  };
   const ready = docs.filter((d) => isFresh(d, stamp));
   const processing = docs.some((d) => d.status === "processing");
 
@@ -449,7 +466,7 @@ export default function CoreProduct() {
   // au-delà de LIST_COMPACT_FROM, la liste devient une zone à hauteur bornée,
   // coiffée d'un résumé (progression + filtres).
   const attention = docs.filter(needsAttention);
-  const done = docs.filter((d) => d.status === "ready" || d.error).length;
+  const doneCount = docs.filter((d) => d.status === "ready" || d.error).length;
   const compact = docs.length > LIST_COMPACT_FROM;
   // Filtre et recherche n'existent que dans le résumé (mode compact). Sous le
   // seuil, la barre disparaît : les appliquer quand même masquerait des
@@ -498,14 +515,14 @@ export default function CoreProduct() {
     [...docs].reverse().find((d) => isFresh(d, stamp)) ??
     docs.find((d) => d.result || d.error);
 
-  const [bundling, setBundling] = useState<null | "pdf" | "zip">(null);
+  const [bundling, setBundling] = useState(false);
   // Quelle étape a échoué : le message doit nommer la bonne (assemblage ou
   // chiffrement), pas se fier au mot de passe saisi au moment de l'affichage.
   const [bundleError, setBundleError] = useState<null | "export" | "encrypt" | "stale">(null);
   useEffect(() => setBundleError(null), [stamp, ready.length, filePassword]);
-  // Tout ce qui change le contenu d'un lot : réglage de l'aperçu, autres
-  // destinataires et leurs références. Relu à la fin d'un assemblage long.
-  const bundleKey = `${stamp}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}`;
+  // Tout ce qui change le contenu d'un téléchargement : réglage de l'aperçu,
+  // autres destinataires et leurs références. Relu à la fin d'un assemblage long.
+  const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}`;
   const bundleKeyRef = useRef(bundleKey);
   bundleKeyRef.current = bundleKey;
   const [bundleProgress, setBundleProgress] = useState("");
@@ -552,24 +569,36 @@ export default function CoreProduct() {
     return bytes;
   };
 
-  const downloadBundle = async (kind: "pdf" | "zip") => {
+  /**
+   * Un seul bouton : un document sans destinataires multiples part tel quel
+   * (chiffré si verrouillé) ; sinon un PDF unique ou un ZIP selon le format,
+   * et un fichier (ou dossier) par destinataire.
+   */
+  const download = async () => {
     const startKey = bundleKey;
-    setBundling(kind);
+    setBundling(true);
     setBundleError(null);
     let step: "export" | "encrypt" = "export";
-    // Sans destinataire : une seule passe, sur les résultats déjà prêts.
     const targets: (string | undefined)[] = recipients.length ? recipients : [undefined];
+    const kind: BundleFormat = ready.length > 1 ? format : "pdf";
     const entries: { name: string; bytes: Uint8Array; folder?: string }[] = [];
-    let single: Uint8Array | null = null;
+    let single: { name: string; bytes: Uint8Array; type: string } | null = null;
     try {
       for (const [i, recipient] of targets.entries()) {
-        if (recipient && targets.length > 1) setBundleProgress(t.multi.preparing(i + 1, targets.length, recipient));
-        const text = stampFor(active, recipient);
-        // Le premier destinataire est celui de l'aperçu : déjà rendu.
-        const fresh = i > 0;
+        if (recipient && targets.length > 1) setBundleProgress(t.download.preparing(i + 1, targets.length, recipient));
+        const text = stampFor(recipient);
+        // Le destinataire de l'aperçu est déjà rendu.
+        const fresh = recipient !== previewRecipient;
         const items: Rendered[] = fresh ? await renderAll(text) : ready.map((doc) => ({ doc, result: doc.result! }));
         try {
-          if (kind === "zip") {
+          if (ready.length === 1 && targets.length === 1) {
+            const { doc, result } = items[0];
+            if (filePassword) step = "encrypt";
+            const file = await protectFile(result.blob, result.extension, filePassword);
+            step = "export";
+            const type = file.extension === "pdf" ? "application/pdf" : `image/${file.extension === "jpg" ? "jpeg" : "png"}`;
+            single = { name: outName(doc, t, file.extension), bytes: file.bytes, type };
+          } else if (kind === "zip") {
             // Un document à la fois : chiffrer des centaines de fichiers en
             // parallèle garderait tous les originaux et leurs copies en mémoire.
             if (filePassword) step = "encrypt";
@@ -578,7 +607,7 @@ export default function CoreProduct() {
               entries.push({
                 name: outName(doc, t, file.extension),
                 bytes: file.bytes,
-                folder: recipient ? recipientSlug(recipient) : undefined,
+                folder: recipient && targets.length > 1 ? recipientSlug(recipient) : undefined,
               });
             }
             step = "export";
@@ -589,29 +618,77 @@ export default function CoreProduct() {
               bytes = await encryptPdf(bytes, filePassword);
               step = "export";
             }
-            if (recipient) entries.push({ name: `${t.zipName}-${recipientSlug(recipient)}.pdf`, bytes });
-            else single = bytes;
+            if (targets.length > 1 && recipient) {
+              entries.push({ name: `${t.zipName}-${recipientSlug(recipient)}.pdf`, bytes });
+            } else {
+              single = { name: `${t.zipName}.pdf`, bytes, type: "application/pdf" };
+            }
           }
         } finally {
           if (fresh) items.forEach((o) => releaseResult(o.result));
         }
       }
-      const url = single
-        ? URL.createObjectURL(new Blob([Uint8Array.from(single)], { type: "application/pdf" }))
-        : URL.createObjectURL(new Blob([zipDocuments(entries) as BlobPart], { type: "application/zip" }));
+      const out = single ?? {
+        name: `${t.zipName}.zip`,
+        bytes: zipDocuments(entries),
+        type: "application/zip",
+      };
+      const url = URL.createObjectURL(new Blob([Uint8Array.from(out.bytes)], { type: out.type }));
       if (bundleKeyRef.current !== startKey) {
         URL.revokeObjectURL(url);
         setBundleError("stale");
         return;
       }
-      triggerDownload(url, `${t.zipName}.${single ? "pdf" : "zip"}`);
+      triggerDownload(url, out.name);
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
+      setDone({
+        files: single ? [out.name] : entries.map((e) => (e.folder ? `${out.name} › ${e.folder}/${e.name}` : `${out.name} › ${e.name}`)),
+        copies: targets.length,
+        password: filePassword,
+        isWords: isWords && !ownPassword,
+        codes: trace ? targets.map((r) => ({ name: r ?? t.trace.self, code: refFor(r ?? "") })) : [],
+        date: today(),
+      });
     } catch {
       setBundleError(step);
     } finally {
-      setBundling(null);
+      setBundling(false);
       setBundleProgress("");
     }
+  };
+
+  // Taille du fichier produit : somme des documents (PDF unique) ou le plus
+  // gros (ZIP). Le chiffrement n'ajoute que quelques octets.
+  const sizes = ready.map((d) => d.result!.blob.size);
+  const estimate = !sizes.length ? null : ready.length > 1 && format === "zip" ? Math.max(...sizes) : sizes.reduce((a, b) => a + b, 0);
+  const hiddenCount = docs.reduce((n, d) => n + Object.values(d.masks ?? {}).reduce((m, list) => m + list.length, 0), 0);
+  const summary = [
+    t.summary.copies(Math.max(1, recipients.length)),
+    ...(ready.length > 1 ? [t.summary.docs(ready.length, format === "zip")] : []),
+    t.summary.hidden(hiddenCount),
+    filePassword ? t.summary.locked : t.summary.notLocked,
+    ...(sizeMb ? [t.summary.under(sizeMb)] : []),
+  ].join(" · ");
+  // En mode masquage, les zones tracées ne sont pas encore appliquées : « Terminé » d'abord.
+  const canDownload = ready.length > 0 && !bundling && !processing && tool !== "hide";
+  const downloadLabel = bundling
+    ? bundleProgress || (filePassword ? t.filePassword.encrypting : t.processingGeneric)
+    : recipients.length > 1
+      ? t.download.copies(recipients.length)
+      : t.download.one;
+  const downloadHint = !docs.length ? t.needDoc : !meaningful ? t.needText : summary;
+
+  const startOver = () => {
+    clearAll();
+    setPurpose("");
+    setFields([""]);
+    setCustom(false);
+    setCustomText("");
+    setLock(false);
+    setLockPassword("");
+    setOwnPassword(false);
+    setIsWords(false);
+    window.scrollTo({ top: 0 });
   };
 
   // Navigateur privé d'une API indispensable (createImageBitmap, toBlob…) :
@@ -627,11 +704,14 @@ export default function CoreProduct() {
     );
   }
 
+  // Sur téléphone : une étape à la fois. Sur ordinateur (lg), tout est visible.
+  const onPhone = (s: Step) => (step === s ? "" : "max-lg:hidden");
+  const reachable = (s: Step) => s === 1 || (s === 2 && docs.length > 0) || (s === 3 && docs.length > 0 && meaningful);
+  const firstRecipient = recipients.length > 1 ? recipients[0] : undefined;
+  const codes = trace ? fields.map((f) => refFor(cleanRecipients([f])[0] ?? "")) : undefined;
+
   return (
-    // La colonne des documents s'élargit avec l'écran : à 400 px fixes, un nom
-    // un peu long et sa pastille se disputaient la place. On ne l'élargit
-    // qu'à partir de xl, sinon l'aperçu se retrouve plus étroit que la liste.
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[460px_minmax(0,1fr)] 2xl:grid-cols-[520px_minmax(0,1fr)]">
+    <div ref={toolRef} className="mx-auto w-full max-w-7xl scroll-mt-4 pb-24 lg:pb-0">
       {dragging && (
         <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center bg-encre/40 p-6 backdrop-blur-sm">
           <div className="rounded-2xl border-2 border-dashed border-white bg-feuille px-8 py-6 text-center text-lg font-semibold shadow-xl">
@@ -639,265 +719,351 @@ export default function CoreProduct() {
           </div>
         </div>
       )}
-      <div className="flex flex-col gap-8">
-        <section aria-label={t.step1}>
-          <div className="flex items-center justify-between gap-3">
-            <StepLabel n={1} active={docs.length === 0}>
-              {t.step1}
-            </StepLabel>
-            {docs.length > 0 && (
-              <button
-                onClick={clearAll}
-                className="text-sm text-encre-2 underline-offset-2 transition-colors hover:text-sceau hover:underline"
-              >
-                {t.clearAll}
-              </button>
-            )}
-          </div>
 
-          <label
-            data-tour="drop"
-            className={`motif-filigrane mt-3 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed bg-feuille px-6 text-center transition-colors focus-within:ring-2 focus-within:ring-bleu ${
-              docs.length ? "py-5" : "py-12"
-            } ${dragging ? "border-sceau bg-sceau/5" : "border-trait hover:border-encre-2"}`}
+      {/* Barre d'étapes, téléphone et tablette seulement. */}
+      <nav aria-label={t.tour.stepOf(step, 3)} className="mb-4 flex gap-1.5 lg:hidden">
+        {([1, 2, 3] as Step[]).map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => reachable(s) && goTo(s)}
+            disabled={!reachable(s)}
+            aria-current={step === s ? "step" : undefined}
+            className={`flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm transition-colors ${
+              step === s
+                ? "bg-encre font-semibold text-white"
+                : reachable(s)
+                  ? "bg-encre/10 text-encre"
+                  : "bg-encre/5 text-encre-2/60"
+            }`}
           >
-            <input
-              ref={inputRef}
-              type="file"
-              multiple
-              accept={ACCEPT}
-              aria-label={t.inputAria}
-              className="sr-only"
-              onChange={(e) => {
-                addFiles(e.target.files);
-                e.target.value = "";
-              }}
-            />
-            {docs.length === 0 ? (
-              <>
-                <UploadIcon className="h-9 w-9 text-encre-2" />
-                <span className="text-lg font-semibold">{t.dropTitle}</span>
-                <span className="text-sm text-encre-2">{t.dropHint}</span>
-              </>
-            ) : (
-              <span className="text-sm text-encre-2">{t.dropAdd}</span>
-            )}
-          </label>
-
-          {shareNotice && (
-            <p role="status" className="mt-3 rounded-xl border border-green-700/30 bg-green-700/5 px-4 py-2 text-sm text-green-800">
-              {shareNotice}
-            </p>
-          )}
-          {rejected.length > 0 && (
-            <div
-              role="alert"
-              className="mt-3 break-words rounded-xl border border-sceau/40 bg-sceau/5 px-4 py-3 text-sm text-sceau-fonce"
-            >
-              {t.rejected(rejected.join(", "))}
-            </div>
-          )}
-
-          {compact && (
-            <BatchSummary
-              total={docs.length}
-              done={done}
-              attention={attention.length}
-              ready={ready.length}
-              filter={effFilter}
-              onFilter={setFilter}
-              query={query}
-              onQuery={setQuery}
-              shownCount={listed.length}
-            />
-          )}
-
-          {reorder && (
-            <p id="doc-order-hint" className="mt-3 text-sm font-medium text-encre">
-              {t.orderHint}
-            </p>
-          )}
-
-          <p aria-live="polite" className="sr-only">
-            {moveAnnouncement}
-          </p>
-
-          {docs.length > 0 && (
-            <ul
-              ref={listRef}
-              aria-describedby={reorder ? "doc-order-hint" : undefined}
-              className={`mt-3 flex flex-col gap-2 ${
-                // Zone bornée : la liste défile en interne, les étapes 2 et 3
-                // restent à l'écran quel que soit le nombre de documents.
-                // Sur mobile, une hauteur relative laisse voir plus de lignes.
-                compact
-                  ? "max-h-[60vh] overflow-y-auto overscroll-contain pe-1 sm:max-h-[26rem]"
-                  : ""
+            <span
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white text-xs ${
+                step === s ? "text-encre" : "text-encre-2"
               }`}
             >
-              {listed.map((doc) => {
-                const index = indexById.get(doc.id) ?? -1;
-                return (
-                  <DocRow
-                    key={doc.id}
-                    doc={doc}
-                    selected={shown?.id === doc.id}
-                    onSelect={setActiveId}
-                    onRemove={removeDoc}
-                    onUnlock={unlock}
-                    index={index}
-                    total={docs.length}
-                    onMoveTo={reorder ? moveDoc : undefined}
-                    onDragStart={reorder ? startDrag : undefined}
-                    dragging={drag?.id === doc.id}
-                    dropEdge={dropEdgeFor(index)}
-                  />
-                );
-              })}
-            </ul>
-          )}
-        </section>
+              {s}
+            </span>
+            <span className="truncate">{t.stepShort[s - 1]}</span>
+          </button>
+        ))}
+      </nav>
 
-        <section aria-label={t.step2}>
-          <StepLabel n={2} active={docs.length > 0 && !meaningful}>
-            {t.step2}
-          </StepLabel>
-          <div data-tour="text">
-            <textarea
-              value={text}
-              maxLength={120}
-              rows={2}
-              aria-label={t.textareaAria}
-              onChange={(e) => setText(e.target.value.replace(/\n/g, " "))}
-              placeholder={t.placeholder}
-              className="mt-3 w-full resize-y rounded-xl border border-trait bg-feuille px-4 py-3 font-mono rtl:font-sans field-sizing-content focus:outline-none focus:ring-2 focus:ring-bleu"
-            />
-            <div className="mt-2 flex items-center justify-between gap-3">
-              <label className="flex cursor-pointer items-center gap-2 text-sm text-encre-2">
-                <input
-                  type="checkbox"
-                  checked={autoApply}
-                  onChange={(e) => setAuto(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <span className="relative h-5 w-9 rounded-full bg-trait transition-colors after:absolute after:start-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-bleu peer-checked:after:translate-x-4 rtl:peer-checked:after:-translate-x-4 peer-focus-visible:ring-2 peer-focus-visible:ring-bleu peer-focus-visible:ring-offset-1" />
-                {t.autoApply}
-              </label>
-              {text && (
-                <span className="text-xs text-encre-2 tabular-nums">{text.length} / 120</span>
-              )}
-            </div>
-            {/* Modèles : le motif (court) et la date du jour, c'est-à-dire deux
-                des trois éléments de la formule. Le destinataire est le seul que
-                l'outil ne peut pas deviner : l'indication juste en dessous le
-                réclame explicitement. */}
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {t.presets.map((p, i) => (
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[460px_minmax(0,1fr)] 2xl:grid-cols-[520px_minmax(0,1fr)]">
+        <div className="flex flex-col gap-8">
+          <section aria-label={t.step1} className={onPhone(1)}>
+            <div className="flex items-center justify-between gap-3">
+              <StepLabel n={1} active={docs.length === 0}>
+                {t.step1}
+              </StepLabel>
+              {docs.length > 0 && (
                 <button
-                  key={p.label}
-                  onClick={() => setText(t.onDate(p.text, today()).slice(0, 120))}
-                  className={`rounded-lg border border-trait bg-feuille px-3 py-1.5 text-sm text-encre-2 transition-colors hover:border-bleu hover:text-bleu ${
-                    i >= PRESETS_MOBILE && !allPresets ? "hidden sm:inline-block" : ""
-                  }`}
+                  onClick={clearAll}
+                  className="text-sm text-encre-2 underline-offset-2 transition-colors hover:text-sceau hover:underline"
                 >
-                  {p.label}
-                </button>
-              ))}
-              {t.presets.length > PRESETS_MOBILE && (
-                <button
-                  type="button"
-                  onClick={() => setAllPresets((v) => !v)}
-                  aria-expanded={allPresets}
-                  className="rounded-lg px-3 py-1.5 text-sm font-medium text-bleu underline-offset-2 hover:underline sm:hidden"
-                >
-                  {allPresets ? t.fewerPresets : t.morePresets(t.presets.length - PRESETS_MOBILE)}
-                </button>
-              )}
-              {value && !text.includes(today()) && (
-                <button
-                  onClick={() => setText(t.onDate(value, today()).slice(0, 120))}
-                  className="rounded-lg border border-bleu/40 bg-bleu/5 px-3 py-1.5 text-sm text-bleu transition-colors hover:border-bleu"
-                >
-                  {t.addDate}
+                  {t.clearAll}
                 </button>
               )}
             </div>
-            <p className="mt-2 text-sm text-encre-2">{t.presetsHint}</p>
-          </div>
-          <div data-tour="options">
-            <CopyOptions
-              multi={multi}
-              onMulti={setMulti}
-              recipientsText={recipientsText}
-              onRecipientsText={setRecipientsText}
-              recipients={recipients}
-              truncated={recipientsTruncated}
-              trace={trace}
-              onTrace={setTrace}
-              registry={
-                trace
-                  ? (recipients.length ? recipients : [undefined]).map((r) =>
-                      t.trace.line(r ?? t.trace.self, refFor(r ?? ""), today())
-                    )
-                  : []
-              }
-              onRenew={() => {
-                refs.current = new Map();
-                renewRefs((n) => n + 1);
-              }}
-              sizeMb={sizeMb}
-              onSize={updateSize}
-            />
-            <WatermarkAppearance
-              style={style}
-              sample={value || t.style.sample}
-              onChange={updateStyle}
-            />
-            <FilePassword password={filePassword} onChange={setFilePassword} />
-          </div>
-          {!autoApply && (
-            <button
-              onClick={apply}
-              disabled={!pending}
-              className="mt-3 w-full rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2 disabled:opacity-40"
-            >
-              {t.apply}
-            </button>
-          )}
-        </section>
 
-        {(ready.length > 1 || (recipients.length > 0 && ready.length > 0)) && (
-          <div className="flex flex-col gap-2" aria-busy={bundling !== null || undefined}>
-            <button
-              type="button"
-              onClick={() => downloadBundle("pdf")}
-              disabled={bundling !== null}
-              className="w-full rounded-xl border-2 border-sceau px-6 py-3 font-semibold text-sceau transition-colors hover:bg-sceau/5 disabled:opacity-50"
+            <label
+              data-tour="drop"
+              className={`motif-filigrane mt-3 flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed bg-feuille px-6 text-center transition-colors focus-within:ring-2 focus-within:ring-bleu ${
+                docs.length ? "py-5" : "py-12"
+              } ${dragging ? "border-sceau bg-sceau/5" : "border-trait hover:border-encre-2"}`}
             >
-              {bundling === "pdf" && filePassword
-                ? t.filePassword.encrypting
-                : recipients.length
-                  ? t.multi.downloadPdf(recipients.length)
-                  : t.downloadPdf(ready.length)}
-            </button>
-            <button
-              type="button"
-              onClick={() => downloadBundle("zip")}
-              disabled={bundling !== null}
-              className="w-full rounded-xl border-2 border-sceau px-6 py-3 font-semibold text-sceau transition-colors hover:bg-sceau/5 disabled:opacity-50"
-            >
-              {bundling === "zip" && filePassword
-                ? t.filePassword.encrypting
-                : recipients.length
-                  ? t.multi.downloadZip(recipients.length)
-                  : t.downloadAll(ready.length)}
-            </button>
-            {bundleProgress && (
-              <p role="status" className="text-sm text-encre-2">
-                {bundleProgress}
+              <input
+                ref={inputRef}
+                type="file"
+                multiple
+                accept={ACCEPT}
+                aria-label={t.inputAria}
+                className="sr-only"
+                onChange={(e) => {
+                  addFiles(e.target.files);
+                  e.target.value = "";
+                }}
+              />
+              {docs.length === 0 ? (
+                <>
+                  <UploadIcon className="h-9 w-9 text-encre-2" />
+                  <span className="text-lg font-semibold">{t.dropTitle}</span>
+                  <span className="text-sm text-encre-2">{t.dropHint}</span>
+                </>
+              ) : (
+                <span className="text-sm text-encre-2">{t.dropAdd}</span>
+              )}
+            </label>
+
+            {shareNotice && (
+              <p role="status" className="mt-3 rounded-xl border border-green-700/30 bg-green-700/5 px-4 py-2 text-sm text-green-800">
+                {shareNotice}
               </p>
             )}
-            {filePassword && <p className="text-sm text-encre-2">{t.bundlePassword}</p>}
+            {rejected.length > 0 && (
+              <div
+                role="alert"
+                className="mt-3 break-words rounded-xl border border-sceau/40 bg-sceau/5 px-4 py-3 text-sm text-sceau-fonce"
+              >
+                {t.rejected(rejected.join(", "))}
+              </div>
+            )}
+
+            {compact && (
+              <BatchSummary
+                total={docs.length}
+                done={doneCount}
+                attention={attention.length}
+                ready={ready.length}
+                filter={effFilter}
+                onFilter={setFilter}
+                query={query}
+                onQuery={setQuery}
+                shownCount={listed.length}
+              />
+            )}
+
+            {reorder && (
+              <p id="doc-order-hint" className="mt-3 text-sm font-medium text-encre">
+                {t.orderHint}
+              </p>
+            )}
+
+            <p aria-live="polite" className="sr-only">
+              {moveAnnouncement}
+            </p>
+
+            {docs.length > 0 && (
+              <ul
+                ref={listRef}
+                aria-describedby={reorder ? "doc-order-hint" : undefined}
+                className={`mt-3 flex flex-col gap-2 ${
+                  // Zone bornée : la liste défile en interne, les étapes 2 et 3
+                  // restent à l'écran quel que soit le nombre de documents.
+                  compact ? "max-h-[60vh] overflow-y-auto overscroll-contain pe-1 sm:max-h-[26rem]" : ""
+                }`}
+              >
+                {listed.map((doc) => {
+                  const index = indexById.get(doc.id) ?? -1;
+                  return (
+                    <DocRow
+                      key={doc.id}
+                      doc={doc}
+                      selected={shown?.id === doc.id}
+                      onSelect={setActiveId}
+                      onRemove={removeDoc}
+                      onUnlock={unlock}
+                      index={index}
+                      total={docs.length}
+                      onMoveTo={reorder ? moveDoc : undefined}
+                      onDragStart={reorder ? startDrag : undefined}
+                      dragging={drag?.id === doc.id}
+                      dropEdge={dropEdgeFor(index)}
+                    />
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+
+          <section aria-label={t.step2} data-tour="details" className={onPhone(2)}>
+            <StepLabel n={2} active={docs.length > 0 && !meaningful} phoneHidden>
+              {t.step2}
+            </StepLabel>
+            <div className="lg:mt-4">
+              <StampDetails
+                purpose={purpose}
+                onPurpose={setPurpose}
+                fields={fields}
+                onFields={(next) => {
+                  setFields(next);
+                  setView(0);
+                }}
+                custom={custom}
+                customText={customText}
+                onCustomText={setCustomText}
+                onEnterCustom={() => {
+                  setCustomText(
+                    (prev) => prev || [purpose.trim(), tokens.recipient, tokens.date].filter(Boolean).join(t.stampSep)
+                  );
+                  setCustom(true);
+                }}
+                onExitCustom={() => setCustom(false)}
+                preview={meaningful ? stampFor(recipients[0]) : ""}
+                previewFor={firstRecipient}
+                codes={codes}
+                onRenewCodes={() => {
+                  refs.current = new Map();
+                  renewRefs((n) => n + 1);
+                }}
+              />
+            </div>
+          </section>
+        </div>
+
+        <section
+          id="apercu"
+          data-tour="result"
+          aria-label={t.step3}
+          className={`flex min-w-0 scroll-mt-4 flex-col gap-4 ${onPhone(3)}`}
+        >
+          <StepLabel n={3} active={ready.length > 0} phoneHidden>
+            {t.step3}
+          </StepLabel>
+
+          {(ready.length > 1 || recipients.length > 1) && meaningful && (
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-encre-2">
+              {docs.length > 1 && (
+                <label className="inline-flex items-center gap-2">
+                  {t.stepShort[0]}
+                  <select
+                    value={shown?.id ?? ""}
+                    onChange={(e) => setActiveId(e.target.value)}
+                    className="max-w-[14rem] rounded-lg border border-trait bg-feuille px-2 py-1.5 text-encre"
+                  >
+                    {docs.map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.file.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {recipients.length > 1 && (
+                <label className="inline-flex items-center gap-2">
+                  {t.stampCard.titleFor("").trim()}
+                  <select
+                    value={viewIndex}
+                    onChange={(e) => setView(Number(e.target.value))}
+                    className="max-w-[14rem] rounded-lg border border-trait bg-feuille px-2 py-1.5 text-encre"
+                  >
+                    {recipients.map((r, i) => (
+                      <option key={r} value={i}>
+                        {r}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
+          )}
+
+          <div>
+            {docs.length === 0 || !meaningful ? (
+              <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
+                <div className="w-full max-w-[280px] -rotate-2">
+                  <SpecimenCard title={t.about.specimenCard} specimen={t.about.specimen}>
+                    <WatermarkLayer text={meaningful ? previewText : exampleStamp(t)} style={style} />
+                  </SpecimenCard>
+                </div>
+                <p>{docs.length === 0 ? t.emptyStart : t.emptyText}</p>
+              </div>
+            ) : shown && needsPassword(shown) ? (
+              <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
+                <LockIcon className="h-8 w-8" />
+                <p className="max-w-xs">
+                  <span className="block font-medium text-encre">{t.errors.pdf_password}</span>
+                  {t.unlock.hint}
+                </p>
+              </div>
+            ) : shown?.error ? (
+              <div role="alert" className="rounded-2xl border border-sceau/40 bg-sceau/5 px-5 py-4 text-sceau-fonce">
+                {t.docError(shown.file.name, t.errors[shown.error])}
+              </div>
+            ) : shown && isFresh(shown, stamp) ? (
+              <>
+                {shown.result?.overBudget && sizeMb > 0 && (
+                  <p role="status" className="mb-3 rounded-xl border border-amber-600/40 bg-amber-500/10 px-4 py-2 text-sm text-amber-900">
+                    {t.size.over(sizeMb)}
+                  </p>
+                )}
+                <Kiosk
+                  key={shown.id}
+                  doc={shown}
+                  onMasks={(masks) => setMasks(shown.id, masks)}
+                  maskEditing={tool === "hide"}
+                  onMaskEditing={(on) => setTool(on ? "hide" : null)}
+                >
+                  {tool !== "hide" && (
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setTool("hide")}
+                      className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-trait bg-white px-3 text-sm font-semibold text-encre transition-colors hover:border-bleu"
+                    >
+                      <HideIcon className="h-4 w-4 shrink-0" />
+                      {hiddenCount ? t.tools.hidden(hiddenCount) : t.tools.hide}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTool(tool === "adjust" ? null : "adjust")}
+                      aria-expanded={tool === "adjust"}
+                      className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors ${
+                        tool === "adjust" ? "border-bleu bg-bleu text-white" : "border-trait bg-white text-encre hover:border-bleu"
+                      }`}
+                    >
+                      <SlidersIcon className="h-4 w-4 shrink-0" />
+                      {t.tools.adjust}
+                    </button>
+                  </div>
+                  )}
+                  {tool === "adjust" && (
+                    <WatermarkAppearance style={style} sample={previewText || t.style.sample} onChange={updateStyle} />
+                  )}
+                </Kiosk>
+              </>
+            ) : (
+              <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2">
+                {/* Pas d'aria-live ici : la région sr-only en fin de composant
+                    annonce déjà le traitement, sans répéter chaque page. */}
+                {shown ? t.processingDoc(shown.file.name, shown.progress) : t.processingGeneric}
+              </div>
+            )}
+          </div>
+
+          {docs.length > 0 && meaningful && (
+            <section aria-labelledby="before-download" className="rounded-2xl border border-trait bg-feuille p-4">
+              <h3 id="before-download" className="mb-3 font-semibold">
+                {t.send.title} <span className="font-normal text-encre-2">{t.send.optional}</span>
+              </h3>
+              <SendOptions
+                multiDoc={ready.length > 1}
+                multiRecipient={recipients.length > 1}
+                format={format}
+                onFormat={setFormat}
+                lock={
+                  <FilePassword
+                    lock={lock}
+                    onLock={updateLock}
+                    password={lockPassword}
+                    onChange={(p) => {
+                      setLockPassword(p);
+                      setIsWords(false);
+                    }}
+                    own={ownPassword}
+                    onOwn={updateOwn}
+                    isWords={isWords && !ownPassword}
+                  />
+                }
+                zipLocked={ready.length > 1 && format === "zip" && !!filePassword}
+                sizeMb={sizeMb}
+                onSize={updateSize}
+                estimate={estimate}
+              />
+            </section>
+          )}
+
+          <div className="flex flex-col gap-2" aria-busy={bundling || undefined}>
+            <p className="text-sm text-encre-2">{downloadHint}</p>
+            <button
+              type="button"
+              onClick={download}
+              disabled={!canDownload}
+              className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2 disabled:opacity-40 max-lg:hidden"
+            >
+              <DownloadIcon className="h-5 w-5 shrink-0" />
+              <span className="truncate">{downloadLabel}</span>
+            </button>
             {bundleError && (
               <p role="alert" className="text-sm text-sceau-fonce">
                 {bundleError === "encrypt"
@@ -908,120 +1074,82 @@ export default function CoreProduct() {
               </p>
             )}
           </div>
-        )}
+
+          {done && <DonePanel info={done} onClose={() => setDone(null)} onAnother={startOver} />}
+        </section>
       </div>
-
-      <section ref={step3Ref} id="apercu" data-tour="result" aria-label={t.step3} className="min-w-0 scroll-mt-4">
-        <StepLabel n={3} active={ready.length > 0}>
-          {t.step3}
-        </StepLabel>
-
-        {pending && ready.length > 0 && (
-          <div
-            role="alert"
-            className="mt-3 rounded-xl border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-900"
-          >
-            {t.staleResults}
-          </div>
-        )}
-        <div className="mt-3">
-          {docs.length === 0 || !meaningful ? (
-            <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
-              <div className="w-full max-w-[280px] -rotate-2">
-                <SpecimenCard title={t.about.specimenCard} specimen={t.about.specimen}>
-                  <WatermarkLayer text={value || exampleStamp(t)} style={style} />
-                </SpecimenCard>
-              </div>
-              <p>
-                {docs.length === 0
-                  ? t.emptyStart
-                  : !autoApply && hasVisibleText(value)
-                    ? t.applyHint
-                    : t.emptyText}
-              </p>
-            </div>
-          ) : shown && needsPassword(shown) ? (
-            <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
-              <LockIcon className="h-8 w-8" />
-              <p className="max-w-xs">
-                <span className="block font-medium text-encre">{t.errors.pdf_password}</span>
-                {t.unlock.hint}
-              </p>
-            </div>
-          ) : shown?.error ? (
-            <div
-              role="alert"
-              className="rounded-2xl border border-sceau/40 bg-sceau/5 px-5 py-4 text-sceau-fonce"
-            >
-              {t.docError(shown.file.name, t.errors[shown.error])}
-            </div>
-          ) : shown && isFresh(shown, stamp) ? (
-            <>
-              {recipients.length > 1 && (
-                <p className="mb-3 rounded-xl border border-bleu/30 bg-bleu/5 px-4 py-2 text-sm text-bleu">
-                  {t.multi.previewFor(recipients[0])}
-                </p>
-              )}
-              {shown.result?.overBudget && sizeMb > 0 && (
-                <p role="status" className="mb-3 rounded-xl border border-amber-600/40 bg-amber-500/10 px-4 py-2 text-sm text-amber-900">
-                  {t.size.over(sizeMb)}
-                </p>
-              )}
-              <Kiosk
-                key={shown.id}
-                doc={shown}
-                password={filePassword}
-                onMasks={(masks) => setMasks(shown.id, masks)}
-                hideDownload={recipients.length > 1}
-              />
-            </>
-          ) : (
-            <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2">
-              {/* Pas d'aria-live ici : la région sr-only en fin de composant
-                  annonce déjà le traitement, sans répéter chaque page. */}
-              {shown ? t.processingDoc(shown.file.name, shown.progress) : t.processingGeneric}
-            </div>
-          )}
-        </div>
-      </section>
 
       <p className="sr-only" role="status" aria-live="polite">
         {processing ? t.srProcessing : ready.length > 0 ? t.srReady(ready.length) : ""}
       </p>
 
-      <HelpTour hasDocs={docs.length > 0} lifted={ready.length > 0 && !step3Visible} />
+      <HelpTour
+        hasDocs={docs.length > 0}
+        lifted
+        revealed={step}
+        hideOnPhone={step > 1}
+        reveal={(i) => setStep((i + 1) as Step)}
+      />
 
-      {/* Téléphone et tablette (colonne unique) : raccourci vers l'aperçu. */}
-      {ready.length > 0 && !step3Visible && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-[max(1rem,env(safe-area-inset-bottom))] lg:hidden">
-          <button
-            type="button"
-            onClick={() => step3Ref.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-            className="pointer-events-auto flex w-full max-w-md items-center justify-center gap-2 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white shadow-lg shadow-encre/25 transition-colors hover:bg-sceau-fonce"
-          >
-            <DownloadIcon className="h-5 w-5 shrink-0" />
-            {t.jumpToPreview(ready.length)}
-          </button>
+      {/* Téléphone et tablette : le bouton de l'étape, toujours à portée de pouce. */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-trait bg-papier/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-md flex-col gap-1.5">
+          {step === 1 && (
+            <button
+              type="button"
+              onClick={() => goTo(2)}
+              disabled={!docs.length}
+              className="w-full rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
+            >
+              {t.next.details}
+            </button>
+          )}
+          {step === 2 && (
+            <>
+              <button
+                type="button"
+                onClick={() => goTo(3)}
+                disabled={!meaningful}
+                className="w-full rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
+              >
+                {t.next.preview}
+              </button>
+              {!meaningful && <p className="text-center text-sm text-encre-2">{t.needText}</p>}
+            </>
+          )}
+          {step === 3 && (
+            <button
+              type="button"
+              onClick={download}
+              disabled={!canDownload}
+              className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
+            >
+              <DownloadIcon className="h-5 w-5 shrink-0" />
+              <span className="truncate">{downloadLabel}</span>
+            </button>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
-
 function StepLabel({
   n,
   active,
+  phoneHidden,
   children,
 }: {
   n: number;
   active: boolean;
+  /** Sur téléphone, la barre d'étapes nomme déjà l'étape. */
+  phoneHidden?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <h2 className="flex items-center gap-3 text-lg font-semibold">
+    <h2 className={`items-center gap-3 text-lg font-semibold ${phoneHidden ? "hidden lg:flex" : "flex"}`}>
       <span
-        className={`flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold ${
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
           active ? "bg-sceau text-white" : "bg-encre/10 text-encre-2"
         }`}
       >

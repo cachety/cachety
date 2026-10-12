@@ -51,7 +51,7 @@ The remaining attack surface is therefore:
 | T3 | Code execution via a booby-trapped PDF (PDF JavaScript, XFA, malicious font) | Sender of the document | pdf.js 6 without an `eval` path, XFA disabled, rendering in a Worker, CSP without `unsafe-eval` (§4.3) | `watermark.seam.e2e.ts` (adversarial corpus) |
 | T4 | Leakage of hidden data in the output (text, author, GPS, attachment, JS, links) | Recipient of the watermarked document | Full rasterisation, re-encoding of images (§4.4) | `watermark.seam.e2e.ts` (sanitisation) |
 | T5 | Removal of the watermark by editing the PDF | Recipient | The watermark is blended into the pixels, not a layer (§4.4) | same |
-| T6 | Cryptographic attack on the protected PDF | Recipient, thief of the file | AES-256 (PDF 2.0, /V 5 /R 6), never RC4, 256-bit generated secret (§4.5) | `file-password.test.ts` |
+| T6 | Cryptographic attack on the protected PDF | Recipient, thief of the file | AES-256 (PDF 2.0, /V 5 /R 6), never RC4, generated secret of 132 bits (12 words) or 256 bits (§4.5) | `file-password.test.ts` |
 | T7 | Zip-Slip when extracting the downloaded archive | Forged file name | Only the basename is kept, names de-duplicated (§4.6) | `files.test.ts` |
 | T8 | Clickjacking, tab-nabbing, Referer leakage | Third-party site | `frame-ancestors 'none'`, `X-Frame-Options`, COOP, `noopener noreferrer`, `Referrer-Policy` (§4.7) | `security-headers.test.ts` |
 | T9 | Vulnerable or compromised dependency | Supply chain | Frozen lockfile, `bun audit` in CI + weekly, Dependabot, actions pinned by SHA (§4.8) | CI |
@@ -240,8 +240,17 @@ identifies the copy.
   60 s** (when the user returns to the tab if it does not have focus),
   unless the user copied something else in the page in the meantime
   (`lib/clipboard.ts`).
-- The "Generate" button produces **256 bits** from `crypto.getRandomValues`
-  (CSPRNG), encoded as base64url (43 characters).
+- Ticking "Lock with a password" makes a password of **12 words** from the
+  BIP39 English list (2,048 words, `lib/bip39-english.ts`), drawn with
+  `crypto.getRandomValues`: 11 bits per word with no modulo bias, **132 bits**
+  in total, the strength of a 12-word crypto wallet recovery phrase. At most
+  107 bytes, so never truncated by the 127-byte PDF limit. The list is checked
+  against the SHA-256 of the original file (`lib/passphrase.test.ts`).
+- "Generate a maximum-strength password" (behind "Choose my own password")
+  produces **256 bits** from `crypto.getRandomValues` (CSPRNG), encoded as
+  base64url (43 characters). Only this one is described as quantum-resistant.
+- The password is shown after the download, with the advice to send it by
+  another channel than the file.
 - A weak password (< 12 characters or < 80 estimated bits) is flagged.
 - The PDF limit of 127 UTF-8 bytes is enforced without splitting a
   character.
@@ -347,6 +356,7 @@ replays `out/_headers` ([e2e/helpers/server.ts](../e2e/helpers/server.ts)).
 | `e2e/watermark.seam.e2e.ts` (sanitisation) | A hostile PDF (hidden text, Info/XMP metadata, attachment, `OpenAction` JavaScript, link) leaves **nothing** in the output; a JPEG with EXIF comes out without metadata |
 | `e2e/watermark.seam.e2e.ts` (adversarial corpus) | Empty file, rotated page, oversized page: clean rejection or valid output |
 | `lib/file-password.test.ts` | AES-256 /R 6, unreadable without the password, 256-bit generated secret, 127-byte limit, accented password openable (NFKC), key/salts/IV never reused |
+| `lib/passphrase.test.ts` | BIP39 list identical to the original (SHA-256), 2,048 distinct a-z words, CSPRNG used, uniform word frequency (chi-square), 12 words always ≤ 127 bytes |
 | `lib/clipboard.test.ts` | Password cleared from the clipboard when the delay expires, or when focus returns; another copy is not overwritten |
 | `e2e/watermark.seam.e2e.ts` (error contract) | Caps: > 200 MB → `file_too_large`, > 500 pages → `pdf_too_many_pages` |
 | `lib/files.test.ts` | Format allowlist (SVG refused), Zip-Slip, name collisions |

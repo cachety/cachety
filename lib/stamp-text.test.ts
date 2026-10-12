@@ -1,5 +1,16 @@
 import { describe, expect, test } from "bun:test";
-import { composeStamp, makeRef, MAX_RECIPIENTS, parseRecipients, recipientSlug, REF_LENGTH } from "./stamp-text";
+import {
+  cleanRecipients,
+  composeSimple,
+  ENGLISH_TOKENS,
+  fillTemplate,
+  hasToken,
+  makeRef,
+  MAX_RECIPIENTS,
+  recipientSlug,
+  REF_LENGTH,
+  type StampTokens,
+} from "./stamp-text";
 
 describe("makeRef", () => {
   test("5 caractères, alphabet sans I, L, O, U", () => {
@@ -20,9 +31,9 @@ describe("makeRef", () => {
   });
 });
 
-describe("parseRecipients", () => {
-  test("une ligne par destinataire, vides et doublons (casse comprise) retirés", () => {
-    expect(parseRecipients("  Agence Martin \n\nFoncia   Lyon\nagence martin\r\nSeLoger")).toEqual([
+describe("cleanRecipients", () => {
+  test("un champ par destinataire, vides et doublons (casse comprise) retirés", () => {
+    expect(cleanRecipients(["  Agence Martin ", "", "Foncia   Lyon", "agence martin", "SeLoger"])).toEqual([
       "Agence Martin",
       "Foncia Lyon",
       "SeLoger",
@@ -30,29 +41,61 @@ describe("parseRecipients", () => {
   });
 
   test("bornée en nombre et en longueur", () => {
-    const many = Array.from({ length: 50 }, (_, i) => `Dest ${i}`).join("\n");
-    expect(parseRecipients(many)).toHaveLength(MAX_RECIPIENTS);
-    expect(parseRecipients("x".repeat(200))[0]).toHaveLength(60);
+    const many = Array.from({ length: 50 }, (_, i) => `Dest ${i}`);
+    expect(cleanRecipients(many)).toHaveLength(MAX_RECIPIENTS);
+    expect(cleanRecipients(["x".repeat(200)])[0]).toHaveLength(60);
   });
 });
 
-describe("composeStamp", () => {
-  const trace = { date: "10/10/2026", ref: "K7Q2M", refLabel: "réf." };
+describe("composeSimple", () => {
+  const fr = { sep: ", ", onDate: (b: string, d: string) => `${b}, le ${d}` };
+  const ja = { sep: "、", onDate: (b: string, d: string) => `${b}（${d}）` };
 
-  test("texte seul, avec destinataire, avec traçabilité", () => {
-    expect(composeStamp(" Dossier location ")).toBe("Dossier location");
-    expect(composeStamp("Dossier location", { recipient: "Agence Martin" })).toBe(
-      "Dossier location — Agence Martin"
+  test("motif, destinataire, date dans l'ordre recommandé", () => {
+    expect(composeSimple({ purpose: " Dossier location ", recipient: "Agence Martin", date: "10/10/2026" }, fr)).toBe(
+      "Dossier location, Agence Martin, le 10/10/2026"
     );
-    expect(composeStamp("Dossier location", { recipient: "Agence Martin", trace })).toBe(
-      "Dossier location — Agence Martin · 10/10/2026 · réf. K7Q2M"
+    expect(composeSimple({ purpose: "賃貸契約", recipient: "マーティン不動産", date: "2026/10/10" }, ja)).toBe(
+      "賃貸契約、マーティン不動産（2026/10/10）"
     );
   });
 
-  test("la date n'est pas répétée si le texte la porte déjà", () => {
-    expect(composeStamp("Dossier location, le 10/10/2026", { trace })).toBe(
-      "Dossier location, le 10/10/2026 · réf. K7Q2M"
+  test("un morceau absent ne laisse pas de séparateur orphelin", () => {
+    expect(composeSimple({ purpose: "Dossier location", date: "10/10/2026" }, fr)).toBe("Dossier location, le 10/10/2026");
+    expect(composeSimple({ purpose: "", recipient: "Agence Martin", date: "10/10/2026" }, fr)).toBe(
+      "Agence Martin, le 10/10/2026"
     );
+    expect(composeSimple({ purpose: " ", date: "10/10/2026" }, fr)).toBe("10/10/2026");
+  });
+});
+
+describe("fillTemplate", () => {
+  const fr: StampTokens = { recipient: "{destinataire}", date: "{date}", code: "{code}" };
+
+  test("remplace les mots, traduits ou anglais", () => {
+    expect(
+      fillTemplate(
+        "Copie pour {destinataire}, {date}, réf. {code}",
+        { recipient: "Agence Martin", date: "10/10/2026", code: "K7Q2M" },
+        fr
+      )
+    ).toBe("Copie pour Agence Martin, 10/10/2026, réf. K7Q2M");
+    expect(fillTemplate("{recipient} · {date}", { recipient: "Foncia", date: "10/10/2026" }, fr)).toBe("Foncia · 10/10/2026");
+  });
+
+  test("un mot vide disparaît avec sa ponctuation", () => {
+    expect(fillTemplate("Dossier location, {destinataire}, {date}", { date: "10/10/2026" }, fr)).toBe(
+      "Dossier location, 10/10/2026"
+    );
+    expect(fillTemplate("{destinataire}, dossier location", { date: "x" }, fr)).toBe("dossier location");
+    expect(fillTemplate("賃貸、{recipient}、{date}", { date: "2026/10/10" }, ENGLISH_TOKENS)).toBe("賃貸、2026/10/10");
+  });
+
+  test("hasToken reconnaît les deux formes", () => {
+    expect(hasToken("réf. {code}", "code", fr)).toBe(true);
+    expect(hasToken("ref. {code}", "code", ENGLISH_TOKENS)).toBe(true);
+    expect(hasToken("Copie pour {recipient}", "recipient", fr)).toBe(true);
+    expect(hasToken("Dossier", "recipient", fr)).toBe(false);
   });
 });
 

@@ -68,24 +68,24 @@ export const SITE_NL: SiteCopy = {
         body: "Verberg een rekeningnummer, je BSN of een pasfoto. De inhoud wordt echt verwijderd, niet alleen bedekt.",
       },
       {
-        title: "Traceerbare kopieën",
-        body: "Een datum en een uniek kenmerk op elke kopie: duikt er een ergens op, dan weet je waar hij vandaan komt.",
+        title: "Een unieke code op elke kopie",
+        body: "Voeg bij het bewerken van de tekst een korte code toe die op elke kopie anders is: duikt er een ergens op, dan weet je waar hij vandaan komt.",
       },
       {
-        title: "Een versie per ontvanger",
-        body: "Een eigen versie voor elke makelaar of bank, in één download.",
+        title: "Eén kopie per ontvanger",
+        body: "Voeg elke ontvanger toe: iedereen krijgt een eigen kopie, met de eigen naam erop, in één download.",
       },
       {
-        title: "Wachtwoord",
-        body: "Beveilig de pdf met sterke AES-256-versleuteling, de standaard die banken gebruiken.",
+        title: "Een wachtwoord dat voor je gemaakt wordt",
+        body: "Beveilig het bestand met 12 willekeurige woorden, makkelijk voor te lezen aan de telefoon, en AES-256-versleuteling.",
       },
       {
         title: "Verborgen gegevens verwijderd",
         body: "Selecteerbare tekst, metadata en de gps-locatie van foto's worden uit het eindbestand gehaald.",
       },
       {
-        title: "Maximale bestandsgrootte",
-        body: "1, 2, 5 of 10 MB per bestand, voor websites die de uploadgrootte beperken.",
+        title: "Klein genoeg voor elke website",
+        body: "Weigert een website of e-mail je bestand? Verklein het dan tot 10, 5, 2 of 1 MB.",
       },
       {
         title: "Werkt op je telefoon",

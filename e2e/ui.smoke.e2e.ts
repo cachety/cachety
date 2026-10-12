@@ -66,16 +66,14 @@ describe("fumée : interface", () => {
       await page
         .locator(`input[aria-label="${t.inputAria}"]`)
         .setInputFiles({ name: "quittance.pdf", mimeType: "application/pdf", buffer: Buffer.from(pdf) });
-      await page
-        .locator(`textarea[aria-label="${t.textareaAria}"]`)
-        .fill("Copie réservée au test e2e");
+      await page.getByLabel(t.purpose.label).fill("Copie réservée au test e2e");
 
-      // L'aperçu auto attend 500 ms puis pdf.js rend la page : délai large.
+      // L'aperçu attend 500 ms puis pdf.js rend la page : délai large.
       // (pas de @playwright/test ici : les attentes passent par waitFor.)
       await page
         .getByText(t.status.ready, { exact: true })
         .waitFor({ state: "visible", timeout: 30_000 });
-      await page.locator("a[download]").waitFor({ state: "visible" });
+      await page.getByRole("button", { name: t.download.one }).and(page.locator(":enabled")).waitFor({ state: "visible" });
     },
     60_000
   );
@@ -114,9 +112,7 @@ describe("fumée : interface", () => {
           mimeType: "application/pdf",
           buffer: Buffer.from(fromBase64(ENCRYPTED_PDF_B64)),
         });
-      await page
-        .locator(`textarea[aria-label="${t.textareaAria}"]`)
-        .fill("Copie réservée au test e2e");
+      await page.getByLabel(t.purpose.label).fill("Copie réservée au test e2e");
 
       // Le document verrouillé affiche sa pastille et son champ en ligne.
       await page
@@ -138,7 +134,7 @@ describe("fumée : interface", () => {
       await page
         .getByText(t.status.ready, { exact: true })
         .waitFor({ state: "visible", timeout: 30_000 });
-      await page.locator("a[download]").waitFor({ state: "visible" });
+      await page.getByRole("button", { name: t.download.one }).and(page.locator(":enabled")).waitFor({ state: "visible" });
     },
     90_000
   );
@@ -233,7 +229,7 @@ describe("file de traitement", () => {
     async () => {
       const t = STRINGS.fr;
       const page = await openPage("/fr");
-      await page.locator(`textarea[aria-label="${t.textareaAria}"]`).fill("Copie e2e");
+      await page.getByLabel(t.purpose.label).fill("Copie e2e");
       const long = Buffer.from(await makePdf(Array.from({ length: 60 }, () => [595, 842] as [number, number])));
       const input = page.locator(`input[aria-label="${t.inputAria}"]`);
       await input.setInputFiles({ name: "long.pdf", mimeType: "application/pdf", buffer: long });
@@ -296,7 +292,7 @@ describe("sécurité : aucun octet ne quitte le navigateur", () => {
           mimeType: "application/pdf",
           buffer: Buffer.from(await makePdf([[200, 300]])),
         });
-      await page.locator(`textarea[aria-label="${t.textareaAria}"]`).fill("Copie sécurité e2e");
+      await page.getByLabel(t.purpose.label).fill("Copie sécurité e2e");
       await page.getByText(t.status.ready, { exact: true }).waitFor({ state: "visible", timeout: 30_000 });
 
       const offOrigin = requests.filter(

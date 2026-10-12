@@ -90,3 +90,12 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Téléphone et tablette : aux étapes 2 et 3 de l'outil, seul l'outil reste à
+   l'écran (en-tête d'accroche et sections d'information masqués). L'étape 1
+   est la page d'accueil complète. */
+@media (width < 64rem) {
+  html:is([data-tool-step="2"], [data-tool-step="3"]) [data-tool-aside] {
+    display: none;
+  }
+}

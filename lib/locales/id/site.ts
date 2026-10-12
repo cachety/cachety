@@ -71,24 +71,24 @@ export const SITE_ID: SiteCopy = {
         body: "Sembunyikan nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi.",
       },
       {
-        title: "Salinan yang bisa dilacak",
-        body: "Tanggal dan kode unik di setiap salinan: jika salinan muncul di suatu tempat, Anda tahu asalnya.",
+        title: "Kode unik di setiap salinan",
+        body: "Saat mengubah teks, tambahkan kode pendek yang berbeda di setiap salinan: jika salinan muncul di suatu tempat, Anda tahu asalnya.",
       },
       {
-        title: "Satu versi per penerima",
-        body: "Versi khusus untuk setiap pemilik kos, kantor, atau bank, dalam satu kali unduh.",
+        title: "Satu salinan per penerima",
+        body: "Tambahkan setiap penerima: masing-masing mendapat salinannya sendiri, dengan namanya, dalam satu kali unduh.",
       },
       {
-        title: "Kata sandi",
-        body: "Lindungi PDF dengan enkripsi AES-256 yang kuat, standar yang juga dipakai bank.",
+        title: "Kata sandi yang dibuatkan untuk Anda",
+        body: "Kunci file dengan 12 kata acak yang mudah dibacakan lewat telepon, plus enkripsi AES-256.",
       },
       {
         title: "Data tersembunyi dihapus",
         body: "Teks yang bisa diseleksi, metadata, dan lokasi GPS foto dihapus dari file akhir.",
       },
       {
-        title: "Ukuran file maksimal",
-        body: "1, 2, 5, atau 10 MB per file, untuk situs yang membatasi ukuran upload.",
+        title: "Cukup kecil untuk situs mana pun",
+        body: "Jika situs web atau email menolak file Anda, perkecil menjadi 10, 5, 2, atau 1 MB.",
       },
       {
         title: "Bisa di HP",

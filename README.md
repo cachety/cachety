@@ -35,13 +35,13 @@ Self-hosting is still possible and fully supported (see below), for organisation
 
 - **PDFs and images:** JPG, PNG, WebP, GIF, BMP, AVIF and iPhone photos (HEIC). One file or many at once (up to 200 MB per file, 500 pages per PDF).
 - **Watermark across the whole page**, blended into the image. It can't be removed by simply editing the PDF, and its layout varies on each copy. Choice of font, size, colour, opacity and a wave effect.
-- **Ready-made templates** (rental, bank, job…) and a one-tap "add today's date" button.
+- **Three simple steps:** your document, what it's for and who gets it, then preview and download. The watermark text is written for you ("purpose, recipient, date", with ready-made examples) and can be edited freely.
 - **Hidden data stripped:** selectable text, metadata and the GPS location of photos. Each page is rebuilt from pixels.
 - **Masking:** black out an IBAN, a tax number or a photo. The content is really removed, not just covered.
-- **Traceable copies:** the date and a unique reference on each copy, plus a copy log you keep yourself.
-- **Several recipients:** one personalised version per recipient (up to 20), in a single download.
-- **Password:** AES-256 PDF encryption (PDF 2.0), with a strong-password generator and automatic clipboard clearing.
-- **Maximum size per file** (1, 2, 5 or 10 MB) for upload portals that limit it.
+- **Traceable copies:** add `{code}` to the text and every copy gets its own short reference, listed after download for you to keep.
+- **Several recipients:** one copy per recipient (up to 20), each with their name on it, in a single download.
+- **Password:** AES-256 PDF encryption (PDF 2.0). Ticking "Lock with a password" makes an easy-to-read password of 12 random words (132 bits, BIP39 word list); your own password or a random 256-bit one stay available. Automatic clipboard clearing.
+- **File size shown before download**, with "Make it smaller" (10, 5, 2 or 1 MB) for upload portals and emails that limit it.
 - **Single PDF** in the order you choose (drag and drop), or a **ZIP** archive.
 - **Works on phones**, can be installed as an app, and works **offline** once loaded.
 - **11 languages**, with right-to-left layout for Arabic and Persian and dedicated fonts for each script.
@@ -109,5 +109,9 @@ There are no ads today. The project may one day show a few hand-picked sponsored
 Cachety is a personal project, designed and maintained by **[Amir Moradi](https://amirmoradi.com)** in France.
 
 It is a modified version of **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** by Hugo Sibony (KazeTachinuu). That project was itself a rewrite inspired by **[Filigraneur](https://github.com/cyberclarence/filigraneur)** by CyberClarence. Thank you to both. See [NOTICE](NOTICE) for details.
+
+Easy-to-read passwords use the **[BIP39 English word list](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (MIT License, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+What's planned: **[ROADMAP.md](ROADMAP.md)**, also shown at [cachety.com/en/roadmap](https://cachety.com/en/roadmap).
 
 Licensed under the **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). If you run a modified version as a service, the AGPL requires you to offer its source code to your users.

@@ -35,13 +35,13 @@ Zelf hosten kan nog steeds en wordt volledig ondersteund (zie hieronder), voor o
 
 - **Pdf's en afbeeldingen:** JPG, PNG, WebP, GIF, BMP, AVIF en iPhone-foto's (HEIC). Eén bestand of veel tegelijk (tot 200 MB per bestand, 500 pagina's per pdf).
 - **Watermerk over de hele pagina**, opgenomen in het beeld. Het is niet weg te halen door de pdf simpelweg te bewerken, en de opmaak verschilt per kopie. Keuze uit lettertype, grootte, kleur, dekking en een golfeffect.
-- **Kant-en-klare sjablonen** (huurwoning, bank, werkgever…) en een knop om met één tik de datum van vandaag toe te voegen.
+- **Drie eenvoudige stappen:** je document, waarvoor het is en wie het krijgt, daarna bekijken en downloaden. De watermerktekst wordt voor je geschreven ("doel, ontvanger, datum", met kant-en-klare voorbeelden) en is vrij aan te passen.
 - **Verborgen gegevens verwijderd:** selecteerbare tekst, metadata en de gps-locatie van foto's. Elke pagina wordt opnieuw opgebouwd uit pixels.
 - **Afdekken:** lak een IBAN, een BSN of een pasfoto zwart. De inhoud wordt echt verwijderd, niet alleen bedekt.
-- **Traceerbare kopieën:** de datum en een uniek kenmerk op elke kopie, plus een overzicht van je kopieën dat je zelf bewaart.
-- **Meerdere ontvangers:** een eigen versie per ontvanger (tot 20), in één download.
-- **Wachtwoord:** AES-256-versleuteling van de pdf (PDF 2.0), met een generator voor sterke wachtwoorden en automatisch wissen van het klembord.
-- **Maximale grootte per bestand** (1, 2, 5 of 10 MB) voor uploadportalen die dat beperken.
+- **Traceerbare kopieën:** zet `{code}` in de tekst en elke kopie krijgt een eigen kort kenmerk, dat na het downloaden in een lijst verschijnt zodat je het kunt bewaren.
+- **Meerdere ontvangers:** één kopie per ontvanger (tot 20), elk met de naam van die ontvanger, in één download.
+- **Wachtwoord:** AES-256-versleuteling van de pdf (PDF 2.0). Vink je "Beveiligen met een wachtwoord" aan, dan krijg je een goed leesbaar wachtwoord van 12 willekeurige woorden (132 bits, BIP39-woordenlijst); je eigen wachtwoord of een willekeurig wachtwoord van 256 bits blijven mogelijk. Automatisch wissen van het klembord.
+- **Bestandsgrootte zichtbaar vóór het downloaden**, met "Kleiner maken" (10, 5, 2 of 1 MB) voor uploadportalen en e-mails die dat beperken.
 - **Eén pdf** in de volgorde die je kiest (slepen en neerzetten), of een **ZIP**-bestand.
 - **Werkt op telefoons**, is als app te installeren en werkt **offline** zodra het geladen is.
 - **11 talen**, met een opmaak van rechts naar links voor Arabisch en Perzisch en eigen lettertypen voor elk schrift.
@@ -109,5 +109,9 @@ Er zijn vandaag geen advertenties. Het project kan ooit een paar met de hand gek
 Cachety is een persoonlijk project, ontworpen en onderhouden door **[Amir Moradi](https://amirmoradi.com)** in Frankrijk.
 
 Het is een aangepaste versie van **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** van Hugo Sibony (KazeTachinuu). Dat project was zelf een herschrijving, geïnspireerd door **[Filigraneur](https://github.com/cyberclarence/filigraneur)** van CyberClarence. Dank aan allebei. Zie [NOTICE](NOTICE) voor details.
+
+Goed leesbare wachtwoorden gebruiken de **[Engelse BIP39-woordenlijst](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (MIT-licentie, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+Wat er gepland is: **[ROADMAP.md](ROADMAP.md)**, ook te zien op [cachety.com/nl/roadmap](https://cachety.com/nl/roadmap).
 
 Uitgebracht onder de **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). Draai je een aangepaste versie als dienst, dan verplicht de AGPL je om de broncode aan je gebruikers aan te bieden.

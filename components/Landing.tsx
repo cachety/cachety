@@ -21,9 +21,11 @@ export type GuideTeaser = { slug: string; title: string; description: string };
 const TRUST_ICONS = [CpuIcon, ShieldIcon, UserOffIcon, CodeIcon];
 
 /**
- * Sous l'outil : comment ça marche, pourquoi c'est sûr, ce que ça sait
- * faire, d'où ça vient, questions fréquentes, guides. Écrit pour des gens
- * qui n'y connaissent rien : une idée par bloc, aucune notion technique.
+ * Sous l'outil : pourquoi c'est sûr (la première inquiétude), comment ça
+ * marche, ce que ça sait faire, questions fréquentes, guides, d'où ça vient.
+ * Écrit pour des gens qui n'y connaissent rien : une idée par bloc, aucune
+ * notion technique. Sur téléphone, masqué pendant les étapes 2 et 3 de
+ * l'outil (data-tool-aside, voir globals.css).
  */
 export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser[]> }) {
   const { lang } = useLang();
@@ -31,24 +33,7 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
   const guides = teasers[lang].slice(0, 6);
 
   return (
-    <div className="mx-auto mt-20 flex w-full max-w-7xl flex-col gap-20 sm:mt-28 sm:gap-28">
-      <section aria-labelledby="how">
-        <h2 id="how" className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
-          {l.howTitle}
-        </h2>
-        <ol className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
-          {l.how.map((s, i) => (
-            <li key={s.title} className="rounded-2xl border border-trait bg-feuille p-6">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-sceau text-base font-bold text-white">
-                {i + 1}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-              <p className="mt-1.5 text-encre-2 text-pretty">{s.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
+    <div data-tool-aside className="mx-auto mt-20 flex w-full max-w-7xl flex-col gap-20 sm:mt-28 sm:gap-28">
       <section aria-labelledby="trust" className="rounded-3xl bg-encre px-6 py-12 text-white sm:px-12 sm:py-16">
         <div className="mx-auto max-w-3xl text-center">
           <h2 id="trust" className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
@@ -77,6 +62,23 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
         </div>
       </section>
 
+      <section aria-labelledby="how">
+        <h2 id="how" className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
+          {l.howTitle}
+        </h2>
+        <ol className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
+          {l.how.map((s, i) => (
+            <li key={s.title} className="rounded-2xl border border-trait bg-feuille p-6">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-sceau text-base font-bold text-white">
+                {i + 1}
+              </span>
+              <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
+              <p className="mt-1.5 text-encre-2 text-pretty">{s.body}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <section aria-labelledby="features">
         <h2 id="features" className="text-center text-balance text-2xl font-bold tracking-tight sm:text-3xl">
           {l.featuresTitle}
@@ -92,53 +94,6 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
             </li>
           ))}
         </ul>
-      </section>
-
-      <section
-        aria-labelledby="origin"
-        className="grid items-center gap-6 rounded-3xl border border-trait bg-feuille p-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10 sm:p-10"
-      >
-        <Flag className="h-14 w-20 rounded-md border border-trait" />
-        <div>
-          <h2 id="origin" className="text-2xl font-bold tracking-tight">
-            {l.originTitle}
-          </h2>
-          <p className="mt-3 text-encre-2 text-pretty">{l.originBody}</p>
-          <p className="mt-3 text-encre">
-            {l.originBy}{" "}
-            <AuthorLink className="font-medium text-bleu underline underline-offset-2 hover:no-underline" />
-            {" · "}
-            <a
-              href={REPO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-bleu underline underline-offset-2 hover:no-underline"
-            >
-              GitHub
-            </a>
-          </p>
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="support"
-        className="mx-auto flex w-full max-w-3xl flex-col items-center rounded-3xl border border-trait bg-feuille p-6 text-center sm:p-10"
-      >
-        <HeartIcon className="h-8 w-8 text-sceau" />
-        <h2 id="support" className="mt-3 text-2xl font-bold tracking-tight">
-          {l.supportTitle}
-        </h2>
-        <p className="mt-3 text-encre-2 text-pretty">{l.supportBody}</p>
-        <a
-          href={DONATE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-6 inline-flex items-center gap-2 rounded-xl border-2 border-sceau px-6 py-3 font-semibold text-sceau transition-colors hover:bg-sceau hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sceau focus-visible:ring-offset-2"
-        >
-          <HeartIcon className="h-4 w-4 shrink-0" />
-          {l.supportCta}
-        </a>
-        <p className="mt-3 text-sm text-encre-2">{l.supportNote}</p>
       </section>
 
       <section aria-labelledby="faq" className="mx-auto w-full max-w-3xl">
@@ -187,6 +142,53 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
           </ul>
         </section>
       )}
+
+      <section
+        aria-labelledby="origin"
+        className="grid items-center gap-6 rounded-3xl border border-trait bg-feuille p-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:gap-10 sm:p-10"
+      >
+        <Flag className="h-14 w-20 rounded-md border border-trait" />
+        <div>
+          <h2 id="origin" className="text-2xl font-bold tracking-tight">
+            {l.originTitle}
+          </h2>
+          <p className="mt-3 text-encre-2 text-pretty">{l.originBody}</p>
+          <p className="mt-3 text-encre">
+            {l.originBy}{" "}
+            <AuthorLink className="font-medium text-bleu underline underline-offset-2 hover:no-underline" />
+            {" · "}
+            <a
+              href={REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-bleu underline underline-offset-2 hover:no-underline"
+            >
+              GitHub
+            </a>
+          </p>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="support"
+        className="mx-auto flex w-full max-w-3xl flex-col items-center rounded-3xl border border-trait bg-feuille p-6 text-center sm:p-10"
+      >
+        <HeartIcon className="h-8 w-8 text-sceau" />
+        <h2 id="support" className="mt-3 text-2xl font-bold tracking-tight">
+          {l.supportTitle}
+        </h2>
+        <p className="mt-3 text-encre-2 text-pretty">{l.supportBody}</p>
+        <a
+          href={DONATE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 inline-flex items-center gap-2 rounded-xl border-2 border-sceau px-6 py-3 font-semibold text-sceau transition-colors hover:bg-sceau hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sceau focus-visible:ring-offset-2"
+        >
+          <HeartIcon className="h-4 w-4 shrink-0" />
+          {l.supportCta}
+        </a>
+        <p className="mt-3 text-sm text-encre-2">{l.supportNote}</p>
+      </section>
 
       <div className="flex justify-center">
         <a

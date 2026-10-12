@@ -17,7 +17,7 @@ export default function Header() {
   return (
     <>
       <SiteNav current="tool" />
-      <div className="mx-auto w-full max-w-3xl pb-6 pt-2 text-center sm:pb-10 sm:pt-6">
+      <div data-tool-aside className="mx-auto w-full max-w-3xl pb-6 pt-2 text-center sm:pb-10 sm:pt-6">
         {/* Sous 1280 px, la barre n'a pas la place pour l'étymologie du nom. */}
         <p className="mb-2 text-xs text-encre-2 sm:text-sm xl:hidden">
           <bdi className="font-semibold text-encre">{BRAND}</bdi> · {c.nav.nameShort}

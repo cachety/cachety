@@ -69,24 +69,24 @@ export const SITE_DE: SiteCopy = {
         body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt.",
       },
       {
-        title: "Nachverfolgbare Kopien",
-        body: "Datum und eindeutige Referenz auf jeder Kopie: Taucht eine irgendwo auf, weißt du, woher sie stammt.",
+        title: "Ein eigener Code auf jeder Kopie",
+        body: "Beim Bearbeiten des Textes fügst du einen kurzen Code hinzu, der auf jeder Kopie anders ist: Taucht eine irgendwo auf, weißt du, woher sie stammt.",
       },
       {
-        title: "Eine Version pro Empfänger",
-        body: "Für jede Hausverwaltung oder Bank eine eigene Version, in einem einzigen Download.",
+        title: "Eine Kopie pro Empfänger",
+        body: "Trag jeden Empfänger ein: Jeder bekommt seine eigene Kopie mit seinem Namen darauf, in einem einzigen Download.",
       },
       {
-        title: "Passwort",
-        body: "Schütze das PDF mit starker AES-256-Verschlüsselung, dem Standard, den auch Banken nutzen.",
+        title: "Ein Passwort, für dich erstellt",
+        body: "Schütze die Datei mit 12 zufälligen Wörtern, die sich leicht am Telefon vorlesen lassen, und AES-256-Verschlüsselung.",
       },
       {
         title: "Versteckte Daten entfernt",
         body: "Markierbarer Text, Metadaten und der GPS-Standort von Fotos werden aus der fertigen Datei gelöscht.",
       },
       {
-        title: "Maximale Dateigröße",
-        body: "1, 2, 5 oder 10 MB pro Datei, für Upload-Portale mit Größenlimit.",
+        title: "Klein genug für jede Website",
+        body: "Lehnt eine Website oder ein E-Mail-Programm deine Datei ab, verkleinere sie auf 10, 5, 2 oder 1 MB.",
       },
       {
         title: "Funktioniert auf dem Handy",

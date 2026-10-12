@@ -206,3 +206,22 @@ export const QuestionIcon = ({ className }: IconProps) => (
     <path d="M12 17h.01" />
   </Stroke>
 );
+
+export const PencilIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M4 20h4L19 9l-4-4L4 16z" />
+  </Stroke>
+);
+
+export const HideIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <rect x="3" y="9" width="18" height="6" rx="1" fill="currentColor" />
+    <path d="M3 5h10M3 19h14" />
+  </Stroke>
+);
+
+export const SlidersIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" />
+  </Stroke>
+);

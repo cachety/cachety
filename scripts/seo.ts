@@ -26,6 +26,7 @@ import {
   type PageMeta,
 } from "../lib/site-meta";
 import { SITE_COPY } from "../lib/site-copy";
+import { ROADMAP_COPY } from "../lib/roadmap";
 
 const OUT = "out";
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -43,6 +44,7 @@ function gitDate(...paths: string[]): string {
     return TODAY;
   }
 }
+const ROADMAP_DATE = gitDate("lib/roadmap", "ROADMAP.md");
 const SITE_DATE = gitDate("lib/site-copy.ts", "lib/i18n.tsx", "lib/site-meta.ts", "lib/locales", "components", "app");
 
 // Projet personnel : l'auteur est aussi l'éditeur.
@@ -167,6 +169,7 @@ for (const lang of LANG_CODES) {
   const nav = SITE_COPY[lang].nav;
   await inject(`${lang}/about.html`, webPage(lang, "AboutPage", ABOUT_META[lang], `${SITE_URL}${ABOUT_ALTERNATES[lang]}`, SITE_DATE));
   await inject(`${lang}/privacy.html`, webPage(lang, "WebPage", PRIVACY_META[lang], `${SITE_URL}/${lang}/privacy`, SITE_DATE));
+  await inject(`${lang}/roadmap.html`, webPage(lang, "WebPage", ROADMAP_COPY[lang].meta, `${SITE_URL}/${lang}/roadmap`, ROADMAP_DATE));
   await inject(
     `${lang}/guides.html`,
     collection(lang, GUIDES_META[lang], nav.guides, `${SITE_URL}${guidesIndexPath(lang)}`,
@@ -272,10 +275,11 @@ for (const l of LANG_CODES) entries.push({ path: `/${l}`, alternates: homeAlt, l
 const indexDate: Record<string, string> = {
   "/about": SITE_DATE,
   "/privacy": SITE_DATE,
+  "/roadmap": ROADMAP_DATE,
   "/guides": gitDate("lib/guides", "lib/site-meta.ts", "lib/locales"),
   "/compare": gitDate("lib/compare", "lib/site-meta.ts", "lib/locales"),
 };
-for (const suffix of ["/about", "/guides", "/compare", "/privacy"]) {
+for (const suffix of ["/about", "/guides", "/compare", "/privacy", "/roadmap"]) {
   const alt = allLangs(suffix, suffix === "/about" ? "/about" : undefined);
   if (suffix === "/about") entries.push({ path: "/about", alternates: alt, lastmod: SITE_DATE });
   for (const l of LANG_CODES) entries.push({ path: `/${l}${suffix}`, alternates: alt, lastmod: indexDate[suffix] });
@@ -334,6 +338,7 @@ const llms = [
   line(SITE_META.en.title, "/en", SITE_META.en.description),
   line(ABOUT_META.en.title, "/en/about", ABOUT_META.en.description),
   line(PRIVACY_META.en.title, "/en/privacy", PRIVACY_META.en.description),
+  line(ROADMAP_COPY.en.meta.title, "/en/roadmap", ROADMAP_COPY.en.meta.description),
   "",
   "## Guides",
   "",

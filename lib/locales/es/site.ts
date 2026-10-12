@@ -68,24 +68,24 @@ export const SITE_ES: SiteCopy = {
         body: "Oculta un número de cuenta, un número fiscal o una foto. El contenido se elimina de verdad, no solo se tapa.",
       },
       {
-        title: "Copias rastreables",
-        body: "Una fecha y una referencia única en cada copia: si una aparece en algún sitio, sabrás de dónde salió.",
+        title: "Un código único en cada copia",
+        body: "Al editar el texto, añade un código corto distinto en cada copia: si una aparece en algún sitio, sabrás de dónde salió.",
       },
       {
-        title: "Una versión por destinatario",
-        body: "Una versión personalizada para cada inmobiliaria o banco, en una sola descarga.",
+        title: "Una copia por destinatario",
+        body: "Añade cada destinatario: cada uno recibe su propia copia, con su nombre, en una sola descarga.",
       },
       {
-        title: "Contraseña",
-        body: "Protege el PDF con un cifrado AES-256 robusto, el estándar que usan los bancos.",
+        title: "Una contraseña creada para ti",
+        body: "Protege el archivo con 12 palabras al azar, fáciles de dictar por teléfono, y cifrado AES-256.",
       },
       {
         title: "Datos ocultos eliminados",
         body: "El texto seleccionable, los metadatos y la ubicación GPS de las fotos se borran del archivo final.",
       },
       {
-        title: "Tamaño máximo del archivo",
-        body: "1, 2, 5 o 10 MB por archivo, para las webs que limitan el tamaño de lo que subes.",
+        title: "Ligero para cualquier web",
+        body: "Si una web o un correo rechaza tu archivo, redúcelo a 10, 5, 2 o 1 MB.",
       },
       {
         title: "Funciona en el móvil",

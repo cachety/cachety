@@ -35,13 +35,13 @@ Hospedar por conta própria continua possível e com suporte completo (veja abai
 
 - **PDFs e imagens:** JPG, PNG, WebP, GIF, BMP, AVIF e fotos de iPhone (HEIC). Um arquivo ou vários de uma vez (até 200 MB por arquivo, 500 páginas por PDF).
 - **Marca d'água na página inteira**, incorporada à imagem. Não sai só editando o PDF, e a disposição varia em cada cópia. Escolha de fonte, tamanho, cor, opacidade e efeito de ondulação.
-- **Modelos prontos** (aluguel, banco, emprego…) e um botão para "adicionar a data de hoje" com um toque.
+- **Três passos simples:** seu documento, para que serve e quem vai receber, depois a prévia e o download. O texto da marca d'água é escrito para você ("finalidade, destinatário, data", com exemplos prontos) e pode ser editado à vontade.
 - **Dados ocultos removidos:** texto selecionável, metadados e a localização GPS das fotos. Cada página é reconstruída a partir dos pixels.
 - **Ocultação:** cubra um número de conta, o CPF ou uma foto. O conteúdo é realmente apagado, não só coberto.
-- **Cópias rastreáveis:** a data e um código único em cada cópia, mais um registro das cópias que fica com você.
-- **Vários destinatários:** uma versão personalizada por destinatário (até 20), num único download.
-- **Senha:** criptografia AES-256 do PDF (PDF 2.0), com gerador de senhas fortes e limpeza automática da área de transferência.
-- **Tamanho máximo por arquivo** (1, 2, 5 ou 10 MB) para os portais que limitam o envio.
+- **Cópias rastreáveis:** adicione `{code}` ao texto e cada cópia ganha seu próprio código curto, listado depois do download para você guardar.
+- **Vários destinatários:** uma cópia por destinatário (até 20), cada uma com o nome da pessoa, num único download.
+- **Senha:** criptografia AES-256 do PDF (PDF 2.0). Marcar "Proteger com senha" cria uma senha fácil de ler com 12 palavras aleatórias (132 bits, lista de palavras BIP39); sua própria senha ou uma senha aleatória de 256 bits continuam disponíveis. Limpeza automática da área de transferência.
+- **Tamanho do arquivo mostrado antes do download**, com "Diminuir o tamanho" (10, 5, 2 ou 1 MB) para portais e e-mails que limitam o envio.
 - **PDF único** na ordem que você escolher (arrastar e soltar), ou um arquivo **ZIP**.
 - **Funciona no celular**, pode ser instalado como app e funciona **offline** depois de carregado.
 - **11 idiomas**, com layout da direita para a esquerda para árabe e persa e fontes próprias para cada escrita.
@@ -109,5 +109,9 @@ Hoje não há anúncios. O projeto pode um dia mostrar alguns links patrocinados
 O Cachety é um projeto pessoal, criado e mantido por **[Amir Moradi](https://amirmoradi.com)** na França.
 
 Ele é uma versão modificada do **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)**, de Hugo Sibony (KazeTachinuu). Esse projeto, por sua vez, foi uma reescrita inspirada no **[Filigraneur](https://github.com/cyberclarence/filigraneur)**, de CyberClarence. Obrigado aos dois. Veja [NOTICE](NOTICE) para mais detalhes.
+
+As senhas fáceis de ler usam a **[lista de palavras BIP39 em inglês](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (licença MIT, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+O que está planejado: **[ROADMAP.md](ROADMAP.md)**, também disponível em [cachety.com/pt/roadmap](https://cachety.com/pt/roadmap).
 
 Licenciado sob a **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). Se você roda uma versão modificada como serviço, a AGPL exige que você ofereça o código-fonte dela aos seus usuários.

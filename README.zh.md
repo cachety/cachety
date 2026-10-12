@@ -35,13 +35,13 @@ Cachety 可以给 PDF 和照片（身份证、护照、工资条、税单、银�
 
 - **PDF 和图片：** JPG、PNG、WebP、GIF、BMP、AVIF 以及 iPhone 照片（HEIC）。可以处理单个文件，也可以一次处理多个（每个文件最大 200 MB，PDF 最多 500 页）。
 - **整页水印**，融入图像本身。仅仅编辑 PDF 是删不掉的，而且每份副本的排布都不一样。可以选择字体、大小、颜色、透明度和波浪效果。
-- **现成模板**（租房、银行、求职等），以及一键「添加今天日期」按钮。
+- **简单三步：** 选择文件，填写用途和接收方，然后预览并下载。水印文字会自动生成（「用途、接收方、日期」，附现成示例），也可以随意修改。
 - **清除隐藏数据：** 可选中的文字、元数据和照片的 GPS 位置。每一页都从像素重新生成。
 - **遮盖（打码）：** 遮住银行账号、税号或照片。内容会被真正删除，而不只是盖住。
-- **可追溯副本：** 每份副本都带有日期和唯一编号，另有一份由您自己保存的副本记录。
-- **多个接收方：** 为每个接收方生成一份专属版本（最多 20 个），一次下载。
-- **密码保护：** AES-256 加密 PDF（PDF 2.0），附带强密码生成器，并会自动清除剪贴板。
-- **限制文件大小**（1、2、5 或 10 MB），适合有上传限制的网站。
+- **可追溯副本：** 在文字中加入 `{code}`，每份副本都会有自己的简短编号，下载后会列出来，方便您保存。
+- **多个接收方：** 为每个接收方生成一份副本（最多 20 个），每份都印有对方的名字，一次下载。
+- **密码保护：** AES-256 加密 PDF（PDF 2.0）。勾选「用密码加密」会生成一个由 12 个随机单词组成、易于阅读的密码（132 位，BIP39 词表）；也可以使用自己的密码或随机的 256 位密码。会自动清除剪贴板。
+- **下载前显示文件大小**，并可「缩小文件」（10、5、2 或 1 MB），适合有大小限制的上传网站和邮件。
 - **合并成一个 PDF**，顺序可拖放调整；也可以打包成 **ZIP**。
 - **手机也能用**，可以作为 App 安装，加载一次后**离线**也能用。
 - **11 种语言**，阿拉伯语和波斯语采用从右到左的排版，每种文字都配有专用字体。
@@ -108,5 +108,9 @@ Cachety 免费，并将一直免费。如果它帮到了您，可以[在 GitHub 
 Cachety 是一个个人项目，由 **[Amir Moradi](https://amirmoradi.com)** 在法国设计和维护。
 
 它是 Hugo Sibony（KazeTachinuu）的 **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** 的修改版本。而该项目本身又是受 CyberClarence 的 **[Filigraneur](https://github.com/cyberclarence/filigraneur)** 启发而重写的。感谢两位。详情请见 [NOTICE](NOTICE)。
+
+易读密码使用 **[BIP39 英文词表](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)**（MIT License，© 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe）。
+
+后续计划：**[ROADMAP.md](ROADMAP.md)**，也可以在 [cachety.com/zh/roadmap](https://cachety.com/zh/roadmap) 查看。
 
 本项目采用 **GNU Affero General Public License v3.0** 许可（[LICENSE](LICENSE)）。如果您将修改后的版本作为服务运行，AGPL 要求您向用户提供其源代码。

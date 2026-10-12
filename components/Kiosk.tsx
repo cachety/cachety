@@ -2,93 +2,34 @@
 
 import { useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
-import { outName, size, type Doc } from "@/lib/doc";
-import { protectFile } from "@/lib/file-password";
-import { ChevronIcon, CloseIcon, DownloadIcon } from "@/components/icons";
+import { type Doc } from "@/lib/doc";
+import { ChevronIcon, CloseIcon } from "@/components/icons";
 import { MaskEditor } from "@/components/MaskEditor";
-import { addMask, clearPageMasks, type PageMasks } from "@/lib/masks";
-
-function triggerDownload(url: string, name: string) {
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
+import { setPageMasks, type PageMasks } from "@/lib/masks";
 
 export function Kiosk({
   doc,
-  password,
   onMasks,
-  hideDownload = false,
+  maskEditing,
+  onMaskEditing,
+  children,
 }: {
   doc: Doc;
-  password: string;
   onMasks: (masks: PageMasks) => void;
-  /** Plusieurs destinataires : l'aperçu n'est qu'une des versions, on télécharge par destinataire. */
-  hideDownload?: boolean;
+  /** Mode tracé des masques, piloté par le bouton « Masquer quelque chose ». */
+  maskEditing: boolean;
+  onMaskEditing: (on: boolean) => void;
+  /** Outils sous l'aperçu (masquer, ajuster) et leurs panneaux. */
+  children?: React.ReactNode;
 }) {
   const t = useT();
   const [page, setPage] = useState(0);
-  const [encrypting, setEncrypting] = useState(false);
-  const [encryptError, setEncryptError] = useState(false);
   const zoomRef = useRef<HTMLDialogElement>(null);
   const result = doc.result!;
   const shownPages = result.previews.length;
-  const downloadExt = password && result.extension !== "pdf" ? "pdf" : result.extension;
-  const name = outName(doc, t, downloadExt);
-
-  const downloadProtected = async () => {
-    setEncrypting(true);
-    setEncryptError(false);
-    try {
-      const protectedFile = await protectFile(result.blob, result.extension, password);
-      const url = URL.createObjectURL(
-        new Blob([Uint8Array.from(protectedFile.bytes)], { type: "application/pdf" })
-      );
-      triggerDownload(url, outName(doc, t, protectedFile.extension));
-      setTimeout(() => URL.revokeObjectURL(url), 10_000);
-    } catch {
-      setEncryptError(true);
-    } finally {
-      setEncrypting(false);
-    }
-  };
 
   return (
     <div className="rounded-2xl border border-trait bg-feuille p-4">
-      {hideDownload ? null : password ? (
-        <button
-          type="button"
-          onClick={downloadProtected}
-          disabled={encrypting}
-          aria-busy={encrypting || undefined}
-          className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2 disabled:opacity-50"
-        >
-          <DownloadIcon className="h-5 w-5 shrink-0" />
-          {/* Pas de taille ici : celle du fichier chiffré n'est connue qu'après
-              chiffrement, et celle du fichier en clair serait fausse. */}
-          <span className="truncate">{encrypting ? t.filePassword.encrypting : name}</span>
-
-        </button>
-      ) : (
-        <a
-          href={result.url}
-          download={name}
-          className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus:ring-2 focus:ring-sceau focus:ring-offset-2"
-        >
-          <DownloadIcon className="h-5 w-5 shrink-0" />
-          <span className="truncate">{name}</span>
-          <span className="shrink-0 font-normal opacity-80">({size(result.blob.size, t)})</span>
-        </a>
-      )}
-      {encryptError && (
-        <p role="alert" className="mt-2 text-sm text-sceau-fonce">
-          {t.filePassword.encryptFailed}
-        </p>
-      )}
-
       {shownPages > 1 && (
         <nav
           aria-label={t.pagerNav}
@@ -115,14 +56,15 @@ export function Kiosk({
         src={result.previews[page]}
         alt={t.previewAlt(doc.file.name, page + 1)}
         page={page}
-        committed={doc.masks?.[page]?.length ?? 0}
+        existing={doc.masks?.[page] ?? []}
         maskable={page < shownPages}
-        onApply={(rects) => onMasks(rects.reduce((m, r) => addMask(m, page, r), doc.masks ?? {}))}
-        onClearPage={() => onMasks(clearPageMasks(doc.masks, page))}
+        onSave={(rects) => onMasks(setPageMasks(doc.masks, page, rects))}
+        editing={maskEditing}
+        onEditing={onMaskEditing}
       >
         <button
           onClick={() => zoomRef.current?.showModal()}
-          className="mt-3 block w-full cursor-zoom-in rounded-lg focus:outline-none focus:ring-2 focus:ring-bleu"
+          className="block w-full cursor-zoom-in rounded-lg focus:outline-none focus:ring-2 focus:ring-bleu"
           aria-label={t.zoomOpen(page + 1)}
         >
           <img
@@ -154,6 +96,8 @@ export function Kiosk({
           />
         </div>
       </dialog>
+
+      {children && <div className="mt-4 flex flex-col gap-3">{children}</div>}
 
       {result.pageCount > shownPages && (
         <p className="mt-3 text-center text-sm text-encre-2">

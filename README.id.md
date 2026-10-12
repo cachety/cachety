@@ -35,13 +35,13 @@ Self-hosting tetap bisa dan didukung penuh (lihat di bawah), untuk organisasi ya
 
 - **PDF dan gambar:** JPG, PNG, WebP, GIF, BMP, AVIF, dan foto iPhone (HEIC). Satu file atau banyak sekaligus (maksimal 200 MB per file, 500 halaman per PDF).
 - **Watermark di seluruh halaman**, menyatu dengan gambar. Tidak bisa dihapus hanya dengan mengedit PDF, dan polanya berbeda di setiap salinan. Pilihan font, ukuran, warna, opasitas, dan efek gelombang.
-- **Templat siap pakai** (sewa kos, bank, lamaran kerja…) dan tombol sekali ketuk "tambahkan tanggal hari ini".
+- **Tiga langkah mudah:** dokumen Anda, untuk apa dan siapa penerimanya, lalu pratinjau dan unduh. Teks watermark dibuatkan untuk Anda ("keperluan, penerima, tanggal", dengan contoh siap pakai) dan bisa diubah sesuka hati.
 - **Data tersembunyi dihapus:** teks yang bisa diseleksi, metadata, dan lokasi GPS foto. Setiap halaman dibangun ulang dari piksel.
 - **Sensor:** tutup nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi.
-- **Salinan yang bisa dilacak:** tanggal dan kode unik di setiap salinan, plus catatan salinan yang Anda simpan sendiri.
-- **Beberapa penerima:** satu versi khusus per penerima (sampai 20), dalam satu kali unduh.
-- **Kata sandi:** enkripsi PDF AES-256 (PDF 2.0), dengan pembuat kata sandi kuat dan pembersihan clipboard otomatis.
-- **Ukuran maksimal per file** (1, 2, 5, atau 10 MB) untuk portal upload yang membatasinya.
+- **Salinan yang bisa dilacak:** tambahkan `{code}` ke teks dan setiap salinan mendapat kode pendeknya sendiri, yang ditampilkan dalam daftar setelah diunduh agar bisa Anda simpan.
+- **Beberapa penerima:** satu salinan per penerima (sampai 20), masing-masing dengan namanya, dalam satu kali unduh.
+- **Kata sandi:** enkripsi PDF AES-256 (PDF 2.0). Mencentang "Kunci dengan kata sandi" akan membuat kata sandi yang mudah dibaca dari 12 kata acak (132 bit, daftar kata BIP39); kata sandi Anda sendiri atau kata sandi acak 256 bit tetap bisa dipakai. Pembersihan clipboard otomatis.
+- **Ukuran file ditampilkan sebelum diunduh**, dengan "Perkecil ukuran" (10, 5, 2, atau 1 MB) untuk portal upload dan email yang membatasinya.
 - **Satu PDF** dengan urutan pilihan Anda (seret dan lepas), atau arsip **ZIP**.
 - **Bisa di HP**, bisa dipasang seperti aplikasi, dan tetap berjalan **tanpa internet** setelah dimuat.
 - **11 bahasa**, dengan tata letak kanan ke kiri untuk bahasa Arab dan Persia, serta font khusus untuk setiap aksara.
@@ -109,5 +109,9 @@ Saat ini tidak ada iklan. Suatu hari proyek ini mungkin menampilkan beberapa tau
 Cachety adalah proyek pribadi, dirancang dan dikelola oleh **[Amir Moradi](https://amirmoradi.com)** di Prancis.
 
 Cachety adalah versi modifikasi dari **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** karya Hugo Sibony (KazeTachinuu). Proyek itu sendiri ditulis ulang dengan terinspirasi dari **[Filigraneur](https://github.com/cyberclarence/filigraneur)** karya CyberClarence. Terima kasih kepada keduanya. Lihat [NOTICE](NOTICE) untuk detailnya.
+
+Kata sandi yang mudah dibaca memakai **[daftar kata BIP39 bahasa Inggris](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (Lisensi MIT, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+Rencana ke depan: **[ROADMAP.md](ROADMAP.md)**, juga bisa dilihat di [cachety.com/id/roadmap](https://cachety.com/id/roadmap).
 
 Dilisensikan di bawah **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). Jika Anda menjalankan versi yang dimodifikasi sebagai layanan, AGPL mewajibkan Anda menyediakan kode sumbernya bagi pengguna.

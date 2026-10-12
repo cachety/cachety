@@ -36,6 +36,28 @@ export function removeMask(masks: PageMasks | undefined, page: number, index: nu
   return next;
 }
 
+/** Remplace les masques d'une page (édition : déplacer, redimensionner, retirer). */
+export function setPageMasks(masks: PageMasks | undefined, page: number, rects: MaskRect[]): PageMasks {
+  const next = { ...masks };
+  if (rects.length) next[page] = rects;
+  else delete next[page];
+  return next;
+}
+
+/** Déplace un rectangle sans le faire sortir de la page (sa taille ne change pas). */
+export function moveRect(r: MaskRect, dx: number, dy: number): MaskRect {
+  return { ...r, x: Math.min(1 - r.w, Math.max(0, r.x + dx)), y: Math.min(1 - r.h, Math.max(0, r.y + dy)) };
+}
+
+/** Redimensionne par le coin bas-droit (coin haut-gauche fixe), borné à la page et à la taille minimale. */
+export function resizeRect(r: MaskRect, x1: number, y1: number): MaskRect {
+  return {
+    ...r,
+    w: Math.max(MIN_MASK_SIDE, clamp01(x1) - r.x),
+    h: Math.max(MIN_MASK_SIDE, clamp01(y1) - r.y),
+  };
+}
+
 export function clearPageMasks(masks: PageMasks | undefined, page: number): PageMasks {
   const next = { ...masks };
   delete next[page];

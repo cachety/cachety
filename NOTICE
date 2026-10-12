@@ -20,14 +20,24 @@ Modifications made in Cachety (from 2026-10-10), relative to Filigrane Local:
   - Fact-checked comparison pages with other watermark tools (lib/compare).
   - New website around the tool: landing sections, privacy page, and
     practical guides per country (lib/guides, lib/site-copy.ts).
-  - Mobile layout improvements (collapsible templates, jump-to-preview button).
+  - Mobile layout improvements (collapsible templates, one step per screen on phones).
   - Per-page Content-Security-Policy generation (one rule per page, within
     Cloudflare Pages limits), JSON-LD structured data and generated sitemap.
   - Continuous deployment to Cloudflare Pages from GitHub Actions.
   - Documentation translated to English and updated.
+  - Simplified three-step tool (2026-10): guided watermark text with an
+    editable full text ({recipient}, {date}, {code}), preview tools, sending
+    options next to Download, done screen; easy-to-read 12-word passwords;
+    public roadmap page (ROADMAP.md, lib/roadmap).
   - Security and feature work (file password, masking, traceable copies,
     several recipients, size budget, HEIC support, hardened headers and
     tests); see the git history for details.
+
+The password word list (lib/bip39-english.ts) is the BIP39 English word list,
+  BIP-0039 "Mnemonic code for generating deterministic keys"
+  Copyright (c) 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe
+  https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt
+  distributed under the MIT License.
 
 Third-party components keep their own licences, notably PDF.js (Apache-2.0),
 pdf-lib (MIT), pdf-lib-encrypt (MIT), libheif-js (LGPL-3.0), fflate (MIT),

@@ -35,13 +35,13 @@ Selbst hosten ist weiterhin möglich und vollständig unterstützt (siehe unten)
 
 - **PDFs und Bilder:** JPG, PNG, WebP, GIF, BMP, AVIF und iPhone-Fotos (HEIC). Eine Datei oder viele auf einmal (bis zu 200 MB pro Datei, 500 Seiten pro PDF).
 - **Wasserzeichen über die ganze Seite**, mit dem Bild verschmolzen. Mit einem PDF-Editor lässt es sich nicht einfach entfernen, und seine Anordnung variiert bei jeder Kopie. Schrift, Größe, Farbe, Deckkraft und Welleneffekt sind wählbar.
-- **Fertige Vorlagen** (Wohnung, Bank, Bewerbung…) und eine Schaltfläche „Heutiges Datum hinzufügen“.
+- **Drei einfache Schritte:** dein Dokument, wofür es ist und wer es bekommt, dann Vorschau und Download. Der Wasserzeichentext wird für dich geschrieben („Zweck, Empfänger, Datum“, mit fertigen Beispielen) und lässt sich frei bearbeiten.
 - **Versteckte Daten entfernt:** markierbarer Text, Metadaten und der GPS-Standort von Fotos. Jede Seite wird aus Pixeln neu aufgebaut.
 - **Schwärzen:** IBAN, Steuer-ID oder Foto unkenntlich machen. Der Inhalt wird wirklich entfernt, nicht nur abgedeckt.
-- **Nachverfolgbare Kopien:** Datum und eindeutige Referenz auf jeder Kopie, dazu ein Kopien-Protokoll, das du selbst aufbewahrst.
-- **Mehrere Empfänger:** eine eigene Version pro Empfänger (bis zu 20), in einem einzigen Download.
-- **Passwort:** AES-256-Verschlüsselung für PDFs (PDF 2.0), mit Generator für starke Passwörter und automatischem Leeren der Zwischenablage.
-- **Maximale Größe pro Datei** (1, 2, 5 oder 10 MB) für Upload-Portale mit Größenlimit.
+- **Nachverfolgbare Kopien:** Füge `{code}` in den Text ein, und jede Kopie bekommt eine eigene kurze Referenz, die nach dem Download zum Aufbewahren aufgelistet wird.
+- **Mehrere Empfänger:** eine Kopie pro Empfänger (bis zu 20), jeweils mit dessen Namen, in einem einzigen Download.
+- **Passwort:** AES-256-Verschlüsselung für PDFs (PDF 2.0). Ein Häkchen bei „Mit Passwort schützen“ erzeugt ein gut lesbares Passwort aus 12 zufälligen Wörtern (132 Bit, BIP39-Wortliste); ein eigenes Passwort oder ein zufälliges 256-Bit-Passwort sind weiterhin möglich. Automatisches Leeren der Zwischenablage.
+- **Dateigröße vor dem Download sichtbar**, mit „Verkleinern“ (10, 5, 2 oder 1 MB) für Upload-Portale und E-Mails mit Größenlimit.
 - **Ein gemeinsames PDF** in der Reihenfolge deiner Wahl (per Drag & Drop) oder ein **ZIP-Archiv**.
 - **Funktioniert auf dem Handy**, lässt sich als App installieren und läuft nach dem Laden **offline**.
 - **Mehrere Sprachen**, mit Rechts-nach-links-Layout für Arabisch und Persisch und eigenen Schriften für jede Schrift.
@@ -109,5 +109,9 @@ Heute gibt es keine Werbung. Vielleicht zeigt das Projekt eines Tages ein paar h
 Cachety ist ein persönliches Projekt, entwickelt und betreut von **[Amir Moradi](https://amirmoradi.com)** in Frankreich.
 
 Es ist eine veränderte Version von **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** von Hugo Sibony (KazeTachinuu). Dieses Projekt war seinerseits eine Neufassung, inspiriert von **[Filigraneur](https://github.com/cyberclarence/filigraneur)** von CyberClarence. Danke an beide. Details in [NOTICE](NOTICE).
+
+Gut lesbare Passwörter nutzen die **[englische BIP39-Wortliste](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (MIT License, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+Was geplant ist: **[ROADMAP.md](ROADMAP.md)**, auch zu sehen unter [cachety.com/de/roadmap](https://cachety.com/de/roadmap).
 
 Lizenziert unter der **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). Wer eine veränderte Version als Dienst betreibt, muss den Nutzern nach der AGPL den Quellcode anbieten.

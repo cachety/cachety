@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
 import { drawWatermarkRun, outlineRgba } from "@/lib/watermark";
 import {
   COLOR_SWATCHES,
+  DEFAULT_WATERMARK_STYLE,
   fillRgba,
   fontCss,
   fontFace,
@@ -15,6 +16,15 @@ import {
   WATERMARK_FONTS,
   type WatermarkStyle,
 } from "@/lib/watermark-style";
+
+// Raccourcis : opacité et taille réglées ensemble (dans les bornes de lib/watermark-style.ts).
+const PRESETS = {
+  light: { opacity: 0.25, scale: 0.85 },
+  normal: { opacity: 0.45, scale: 1 },
+  strong: { opacity: 0.7, scale: 1.25 },
+} as const;
+type PresetId = keyof typeof PRESETS;
+const near = (a: number, b: number) => Math.abs(a - b) < 0.001;
 
 export function WatermarkAppearance({
   style,
@@ -32,10 +42,39 @@ export function WatermarkAppearance({
   const wavePercent = Math.round((style.wave ?? 0) * 100);
   const custom = !COLOR_SWATCHES.some((swatch) => swatch.color === style.color);
 
-  return (
-    <div role="group" aria-label={s.legend} className="mt-4 rounded-xl border border-trait bg-feuille p-3">
-      <p className="text-sm font-medium text-encre">{s.legend}</p>
+  const [more, setMore] = useState(false);
+  const preset = (Object.keys(PRESETS) as PresetId[]).find(
+    (k) => near(PRESETS[k].opacity, style.opacity) && near(PRESETS[k].scale, style.scale)
+  );
 
+  return (
+    <div role="group" aria-label={s.legend} className="rounded-2xl border border-trait bg-feuille p-3">
+      <div role="radiogroup" aria-label={s.strength} className="flex gap-1 rounded-xl bg-papier p-1">
+        {(Object.keys(PRESETS) as PresetId[]).map((k) => (
+          <button
+            key={k}
+            type="button"
+            role="radio"
+            aria-checked={preset === k}
+            onClick={() => onChange({ ...style, ...PRESETS[k] })}
+            className={`min-h-10 flex-1 rounded-lg text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu ${
+              preset === k ? "bg-white font-semibold text-encre shadow-sm" : "text-encre-2 hover:text-encre"
+            }`}
+          >
+            {s.presets[k]}
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => setMore((v) => !v)}
+        aria-expanded={more}
+        className="mt-2 py-1 text-sm font-medium text-bleu underline underline-offset-2 hover:no-underline"
+      >
+        {more ? s.fewer : s.more}
+      </button>
+      {more && (
+      <div className="mt-1">
       <div className="mt-3">
         <p id="wm-font" className="text-sm text-encre-2">
           {s.font}
@@ -180,6 +219,15 @@ export function WatermarkAppearance({
         <div className="absolute inset-0 bg-gradient-to-r from-feuille from-40% to-encre" />
         <WaveSample style={style} sample={sample} />
       </div>
+      <button
+        type="button"
+        onClick={() => onChange(DEFAULT_WATERMARK_STYLE)}
+        className="mt-3 py-1 text-sm font-medium text-bleu underline underline-offset-2 hover:no-underline"
+      >
+        {s.reset}
+      </button>
+      </div>
+      )}
     </div>
   );
 }

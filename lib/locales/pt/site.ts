@@ -71,24 +71,24 @@ export const SITE_PT: SiteCopy = {
         body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto.",
       },
       {
-        title: "Cópias rastreáveis",
-        body: "Uma data e um código único em cada cópia: se uma aparecer por aí, você sabe de onde ela saiu.",
+        title: "Um código único em cada cópia",
+        body: "Ao editar o texto, inclua um código curto, diferente em cada cópia: se uma aparecer por aí, você sabe de onde ela saiu.",
       },
       {
-        title: "Uma versão por destinatário",
-        body: "Uma versão personalizada para cada imobiliária ou banco, num único download.",
+        title: "Uma cópia por destinatário",
+        body: "Adicione cada destinatário: cada um recebe a própria cópia, com o nome dele, num único download.",
       },
       {
-        title: "Senha",
-        body: "Proteja o PDF com criptografia AES-256, o padrão forte usado pelos bancos.",
+        title: "Uma senha criada para você",
+        body: "Proteja o arquivo com 12 palavras aleatórias, fáceis de ditar por telefone, e criptografia AES-256.",
       },
       {
         title: "Dados ocultos removidos",
         body: "O texto selecionável, os metadados e a localização GPS das fotos são apagados do arquivo final.",
       },
       {
-        title: "Tamanho máximo do arquivo",
-        body: "1, 2, 5 ou 10 MB por arquivo, para os sites que limitam o tamanho do envio.",
+        title: "Leve para qualquer site",
+        body: "Se um site ou e-mail recusar o seu arquivo, diminua para 10, 5, 2 ou 1 MB.",
       },
       {
         title: "Funciona no celular",

@@ -1,6 +1,7 @@
 // Fonctionnalités de copie, de bout en bout dans l'interface : plusieurs
-// destinataires avec références traçables, masquage tracé sur l'aperçu,
-// et réception de fichiers partagés via le service worker.
+// destinataires avec codes ({code}), fichiers séparés par destinataire,
+// masquage tracé sur l'aperçu, et réception de fichiers partagés via le
+// service worker.
 //
 // Fichier nommé *.e2e.ts : lancé par `bun run test:e2e`.
 
@@ -62,33 +63,32 @@ async function download(page: Page, button: string) {
 
 describe("plusieurs destinataires, copies traçables", () => {
   test(
-    "un PDF par destinataire, chacun avec sa référence au registre",
+    "une copie par destinataire, chacune avec son code, listé après le téléchargement",
     async () => {
       const page = await openPage("/fr");
       await addPdf(page, "bulletin.pdf", await makePdf([[300, 400]]));
-      await page.locator(`textarea[aria-label="${t.textareaAria}"]`).fill("Dossier location");
-      await page.getByText(t.multi.toggle).click();
-      await page.getByLabel(t.multi.label).fill("Agence Martin\nFoncia Lyon\nagence martin");
-      await page.getByText(t.multi.count(2)).waitFor();
-      await page.getByText(t.trace.toggle).click();
+      await page.getByLabel(t.purpose.label).fill("Dossier location");
+      const recipient = (n: number) => page.getByRole("textbox", { name: t.recipients.aria(n) });
+      await recipient(1).fill("Agence Martin");
+      await page.getByRole("button", { name: t.recipients.add }).click();
+      await recipient(2).fill("Foncia Lyon");
+      await page.getByRole("button", { name: t.recipients.add }).click();
+      await recipient(3).fill("agence martin"); // doublon : ignoré
+      await page.getByText(t.recipients.eachOwn).waitFor();
 
-      // Registre : une ligne par destinataire, références distinctes au bon format.
-      const lines = await page.locator("ul.font-mono li").allTextContents();
-      expect(lines).toHaveLength(2);
-      const refs = lines.map((l) => l.match(/· ([0-9A-HJKMNP-TV-Z]{5}) ·/)?.[1]);
-      expect(refs.every(Boolean)).toBe(true);
-      expect(new Set(refs).size).toBe(2);
-      expect(lines[0]).toContain("Agence Martin");
-      expect(lines[1]).toContain("Foncia Lyon");
+      // Texte libre : « réf. {code} » ajouté, un code par destinataire à côté de son nom.
+      await page.getByRole("button", { name: t.stampCard.edit }).click();
+      await page.getByRole("button", { name: `${t.trace.refLabel} ${t.stampCard.tokens.code}` }).click();
+      const badges = await page.locator(`span[title="${t.stampCard.codeTitle}"]`).allTextContents();
+      expect(badges.slice(0, 2).every((c) => /^[0-9A-HJKMNP-TV-Z]{5}$/.test(c))).toBe(true);
+      expect(new Set(badges.slice(0, 2)).size).toBe(2);
 
-      await page.getByText(t.multi.previewFor("Agence Martin")).waitFor({ timeout: 30_000 });
-      const pdfs = await download(page, t.multi.downloadPdf(2));
+      const button = page.getByRole("button", { name: t.download.copies(2) }).last();
+      await button.and(page.locator(":enabled")).waitFor({ timeout: 30_000 });
+      const pdfs = await download(page, t.download.copies(2));
       expect(pdfs.name).toBe(`${t.zipName}.zip`);
       const entries = unzipSync(pdfs.bytes);
-      expect(Object.keys(entries).sort()).toEqual([
-        `${t.zipName}-agence-martin.pdf`,
-        `${t.zipName}-foncia-lyon.pdf`,
-      ]);
+      expect(Object.keys(entries).sort()).toEqual([`${t.zipName}-agence-martin.pdf`, `${t.zipName}-foncia-lyon.pdf`]);
       for (const bytes of Object.values(entries)) {
         expect((await PDFDocument.load(bytes)).getPageCount()).toBe(1);
       }
@@ -96,9 +96,33 @@ describe("plusieurs destinataires, copies traçables", () => {
       const [a, b] = Object.values(entries);
       expect(Buffer.compare(Buffer.from(a), Buffer.from(b))).not.toBe(0);
 
-      const zip = await download(page, t.multi.downloadZip(2));
+      // Écran final : la liste des copies et de leurs codes, les mêmes qu'à l'écran.
+      await page.getByText(t.done.codesTitle).waitFor();
+      const listed = await page.locator("li").filter({ hasText: /^(Agence Martin|Foncia Lyon)/ }).allTextContents();
+      expect(listed).toHaveLength(2);
+      expect(listed.join(" ")).toContain(badges[0]);
+      expect(listed.join(" ")).toContain(badges[1]);
+    },
+    120_000
+  );
+
+  test(
+    "deux documents en fichiers séparés : un dossier par destinataire dans le ZIP",
+    async () => {
+      const page = await openPage("/fr");
+      await addPdf(page, "bulletin.pdf", await makePdf([[300, 400]]));
+      await addPdf(page, "avis.pdf", await makePdf([[300, 400]]));
+      await page.getByLabel(t.purpose.label).fill("Dossier location");
+      await page.getByRole("textbox", { name: t.recipients.aria(1) }).fill("Agence Martin");
+      await page.getByRole("button", { name: t.recipients.add }).click();
+      await page.getByRole("textbox", { name: t.recipients.aria(2) }).fill("Foncia Lyon");
+      await page.getByRole("radio", { name: t.send.zip }).click({ timeout: 30_000 });
+      await page.getByRole("button", { name: t.download.copies(2) }).last().and(page.locator(":enabled")).waitFor({ timeout: 30_000 });
+      const zip = await download(page, t.download.copies(2));
       expect(Object.keys(unzipSync(zip.bytes)).sort()).toEqual([
+        `agence-martin/avis-${t.suffix}.pdf`,
         `agence-martin/bulletin-${t.suffix}.pdf`,
+        `foncia-lyon/avis-${t.suffix}.pdf`,
         `foncia-lyon/bulletin-${t.suffix}.pdf`,
       ]);
     },
@@ -108,12 +132,12 @@ describe("plusieurs destinataires, copies traçables", () => {
 
 describe("masquage depuis l'aperçu", () => {
   test(
-    "tracer une zone puis l'appliquer la noircit dans le document produit",
+    "tracer une zone puis Terminé la noircit dans le document produit",
     async () => {
       const page = await openPage("/fr");
       await addPdf(page, "bleu.pdf", await makeBluePdf());
-      await page.locator(`textarea[aria-label="${t.textareaAria}"]`).fill("Copie e2e");
-      await page.getByRole("button", { name: t.mask.start }).click({ timeout: 30_000 });
+      await page.getByLabel(t.purpose.label).fill("Copie e2e");
+      await page.getByRole("button", { name: t.tools.hide }).click({ timeout: 30_000 });
 
       const surface = page.getByRole("application", { name: t.mask.surface(1) });
       // L'aperçu dépasse la fenêtre de 720 px : on l'aligne en haut, pour que
@@ -125,11 +149,21 @@ describe("masquage depuis l'aperçu", () => {
       await page.mouse.down();
       await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.5, { steps: 8 });
       await page.mouse.up();
-      await page.getByRole("button", { name: t.mask.apply(1) }).click();
+      // La zone tracée peut être retirée une par une (bouton ×).
+      await page.getByRole("button", { name: t.mask.remove(1) }).waitFor();
+      await page.getByRole("button", { name: t.mask.done }).click();
 
       // Re-rendu du document, puis l'aperçu porte la zone noire.
-      await page.getByText(t.mask.onPage(1)).waitFor({ timeout: 30_000 });
+      await page.getByRole("button", { name: t.tools.hidden(1) }).waitFor({ timeout: 30_000 });
       const preview = page.locator(`img[alt="${t.previewAlt("bleu.pdf", 1)}"]`).first();
+      await page.waitForFunction(
+        (alt) => {
+          const img = document.querySelector<HTMLImageElement>(`img[alt="${alt}"]`);
+          return !!img?.complete;
+        },
+        t.previewAlt("bleu.pdf", 1),
+        { timeout: 30_000 }
+      );
       const blue = await preview.evaluate(async (img: HTMLImageElement) => {
         const bmp = await createImageBitmap(await (await fetch(img.src)).blob());
         const c = document.createElement("canvas");

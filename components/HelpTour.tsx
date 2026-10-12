@@ -6,7 +6,7 @@ import { readPref, writePref } from "@/lib/storage";
 import { CloseIcon, QuestionIcon } from "@/components/icons";
 
 /**
- * Visite guidée de l'outil, en 4 étapes. Discrète par construction :
+ * Visite guidée de l'outil, en 3 étapes. Discrète par construction :
  *  - un bouton « Aide » fixe en bas, côté fin de lecture (droite, ou gauche
  *    en arabe et en persan) ;
  *  - si le visiteur semble perdu (aucun document après un moment, et des
@@ -19,7 +19,7 @@ import { CloseIcon, QuestionIcon } from "@/components/icons";
  */
 
 /** Zones repérées par data-tour dans CoreProduct, dans l'ordre des étapes. */
-const ANCHORS = ["drop", "text", "options", "result"] as const;
+const ANCHORS = ["drop", "details", "result"] as const;
 
 const NUDGE_PREF = "tourNudged";
 /** Rien ne se déclenche avant ce délai : le temps de lire l'en-tête. */
@@ -34,7 +34,22 @@ type Rect = { top: number; left: number; width: number; height: number };
 
 const INTERACTIVE = "a,button,input,textarea,select,label,summary,[role='button'],[role='menuitem'],[role='menuitemradio']";
 
-export default function HelpTour({ hasDocs, lifted }: { hasDocs: boolean; lifted: boolean }) {
+export default function HelpTour({
+  hasDocs,
+  lifted,
+  reveal,
+  revealed,
+  hideOnPhone,
+}: {
+  hasDocs: boolean;
+  lifted: boolean;
+  /** Sur téléphone, l'outil n'affiche qu'une étape : affiche celle de la zone i. */
+  reveal?: (i: number) => void;
+  /** Étape affichée par l'outil : relance le repérage quand elle change. */
+  revealed?: number;
+  /** Sur téléphone, le bouton Aide masquerait les commandes de l'étape : caché. */
+  hideOnPhone?: boolean;
+}) {
   const t = useT().tour;
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
@@ -151,6 +166,12 @@ export default function HelpTour({ hasDocs, lifted }: { hasDocs: boolean; lifted
     if (!open) return;
     const el = document.querySelector<HTMLElement>(`[data-tour="${ANCHORS[step]}"]`);
     if (!el) return;
+    // Zone masquée (étape non affichée sur téléphone) : l'outil l'affiche,
+    // et le changement de `revealed` relance ce repérage.
+    if (!el.getClientRects().length) {
+      reveal?.(step);
+      return;
+    }
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const top = el.getBoundingClientRect().top + window.scrollY - 96;
     window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
@@ -175,7 +196,9 @@ export default function HelpTour({ hasDocs, lifted }: { hasDocs: boolean; lifted
       window.removeEventListener("resize", measure);
       ro?.disconnect();
     };
-  }, [open, step]);
+    // `reveal` change à chaque rendu de l'outil : seul `revealed` compte.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, step, revealed]);
 
   useLayoutEffect(() => {
     if (open && cardRef.current) setCardH(cardRef.current.offsetHeight);
@@ -286,7 +309,8 @@ export default function HelpTour({ hasDocs, lifted }: { hasDocs: boolean; lifted
       {!open && (
         <div
           className={`fixed end-4 z-40 flex flex-col items-end gap-3 transition-[bottom] ${
-            lifted ? "bottom-24 lg:bottom-5" : "bottom-[max(1.25rem,env(safe-area-inset-bottom))]"
+            lifted ? "bottom-32 lg:bottom-5" : "bottom-[max(1.25rem,env(safe-area-inset-bottom))]"
+          } ${hideOnPhone && !open ? "max-lg:hidden" : ""
           }`}
         >
           {nudge && (

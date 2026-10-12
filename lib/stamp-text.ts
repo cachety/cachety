@@ -1,11 +1,11 @@
-// Texte final du filigrane : texte commun + destinataire + traçabilité.
+// Texte final du filigrane, et ses morceaux.
 //
-//   « Dossier location — Agence Martin · 10/10/2026 · réf. K7Q2M »
+//   Formulaire simple : « Dossier location, Agence Martin, le 10/10/2026 »
+//   Texte libre :       « Copie pour {recipient}, {date}, réf. {code} »
 //
-// La référence identifie une copie : si un document fuite, elle dit à quel
-// destinataire il avait été remis. Rien n'est conservé par l'application ;
-// le registre (destinataire → référence) est affiché pour que l'utilisateur
-// le garde lui-même.
+// La référence ({code}) identifie une copie : si un document fuite, elle dit à
+// quel destinataire il avait été remis. Rien n'est conservé par l'application ;
+// la liste (destinataire → référence) est donnée à l'utilisateur, qui la garde.
 
 /** Base32 de Crockford sans I, L, O, U : se lit et se dicte sans ambiguïté. */
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
@@ -19,12 +19,12 @@ export function makeRef(random: (n: number) => Uint8Array = (n) => crypto.getRan
 export const MAX_RECIPIENTS = 20;
 export const MAX_RECIPIENT_LENGTH = 60;
 
-/** Une ligne par destinataire : espaces rognés, lignes vides et doublons retirés, liste bornée. */
-export function parseRecipients(input: string): string[] {
+/** Un champ par destinataire : espaces rognés, champs vides et doublons (casse comprise) retirés, liste bornée. */
+export function cleanRecipients(fields: readonly string[]): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
-  for (const line of input.split(/\r?\n/)) {
-    const name = line.replace(/\s+/g, " ").trim().slice(0, MAX_RECIPIENT_LENGTH);
+  for (const field of fields) {
+    const name = field.replace(/\s+/g, " ").trim().slice(0, MAX_RECIPIENT_LENGTH);
     const key = name.toLocaleLowerCase();
     if (!name || seen.has(key)) continue;
     seen.add(key);
@@ -34,24 +34,49 @@ export function parseRecipients(input: string): string[] {
   return out;
 }
 
-export function composeStamp(
-  base: string,
-  {
-    recipient,
-    trace,
-  }: {
-    recipient?: string;
-    trace?: { date: string; ref: string; refLabel: string };
-  } = {}
+/** Ponctuation de liaison, toutes écritures : virgules latine, arabe, japonaise, chinoise. */
+const SEP = "[,،、，;·]";
+
+/**
+ * Formulaire simple : « motif, destinataire, date », dans l'ordre recommandé
+ * (Cybermalveillance). Le séparateur et la place de la date viennent de la
+ * langue (`onDate` : « …, le 10/10/2026 », « …（2026/10/10） »).
+ */
+export function composeSimple(
+  { purpose, recipient, date }: { purpose: string; recipient?: string; date: string },
+  lang: { sep: string; onDate: (base: string, date: string) => string }
 ) {
-  let text = base.trim();
-  if (recipient) text = text ? `${text} — ${recipient}` : recipient;
-  if (trace) {
-    // La date n'est pas répétée si le texte la porte déjà (modèle « … le 10/10/2026 »).
-    const parts = text.includes(trace.date) ? [text] : [text, trace.date];
-    text = [...parts, `${trace.refLabel} ${trace.ref}`].filter(Boolean).join(" · ");
+  const base = [purpose.trim(), recipient?.trim()].filter(Boolean).join(lang.sep);
+  return base ? lang.onDate(base, date) : date;
+}
+
+/** Mots à remplacer dans le texte libre. Chaque mot accepte sa forme traduite et l'anglaise. */
+export type StampTokens = { recipient: string; date: string; code: string };
+export const ENGLISH_TOKENS: StampTokens = { recipient: "{recipient}", date: "{date}", code: "{code}" };
+
+export function hasToken(text: string, key: keyof StampTokens, tokens: StampTokens) {
+  return text.includes(tokens[key]) || text.includes(ENGLISH_TOKENS[key]);
+}
+
+/**
+ * Texte libre : remplace {recipient}, {date} et {code}. Un mot sans valeur
+ * (pas de destinataire) disparaît avec sa ponctuation, sans laisser « , , ».
+ */
+export function fillTemplate(
+  template: string,
+  values: { recipient?: string; date: string; code?: string },
+  tokens: StampTokens
+) {
+  let text = template;
+  for (const key of ["recipient", "date", "code"] as const) {
+    const value = values[key] ?? "";
+    for (const token of new Set([tokens[key], ENGLISH_TOKENS[key]])) text = text.split(token).join(value);
   }
-  return text;
+  return text
+    .replace(new RegExp(`\\s*(${SEP})(\\s*${SEP})+`, "g"), "$1")
+    .replace(new RegExp(`^[\\s]*${SEP}+\\s*|\\s*${SEP}+[\\s]*$`, "g"), "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 /** Nom de fichier ou de dossier dérivé d'un destinataire : lisible, sans séparateur de chemin. */

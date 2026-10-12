@@ -35,13 +35,13 @@ Alojarla por tu cuenta sigue siendo posible y está totalmente soportado (ver m�
 
 - **PDF e imágenes:** JPG, PNG, WebP, GIF, BMP, AVIF y fotos de iPhone (HEIC). Un archivo o muchos a la vez (hasta 200 MB por archivo y 500 páginas por PDF).
 - **Marca de agua en toda la página**, fundida en la imagen. No se puede quitar con solo editar el PDF, y su disposición cambia en cada copia. Puedes elegir la fuente, el tamaño, el color, la opacidad y un efecto de onda.
-- **Plantillas ya hechas** (alquiler, banco, trabajo…) y un botón para «añadir la fecha de hoy» con un solo toque.
+- **Tres pasos sencillos:** tu documento, para qué es y quién lo recibe, y luego vista previa y descarga. El texto de la marca de agua se escribe por ti («motivo, destinatario, fecha», con ejemplos ya hechos) y puedes editarlo libremente.
 - **Datos ocultos eliminados:** texto seleccionable, metadatos y ubicación GPS de las fotos. Cada página se reconstruye a partir de sus píxeles.
 - **Tachado:** oculta un IBAN, un número fiscal o una foto. El contenido se elimina de verdad, no solo se tapa.
-- **Copias rastreables:** la fecha y una referencia única en cada copia, además de un registro de copias que guardas tú.
-- **Varios destinatarios:** una versión personalizada para cada destinatario (hasta 20), en una sola descarga.
-- **Contraseña:** cifrado de PDF AES-256 (PDF 2.0), con un generador de contraseñas seguras y borrado automático del portapapeles.
-- **Tamaño máximo por archivo** (1, 2, 5 o 10 MB) para los portales que lo limitan.
+- **Copias rastreables:** añade `{code}` al texto y cada copia recibe su propia referencia corta, que aparece en una lista después de la descarga para que la guardes.
+- **Varios destinatarios:** una copia para cada destinatario (hasta 20), cada una con su nombre, en una sola descarga.
+- **Contraseña:** cifrado de PDF AES-256 (PDF 2.0). Al marcar «Proteger con contraseña» se crea una contraseña fácil de leer de 12 palabras aleatorias (132 bits, lista de palabras BIP39); también puedes usar tu propia contraseña o una aleatoria de 256 bits. Borrado automático del portapapeles.
+- **Tamaño del archivo visible antes de descargar**, con «Reducir el tamaño» (10, 5, 2 o 1 MB) para los portales y correos que lo limitan.
 - **Un solo PDF** en el orden que elijas (arrastrando y soltando), o un archivo **ZIP**.
 - **Funciona en el móvil**, se puede instalar como una app y funciona **sin conexión** una vez cargada.
 - **11 idiomas**, con diseño de derecha a izquierda para el árabe y el persa, y fuentes específicas para cada escritura.
@@ -108,5 +108,9 @@ Hoy no hay anuncios. Algún día el proyecto podría mostrar unos pocos enlaces 
 Cachety es un proyecto personal, creado y mantenido por **[Amir Moradi](https://amirmoradi.com)** en Francia.
 
 Es una versión modificada de **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** de Hugo Sibony (KazeTachinuu), que a su vez fue una reescritura inspirada en **[Filigraneur](https://github.com/cyberclarence/filigraneur)** de CyberClarence. Gracias a los dos. Consulta [NOTICE](NOTICE) para más detalles.
+
+Las contraseñas fáciles de leer usan la **[lista de palabras BIP39 en inglés](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (licencia MIT, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+Lo que viene: **[ROADMAP.md](ROADMAP.md)**, también disponible en [cachety.com/es/roadmap](https://cachety.com/es/roadmap).
 
 Publicado bajo la licencia **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). Si ofreces una versión modificada como servicio, la AGPL te obliga a poner su código fuente a disposición de tus usuarios.

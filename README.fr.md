@@ -35,13 +35,13 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 
 - **PDF et images :** JPG, PNG, WebP, GIF, BMP, AVIF et photos d'iPhone (HEIC). Un fichier ou plusieurs à la fois (jusqu'à 200 Mo par fichier, 500 pages par PDF).
 - **Filigrane sur toute la page**, fondu dans l'image. Impossible de l'effacer en modifiant simplement le PDF, et sa disposition varie d'une copie à l'autre. Choix de la police, de la taille, de la couleur, de l'opacité et d'un effet de vague.
-- **Modèles prêts à l'emploi** (location, banque, emploi…) et un bouton « ajouter la date du jour » en un geste.
+- **Trois étapes simples :** votre document, son usage et son destinataire, puis l'aperçu et le téléchargement. Le texte du filigrane est rédigé pour vous (« usage, destinataire, date », avec des exemples prêts à l'emploi) et reste librement modifiable.
 - **Données cachées retirées :** texte sélectionnable, métadonnées et position GPS des photos. Chaque page est reconstruite à partir de ses pixels.
 - **Masquage :** noircissez un IBAN, un numéro fiscal ou une photo. Le contenu est réellement supprimé, pas seulement recouvert.
-- **Copies traçables :** la date et une référence unique sur chaque copie, plus un registre des copies que vous gardez vous-même.
-- **Plusieurs destinataires :** une version personnalisée par destinataire (jusqu'à 20), en un seul téléchargement.
-- **Mot de passe :** chiffrement PDF AES-256 (PDF 2.0), avec un générateur de mots de passe robustes et l'effacement automatique du presse-papiers.
-- **Taille maximale par fichier** (1, 2, 5 ou 10 Mo) pour les sites de dépôt qui la limitent.
+- **Copies traçables :** ajoutez `{code}` au texte et chaque copie reçoit sa propre référence courte, listée après le téléchargement pour que vous la conserviez.
+- **Plusieurs destinataires :** une copie par destinataire (jusqu'à 20), chacune à son nom, en un seul téléchargement.
+- **Mot de passe :** chiffrement PDF AES-256 (PDF 2.0). Cocher « Verrouiller avec un mot de passe » crée un mot de passe facile à lire de 12 mots aléatoires (132 bits, liste de mots BIP39) ; votre propre mot de passe ou un mot de passe aléatoire de 256 bits restent disponibles. Effacement automatique du presse-papiers.
+- **Taille du fichier affichée avant le téléchargement**, avec « Réduire la taille » (10, 5, 2 ou 1 Mo) pour les sites de dépôt et les e-mails qui la limitent.
 - **Un seul PDF** dans l'ordre de votre choix (glisser-déposer), ou une archive **ZIP**.
 - **Fonctionne sur téléphone**, s'installe comme une appli, et fonctionne **hors connexion** une fois chargé.
 - **11 langues**, avec mise en page de droite à gauche pour l'arabe et le persan, et des polices dédiées à chaque écriture.
@@ -108,5 +108,9 @@ Il n'y a aucune publicité aujourd'hui. Le projet pourra un jour afficher quelqu
 Cachety est un projet personnel, conçu et maintenu par **[Amir Moradi](https://amirmoradi.com)** en France.
 
 C'est une version modifiée de **[Filigrane Local](https://github.com/KazeTachinuu/filigrane-local)** de Hugo Sibony (KazeTachinuu), lui-même une réécriture inspirée de **[Filigraneur](https://github.com/cyberclarence/filigraneur)** de CyberClarence. Merci à tous les deux. Voir [NOTICE](NOTICE) pour le détail.
+
+Les mots de passe faciles à lire utilisent la **[liste de mots BIP39 en anglais](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt)** (licence MIT, © 2013 Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe).
+
+Ce qui est prévu : **[ROADMAP.md](ROADMAP.md)**, également affiché sur [cachety.com/fr/roadmap](https://cachety.com/fr/roadmap).
 
 Sous licence **GNU Affero General Public License v3.0** ([LICENSE](LICENSE)). Si vous proposez une version modifiée sous forme de service, l'AGPL vous oblige à en fournir le code source à vos utilisateurs.
