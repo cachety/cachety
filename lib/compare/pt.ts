@@ -32,8 +32,8 @@ const HOW_TO: { type: "steps"; items: string[] } = {
   items: [
     "Abra cachety.com no navegador do celular ou do computador. Não precisa instalar nada.",
     "Solte seu RG, CNH, passaporte ou holerite na página. Você pode adicionar vários arquivos de uma vez.",
-    "Escreva para que serve a cópia, para quem e a data, por exemplo: Cadastro de aluguel, Imobiliária Horizonte, 11/10/2026.",
-    "Se quiser, oculte o que não precisam ver e coloque uma senha.",
+    "Diga para que serve a cópia (escreva ou escolha um exemplo) e quem vai receber, por exemplo: Cadastro de aluguel, para a Imobiliária Horizonte. A data entra sozinha.",
+    "Se quiser, toque em “Ocultar algo” embaixo da prévia para esconder o que não precisam ver, e marque “Proteger com senha”.",
     "Baixe a cópia com marca d'água e envie essa, nunca o original.",
   ],
 };

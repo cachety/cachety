@@ -113,7 +113,7 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com. There is nothing to install and no account to create.",
           "Add your passport, driving licence or payslip. PDFs and photos, including iPhone photos, both work.",
-          "Type who the copy is for and why, then press the button to add today's date.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
           "Check the preview and download your watermarked copy.",
         ],
       },
@@ -272,8 +272,8 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com in any browser, on your phone or computer.",
           "Add your documents. You can add several at once.",
-          "Type the watermark text, for example who it is for, why and the date.",
-          "If you like, draw boxes over details to hide, or add a password.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
+          "If you like, click ‘Hide something’ under the preview to draw boxes over details, or tick ‘Lock with a password’.",
           "Download the watermarked copy and send that, not the original.",
         ],
       },
@@ -414,8 +414,8 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com in your browser.",
           "Add your PDF or photo.",
-          "Type the watermark text, such as the purpose, the recipient and the date.",
-          "Download the result. You can add a password if you want.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
+          "Download the result. You can tick ‘Lock with a password’ first if you want.",
         ],
       },
       {
@@ -558,7 +558,7 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com.",
           "Add your PDF or photos.",
-          "Type who it is for and why, and add today's date.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
           "Download the watermarked copy.",
         ],
       },
@@ -705,8 +705,8 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com.",
           "Add your documents.",
-          "Type your watermark text, or list several recipients to get one copy each.",
-          "Download the copies, separately or as a ZIP.",
+          "Say what the copy is for, then who will receive it. Add each recipient with ‘+ Add another recipient’ to get one copy each.",
+          "With several documents, choose ‘One PDF’ or ‘Separate files (ZIP)’, then download the copies.",
         ],
       },
     ],
@@ -851,7 +851,7 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com.",
           "Add your passport, licence or statement.",
-          "Type the purpose, recipient and date, or pick a ready-made template.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
           "Download the watermarked copy.",
         ],
       },
@@ -1001,8 +1001,8 @@ export const COMPARISONS_EN: Comparison[] = [
         items: [
           "Open cachety.com.",
           "Add your ID document or payslip.",
-          "Type who it is for and why, and add today's date.",
-          "Optionally hide details or add a password, then download.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
+          "Optionally use ‘Hide something’ or ‘Lock with a password’, then download.",
         ],
       },
     ],

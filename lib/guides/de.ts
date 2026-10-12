@@ -47,8 +47,8 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser, am Computer oder auf dem Handy. Nichts installieren, kein Konto.",
           "Leg ein Foto oder einen Scan von Vorder- und Rückseite ab. iPhone-Fotos (HEIC) funktionieren auch.",
-          "Schreib den Text des Wasserzeichens: Zweck, Empfänger, Datum. Oder wähle eine Vorlage und tippe auf „Heutiges Datum hinzufügen“.",
-          "Tippe auf „Bereich schwärzen“ und zieh Rechtecke über Zugangsnummer und Seriennummer.",
+          "Gib unter „Wofür ist diese Kopie?“ den Zweck ein oder wähle ein Beispiel, dann unter „Wer bekommt sie?“ den Empfänger. Das Datum kommt automatisch dazu.",
+          "Tippe unter der Vorschau auf „Etwas schwärzen“, zieh Rechtecke über Zugangsnummer und Seriennummer und tippe auf „Fertig“.",
           "Prüf in der Vorschau, dass Foto und Name lesbar bleiben, und lade die Kopie herunter. Schick nur diese Kopie, nie den Originalscan.",
         ],
       },
@@ -126,14 +126,14 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser. Keine Installation, kein Konto.",
           "Leg alle Unterlagen auf einmal ab: Ausweis, Gehaltsabrechnungen, Schufa-Auskunft.",
-          "Wähle die Vorlage „Wohnung“, ergänze den Namen der Hausverwaltung und tippe auf „Heutiges Datum hinzufügen“.",
-          "Schwärze, was der Vermieter nicht braucht, und prüf jede Seite in der Vorschau.",
-          "Lade alles als ein gemeinsames PDF herunter, in der Reihenfolge deiner Wahl. Viele Portale mögen eine einzige Datei lieber.",
+          "Wähle das Beispiel „Wohnung“ und gib unter „Wer bekommt sie?“ den Namen der Hausverwaltung ein. Das Datum kommt automatisch dazu.",
+          "Prüf jede Seite in der Vorschau und schwärze mit „Etwas schwärzen“, was der Vermieter nicht braucht.",
+          "Wähle „Ein PDF“ und lade alles als ein gemeinsames PDF herunter, in der Reihenfolge deiner Wahl. Viele Portale mögen eine einzige Datei lieber.",
         ],
       },
       {
         type: "tip",
-        text: "Du bewirbst dich bei mehreren Wohnungen? Mit „Mehrere Empfänger“ bekommt jede Hausverwaltung ihre eigene Version mit ihrem Namen. Taucht eine Kopie irgendwo auf, weißt du sofort, woher sie kommt.",
+        text: "Du bewirbst dich bei mehreren Wohnungen? Füge jede Hausverwaltung mit „+ Weiteren Empfänger hinzufügen“ hinzu: Jede bekommt ihre eigene Kopie mit ihrem Namen. Taucht eine Kopie irgendwo auf, weißt du sofort, woher sie kommt.",
       },
       { type: "h2", text: "Was du schwärzen kannst" },
       {
@@ -156,7 +156,7 @@ export const GUIDES_DE: Guide[] = [
       },
       {
         q: "Das Portal sagt, meine Datei ist zu groß. Was tun?",
-        a: "Stell vor dem Download eine maximale Dateigröße von 1, 2, 5 oder 10 MB ein. Cachety hält jede Datei unter dieser Grenze.",
+        a: "Vor dem Download siehst du die Dateigröße. Tippe auf „Verkleinern“ und wähle 10, 5, 2 oder 1 MB. Cachety hält jede Datei unter dieser Grenze.",
       },
     ],
     updated: "2026-10-12",
@@ -202,14 +202,14 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser.",
           "Leg deine Abrechnungen oder den Steuerbescheid ab. PDFs aus dem Online-Banking, aus DATEV-Portalen oder aus ELSTER funktionieren genauso wie Fotos von Papier.",
-          "Wähle eine Vorlage wie „Steuer“ oder „Kredit“, ergänze den Empfänger und das heutige Datum.",
-          "Zieh in der Vorschau Rechtecke über die Angaben, die du verbergen willst.",
-          "Prüf jede Seite und lade alles als ein PDF oder als ZIP herunter.",
+          "Wähle ein Beispiel wie „Steuer“ oder „Kredit“ und gib unter „Wer bekommt sie?“ den Empfänger ein. Das Datum kommt automatisch dazu.",
+          "Tippe unter der Vorschau auf „Etwas schwärzen“, zieh Rechtecke über die Angaben, die du verbergen willst, und tippe auf „Fertig“.",
+          "Prüf jede Seite, wähle „Ein PDF“ oder „Einzelne Dateien (ZIP)“ und lade alles herunter.",
         ],
       },
       {
         type: "tip",
-        text: "Schalte „Nachverfolgbare Kopie“ ein. Jede Kopie bekommt dann Datum und eindeutige Referenz, und du erhältst ein Protokoll zum Aufbewahren. Taucht eine Abrechnung irgendwo auf, weißt du, welche Kopie es war.",
+        text: "Tippe auf „Text bearbeiten“ und füge {Code} ein, etwa „Ref. {Code}“. Jede Kopie bekommt dann ihren eigenen kurzen Code, und nach dem Download erhältst du die Liste der Codes („Liste speichern“). Taucht eine Abrechnung irgendwo auf, weißt du, welche Kopie es war.",
       },
       {
         type: "p",
@@ -266,8 +266,8 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser. Keine Anmeldung nötig.",
           "Leg dein PDF oder Bild ab. JPG, PNG, HEIC und andere gängige Formate gehen auch.",
-          "Gib ein kurzes Wasserzeichen ein, etwa Zweck, Empfänger und Datum.",
-          "Tippe auf „Bereich schwärzen“ und zieh Rechtecke über alles, was verschwinden soll.",
+          "Gib an, wofür die Kopie ist und wer sie bekommt. Das Datum kommt automatisch dazu.",
+          "Tippe unter der Vorschau auf „Etwas schwärzen“, zieh Rechtecke über alles, was verschwinden soll, und tippe auf „Fertig“.",
           "Prüf die Vorschau auf jeder Seite und lade die geschwärzte Kopie herunter.",
         ],
       },
@@ -326,7 +326,7 @@ export const GUIDES_DE: Guide[] = [
       { type: "h2", text: "Warum direkt auf dem Handy" },
       {
         type: "p",
-        text: "Auf dem Handy liegen die Fotos deiner Dokumente ohnehin. Also kannst du sie auch dort mit einem Wasserzeichen versehen, ohne sie dir selbst zu mailen oder auf den Computer zu übertragen. Cachety läuft im Browser deines Handys, etwa in Safari oder Chrome. Deine Fotos werden auf dem Handy selbst verarbeitet und nie hochgeladen. Es ist dasselbe Tool wie am Computer, mit Vorlagen, Schwärzen, mehreren Empfängern und optionalem Passwort.",
+        text: "Auf dem Handy liegen die Fotos deiner Dokumente ohnehin. Also kannst du sie auch dort mit einem Wasserzeichen versehen, ohne sie dir selbst zu mailen oder auf den Computer zu übertragen. Cachety läuft im Browser deines Handys, etwa in Safari oder Chrome. Deine Fotos werden auf dem Handy selbst verarbeitet und nie hochgeladen. Es ist dasselbe Tool wie am Computer, mit Beispielen, Schwärzen, mehreren Empfängern und optionalem Passwort.",
       },
       { type: "h2", text: "Schritt für Schritt" },
       {
@@ -334,7 +334,7 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com in Safari, Chrome oder deinem gewohnten Browser.",
           "Tippe auf die Ablagefläche und wähle die Fotos oder PDFs, die du schicken willst. Mehrere auf einmal gehen auch.",
-          "Gib den Text des Wasserzeichens ein oder wähle eine Vorlage. Tippe auf „Heutiges Datum hinzufügen“.",
+          "Gib an, wofür die Kopie ist, oder wähle ein Beispiel, dann, wer sie bekommt. Das Datum kommt automatisch dazu.",
           "Prüf die Vorschau.",
           "Lade die Kopie herunter und teile sie per Mail, WhatsApp, Signal oder der App deiner Wahl. Lösch danach überflüssige Kopien ohne Wasserzeichen.",
         ],
@@ -358,7 +358,7 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Kostenlos, ohne Konto und ohne Tracking.",
           "Funktioniert nach dem Laden der Seite auch ohne Internet.",
-          "Mehrere Empfänger: für jeden eine eigene Version.",
+          "Mehrere Empfänger: Jeder bekommt seine eigene Kopie mit seinem Namen.",
           "Optionales Passwort für das heruntergeladene PDF.",
         ],
       },
@@ -418,9 +418,9 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Prüf zuerst, ob die Firma echt ist: Impressum, bekannte Website, keine Anfrage per Messenger von Fremden.",
           "Öffne cachety.com und leg das Foto deines Ausweises ab.",
-          "Schreib ins Wasserzeichen, wofür und für wen die Kopie ist, und tippe auf „Heutiges Datum hinzufügen“.",
+          "Gib an, wofür die Kopie ist und wer sie bekommt. Das Datum kommt automatisch dazu.",
           "Schwärze Zugangsnummer und Seriennummer, wenn der Empfänger sie nicht braucht.",
-          "Stell bei Bedarf eine maximale Dateigröße ein, viele Upload-Formulare erlauben nur wenige MB, und lade die Kopie herunter.",
+          "Viele Upload-Formulare erlauben nur wenige MB: Ist die angezeigte Dateigröße zu hoch, tippe auf „Verkleinern“. Dann lade die Kopie herunter.",
         ],
       },
       {
@@ -488,8 +488,8 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser, ohne Konto und ohne Installation.",
           "Leg deine Ausweiskopie und die übrigen Unterlagen ab.",
-          "Schreib Zweck, Empfänger und Datum ins Wasserzeichen oder nimm eine Vorlage.",
-          "Schalte „Nachverfolgbare Kopie“ ein, damit jede Kopie eine eindeutige Referenz bekommt, und bewahre das Protokoll auf.",
+          "Gib den Zweck ein oder wähle ein Beispiel, dann jeden Empfänger mit „+ Weiteren Empfänger hinzufügen“. Das Datum kommt automatisch dazu.",
+          "Tippe auf „Text bearbeiten“ und füge {Code} ein, damit jede Kopie ihren eigenen kurzen Code bekommt, und bewahre die Liste nach dem Download auf („Liste speichern“).",
           "Prüf die Vorschau und lade die Kopien herunter.",
         ],
       },

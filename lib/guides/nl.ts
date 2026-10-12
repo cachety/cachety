@@ -47,8 +47,8 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com in je browser, op je telefoon of computer. Je hoeft niets te installeren en geen account aan te maken.",
           "Sleep een foto of scan van je ID-kaart of paspoort in het vak, of tik om hem te kiezen. Foto's van een iPhone (HEIC) werken ook.",
-          "Typ het watermerk, bijvoorbeeld: Kopie voor huuraanvraag, Makelaardij De Linde. Druk op de knop om de datum van vandaag toe te voegen.",
-          "Kies Gebied afdekken en teken een rechthoek over je BSN. Vergeet de cijferreeks onderaan niet, en dek ook je pasfoto af als de ontvanger die niet nodig heeft.",
+          "Vul bij Waarvoor is deze kopie? het doel in, bijvoorbeeld Huuraanvraag, en bij Wie krijgt hem? de ontvanger, bijvoorbeeld Makelaardij De Linde. De datum komt er automatisch bij.",
+          "Kies onder het voorbeeld Iets afdekken, teken een rechthoek over je BSN en tik op Klaar. Vergeet de cijferreeks onderaan niet, en dek ook je pasfoto af als de ontvanger die niet nodig heeft.",
           "Controleer het voorbeeld en download de kopie. Stuur alleen deze versie, nooit het origineel.",
         ],
       },
@@ -128,7 +128,7 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com in je browser. Er is niets te installeren en geen account nodig.",
           "Sleep je bestanden erin, of tik om ze te kiezen. Je ID, loonstroken en werkgeversverklaring kunnen in één keer.",
-          "Kies het sjabloon Huurwoning en vul het aan met het adres en de naam van de makelaar. Druk op de knop om de datum van vandaag toe te voegen.",
+          "Kies het voorbeeld Huurwoning, vul eventueel het adres aan en zet bij Wie krijgt hem? de naam van de makelaar. De datum komt er automatisch bij.",
           "Dek je BSN af op je ID en je loonstroken: een makelaar heeft er geen wettelijke basis voor.",
           "Controleer het voorbeeld en download de kopieën. Stuur die, nooit de originelen.",
         ],
@@ -139,7 +139,7 @@ export const GUIDES_NL: Guide[] = [
       },
       {
         type: "tip",
-        text: "Reageer je op meerdere woningen? Zet de optie Meerdere ontvangers aan en maak in één keer een versie per makelaar, elk met een eigen naam erop. Duikt er ooit een kopie op waar hij niet hoort, dan weet je waar hij vandaan komt.",
+        text: "Reageer je op meerdere woningen? Voeg elke makelaar toe met + Nog een ontvanger toevoegen: iedereen krijgt in één keer een eigen kopie, met de eigen naam erop. Duikt er ooit een kopie op waar hij niet hoort, dan weet je waar hij vandaan komt.",
       },
       { type: "h2", text: "Laat alleen zien wat nodig is" },
       {
@@ -201,19 +201,19 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com in je browser. Geen account, niets te installeren.",
           "Sleep je loonstroken, werkgeversverklaring en IB60 erin. Pdf's en foto's werken allebei.",
-          "Typ het watermerk, of kies het sjabloon Hypotheek of Huurwoning en vul het aan met de naam van de ontvanger. Druk op de knop om de datum toe te voegen.",
+          "Vul in waarvoor de kopie is, of kies het voorbeeld Hypotheek of Huurwoning, en zet bij Wie krijgt hem? de naam van de ontvanger. De datum komt er automatisch bij.",
           "Dek af wat de ontvanger niet nodig heeft: je BSN voor een verhuurder, je personeelsnummer, je rekeningnummer.",
           "Wil je alles in één bestand? Kies Eén pdf, zet de documenten in de juiste volgorde en download.",
         ],
       },
       {
         type: "tip",
-        text: "Moet het bestand onder een bepaalde grootte blijven voor een uploadportaal? Kies een maximale grootte van 1, 2, 5 of 10 MB per bestand.",
+        text: "Moet het bestand onder een bepaalde grootte blijven voor een uploadportaal? Voor het downloaden zie je de bestandsgrootte. Kies Kleiner maken en houd elk bestand onder 10, 5, 2 of 1 MB.",
       },
       { type: "h2", text: "Een wachtwoord voor de extra voorzichtigen" },
       {
         type: "p",
-        text: "Je kunt de pdf beveiligen met een wachtwoord (AES-256). Stuur het wachtwoord dan via een ander kanaal dan het bestand, bijvoorbeeld per sms als de pdf per mail gaat. Zo heeft iemand die alleen je mailbox binnenkomt nog niets aan het document.",
+        text: "Vink Beveiligen met een wachtwoord aan (AES-256): je krijgt een goed leesbaar wachtwoord van 12 woorden, dat je na het downloaden ziet. Liever je eigen? Kies Zelf een wachtwoord kiezen. Stuur het wachtwoord via een ander kanaal dan het bestand, bijvoorbeeld per sms als de pdf per mail gaat. Zo heeft iemand die alleen je mailbox binnenkomt nog niets aan het document.",
       },
       {
         type: "p",
@@ -276,8 +276,8 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com in je browser. Je hoeft je niet te registreren.",
           "Sleep je pdf of afbeelding in het vak. JPG, PNG, HEIC en andere gangbare formaten werken ook.",
-          "Typ een kort watermerk met het doel, de ontvanger en de datum, of druk op de knop om de datum van vandaag toe te voegen.",
-          "Kies Gebied afdekken en teken op het voorbeeld rechthoeken over alles wat weg moet.",
+          "Vul in waarvoor de kopie is en wie hem krijgt. De datum komt er automatisch bij.",
+          "Kies onder het voorbeeld Iets afdekken, teken rechthoeken over alles wat weg moet en tik op Klaar.",
           "Controleer het voorbeeld op elke pagina en download je zwartgelakte kopie.",
         ],
       },
@@ -338,7 +338,7 @@ export const GUIDES_NL: Guide[] = [
       { type: "h2", text: "Waarom op je telefoon" },
       {
         type: "p",
-        text: "Op je telefoon staan de foto's van je documenten al, dus daar zet je er ook het watermerk op. Je hoeft ze niet naar jezelf te mailen, naar een computer te zetten of extra kopieën te laten slingeren. Cachety draait in de browser van je telefoon, zoals Safari of Chrome. Je foto's worden op de telefoon zelf verwerkt en nooit geüpload. Het is dezelfde tool als op de computer, met dezelfde functies: sjablonen, afdekken, meerdere ontvangers en een wachtwoord als je dat wilt.",
+        text: "Op je telefoon staan de foto's van je documenten al, dus daar zet je er ook het watermerk op. Je hoeft ze niet naar jezelf te mailen, naar een computer te zetten of extra kopieën te laten slingeren. Cachety draait in de browser van je telefoon, zoals Safari of Chrome. Je foto's worden op de telefoon zelf verwerkt en nooit geüpload. Het is dezelfde tool als op de computer, met dezelfde functies: voorbeelden, afdekken, meerdere ontvangers en een wachtwoord als je dat wilt.",
       },
       { type: "h2", text: "Stap voor stap" },
       {
@@ -346,8 +346,8 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com in Safari, Chrome of je gewone browser.",
           "Tik op het vak en kies de foto's of pdf's die je wilt versturen. Meerdere tegelijk kan.",
-          "Typ de tekst van je watermerk, of kies een sjabloon. Tik op de knop om de datum van vandaag toe te voegen.",
-          "Controleer het voorbeeld. Dek je BSN af als de ontvanger het niet nodig heeft.",
+          "Vul in waarvoor de kopie is, of kies een voorbeeld, en daarna wie hem krijgt. De datum komt er automatisch bij.",
+          "Controleer het voorbeeld. Dek je BSN af met Iets afdekken als de ontvanger het niet nodig heeft.",
           "Download de kopie met watermerk en deel hem via mail, WhatsApp of een andere app. Verwijder daarna de kale kopieën die je onderweg hebt gemaakt.",
         ],
       },
@@ -370,7 +370,7 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Gratis, zonder account en zonder tracking.",
           "Werkt zonder internet zodra de pagina is geladen.",
-          "Meerdere ontvangers: een aparte versie voor iedereen.",
+          "Meerdere ontvangers: iedereen krijgt een eigen kopie, met de eigen naam erop.",
           "Een wachtwoord op de gedownloade pdf als je dat wilt.",
         ],
       },
@@ -434,8 +434,8 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com in je browser, op je telefoon of computer.",
           "Voeg een foto of scan van je identiteitsbewijs toe.",
-          "Typ het watermerk met doel en ontvanger en druk op de knop om de datum toe te voegen.",
-          "Zet Traceerbare kopie aan: elke kopie krijgt een uniek kenmerk. Bewaar het overzicht van je kopieën zelf, want het wordt nergens opgeslagen.",
+          "Vul in waarvoor de kopie is en wie hem krijgt. De datum komt er automatisch bij.",
+          "Kies Tekst bewerken en voeg {code} in, bijvoorbeeld kenm. {code}: elke kopie krijgt een eigen korte code. Bewaar na het downloaden de lijst met Lijst opslaan, want hij wordt nergens anders opgeslagen.",
           "Dek je BSN en, als die niet nodig is, je pasfoto af. Download de kopie en stuur alleen die.",
         ],
       },

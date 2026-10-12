@@ -107,7 +107,7 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com di HP atau komputer.",
           "Masukkan foto KTP atau dokumen PDF Anda.",
-          "Tulis keperluan, penerima, dan tanggal.",
+          "Tulis keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
           "Unduh salinan ber-watermark.",
         ],
       },
@@ -240,7 +240,7 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com. Tidak perlu instal atau membuat akun.",
           "Masukkan foto KTP, slip gaji, atau PDF lain.",
-          "Tulis keperluan dan penerimanya, lalu tambahkan tanggal hari ini.",
+          "Tulis keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
           "Periksa pratinjau dan unduh salinan ber-watermark.",
         ],
       },
@@ -377,7 +377,7 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com di browser HP.",
           "Pilih foto KTP dari galeri.",
-          "Tulis keperluan, penerima, dan tanggal.",
+          "Tulis keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
           "Unduh hasilnya dan kirim sebagai dokumen.",
         ],
       },
@@ -512,8 +512,8 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com di browser mana pun, di HP atau komputer.",
           "Masukkan dokumen Anda. Bisa beberapa sekaligus.",
-          "Ketik teks watermark: keperluan, penerima, dan tanggal.",
-          "Jika perlu, sensor data atau tambahkan kata sandi.",
+          "Ketik keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
+          "Jika perlu, tekan \"Sensor sesuatu\" di bawah pratinjau atau centang \"Kunci dengan kata sandi\".",
           "Unduh salinan ber-watermark dan kirim itu, bukan aslinya.",
         ],
       },
@@ -646,7 +646,7 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com.",
           "Masukkan PDF atau foto Anda.",
-          "Tulis keperluan dan penerimanya, lalu tambahkan tanggal hari ini.",
+          "Tulis keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
           "Unduh salinan ber-watermark.",
         ],
       },
@@ -783,7 +783,7 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com.",
           "Masukkan foto KTP, slip gaji, atau rekening koran.",
-          "Tulis keperluan, penerima, dan tanggal, atau pilih templat.",
+          "Tulis keperluannya atau pilih salah satu contoh, lalu isi penerimanya. Tanggal ditambahkan otomatis.",
           "Unduh salinan ber-watermark.",
         ],
       },
@@ -915,8 +915,8 @@ export const COMPARISONS_ID: Comparison[] = [
         items: [
           "Buka cachety.com.",
           "Masukkan foto KTP atau slip gaji.",
-          "Tulis keperluan dan penerimanya, lalu tambahkan tanggal hari ini.",
-          "Jika perlu, sensor data atau tambahkan kata sandi, lalu unduh.",
+          "Tulis keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
+          "Jika perlu, tekan \"Sensor sesuatu\" atau centang \"Kunci dengan kata sandi\", lalu unduh.",
         ],
       },
     ],

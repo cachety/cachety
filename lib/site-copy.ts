@@ -189,7 +189,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     privacy: {
       title: "Confidentialité et sécurité",
       lead: "Vos documents sont personnels. Voici, simplement, ce que Cachety fait et ne fait pas, et comment le vérifier vous-même.",
-      updated: "Mis à jour le 11 octobre 2026",
+      updated: "Mis à jour le 12 octobre 2026",
       sections: [
         {
           title: "En bref",
@@ -220,7 +220,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         {
           title: "Ce qui est gardé sur votre appareil",
           paras: [
-            "Seulement vos réglages : la langue, l'apparence du filigrane, l'aperçu automatique et la taille maximale choisie. Ils restent dans votre navigateur pour vous éviter de les refaire. Aucun fichier, aucun texte ni aucun mot de passe n'y est enregistré. Vous pouvez les effacer à tout moment en vidant les données du site dans votre navigateur.",
+            "Seulement vos réglages : la langue, l'apparence du filigrane et la taille maximale choisie. Ils restent dans votre navigateur pour vous éviter de les refaire. Aucun fichier, aucun texte ni aucun mot de passe n'y est enregistré. Vous pouvez les effacer à tout moment en vidant les données du site dans votre navigateur.",
             "Pour fonctionner hors connexion, le navigateur garde aussi une copie des pages du site (pas de vos documents).",
           ],
         },
@@ -393,7 +393,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     privacy: {
       title: "Privacy and security",
       lead: "Your documents are personal. Here is, in plain words, what Cachety does and doesn't do, and how to check it yourself.",
-      updated: "Updated 11 October 2026",
+      updated: "Updated 12 October 2026",
       sections: [
         {
           title: "In short",
@@ -424,7 +424,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         {
           title: "What is kept on your device",
           paras: [
-            "Only your settings: language, watermark appearance, auto preview and the maximum file size you chose. They stay in your browser so you don't have to set them again. No file, text or password is ever stored there. You can erase them at any time by clearing this site's data in your browser.",
+            "Only your settings: language, watermark appearance and the maximum file size you chose. They stay in your browser so you don't have to set them again. No file, text or password is ever stored there. You can erase them at any time by clearing this site's data in your browser.",
             "To work offline, your browser also keeps a copy of the site's pages (not of your documents).",
           ],
         },
@@ -597,7 +597,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     privacy: {
       title: "プライバシーと安全性",
       lead: "書類は大切な個人情報です。Cachety が何をして、何をしないのか、そして自分で確かめる方法を、わかりやすく説明します。",
-      updated: "2026年10月11日更新",
+      updated: "2026年10月12日更新",
       sections: [
         {
           title: "要点",
@@ -628,7 +628,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         {
           title: "端末に保存されるもの",
           paras: [
-            "保存されるのは設定だけです（言語、透かしの見た目、自動プレビュー、最大ファイルサイズ）。次回また設定し直さなくて済むよう、ブラウザの中に残ります。ファイル、文字、パスワードは保存されません。ブラウザでこのサイトのデータを消去すれば、いつでも削除できます。",
+            "保存されるのは設定だけです（言語、透かしの見た目、最大ファイルサイズ）。次回また設定し直さなくて済むよう、ブラウザの中に残ります。ファイル、文字、パスワードは保存されません。ブラウザでこのサイトのデータを消去すれば、いつでも削除できます。",
             "オフラインでも使えるように、ブラウザはサイトのページのコピーも保存します（書類ではありません）。",
           ],
         },
@@ -801,7 +801,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     privacy: {
       title: "隐私与安全",
       lead: "证件是您的个人隐私。这里用通俗的话说明 Cachety 做什么、不做什么，以及您如何亲自验证。",
-      updated: "更新于 2026年10月11日",
+      updated: "更新于 2026年10月12日",
       sections: [
         {
           title: "简而言之",
@@ -832,7 +832,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         {
           title: "设备上保存了什么",
           paras: [
-            "只有您的设置：语言、水印外观、自动预览和所选的最大文件大小。它们保存在浏览器中，免得您每次重新设置。文件、文字和密码都不会保存在那里。您随时可以在浏览器中清除本站数据来删除它们。",
+            "只有您的设置：语言、水印外观和所选的最大文件大小。它们保存在浏览器中，免得您每次重新设置。文件、文字和密码都不会保存在那里。您随时可以在浏览器中清除本站数据来删除它们。",
             "为了离线使用，浏览器还会保存网站页面的副本（不是您的文件）。",
           ],
         },

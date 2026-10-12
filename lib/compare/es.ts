@@ -34,8 +34,8 @@ const HOW_TO: { type: "steps"; items: string[] } = {
   items: [
     "Abre cachety.com en el navegador del móvil o del PC. No hay que instalar nada.",
     "Suelta tu DNI, NIE, pasaporte o nómina en la página. Puedes añadir varios archivos a la vez.",
-    "Escribe para qué es la copia, para quién y la fecha, por ejemplo: Solo para alquiler – Inmobiliaria Sol – 11/10/2026.",
-    "Si quieres, tapa lo que no necesitan ver y añade una contraseña.",
+    "Di para qué es la copia (escríbelo o elige un ejemplo) y quién la va a recibir, por ejemplo: Solo para alquiler, para Inmobiliaria Sol. La fecha se añade sola.",
+    "Si quieres, pulsa «Ocultar algo» debajo de la vista previa para tapar lo que no necesitan ver, y marca «Proteger con contraseña».",
     "Descarga la copia con marca de agua y envía esa, nunca el original.",
   ],
 };

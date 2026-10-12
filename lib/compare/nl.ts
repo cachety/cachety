@@ -27,8 +27,8 @@ const HOW_TO: { type: "steps"; items: string[] } = {
   items: [
     "Open cachety.com in de browser van je telefoon of computer. Er is niets te installeren.",
     "Sleep je ID-kaart, paspoort, loonstrook of bankafschrift erin. Meerdere bestanden tegelijk kan.",
-    "Typ waarvoor de kopie is, voor wie en de datum, bijvoorbeeld: Huuraanvraag, Makelaardij De Linde, 12-10-2026.",
-    "Dek af wat de ontvanger niet hoeft te zien, zoals je BSN, en stel eventueel een wachtwoord in.",
+    "Vul in waarvoor de kopie is en wie hem krijgt, bijvoorbeeld: Huuraanvraag, Makelaardij De Linde. De datum komt er automatisch bij.",
+    "Dek met Iets afdekken af wat de ontvanger niet hoeft te zien, zoals je BSN, en vink eventueel Beveiligen met een wachtwoord aan.",
     "Download de kopie met watermerk en stuur die, nooit het origineel.",
   ],
 };
@@ -90,7 +90,7 @@ export const COMPARISONS_NL: Comparison[] = [
       },
       {
         criterion: "Watermerk",
-        cachety: "Vrije tekst met datum, instelbaar: lettertype, grootte, kleur, dekking, golf.",
+        cachety: "Doel en ontvanger, met automatisch de datum. Licht, Normaal of Sterk; lettertype, grootte, kleur, dekking en golf onder Meer instellingen.",
         other: "Voor wie en waarvoor de kopie is, met de datum, als watermerk op de kopie.",
       },
       {

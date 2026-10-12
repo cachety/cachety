@@ -37,7 +37,7 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en tu navegador. No hay nada que instalar ni cuenta que crear.",
           "Suelta tus archivos en la página o tócala para elegirlos. Puedes añadir a la vez el DNI, las nóminas y los extractos.",
-          "Escribe el texto de la marca de agua o elige la plantilla Alquiler y complétala. Añade el nombre de la inmobiliaria y pulsa el botón para añadir la fecha de hoy.",
+          "En «¿Para qué es esta copia?», escribe el motivo o elige el ejemplo Alquiler en «O elige uno:». En «¿Quién la va a recibir?», pon el nombre de la inmobiliaria. La fecha se añade sola.",
           "Revisa la vista previa: el texto se repite en diagonal por todas las páginas.",
           "Descarga las copias con marca de agua y envía esas, nunca los originales.",
         ],
@@ -48,12 +48,12 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         type: "tip",
-        text: "¿Estás mirando varios pisos? Activa la opción de varios destinatarios para crear de una vez una versión por inmobiliaria, cada una con su nombre. Si una copia aparece donde no debe, sabrás de dónde salió.",
+        text: "¿Estás mirando varios pisos? Añade cada inmobiliaria con «+ Añadir otro destinatario»: cada una recibe su propia copia, con su nombre. Si una copia aparece donde no debe, sabrás de dónde salió.",
       },
       { type: "h2", text: "Oculta lo que no necesitan ver" },
       {
         type: "p",
-        text: "Para comprobar tus ingresos, la inmobiliaria necesita ver tu sueldo, no en qué gastaste el resto del mes. En la vista previa puedes dibujar rectángulos para tapar números de cuenta o movimientos que no vienen al caso. Lo que ocultas se elimina de verdad del archivo, no solo se cubre. Ten en cuenta, eso sí, que una marca de agua disuade y permite rastrear una filtración, pero no hace imposible el mal uso: alguien siempre podría fotografiar un documento.",
+        text: "Para comprobar tus ingresos, la inmobiliaria necesita ver tu sueldo, no en qué gastaste el resto del mes. Debajo de la vista previa, pulsa «Ocultar algo» y dibuja rectángulos sobre los números de cuenta o movimientos que no vienen al caso; luego pulsa «Listo». Lo que ocultas se elimina de verdad del archivo, no solo se cubre. Ten en cuenta, eso sí, que una marca de agua disuade y permite rastrear una filtración, pero no hace imposible el mal uso: alguien siempre podría fotografiar un documento.",
       },
     ],
     faq: [
@@ -111,7 +111,7 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en el ordenador o en el móvil.",
           "Suelta una foto o un escaneo de tu DNI o NIE. Las fotos de iPhone (HEIC) también valen.",
-          "Escribe el texto de la marca de agua o parte de una plantilla, y pulsa el botón para añadir la fecha de hoy.",
+          "Di para qué es la copia (escríbelo o elige un ejemplo) y quién la va a recibir. La fecha se añade sola.",
           "Revisa la vista previa. Comprueba que tu foto y tus datos se siguen leyendo a través de la marca.",
           "Descarga la copia con marca de agua y adjunta esa a tu correo.",
         ],
@@ -119,7 +119,7 @@ export const GUIDES_ES: Guide[] = [
       { type: "h2", text: "Anverso y reverso en un solo archivo" },
       {
         type: "p",
-        text: "Si te piden las dos caras del documento, añade las dos fotos a la vez y descárgalas juntas en un solo PDF. Tú eliges el orden, para que el anverso vaya primero. Si la web donde tienes que subirlo limita el tamaño, puedes fijar un máximo de 1, 2, 5 o 10 MB por archivo.",
+        text: "Si te piden las dos caras del documento, añade las dos fotos a la vez y descárgalas juntas en un solo PDF. Tú eliges el orden, para que el anverso vaya primero. Antes de descargar ves el tamaño del archivo; si la web donde tienes que subirlo lo limita, pulsa «Reducir el tamaño» y elige 10, 5, 2 o 1 MB.",
       },
       {
         type: "tip",
@@ -137,7 +137,7 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         q: "¿La marca de agua hará ilegible mi DNI?",
-        a: "No. Puedes ajustar el tamaño, el color y la opacidad, y la vista previa te muestra exactamente lo que verá el destinatario antes de descargar.",
+        a: "No. Con «Ajustar la marca de agua» eliges Suave, Normal o Marcado, y el resto (tamaño, color, opacidad) está en «Más ajustes». La vista previa te muestra exactamente lo que verá el destinatario antes de descargar.",
       },
       {
         q: "¿Cachety guarda una copia de mi DNI?",
@@ -182,19 +182,19 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en tu navegador. No hace falta registrarse.",
           "Suelta tus nóminas y tu declaración en la página. Puedes añadir varios PDF a la vez.",
-          "Escribe la marca de agua con el motivo, el destinatario y la fecha, o empieza desde la plantilla Préstamo o Hacienda.",
-          "Pulsa «Ocultar una zona» y dibuja rectángulos sobre los números que no deben verse.",
-          "Revisa cada página en la vista previa y descarga. Si quieres, júntalo todo en un solo PDF en el orden que elijas.",
+          "Di para qué es la copia (escríbelo o elige el ejemplo Préstamo o Impuestos) y quién la va a recibir. La fecha se añade sola.",
+          "Debajo de la vista previa, pulsa «Ocultar algo», dibuja rectángulos sobre los números que no deben verse y pulsa «Listo».",
+          "Revisa cada página en la vista previa. En «Antes de descargar», elige «Un solo PDF» para juntarlo todo en el orden que quieras, o «Archivos separados (ZIP)», y descarga.",
         ],
       },
       {
         type: "tip",
-        text: "Activa la copia rastreable: cada copia lleva la fecha y una referencia única, y Cachety te da un registro para que lo guardes. Si un día una nómina aparece donde no debe, sabrás a quién se la enviaste.",
+        text: "Pulsa «Editar el texto» e inserta {código}, por ejemplo «ref. {código}»: cada copia lleva su propio código corto, y tras la descarga Cachety te muestra la lista para que la guardes con «Guardar la lista». Si un día una nómina aparece donde no debe, sabrás a quién se la enviaste.",
       },
       { type: "h2", text: "Añade una contraseña si va por correo" },
       {
         type: "p",
-        text: "Puedes proteger el PDF con una contraseña con cifrado AES-256. Así, si el correo acaba en la bandeja equivocada, nadie podrá abrir el archivo sin ella. Envía la contraseña por otra vía, por ejemplo en un SMS o por teléfono, nunca en el mismo correo que el archivo.",
+        text: "Marca «Proteger con contraseña» y el PDF se cifra con AES-256. Cachety crea una contraseña fácil de leer, de 12 palabras, y te la muestra después de descargar; si prefieres la tuya, elige «Elegir mi propia contraseña». Así, si el correo acaba en la bandeja equivocada, nadie podrá abrir el archivo sin ella. Envía la contraseña por otra vía, por ejemplo en un SMS o por teléfono, nunca en el mismo correo que el archivo.",
       },
       {
         type: "warning",
@@ -251,8 +251,8 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en tu navegador. No hace falta registrarse.",
           "Suelta tu PDF o tu imagen en la página. También valen JPG, PNG, HEIC y otros formatos habituales.",
-          "Escribe una marca de agua corta con el motivo, el destinatario y la fecha.",
-          "En la vista previa, pulsa «Ocultar una zona» y dibuja rectángulos sobre todo lo que quieras tapar.",
+          "Di para qué es la copia y quién la va a recibir. La fecha se añade sola.",
+          "Debajo de la vista previa, pulsa «Ocultar algo», dibuja rectángulos sobre todo lo que quieras tapar y pulsa «Listo».",
           "Revisa todas las páginas en la vista previa y descarga tu copia.",
         ],
       },
@@ -311,7 +311,7 @@ export const GUIDES_ES: Guide[] = [
       { type: "h2", text: "Hazlo donde ya están tus fotos" },
       {
         type: "p",
-        text: "Tus fotos de documentos viven en tu móvil, así que tiene sentido ponerles la marca de agua ahí mismo. No hace falta enviártelas por correo, pasarlas a otro equipo ni dejar copias sueltas por ahí. Cachety funciona en el navegador del móvil, como Safari o Chrome. Tus fotos se procesan en el propio teléfono y nunca se suben. Es la misma herramienta que en un PC, con las mismas funciones: plantillas, zonas ocultas, varios destinatarios y contraseña opcional.",
+        text: "Tus fotos de documentos viven en tu móvil, así que tiene sentido ponerles la marca de agua ahí mismo. No hace falta enviártelas por correo, pasarlas a otro equipo ni dejar copias sueltas por ahí. Cachety funciona en el navegador del móvil, como Safari o Chrome. Tus fotos se procesan en el propio teléfono y nunca se suben. Es la misma herramienta que en un PC, con las mismas funciones: ejemplos listos, zonas ocultas, varios destinatarios y contraseña opcional.",
       },
       { type: "h2", text: "Paso a paso" },
       {
@@ -319,7 +319,7 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en Safari, Chrome o el navegador que uses.",
           "Toca la zona para elegir archivos y selecciona las fotos o los PDF que quieres enviar. Puedes elegir varios a la vez.",
-          "Escribe el texto de la marca de agua o elige una plantilla. Toca el botón para añadir la fecha de hoy.",
+          "Di para qué es la copia (escríbelo o elige un ejemplo) y quién la va a recibir. La fecha se añade sola.",
           "Revisa la vista previa.",
           "Descarga la copia con marca de agua y compártela por correo, WhatsApp o la aplicación que uses. Borra después las copias sin marca que hayas hecho por el camino.",
         ],
@@ -407,14 +407,14 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en el navegador de tu celular o de tu computadora.",
           "Agrega la foto de tu INE, de frente y de reverso. Las fotos de iPhone (HEIC) también funcionan.",
-          "Escribe el texto de la marca de agua y toca el botón para agregar la fecha de hoy.",
-          "Si no hace falta mostrar tu domicilio o alguna clave, dibuja un rectángulo para ocultarla.",
+          "Di para qué es la copia y quién la va a recibir. La fecha se agrega sola.",
+          "Si no hace falta mostrar tu domicilio o alguna clave, toca «Ocultar algo» debajo de la vista previa y dibuja un rectángulo encima.",
           "Revisa la vista previa y descarga la copia. Envía esa, nunca la foto original.",
         ],
       },
       {
         type: "tip",
-        text: "Activa la copia rastreable: cada copia lleva una referencia única y Cachety te da un registro para que lo guardes. Si tu INE aparece donde no debe, sabrás a quién se la diste.",
+        text: "Toca «Editar el texto» e inserta {código}: cada copia lleva su propio código corto, y tras la descarga Cachety te da la lista para que la guardes. Si tu INE aparece donde no debe, sabrás a quién se la diste.",
       },
       {
         type: "warning",

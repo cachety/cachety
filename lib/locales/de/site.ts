@@ -137,7 +137,7 @@ export const SITE_DE: SiteCopy = {
   privacy: {
     title: "Datenschutz und Sicherheit",
     lead: "Deine Dokumente sind privat. Hier steht in einfachen Worten, was Cachety tut und was nicht, und wie du es selbst überprüfen kannst.",
-    updated: "Aktualisiert am 11. Oktober 2026",
+    updated: "Aktualisiert am 12. Oktober 2026",
     sections: [
       {
         title: "Kurz gesagt",
@@ -168,7 +168,7 @@ export const SITE_DE: SiteCopy = {
       {
         title: "Was auf deinem Gerät gespeichert wird",
         paras: [
-          "Nur deine Einstellungen: Sprache, Aussehen des Wasserzeichens, automatische Vorschau und die gewählte maximale Dateigröße. Sie bleiben in deinem Browser, damit du sie nicht jedes Mal neu einstellen musst. Dateien, Texte oder Passwörter werden dort nie gespeichert. Du kannst die Einstellungen jederzeit löschen, indem du die Websitedaten dieser Seite in deinem Browser entfernst.",
+          "Nur deine Einstellungen: Sprache, Aussehen des Wasserzeichens und die gewählte maximale Dateigröße. Sie bleiben in deinem Browser, damit du sie nicht jedes Mal neu einstellen musst. Dateien, Texte oder Passwörter werden dort nie gespeichert. Du kannst die Einstellungen jederzeit löschen, indem du die Websitedaten dieser Seite in deinem Browser entfernst.",
           "Damit Cachety offline funktioniert, speichert dein Browser außerdem eine Kopie der Seiten der Website (nicht deiner Dokumente).",
         ],
       },

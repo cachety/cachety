@@ -48,8 +48,8 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di browser HP atau komputer. Tidak perlu instal aplikasi, tidak perlu daftar.",
           "Ketuk area dokumen dan pilih foto atau scan KTP dari galeri. PDF juga bisa.",
-          "Ketik teks watermark atau pilih templat, misalnya Bank, lalu tambahkan nama penerima. Tekan tombol untuk menambahkan tanggal hari ini.",
-          "Lihat pratinjau. Pastikan NIK, nama, dan foto Anda masih terbaca di balik watermark. Jika perlu, atur ukuran, warna, atau opasitas.",
+          "Di \"Salinan ini untuk apa?\", ketik keperluannya atau pilih contoh di \"Atau pilih salah satu:\", misalnya Bank. Lalu isi nama penerima di \"Siapa yang akan menerimanya?\". Tanggal ditambahkan otomatis.",
+          "Lihat pratinjau. Pastikan NIK, nama, dan foto Anda masih terbaca di balik watermark. Jika perlu, tekan \"Atur watermark\" dan pilih Tipis, Normal, atau Tebal; ukuran, warna, dan opasitas ada di \"Pengaturan lainnya\".",
           "Unduh hasilnya dan kirim file ber-watermark itu, bukan foto aslinya.",
         ],
       },
@@ -130,9 +130,9 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di browser HP Anda.",
           "Pilih foto KTP dan foto selfie dari galeri. Keduanya bisa dimasukkan sekaligus.",
-          "Ketik keperluan dan penerimanya, misalnya \"Hanya untuk verifikasi akun, Toko Online Sentosa\", lalu tambahkan tanggal hari ini.",
-          "Periksa pratinjau: wajah dan data KTP harus tetap terlihat jelas. Turunkan opasitas jika watermark terlalu tebal.",
-          "Jika formulirnya membatasi ukuran file, pilih ukuran maksimal 1, 2, 5, atau 10 MB.",
+          "Ketik keperluannya, misalnya \"Hanya untuk verifikasi akun\", lalu isi penerimanya, misalnya Toko Online Sentosa. Tanggal ditambahkan otomatis.",
+          "Periksa pratinjau: wajah dan data KTP harus tetap terlihat jelas. Jika watermark terlalu tebal, tekan \"Atur watermark\" lalu pilih Tipis.",
+          "Ukuran file terlihat sebelum mengunduh. Jika formulirnya membatasi ukuran, tekan \"Perkecil ukuran\" dan pilih 10, 5, 2, atau 1 MB.",
           "Unduh hasilnya, lalu upload file itu ke formulir resmi.",
         ],
       },
@@ -195,19 +195,19 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di browser HP. Tidak perlu aplikasi atau akun.",
           "Masukkan foto KTP, dan KK atau kartu mahasiswa jika diminta. Bisa sekaligus.",
-          "Pilih templat Sewa kos, lalu tambahkan nama kosnya. Tekan tombol untuk menambahkan tanggal hari ini.",
+          "Pilih contoh Sewa kos, lalu isi nama kosnya sebagai penerima. Tanggal ditambahkan otomatis.",
           "Periksa pratinjau: tulisan diulang miring di seluruh halaman, data tetap terbaca.",
           "Unduh hasilnya dan kirim file itu ke pemilik kos.",
         ],
       },
       {
         type: "tip",
-        text: "Sedang survei beberapa kos sekaligus? Aktifkan opsi Beberapa penerima dan tulis nama tiap kos, satu per baris. Setiap pemilik mendapat salinan dengan namanya sendiri, sehingga jika ada yang bocor, Anda tahu asalnya.",
+        text: "Sedang survei beberapa kos sekaligus? Tambahkan tiap kos dengan \"+ Tambah penerima lain\". Setiap pemilik mendapat salinan sendiri dengan namanya, sehingga jika ada yang bocor, Anda tahu asalnya.",
       },
       { type: "h2", text: "Kartu Keluarga: kirim hanya jika benar-benar perlu" },
       {
         type: "p",
-        text: "KK memuat data seluruh anggota keluarga: NIK orang tua, adik, kakak, dan nama ibu kandung yang sering dipakai sebagai pertanyaan keamanan bank. Untuk sewa kos, KTP biasanya sudah cukup. Jika pemilik tetap meminta KK, tanyakan bagian mana yang perlu, lalu sensor data yang tidak diperlukan dengan fitur Sensor area. Bagian yang disensor benar-benar dihapus dari file.",
+        text: "KK memuat data seluruh anggota keluarga: NIK orang tua, adik, kakak, dan nama ibu kandung yang sering dipakai sebagai pertanyaan keamanan bank. Untuk sewa kos, KTP biasanya sudah cukup. Jika pemilik tetap meminta KK, tanyakan bagian mana yang perlu, lalu sensor data yang tidak diperlukan dengan tombol \"Sensor sesuatu\" di bawah pratinjau. Bagian yang disensor benar-benar dihapus dari file.",
       },
       {
         type: "p",
@@ -267,15 +267,15 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di HP atau komputer.",
           "Masukkan semua dokumen yang diminta: PDF dan foto bisa dicampur.",
-          "Pilih templat Lamaran kerja, lalu tambahkan nama perusahaan dan posisinya. Tambahkan tanggal hari ini.",
-          "Jika portal lamaran meminta satu file, pilih Satu file PDF dan atur urutannya: KTP dulu, lalu ijazah, lalu NPWP.",
-          "Jika ada batas ukuran, misalnya 2 MB, pilih ukuran maksimal per file.",
+          "Pilih contoh Lamaran kerja dan tambahkan posisinya, lalu isi nama perusahaan sebagai penerima. Tanggal ditambahkan otomatis.",
+          "Jika portal lamaran meminta satu file, pilih \"Satu file PDF\" di bagian \"Sebelum mengunduh\" dan atur urutannya: KTP dulu, lalu ijazah, lalu NPWP.",
+          "Jika ada batas ukuran, misalnya 2 MB, tekan \"Perkecil ukuran\" dan pilih 2 MB.",
           "Unduh dan lampirkan hasilnya di lamaran Anda.",
         ],
       },
       {
         type: "tip",
-        text: "Melamar ke banyak perusahaan? Opsi Beberapa penerima membuat satu versi per perusahaan, sampai 20 sekaligus, masing-masing dengan nama perusahaannya. Aktifkan juga Salinan yang bisa dilacak untuk menambahkan kode unik di setiap salinan.",
+        text: "Melamar ke banyak perusahaan? Tambahkan tiap perusahaan dengan \"+ Tambah penerima lain\": masing-masing mendapat salinan sendiri dengan nama perusahaannya. Tekan juga \"Ubah teks\" dan sisipkan {kode} untuk menambahkan kode singkat yang berbeda di setiap salinan.",
       },
       { type: "h2", text: "Dokumen Anda tetap di perangkat Anda" },
       {
@@ -333,14 +333,14 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di browser.",
           "Masukkan foto atau scan KTP Anda.",
-          "Tulis keperluan dan penerimanya, lalu tambahkan tanggal hari ini.",
-          "Aktifkan Salinan yang bisa dilacak agar setiap salinan memiliki kode unik, lalu salin catatan salinannya dan simpan sendiri.",
+          "Tulis keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
+          "Tekan \"Ubah teks\" dan sisipkan {kode}, misalnya \"ref. {kode}\", agar setiap salinan memiliki kode singkat sendiri. Setelah mengunduh, tekan \"Simpan daftar\" dan simpan daftarnya sendiri.",
           "Unduh dan kirim file ber-watermark.",
         ],
       },
       {
         type: "tip",
-        text: "Catatan salinan menunjukkan tanggal, kode, dan penerima setiap salinan. Catatan ini tidak disimpan di mana pun, jadi simpan baik-baik, misalnya di aplikasi catatan. Jika suatu hari salinan KTP Anda muncul di tempat yang aneh, kodenya memberi tahu ke mana dulu Anda mengirimnya.",
+        text: "Daftar ini menunjukkan kode dan penerima setiap salinan. Daftar ini tidak disimpan di mana pun, jadi simpan baik-baik, misalnya di aplikasi catatan. Jika suatu hari salinan KTP Anda muncul di tempat yang aneh, kodenya memberi tahu ke mana dulu Anda mengirimnya.",
       },
       { type: "h2", text: "Jika Anda curiga KTP sudah disalahgunakan" },
       {
@@ -411,10 +411,10 @@ export const GUIDES_ID: Guide[] = [
         type: "steps",
         items: [
           "Buka cachety.com dan masukkan PDF atau foto dokumen Anda.",
-          "Ketik teks watermark: keperluan, penerima, dan tanggal.",
-          "Tekan Sensor area, lalu gambar kotak di pratinjau pada bagian yang ingin disembunyikan.",
-          "Tekan Terapkan. Ulangi di halaman lain jika perlu.",
-          "Periksa pratinjau, lalu unduh hasilnya. Tambahkan kata sandi jika dokumen akan dikirim lewat email.",
+          "Ketik keperluan dan penerimanya. Tanggal ditambahkan otomatis.",
+          "Tekan \"Sensor sesuatu\" di bawah pratinjau, lalu gambar kotak pada bagian yang ingin disembunyikan. Kotak bisa digeser, diubah ukurannya, atau dihapus.",
+          "Tekan \"Selesai\". Ulangi di halaman lain jika perlu.",
+          "Periksa pratinjau, lalu unduh hasilnya. Centang \"Kunci dengan kata sandi\" jika dokumen akan dikirim lewat email.",
         ],
       },
       {
@@ -471,7 +471,7 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di Chrome, Safari, atau browser lain di HP Anda.",
           "Ketuk area dokumen, lalu pilih foto KTP dari galeri atau ambil foto baru.",
-          "Ketik teks watermark atau ketuk templat, lalu tambahkan nama penerima dan tanggal hari ini.",
+          "Ketik keperluannya atau ketuk salah satu contoh, lalu isi nama penerima. Tanggal ditambahkan otomatis.",
           "Geser ke bawah untuk melihat pratinjau. Ketuk gambar untuk memperbesar dan memeriksa detailnya.",
           "Ketuk tombol unduh. File tersimpan di folder Download atau di aplikasi File.",
           "Kirim file itu lewat WhatsApp, email, atau formulir online.",
@@ -484,7 +484,7 @@ export const GUIDES_ID: Guide[] = [
       { type: "h2", text: "Foto iPhone dan batas ukuran file" },
       {
         type: "p",
-        text: "Foto iPhone dalam format HEIC bisa langsung dipakai. Banyak formulir online di Indonesia membatasi ukuran upload, misalnya 1 atau 2 MB. Pilih ukuran maksimal per file sebelum mengunduh, dan Cachety akan mengecilkan file sampai batas itu tanpa membuat dokumen sulit dibaca.",
+        text: "Foto iPhone dalam format HEIC bisa langsung dipakai. Banyak formulir online di Indonesia membatasi ukuran upload, misalnya 1 atau 2 MB. Ukuran file terlihat sebelum mengunduh; ketuk \"Perkecil ukuran\", pilih batasnya, dan Cachety akan mengecilkan file sampai batas itu tanpa membuat dokumen sulit dibaca.",
       },
       { type: "h2", text: "Pasang seperti aplikasi" },
       {

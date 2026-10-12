@@ -6,7 +6,7 @@ import type { GuideBlock } from "@/lib/guides";
 import type { Comparison } from "./types";
 
 const CHECKED = "2026-10-11";
-const UPDATED = "2026-10-11";
+const UPDATED = "2026-10-12";
 
 // Cases « Cachety » reprises d'une page à l'autre (fiche de faits Cachety).
 const C = {
@@ -34,8 +34,8 @@ const HOW_TO: GuideBlock[] = [
     items: [
       "用浏览器打开 cachety.com，不用注册。",
       "把身份证照片或 PDF 拖进页面。iPhone 拍的照片（HEIC）也可以直接用。",
-      "输入水印文字，例如「仅供华信银行开户使用，他用无效」，再点「加上今天的日期」。",
-      "身份证号、照片等对方用不到的地方，可以用「遮盖区域」框住。",
+      "在「这份副本用来做什么？」里写上用途（例如「开户」），在「交给谁？」里写上接收方（例如「华信银行」）。日期会自动加上。",
+      "身份证号、照片等对方用不到的地方，可以用预览下方的「遮盖内容」框住，然后点「完成」。",
       "检查预览，下载加好水印的文件，再发给对方。",
     ],
   },
@@ -211,7 +211,7 @@ export const COMPARISONS_ZH: Comparison[] = [
       },
       {
         q: "福昕能遮盖身份证号吗？",
-        a: "能。福昕高级PDF编辑器有「擦除」和「密文」功能，可以把选中的内容真正删除。Cachety 的「遮盖区域」也会把框住的内容从文件里真正删掉。",
+        a: "能。福昕高级PDF编辑器有「擦除」和「密文」功能，可以把选中的内容真正删除。Cachety 的「遮盖内容」也会把框住的内容从文件里真正删掉。",
       },
       {
         q: "Cachety 能加图片水印吗？",

@@ -136,7 +136,7 @@ export const SITE_ES: SiteCopy = {
   privacy: {
     title: "Privacidad y seguridad",
     lead: "Tus documentos son personales. Aquí te explicamos, con palabras sencillas, qué hace Cachety y qué no hace, y cómo comprobarlo tú mismo.",
-    updated: "Actualizado el 11 de octubre de 2026",
+    updated: "Actualizado el 12 de octubre de 2026",
     sections: [
       {
         title: "En resumen",
@@ -167,7 +167,7 @@ export const SITE_ES: SiteCopy = {
       {
         title: "Lo que se guarda en tu dispositivo",
         paras: [
-          "Solo tus ajustes: idioma, aspecto de la marca de agua, vista previa automática y el tamaño máximo de archivo que elegiste. Se quedan en tu navegador para que no tengas que configurarlos otra vez. Nunca se guarda ahí ningún archivo, texto ni contraseña. Puedes borrarlos cuando quieras eliminando los datos de este sitio en tu navegador.",
+          "Solo tus ajustes: idioma, aspecto de la marca de agua y el tamaño máximo de archivo que elegiste. Se quedan en tu navegador para que no tengas que configurarlos otra vez. Nunca se guarda ahí ningún archivo, texto ni contraseña. Puedes borrarlos cuando quieras eliminando los datos de este sitio en tu navegador.",
           "Para funcionar sin conexión, tu navegador también guarda una copia de las páginas del sitio (no de tus documentos).",
         ],
       },

@@ -35,7 +35,7 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com in your browser. There is nothing to install and no account to create.",
           "Drop your files onto the page, or tap to choose them. You can add your passport, payslips and bank statements all at once.",
-          "Type your watermark text, or pick the Housing template and adjust it. Add the agent's name, and press the button to add today's date.",
+          "Under ‘What is this copy for?’, type the purpose or pick the Housing example. Then, under ‘Who will receive it?’, type the agent's name. The date is added automatically.",
           "Check the preview. The text is repeated diagonally across every page.",
           "Download the watermarked copies and send those, never the originals.",
         ],
@@ -46,12 +46,12 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         type: "tip",
-        text: "Applying to several flats? Use the Several recipients option to make a separate version for each agent, each with its own name on it. If a copy ever turns up somewhere it should not, you will know where it came from.",
+        text: "Applying to several flats? Add each agent with ‘+ Add another recipient’: each one gets their own copy, with their name on it. If a copy ever turns up somewhere it should not, you will know where it came from.",
       },
       { type: "h2", text: "Hide what the agent does not need" },
       {
         type: "p",
-        text: "An agent checking your income needs to see your salary going in, not what you spent at the chemist. You can draw boxes on the preview to black out account numbers or unrelated transactions. What you mask is really removed from the file, not just covered over.",
+        text: "An agent checking your income needs to see your salary going in, not what you spent at the chemist. Click ‘Hide something’ under the preview, then draw boxes to black out account numbers or unrelated transactions. What you mask is really removed from the file, not just covered over.",
       },
       {
         type: "p",
@@ -113,7 +113,7 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com on your computer or phone.",
           "Drop in a photo or scan of your passport or licence. Photos from an iPhone (HEIC) work too.",
-          "Type the watermark text, or start from a template, then press the button to add today's date.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
           "Check the preview. Make sure your photo and details are still readable through the watermark.",
           "Download the watermarked copy and attach that one to your email.",
         ],
@@ -129,7 +129,7 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "Front and back of a driving licence" },
       {
         type: "p",
-        text: "If someone asks for both sides of your photocard licence, add both photos at once and choose to combine them into a single PDF. You pick the order, so the front comes first. Some websites limit file size; you can set a maximum of 1, 2, 5 or 10 MB.",
+        text: "If someone asks for both sides of your photocard licence, add both photos at once and choose ‘One PDF’ before downloading. You pick the order, so the front comes first. Some websites limit file size; the size is shown before you download, and ‘Make it smaller’ keeps it under 10, 5, 2 or 1 MB.",
       },
       {
         type: "p",
@@ -143,7 +143,7 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         q: "Will the watermark make my passport unreadable?",
-        a: "No. You can adjust size, colour and opacity, and the preview shows exactly what the recipient will see before you download.",
+        a: "No. ‘Adjust watermark’ lets you choose Light, Normal or Strong, with size, colour and opacity under ‘More settings’, and the preview shows exactly what the recipient will see before you download.",
       },
       {
         q: "Does Cachety keep a copy of my passport?",
@@ -197,14 +197,14 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com in your browser.",
           "Drop in your statements and payslips. PDF downloads from your online banking work perfectly.",
-          "Type your watermark, or start from the Bank template, then add today's date.",
-          "On the preview, draw boxes over the details you want to hide.",
-          "Check each page, then download. Combine everything into one PDF in the order you choose, or download a ZIP.",
+          "Say what the copy is for (type it or pick the Bank example), then who will receive it. The date is added automatically.",
+          "Under the preview, click ‘Hide something’ and draw boxes over the details you want to hide, then ‘Done’.",
+          "Check each page. Before you download, choose ‘One PDF’ to combine everything in the order you choose, or ‘Separate files (ZIP)’, then download.",
         ],
       },
       {
         type: "tip",
-        text: "Turn on the Traceable copy option. It adds the date and a unique reference to each copy, and gives you a copy log to keep. If a statement ever leaks, you can tell which copy it was.",
+        text: "Click ‘Edit the text’ and insert {code}, for example ‘ref. {code}’. Each copy gets its own short code, listed after download: click ‘Save this list’ to keep it. If a statement ever leaks, you can tell which copy it was.",
       },
       {
         type: "p",
@@ -222,11 +222,11 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         q: "Is a watermarked statement still accepted?",
-        a: "Usually, yes. The watermark is semi-transparent and every figure remains readable. You can lower the opacity if needed.",
+        a: "Usually, yes. The watermark is semi-transparent and every figure remains readable. If needed, choose Light under ‘Adjust watermark’.",
       },
       {
         q: "The website says my file is too big. What can I do?",
-        a: "Choose a maximum file size of 1, 2, 5 or 10 MB before downloading, and Cachety will keep each file under that limit.",
+        a: "The file size is shown before you download. Click ‘Make it smaller’ and choose 10, 5, 2 or 1 MB, and Cachety will keep each file under that limit.",
       },
       {
         q: "Do I need to send payslips as PDFs?",
@@ -265,8 +265,8 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com in your browser. No sign-up is needed.",
           "Drop your PDF or image onto the page. JPG, PNG, HEIC and other common formats work too.",
-          "Type a short watermark, such as the purpose, recipient and date, or press the button to add today's date.",
-          "On the preview, draw rectangles over everything you want to hide.",
+          "Say what the copy is for, then who will receive it. The date is added automatically.",
+          "Under the preview, click ‘Hide something’ and draw rectangles over everything you want to hide, then ‘Done’.",
           "Check the preview on every page, then download your redacted copy.",
         ],
       },
@@ -329,7 +329,7 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "Why watermark on your phone" },
       {
         type: "p",
-        text: "Your phone is where your document photos live, so it makes sense to watermark them there. No need to email them to yourself, move them to a computer, or leave extra copies lying around. Cachety runs in your phone's web browser, such as Safari or Chrome. Your photos are processed on the phone itself and are never uploaded. It is the same tool as on a computer, with the same features: templates, masking, several recipients and an optional password.",
+        text: "Your phone is where your document photos live, so it makes sense to watermark them there. No need to email them to yourself, move them to a computer, or leave extra copies lying around. Cachety runs in your phone's web browser, such as Safari or Chrome. Your photos are processed on the phone itself and are never uploaded. It is the same tool as on a computer, with the same features: examples to pick from, hiding details, one copy per recipient and an optional password.",
       },
       { type: "h2", text: "Step by step" },
       {
@@ -337,7 +337,7 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com in Safari, Chrome or your usual browser.",
           "Tap to choose your files, and pick the photos or PDFs you want to send. You can choose several at once.",
-          "Type your watermark text, or pick a template. Tap the button to add today's date.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
           "Check the preview.",
           "Download the watermarked copy, then share it by email, WhatsApp or whichever app you use. Delete any extra unwatermarked copies you made along the way.",
         ],
@@ -361,7 +361,7 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Free, with no account and no tracking.",
           "Works with the internet switched off once the page has loaded.",
-          "Several recipients: a separate version for each person.",
+          "One copy per recipient, each with their own name on it.",
           "Optional password on the downloaded PDF.",
         ],
       },
@@ -396,7 +396,7 @@ export const GUIDES_EN: Guide[] = [
     title: "How to password-protect a PDF for free, without uploading it",
     metaTitle: "Password-Protect a PDF for Free, Without Uploading It",
     description:
-      "Password-protect a PDF for free, right in your browser. Strong encryption, a one-click password generator, and your file is never uploaded.",
+      "Password-protect a PDF for free, right in your browser. Strong encryption, an easy-to-read password made for you, and no upload.",
     intro:
       "Adding a password to a PDF means only the person with the password can open it. You can do it for free in your browser, and your document never leaves your computer or phone.",
     example: "Tenancy application – Parkside Estates Leeds – 11/10/2026",
@@ -412,14 +412,14 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com in your browser.",
           "Drop your PDF or photo onto the page.",
-          "Type a watermark with the purpose, recipient and date, for example: Tenancy application – Parkside Estates Leeds – 11/10/2026.",
-          "Check the preview, then turn on the password option. Type your own password or press Generate for a strong one.",
-          "Download the protected PDF and send it.",
+          "Say what the copy is for, for example Tenancy application, then who will receive it, for example Parkside Estates Leeds. The date is added automatically.",
+          "Check the preview, then tick ‘Lock with a password’. An easy-to-read password of 12 words is made for you. Prefer your own? Click ‘Choose my own password’, or generate a maximum-strength one.",
+          "Download the protected PDF and send it. The password is shown after download, to send separately.",
         ],
       },
       {
         type: "tip",
-        text: "If you copy the generated password, Cachety wipes it from your clipboard after one minute, so it does not linger where other apps might read it. Paste it somewhere safe first.",
+        text: "If you copy the password, Cachety wipes it from your clipboard after one minute, so it does not linger where other apps might read it. Paste it somewhere safe first.",
       },
       { type: "h2", text: "Send the password a different way" },
       {
@@ -437,7 +437,7 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "What about photos?" },
       {
         type: "p",
-        text: "Images cannot hold a password on their own. If you add a password to a photo, Cachety gives you an encrypted PDF instead, which opens in any normal PDF reader once the password is entered. Sending several documents? Combine them into a single PDF in the order you choose, so the recipient only needs to type one password.",
+        text: "Images cannot hold a password on their own. If you add a password to a photo, Cachety gives you an encrypted PDF instead, which opens in any normal PDF reader once the password is entered. Sending several documents? Choose ‘One PDF’ to combine them in the order you choose, so the recipient only needs to type one password.",
       },
       {
         type: "warning",
@@ -463,7 +463,7 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         q: "What makes a strong password?",
-        a: "Long and random is best. The Generate button creates one for you, so you do not have to think one up.",
+        a: "Long and random is best. When you tick ‘Lock with a password’, Cachety makes one of 12 random words for you, so you do not have to think one up.",
       },
     ],
     updated: "2026-10-12",

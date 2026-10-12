@@ -46,14 +46,14 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com dans votre navigateur, sur ordinateur ou sur téléphone.",
           "Déposez vos fichiers : pièce d’identité, trois dernières fiches de paie, avis d’imposition, justificatif de domicile. Vous pouvez en mettre plusieurs à la fois, en PDF ou en photo.",
-          "Choisissez le modèle « Logement » ou tapez votre texte : le motif, le destinataire et la date, par exemple « Dossier de location – Agence Martin – 12/10/2026 ». Le bouton « Ajouter la date du jour » vous évite de la saisir.",
+          "Sous « À quoi sert cette copie ? », tapez le motif ou choisissez l’exemple « Logement ». Puis, sous « Qui va la recevoir ? », indiquez le destinataire, par exemple « Agence Martin ». La date est ajoutée automatiquement.",
           "Vérifiez l’aperçu : le texte doit couvrir la page sans gêner la lecture des informations utiles.",
-          "Téléchargez. Si vous le souhaitez, réunissez tout en un seul PDF dans l’ordre de votre choix : c’est plus simple pour l’agence.",
+          "Avant de télécharger, choisissez « Un seul PDF » pour tout réunir dans l’ordre de votre choix : c’est plus simple pour l’agence. Puis téléchargez.",
         ],
       },
       {
         type: "tip",
-        text: "Vous postulez pour plusieurs logements ? Indiquez plusieurs destinataires : Cachety prépare une version par agence ou par propriétaire, en une seule fois. Si une copie circule un jour, vous saurez d’où elle vient.",
+        text: "Vous postulez pour plusieurs logements ? Ajoutez chaque agence ou propriétaire avec « + Ajouter un destinataire » : chacun reçoit sa propre copie, avec son nom dessus, en une seule fois. Si une copie circule un jour, vous saurez d’où elle vient.",
       },
       { type: "h2", text: "Vos papiers ne quittent pas votre appareil" },
       {
@@ -126,8 +126,8 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com dans votre navigateur.",
           "Déposez le scan ou la photo de votre carte, recto et verso, ou de votre passeport. Les PDF, les photos JPG et les photos d’iPhone (HEIC) sont acceptés.",
-          "Tapez votre texte, par exemple « Ouverture de compte – Banque Durand – 12/10/2026 », ou choisissez un modèle comme « Banque ».",
-          "Regardez l’aperçu : le texte est répété en diagonale sur toute la page. Ajustez la taille ou l’opacité si besoin.",
+          "Indiquez à quoi sert la copie (tapez-le, par exemple « Ouverture de compte », ou choisissez un exemple comme « Banque »), puis qui va la recevoir, par exemple « Banque Durand ». La date est ajoutée automatiquement.",
+          "Regardez l’aperçu : le texte est répété en diagonale sur toute la page. Si besoin, cliquez sur « Ajuster le filigrane » : Léger, Normal ou Marqué, et la taille ou l’opacité sous « Plus de réglages ».",
           "Téléchargez votre copie filigranée et envoyez-la.",
         ],
       },
@@ -208,9 +208,9 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com.",
           "Déposez vos documents, PDF ou photos. Vous pouvez en ajouter plusieurs d’un coup, ou coller une capture d’écran avec Ctrl+V.",
-          "Choisissez un modèle (« Impôts », « Banque », « Logement ») ou tapez votre texte, puis ajoutez la date du jour d’un clic.",
-          "Si besoin, dessinez un rectangle sur l’aperçu par-dessus le numéro à cacher. La zone masquée est réellement retirée du fichier, pas seulement recouverte.",
-          "Vérifiez l’aperçu, puis téléchargez. Si un site limite la taille des fichiers, choisissez une taille maximale (1, 2, 5 ou 10 Mo).",
+          "Indiquez à quoi sert la copie (tapez-le ou choisissez un exemple : « Impôts », « Banque », « Logement »), puis qui va la recevoir. La date est ajoutée automatiquement.",
+          "Si besoin, cliquez sur « Masquer quelque chose » sous l’aperçu et dessinez un rectangle par-dessus le numéro à cacher, puis « Terminé ». La zone masquée est réellement retirée du fichier, pas seulement recouverte.",
+          "Vérifiez l’aperçu, puis téléchargez. La taille du fichier s’affiche avant le téléchargement : si un site la limite, « Réduire la taille » la garde sous 10, 5, 2 ou 1 Mo.",
         ],
       },
       { type: "h2", text: "Vos documents restent chez vous" },
@@ -238,7 +238,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         q: "Puis-je protéger le PDF par un mot de passe ?",
-        a: "Oui, c’est une option. Le PDF est alors protégé par un chiffrement fort (AES-256), celui qu’utilisent les banques. Envoyez le mot de passe par un autre moyen que le fichier, par SMS par exemple.",
+        a: "Oui : cochez « Verrouiller avec un mot de passe ». Le PDF est alors protégé par un chiffrement fort (AES-256), celui qu’utilisent les banques, avec un mot de passe facile à lire de 12 mots, créé pour vous et affiché après le téléchargement. Envoyez-le par un autre moyen que le fichier, par SMS par exemple.",
       },
     ],
     updated: UPDATED,
@@ -286,8 +286,8 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com dans votre navigateur.",
           "Déposez votre PDF ou votre photo (JPG, PNG, HEIC d’iPhone…).",
-          "Sur l’aperçu, dessinez un rectangle par-dessus chaque zone à cacher : numéro, IBAN, photo. Vous pouvez en tracer plusieurs.",
-          "Ajoutez un filigrane, par exemple « Justificatif – Mutuelle Bernard – 12/10/2026 ».",
+          "Sous l’aperçu, cliquez sur « Masquer quelque chose » et dessinez un rectangle par-dessus chaque zone à cacher : numéro, IBAN, photo. Vous pouvez en tracer plusieurs, les déplacer, les redimensionner ou les retirer, puis cliquez sur « Terminé ».",
+          "Ajoutez un filigrane : indiquez à quoi sert la copie, par exemple « Justificatif », puis qui va la recevoir, par exemple « Mutuelle Bernard ». La date est ajoutée automatiquement.",
           "Vérifiez l’aperçu, puis téléchargez le document.",
         ],
       },
@@ -353,7 +353,7 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com dans votre navigateur.",
           "Touchez la zone de dépôt et choisissez vos fichiers : une photo de votre galerie ou un PDF enregistré sur le téléphone.",
-          "Tapez votre texte, par exemple « Inscription club de sport – Club Leroy – 12/10/2026 », ou choisissez un modèle et ajoutez la date du jour.",
+          "Indiquez à quoi sert la copie (tapez-le, par exemple « Inscription club de sport », ou choisissez un exemple), puis qui va la recevoir, par exemple « Club Leroy ». La date est ajoutée automatiquement.",
           "Vérifiez l’aperçu en zoomant si besoin.",
           "Téléchargez le résultat, puis envoyez-le par mail ou par messagerie.",
         ],
@@ -397,7 +397,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         q: "Puis-je filigraner plusieurs photos à la fois ?",
-        a: "Oui. Sélectionnez-en plusieurs : le même filigrane est appliqué à toutes. Vous pouvez ensuite les réunir en un seul PDF ou les télécharger dans un fichier ZIP.",
+        a: "Oui. Sélectionnez-en plusieurs : le même filigrane est appliqué à toutes. Avant de télécharger, choisissez « Un seul PDF » pour les réunir, ou « Fichiers séparés (ZIP) ».",
       },
     ],
     updated: UPDATED,
@@ -440,8 +440,8 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com.",
           "Déposez vos documents : carte d’identité, passeport, justificatifs, en PDF ou en photo.",
-          "Tapez votre texte, par exemple « Candidature – Société Garnier – 12/10/2026 ».",
-          "Activez la copie traçable : chaque copie reçoit la date et une référence unique, et vous gardez un registre de vos envois. Ce registre reste chez vous, il n’est enregistré nulle part.",
+          "Indiquez à quoi sert la copie, par exemple « Candidature », puis qui va la recevoir, par exemple « Société Garnier ». La date est ajoutée automatiquement.",
+          "Cliquez sur « Modifier le texte » et insérez {code}, par exemple « réf. {code} » : chaque copie reçoit son propre code court. Après le téléchargement, « Enregistrer la liste » vous donne le registre de vos envois. Ce registre reste chez vous, il n’est enregistré nulle part.",
           "Vérifiez l’aperçu, puis téléchargez et envoyez.",
         ],
       },
@@ -477,7 +477,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         q: "Comment savoir qui a laissé fuiter ma copie ?",
-        a: "Si chaque copie porte le nom du destinataire, ou une référence unique avec la copie traçable, il suffit de lire le filigrane de la copie retrouvée et de la comparer à votre registre des envois.",
+        a: "Si chaque copie porte le nom du destinataire, ou son propre code inséré avec « Modifier le texte », il suffit de lire le filigrane de la copie retrouvée et de la comparer à votre registre des envois.",
       },
       {
         q: "Où porter plainte pour usurpation d’identité ?",

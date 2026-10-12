@@ -139,7 +139,7 @@ export const SITE_ID: SiteCopy = {
   privacy: {
     title: "Privasi dan keamanan",
     lead: "Dokumen Anda bersifat pribadi. Berikut penjelasan sederhana tentang apa yang dilakukan dan tidak dilakukan Cachety, serta cara memeriksanya sendiri.",
-    updated: "Diperbarui 11 Oktober 2026",
+    updated: "Diperbarui 12 Oktober 2026",
     sections: [
       {
         title: "Ringkasnya",
@@ -170,7 +170,7 @@ export const SITE_ID: SiteCopy = {
       {
         title: "Yang disimpan di perangkat Anda",
         paras: [
-          "Hanya pengaturan Anda: bahasa, tampilan watermark, pratinjau otomatis, dan ukuran file maksimal yang Anda pilih. Pengaturan ini disimpan di browser agar Anda tidak perlu mengaturnya lagi. Tidak ada file, teks, atau kata sandi yang disimpan di sana. Anda bisa menghapusnya kapan saja dengan menghapus data situs ini di browser.",
+          "Hanya pengaturan Anda: bahasa, tampilan watermark, dan ukuran file maksimal yang Anda pilih. Pengaturan ini disimpan di browser agar Anda tidak perlu mengaturnya lagi. Tidak ada file, teks, atau kata sandi yang disimpan di sana. Anda bisa menghapusnya kapan saja dengan menghapus data situs ini di browser.",
           "Agar bisa dipakai tanpa internet, browser Anda juga menyimpan salinan halaman-halaman situs ini (bukan dokumen Anda).",
         ],
       },

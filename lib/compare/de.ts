@@ -31,8 +31,8 @@ const HOW_TO: { type: "steps"; items: string[] } = {
   items: [
     "Öffne cachety.com im Browser, auf dem Handy oder am Computer. Nichts zu installieren.",
     "Leg deinen Ausweis, deine Gehaltsabrechnung oder deinen Kontoauszug ab. Mehrere Dateien auf einmal gehen auch.",
-    "Schreib, wofür die Kopie ist, für wen und das Datum, zum Beispiel: Mietbewerbung, Hausverwaltung Lindner, 11.10.2026.",
-    "Schwärze bei Bedarf, was der Empfänger nicht sehen muss, und setz ein Passwort.",
+    "Gib an, wofür die Kopie ist und wer sie bekommt, zum Beispiel: Mietbewerbung, Hausverwaltung Lindner. Das Datum kommt automatisch dazu.",
+    "Schwärze bei Bedarf mit „Etwas schwärzen“, was der Empfänger nicht sehen muss, und hak „Mit Passwort schützen“ an, wenn du willst.",
     "Lade die Kopie mit Wasserzeichen herunter und schick diese, nie das Original.",
   ],
 };

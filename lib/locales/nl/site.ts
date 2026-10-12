@@ -136,7 +136,7 @@ export const SITE_NL: SiteCopy = {
   privacy: {
     title: "Privacy en beveiliging",
     lead: "Je documenten zijn persoonlijk. Hier lees je in gewone taal wat Cachety wel en niet doet, en hoe je dat zelf controleert.",
-    updated: "Bijgewerkt op 11 oktober 2026",
+    updated: "Bijgewerkt op 12 oktober 2026",
     sections: [
       {
         title: "In het kort",
@@ -167,7 +167,7 @@ export const SITE_NL: SiteCopy = {
       {
         title: "Wat er op je apparaat blijft staan",
         paras: [
-          "Alleen je instellingen: taal, uiterlijk van het watermerk, automatisch voorbeeld en de maximale bestandsgrootte die je koos. Ze blijven in je browser, zodat je ze niet opnieuw hoeft in te stellen. Er wordt daar nooit een bestand, tekst of wachtwoord opgeslagen. Je wist ze op elk moment door de sitegegevens van deze site in je browser te verwijderen.",
+          "Alleen je instellingen: taal, uiterlijk van het watermerk en de maximale bestandsgrootte die je koos. Ze blijven in je browser, zodat je ze niet opnieuw hoeft in te stellen. Er wordt daar nooit een bestand, tekst of wachtwoord opgeslagen. Je wist ze op elk moment door de sitegegevens van deze site in je browser te verwijderen.",
           "Om offline te werken, bewaart je browser ook een kopie van de pagina's van de site (niet van je documenten).",
         ],
       },

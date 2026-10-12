@@ -31,8 +31,8 @@ const HOW_TO: GuideBlockList = [
     items: [
       "Ouvrez cachety.com dans votre navigateur, sur ordinateur ou sur téléphone.",
       "Déposez vos fichiers : PDF, photos JPG, PNG ou HEIC d’iPhone. Vous pouvez en mettre plusieurs à la fois.",
-      "Tapez votre texte, par exemple « Dossier de location – Agence Martin – 12/10/2026 », ou partez d’un modèle prêt à l’emploi.",
-      "Si besoin, masquez un numéro ou une photo, ajoutez un mot de passe ou indiquez plusieurs destinataires.",
+      "Indiquez à quoi sert la copie (tapez-le, par exemple « Dossier de location », ou choisissez un exemple), puis qui va la recevoir, par exemple « Agence Martin ». La date est ajoutée automatiquement.",
+      "Si besoin, ajoutez d’autres destinataires avec « + Ajouter un destinataire », masquez un numéro ou une photo avec « Masquer quelque chose » sous l’aperçu, ou cochez « Verrouiller avec un mot de passe ».",
       "Vérifiez l’aperçu, puis téléchargez. Le fichier ne quitte jamais votre appareil : pour le vérifier, coupez le wifi et les données mobiles une fois la page chargée. Tout continue de fonctionner.",
     ],
   },

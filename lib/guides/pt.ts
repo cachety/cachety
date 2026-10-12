@@ -41,7 +41,7 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com no navegador. Não precisa instalar nada nem criar conta.",
           "Solte seus arquivos na página ou toque nela para escolher. Você pode adicionar de uma vez o RG, os holerites e o comprovante de residência.",
-          "Escreva o texto da marca d'água ou escolha o modelo Aluguel e complete. Inclua o nome da imobiliária e toque no botão que adiciona a data de hoje.",
+          "Em “Para que serve esta cópia?”, escreva o motivo ou escolha o exemplo Aluguel em “Ou escolha um:”. Em “Quem vai receber?”, coloque o nome da imobiliária. A data entra sozinha.",
           "Confira a prévia: o texto se repete na diagonal em todas as páginas.",
           "Baixe as cópias com marca d'água e envie essas, nunca os originais.",
         ],
@@ -52,12 +52,12 @@ export const GUIDES_PT: Guide[] = [
       },
       {
         type: "tip",
-        text: "Está vendo vários imóveis ao mesmo tempo? Ative a opção de vários destinatários para criar de uma vez uma versão para cada imobiliária, cada uma com o nome dela. Se uma cópia aparecer onde não devia, você sabe de onde ela saiu.",
+        text: "Está vendo vários imóveis ao mesmo tempo? Adicione cada imobiliária com “+ Adicionar outro destinatário”: cada uma recebe a sua própria cópia, com o nome dela. Se uma cópia aparecer onde não devia, você sabe de onde ela saiu.",
       },
       { type: "h2", text: "Oculte o que eles não precisam ver" },
       {
         type: "p",
-        text: "Para conferir sua renda, a imobiliária precisa ver o seu salário, não cada compra do mês. Se mandar extrato bancário, você pode desenhar retângulos na prévia para cobrir movimentações que não interessam. O que você oculta é apagado de verdade do arquivo, não só coberto. Lembre também: a marca d'água desestimula o mau uso e ajuda a rastrear um vazamento, mas não o torna impossível. Alguém sempre pode fotografar um documento.",
+        text: "Para conferir sua renda, a imobiliária precisa ver o seu salário, não cada compra do mês. Se mandar extrato bancário, toque em “Ocultar algo” embaixo da prévia, desenhe retângulos sobre as movimentações que não interessam e toque em “Concluir”. O que você oculta é apagado de verdade do arquivo, não só coberto. Lembre também: a marca d'água desestimula o mau uso e ajuda a rastrear um vazamento, mas não o torna impossível. Alguém sempre pode fotografar um documento.",
       },
     ],
     faq: [
@@ -121,7 +121,7 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com no computador ou no celular.",
           "Solte uma foto ou um escaneamento do seu RG ou da CIN. Fotos de iPhone (HEIC) também funcionam.",
-          "Escreva o texto da marca d'água ou parta de um modelo, e toque no botão que adiciona a data de hoje.",
+          "Diga para que serve a cópia (escreva ou escolha um exemplo) e quem vai receber. A data entra sozinha.",
           "Confira a prévia. Veja se sua foto e seus dados continuam legíveis através da marca.",
           "Baixe a cópia com marca d'água e anexe essa ao e-mail ou à conversa.",
         ],
@@ -129,7 +129,7 @@ export const GUIDES_PT: Guide[] = [
       { type: "h2", text: "Frente e verso num só arquivo" },
       {
         type: "p",
-        text: "Se pedirem os dois lados, adicione as duas fotos de uma vez e baixe tudo junto num único PDF. Você escolhe a ordem, para a frente vir primeiro. Se o site onde você precisa enviar limita o tamanho, dá para definir um máximo de 1, 2, 5 ou 10 MB por arquivo.",
+        text: "Se pedirem os dois lados, adicione as duas fotos de uma vez e baixe tudo junto num único PDF. Você escolhe a ordem, para a frente vir primeiro. Antes de baixar, você vê o tamanho do arquivo; se o site onde você precisa enviar limita o tamanho, toque em “Diminuir o tamanho” e escolha 10, 5, 2 ou 1 MB.",
       },
       {
         type: "tip",
@@ -147,7 +147,7 @@ export const GUIDES_PT: Guide[] = [
       },
       {
         q: "A marca d'água vai deixar meu RG ilegível?",
-        a: "Não. Você pode ajustar o tamanho, a cor e a opacidade, e a prévia mostra exatamente o que o destinatário vai ver antes de você baixar.",
+        a: "Não. Em “Ajustar a marca d'água” você escolhe Suave, Normal ou Forte, e o resto (tamanho, cor, opacidade) fica em “Mais ajustes”. A prévia mostra exatamente o que o destinatário vai ver antes de você baixar.",
       },
       {
         q: "Funciona com a CIN digital do app gov.br?",
@@ -189,14 +189,14 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Fotografe a CNH aberta sobre uma mesa, com boa luz e sem reflexo, ou use um print da CNH digital.",
           "Abra cachety.com e solte a foto ou o PDF na página.",
-          "Escreva a finalidade, o destinatário e a data. Por exemplo: Locação de veículo, Locadora Rota Sul, 11/10/2026.",
-          "Ajuste o tamanho e a opacidade se precisar, e confira na prévia que tudo continua legível.",
+          "Diga para que serve a cópia e quem vai receber. Por exemplo: Locação de veículo, para a Locadora Rota Sul. A data entra sozinha.",
+          "Confira na prévia que tudo continua legível. Se precisar, toque em “Ajustar a marca d'água” e escolha Suave.",
           "Baixe a cópia com marca d'água e envie essa.",
         ],
       },
       {
         type: "tip",
-        text: "Se o destinatário só precisa confirmar que você é habilitado, pergunte se pode ocultar alguns dados, como o número do RG ou a filiação. Desenhe um retângulo sobre eles na prévia: o que você oculta é apagado do arquivo.",
+        text: "Se o destinatário só precisa confirmar que você é habilitado, pergunte se pode ocultar alguns dados, como o número do RG ou a filiação. Toque em “Ocultar algo” embaixo da prévia e desenhe um retângulo sobre eles: o que você oculta é apagado do arquivo.",
       },
       {
         type: "warning",
@@ -256,15 +256,15 @@ export const GUIDES_PT: Guide[] = [
         type: "steps",
         items: [
           "Abra cachety.com e solte os PDFs dos holerites e da declaração. Pode ser vários de uma vez.",
-          "Escolha o modelo Financiamento, Aluguel ou Imposto de renda, ou escreva o seu texto. Inclua o nome do destinatário e a data.",
-          "Toque em Ocultar uma área e desenhe retângulos sobre o que não precisam ver, como número da conta ou bens que não vêm ao caso.",
+          "Em “Ou escolha um:”, toque no exemplo Financiamento, Aluguel ou Imposto de renda, ou escreva o seu texto. Depois coloque o nome do destinatário. A data entra sozinha.",
+          "Embaixo da prévia, toque em “Ocultar algo” e desenhe retângulos sobre o que não precisam ver, como número da conta ou bens que não vêm ao caso. Depois toque em “Concluir”.",
           "Confira a prévia página por página.",
-          "Baixe tudo num único PDF, na ordem que você escolher, ou num arquivo ZIP.",
+          "Em “Antes de baixar”, escolha “Um único PDF”, na ordem que você quiser, ou “Arquivos separados (ZIP)”, e baixe.",
         ],
       },
       {
         type: "tip",
-        text: "Quer mais proteção? Defina uma senha para o PDF (criptografia AES-256) e passe a senha por outro canal, por exemplo por telefone, nunca na mesma mensagem do arquivo.",
+        text: "Quer mais proteção? Marque “Proteger com senha” (criptografia AES-256): o Cachety cria uma senha fácil de ler, de 12 palavras, e mostra depois do download. Passe a senha por outro canal, por exemplo por telefone, nunca na mesma mensagem do arquivo.",
       },
       {
         type: "p",
@@ -331,9 +331,9 @@ export const GUIDES_PT: Guide[] = [
         type: "steps",
         items: [
           "Abra cachety.com e solte a foto do documento.",
-          "Escreva para que serve, para quem e a data. Por exemplo: Cadastro de vendedor, Feira Online Bem-te-vi, 11/10/2026.",
-          "Se o destinatário só precisa ver nome e foto, oculte os outros números desenhando um retângulo na prévia.",
-          "Use o limite de tamanho (1, 2, 5 ou 10 MB) se o formulário recusar arquivos grandes.",
+          "Diga para que serve a cópia e quem vai receber. Por exemplo: Cadastro de vendedor, para a Feira Online Bem-te-vi. A data entra sozinha.",
+          "Se o destinatário só precisa ver nome e foto, toque em “Ocultar algo” embaixo da prévia e desenhe um retângulo sobre os outros números.",
+          "Se o formulário recusar arquivos grandes, toque em “Diminuir o tamanho” e escolha 10, 5, 2 ou 1 MB.",
           "Baixe a imagem com marca d'água e envie essa.",
         ],
       },
@@ -399,8 +399,8 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com no celular ou no computador.",
           "Solte o documento que você vai enviar.",
-          "Escreva a finalidade, o destinatário e a data, ou use um modelo e o botão de data.",
-          "Se quiser, ative a cópia rastreável: cada cópia ganha um código único, e o registro fica com você.",
+          "Diga para que serve a cópia (escreva ou escolha um exemplo) e quem vai receber. A data entra sozinha.",
+          "Se quiser, toque em “Editar o texto” e insira {código}: cada cópia ganha um código curto próprio, e a lista fica com você depois do download.",
           "Baixe e envie a cópia com marca d'água. Guarde o original só com você.",
         ],
       },
@@ -474,9 +474,9 @@ export const GUIDES_PT: Guide[] = [
         type: "steps",
         items: [
           "Abra cachety.com e solte o PDF ou a imagem.",
-          "Escreva a marca d'água: finalidade, destinatário e data.",
-          "Toque em Ocultar uma área e desenhe um retângulo sobre cada dado a esconder. Você pode desenhar vários na mesma página.",
-          "Toque em Aplicar e confira o resultado na prévia.",
+          "Diga para que serve a cópia e quem vai receber. A data entra sozinha.",
+          "Embaixo da prévia, toque em “Ocultar algo” e desenhe um retângulo sobre cada dado a esconder. Você pode desenhar vários na mesma página, e mover, redimensionar ou remover cada um.",
+          "Toque em “Concluir” e confira o resultado na prévia.",
           "Baixe o arquivo. O que você ocultou não existe mais nele.",
         ],
       },
@@ -533,7 +533,7 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com no navegador do celular.",
           "Toque na área de arquivos e escolha uma foto da galeria, tire uma foto na hora ou pegue um PDF nos arquivos.",
-          "Escreva para que serve, para quem e a data, ou toque num modelo e no botão de data.",
+          "Diga para que serve a cópia (escreva ou toque num exemplo) e quem vai receber. A data entra sozinha.",
           "Confira a prévia; toque na página para ampliar.",
           "Baixe o arquivo com marca d'água e compartilhe pelo WhatsApp, e-mail ou formulário.",
         ],
@@ -545,7 +545,7 @@ export const GUIDES_PT: Guide[] = [
           "Coloque o documento sobre uma superfície escura e lisa, com boa luz e sem flash.",
           "Enquadre só o documento, reto, e confira se nada está cortado.",
           "Fotos de iPhone em HEIC funcionam normalmente, não precisa converter.",
-          "Se o formulário limita o tamanho, escolha um máximo de 1, 2, 5 ou 10 MB por arquivo.",
+          "Se o formulário limita o tamanho, toque em “Diminuir o tamanho” antes de baixar e escolha 10, 5, 2 ou 1 MB.",
         ],
       },
       {
