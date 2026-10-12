@@ -243,7 +243,10 @@ describe("file de traitement", () => {
           const m = row?.textContent?.match(/(\d+)\s*\/\s*60/);
           return m ? Number(m[1]) : 0;
         });
-      for (let i = 0; i < 200 && (await progress()) < 5; i++) await page.waitForTimeout(50);
+      // Délai en temps, pas en nombre d'essais : les machines de CI (WebKit
+      // sous Linux surtout) rendent les pages A4 bien plus lentement.
+      const deadline = Date.now() + 45_000;
+      while (Date.now() < deadline && (await progress()) < 5) await page.waitForTimeout(100);
       const before = await progress();
       expect(before).toBeGreaterThanOrEqual(5);
 
@@ -260,7 +263,7 @@ describe("file de traitement", () => {
       }
       expect(lowest).toBeGreaterThanOrEqual(before);
     },
-    90_000
+    120_000
   );
 });
 
