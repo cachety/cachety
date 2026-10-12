@@ -75,6 +75,25 @@ bunx serve out     # oder ein beliebiger Server für statische Dateien
 
 `out/` kann unverändert auf jeden statischen Hoster. Jede Seite trägt ihre eigene Content-Security-Policy in einem `<meta>`-Tag, die Netzwerksperre greift also auch ohne unsere HTTP-Header. Für denselben Schutz wie auf cachety.com setzt du zusätzlich die Header aus `out/_headers`. Siehe [docs/deploy.md](docs/deploy.md) für Cloudflare Pages, GitHub Pages und andere Server.
 
+## Cachety auf deiner Website einbinden (Partner)
+
+Hausverwaltungen, HR-Plattformen, Vereine: Freigegebene Websites können das komplette Tool in ihren eigenen Seiten zeigen, damit Menschen ihre Dokumente direkt dort mit einem Wasserzeichen versehen.
+
+- **Privat von Grund auf:** Das Tool läuft in einem Rahmen, den cachety.com ausliefert. Die einbindende Seite und ihre Skripte können die Dokumente nicht lesen. Sie verlassen nie das Gerät der Besucher.
+- **Anpassbar:** Zweck und Empfänger vorausgefüllt (Besucher können sie ändern), Farbe der Schaltflächen und Sprache. An die Seite geht nur die Höhe des Rahmens.
+- **Nur freigegebene Partner:** Die erlaubten Websites stehen in [`partners.json`](partners.json). Alle anderen lehnt der Browser ab.
+- **Kostenlos**, wie das ganze Projekt. Eine Spende ist willkommen, wenn es dir nützt.
+
+**So wirst du Partner:** [Stell eine Anfrage](https://github.com/cachety/cachety/issues/new?template=partner.yml) mit der Adresse deiner Website. Sobald sie freigegeben und veröffentlicht ist, füge den Code ein:
+
+```html
+<iframe src="https://cachety.com/embed/de#for=Mietbewerbung&to=Hausverwaltung%20Martin"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+Die [Seite für Websites](https://cachety.com/de/partners) erstellt diesen Code für dich, mit echter Vorschau, dem kurzen Skript für die automatische Höhe und einem Text zum Übernehmen. Technische Details: [docs/embed.md](docs/embed.md).
+
 ## Entwicklung
 
 ```sh

@@ -75,6 +75,25 @@ bunx serve out     # or any static file server
 
 Le dossier `out/` peut être déposé tel quel sur n'importe quel hébergement statique. Chaque page embarque sa propre Content-Security-Policy dans une balise `<meta>`, si bien que le verrou réseau fonctionne même sans nos en-têtes HTTP. Pour obtenir la même protection que cachety.com, configurez aussi les en-têtes de `out/_headers`. Voir [docs/deploy.md](docs/deploy.md) pour Cloudflare Pages, GitHub Pages et d'autres serveurs.
 
+## Intégrer Cachety à votre site (partenaires)
+
+Agences immobilières, plateformes RH, associations : les sites approuvés peuvent afficher l'outil complet dans leurs pages, pour que ceux qui leur envoient des documents les filigranent sur place.
+
+- **Privé par conception :** l'outil tourne dans un cadre servi par cachety.com. La page qui l'accueille, et tout script qu'elle contient, ne peut pas lire les documents. Ils ne quittent jamais l'appareil du visiteur.
+- **Personnalisable :** motif et destinataire pré-remplis (le visiteur peut les modifier), couleur des boutons et langue. Seule la hauteur du cadre est transmise à la page.
+- **Partenaires approuvés uniquement :** les sites autorisés sont listés dans [`partners.json`](partners.json). Le navigateur refuse tous les autres.
+- **Gratuit**, comme le reste du projet. Un don est bienvenu s'il vous rend service.
+
+**Comment devenir partenaire :** [ouvrez une demande](https://github.com/cachety/cachety/issues/new?template=partner.yml) avec l'adresse de votre site. Une fois approuvée et déployée, collez le code d'intégration :
+
+```html
+<iframe src="https://cachety.com/embed/fr#for=Dossier%20de%20location&to=Agence%20Martin"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+La [page partenaires](https://cachety.com/fr/partners) génère ce code pour vous, avec un aperçu réel, le court script de hauteur automatique et un texte à reprendre. Détails techniques : [docs/embed.md](docs/embed.md).
+
 ## Développement
 
 ```sh

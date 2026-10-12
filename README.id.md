@@ -75,6 +75,25 @@ bunx serve out     # atau server file statis apa pun
 
 `out/` bisa langsung ditaruh di hosting statis mana pun. Setiap halaman membawa Content-Security-Policy sendiri dalam tag `<meta>`, jadi penguncian jaringan tetap bekerja tanpa header HTTP kami. Untuk mendapatkan perlindungan yang sama dengan cachety.com, pasang juga header dari `out/_headers`. Lihat [docs/deploy.md](docs/deploy.md) untuk Cloudflare Pages, GitHub Pages, dan server lain.
 
+## Pasang Cachety di situs Anda (mitra)
+
+Agen properti, platform HR, komunitas: situs yang disetujui bisa menampilkan alat ini secara lengkap di halamannya sendiri, supaya orang yang mengirim dokumen bisa langsung memberi watermark di sana.
+
+- **Privat sejak rancangan:** alat berjalan di dalam bingkai yang disajikan cachety.com. Halaman yang menampilkannya, dan skrip apa pun di sana, tidak bisa membaca dokumen. Dokumen tidak pernah meninggalkan perangkat pengunjung.
+- **Bisa disesuaikan:** tujuan dan penerima sudah terisi (pengunjung tetap bisa mengubahnya), warna tombol, dan bahasa. Hanya tinggi bingkai yang dikirim ke halaman.
+- **Hanya mitra yang disetujui:** situs yang diizinkan tercantum di [`partners.json`](partners.json). Browser menolak situs lain.
+- **Gratis**, seperti bagian lain proyek ini. Donasi sangat dihargai jika alat ini bermanfaat.
+
+**Cara bergabung:** [ajukan permintaan](https://github.com/cachety/cachety/issues/new?template=partner.yml) dengan alamat situs Anda. Setelah disetujui dan dipublikasikan, tempel kode berikut:
+
+```html
+<iframe src="https://cachety.com/embed/id#for=Pengajuan%20sewa&to=Agen%20Properti%20Martin"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+[Halaman untuk situs web](https://cachety.com/id/partners) membuatkan kode ini untuk Anda, dengan pratinjau langsung, skrip singkat untuk tinggi otomatis, dan teks yang bisa dipakai ulang. Detail teknis: [docs/embed.md](docs/embed.md).
+
 ## Pengembangan
 
 ```sh

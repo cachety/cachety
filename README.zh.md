@@ -75,6 +75,25 @@ bunx serve out     # or any static file server
 
 `out/` 可以原样放到任何静态托管服务上。每个页面都在 `<meta>` 标签中自带 Content-Security-Policy，所以即使没有我们的 HTTP 响应头，网络封锁依然有效。如果想获得和 cachety.com 一样的防护，还需要设置 `out/_headers` 中的响应头。Cloudflare Pages、GitHub Pages 和其他服务器的部署方法，请见 [docs/deploy.md](docs/deploy.md)。
 
+## 在你的网站上嵌入 Cachety（合作伙伴）
+
+房产中介、人力资源平台、各类组织：经批准的网站可以在自己的页面中显示完整的工具，让给你们发文件的人当场加水印。
+
+- **从设计上保护隐私：** 工具运行在由 cachety.com 提供的框架里。宿主页面及其上的任何脚本都读不到文件。文件始终不会离开访问者的设备。
+- **可以定制：** 预先填好用途和接收方（访问者仍可修改）、按钮颜色和语言。发给宿主页面的只有框架的高度。
+- **仅限已批准的合作伙伴：** 允许的网站列在 [`partners.json`](partners.json) 中。浏览器会拒绝其他网站。
+- **免费**，和本项目其他部分一样。如果对你有帮助，欢迎捐助。
+
+**如何加入：** 带上你的网站地址，[提交合作申请](https://github.com/cachety/cachety/issues/new?template=partner.yml)。获批并上线后，粘贴以下代码：
+
+```html
+<iframe src="https://cachety.com/embed/zh#for=%E7%A7%9F%E6%88%BF%E7%94%B3%E8%AF%B7&to=%E5%AE%89%E5%B1%85%E6%88%BF%E4%BA%A7"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+[网站合作页面](https://cachety.com/zh/partners)可以为你生成这段代码，带有实时预览、自动调整高度的简短脚本，以及可以直接使用的说明文字。技术细节：[docs/embed.md](docs/embed.md)。
+
 ## 开发
 
 ```sh

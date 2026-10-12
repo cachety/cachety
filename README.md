@@ -75,6 +75,25 @@ bunx serve out     # or any static file server
 
 `out/` can be dropped as-is onto any static host. Each page carries its own Content-Security-Policy in a `<meta>` tag, so the network lock still works without our HTTP headers. To get the same protection as cachety.com, also set the headers from `out/_headers`. See [docs/deploy.md](docs/deploy.md) for Cloudflare Pages, GitHub Pages and other servers.
 
+## Put Cachety on your website (partners)
+
+Letting agencies, HR platforms, associations: approved websites can show the full tool in their own pages, so the people who send them documents can watermark them on the spot.
+
+- **Private by design:** the tool runs in a frame served by cachety.com. The host page, and any script on it, can't read the documents. They never leave the visitor's device.
+- **Customisable:** pre-filled purpose and recipient (visitors can still change them), button colour and language. Only the frame's height is sent to the host page.
+- **Approved partners only:** the allowed websites are listed in [`partners.json`](partners.json). Every other site is refused by the browser.
+- **Free**, like the rest of the project. A donation is welcome if it's useful to you.
+
+**How to join:** [open a partner request](https://github.com/cachety/cachety/issues/new?template=partner.yml) with your website's address. Once it's approved and deployed, paste the embed code:
+
+```html
+<iframe src="https://cachety.com/embed/en#for=Rental%20application&to=Martin%20Lettings"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+The [partners page](https://cachety.com/en/partners) builds this code for you, with a live preview, the short script for automatic height, and wording you can reuse. Technical details: [docs/embed.md](docs/embed.md).
+
 ## Development
 
 ```sh

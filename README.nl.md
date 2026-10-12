@@ -75,6 +75,25 @@ bunx serve out     # of een andere statische bestandsserver
 
 `out/` kun je zo op elke statische host zetten. Elke pagina heeft een eigen Content-Security-Policy in een `<meta>`-tag, dus de netwerkblokkade werkt ook zonder onze HTTP-headers. Voor dezelfde bescherming als cachety.com stel je ook de headers uit `out/_headers` in. Zie [docs/deploy.md](docs/deploy.md) voor Cloudflare Pages, GitHub Pages en andere servers.
 
+## Cachety op je eigen website (partners)
+
+Makelaars, hr-platforms, verenigingen: goedgekeurde websites kunnen de volledige tool op hun eigen pagina's tonen, zodat mensen hun documenten daar meteen van een watermerk voorzien.
+
+- **Privé door ontwerp:** de tool draait in een kader dat cachety.com levert. De pagina eromheen, en elk script erop, kan de documenten niet lezen. Ze verlaten nooit het apparaat van de bezoeker.
+- **Aan te passen:** doel en ontvanger vooraf ingevuld (de bezoeker kan ze wijzigen), kleur van de knoppen en taal. Alleen de hoogte van het kader gaat naar de pagina.
+- **Alleen goedgekeurde partners:** de toegestane websites staan in [`partners.json`](partners.json). De browser weigert alle andere.
+- **Gratis**, net als de rest van het project. Een donatie is welkom als je er iets aan hebt.
+
+**Partner worden:** [dien een aanvraag in](https://github.com/cachety/cachety/issues/new?template=partner.yml) met het adres van je website. Zodra die is goedgekeurd en online staat, plak je de code:
+
+```html
+<iframe src="https://cachety.com/embed/nl#for=Huuraanvraag&to=Makelaardij%20Martin"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+De [pagina voor websites](https://cachety.com/nl/partners) maakt deze code voor je, met een echte voorbeeldweergave, het korte script voor automatische hoogte en een tekst om over te nemen. Technische details: [docs/embed.md](docs/embed.md).
+
 ## Ontwikkeling
 
 ```sh

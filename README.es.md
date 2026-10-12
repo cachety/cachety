@@ -75,6 +75,25 @@ bunx serve out     # or any static file server
 
 Puedes subir `out/` tal cual a cualquier alojamiento estático. Cada página lleva su propia Content-Security-Policy en una etiqueta `<meta>`, así que el bloqueo de red sigue funcionando sin nuestras cabeceras HTTP. Para tener la misma protección que cachety.com, configura también las cabeceras de `out/_headers`. Consulta [docs/deploy.md](docs/deploy.md) para Cloudflare Pages, GitHub Pages y otros servidores.
 
+## Integra Cachety en tu sitio (sitios asociados)
+
+Inmobiliarias, plataformas de RR. HH., asociaciones: los sitios aprobados pueden mostrar la herramienta completa en sus páginas, para que quienes les envían documentos les pongan la marca de agua ahí mismo.
+
+- **Privado por diseño:** la herramienta funciona en un marco servido por cachety.com. La página que la muestra, y cualquier script que tenga, no puede leer los documentos. Nunca salen del dispositivo del visitante.
+- **Personalizable:** motivo y destinatario ya rellenados (el visitante puede cambiarlos), color de los botones e idioma. A la página solo se le envía la altura del marco.
+- **Solo sitios aprobados:** los sitios autorizados están en [`partners.json`](partners.json). El navegador rechaza a todos los demás.
+- **Gratis**, como el resto del proyecto. Si te resulta útil, se agradece una donación.
+
+**Cómo unirte:** [abre una solicitud](https://github.com/cachety/cachety/issues/new?template=partner.yml) con la dirección de tu sitio. Cuando esté aprobada y publicada, pega el código:
+
+```html
+<iframe src="https://cachety.com/embed/es#for=Solicitud%20de%20alquiler&to=Inmobiliaria%20Martín"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+La [página para sitios web](https://cachety.com/es/partners) genera este código por ti, con una vista previa real, el script corto de altura automática y un texto que puedes reutilizar. Detalles técnicos: [docs/embed.md](docs/embed.md).
+
 ## Desarrollo
 
 ```sh

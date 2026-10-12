@@ -75,6 +75,25 @@ bunx serve out     # or any static file server
 
 `out/` は、そのままどんな静的ホスティングにも置けます。各ページは `<meta>` タグに自分専用の Content-Security-Policy を持っているので、私たちの HTTP ヘッダーがなくても通信の制限は働きます。cachety.com と同じ保護を得るには、`out/_headers` にあるヘッダーも設定してください。Cloudflare Pages、GitHub Pages、その他のサーバーについては [docs/deploy.md](docs/deploy.md) をご覧ください。
 
+## あなたのサイトに Cachety を埋め込む（パートナー）
+
+不動産会社、人事プラットフォーム、団体など、承認されたサイトは自分のページにツールをそのまま表示できます。書類を送る人が、その場で透かしを入れられます。
+
+- **設計からプライベート：** ツールは cachety.com が配信する枠の中で動きます。掲載ページやそこにあるスクリプトは書類を読めません。書類は訪問者の端末から出ません。
+- **カスタマイズ可能：** 用途と宛先をあらかじめ入力（訪問者は変更できます）、ボタンの色、言語。掲載ページに送られるのは枠の高さだけです。
+- **承認されたパートナーのみ：** 許可されたサイトは [`partners.json`](partners.json) に載っています。それ以外のサイトではブラウザが表示を拒否します。
+- **無料**です。役に立ったら寄付をいただけるとうれしいです。
+
+**参加方法：** サイトのアドレスを書いて[パートナー申請](https://github.com/cachety/cachety/issues/new?template=partner.yml)を出してください。承認されて公開されたら、次のコードを貼り付けます。
+
+```html
+<iframe src="https://cachety.com/embed/ja#for=%E8%B3%83%E8%B2%B8%E3%81%AE%E7%94%B3%E8%BE%BC%E3%81%BF&to=%E3%81%BF%E3%81%AA%E3%81%A8%E4%B8%8D%E5%8B%95%E7%94%A3"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+[サイト運営者向けページ](https://cachety.com/ja/partners)では、このコードをプレビュー付きで作れます。高さを自動調整する短いスクリプトと、そのまま使える説明文もあります。技術的な詳細：[docs/embed.md](docs/embed.md)
+
 ## 開発
 
 ```sh

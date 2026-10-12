@@ -75,6 +75,25 @@ bunx serve out     # ou qualquer servidor de arquivos estáticos
 
 A pasta `out/` pode ser colocada como está em qualquer hospedagem estática. Cada página leva a própria Content-Security-Policy numa tag `<meta>`, então o bloqueio de rede continua funcionando sem os nossos cabeçalhos HTTP. Para ter a mesma proteção do cachety.com, configure também os cabeçalhos de `out/_headers`. Veja [docs/deploy.md](docs/deploy.md) para Cloudflare Pages, GitHub Pages e outros servidores.
 
+## Coloque o Cachety no seu site (parceiros)
+
+Imobiliárias, plataformas de RH, associações: sites aprovados podem mostrar a ferramenta completa nas próprias páginas, para que quem envia documentos coloque a marca d'água ali mesmo.
+
+- **Privado desde a concepção:** a ferramenta roda em um quadro servido por cachety.com. A página que a exibe, e qualquer script nela, não consegue ler os documentos. Eles nunca saem do aparelho do visitante.
+- **Personalizável:** finalidade e destinatário já preenchidos (o visitante pode mudar), cor dos botões e idioma. Só a altura do quadro é enviada para a página.
+- **Só parceiros aprovados:** os sites autorizados ficam em [`partners.json`](partners.json). O navegador recusa todos os outros.
+- **Grátis**, como o resto do projeto. Se for útil, uma doação é bem-vinda.
+
+**Como participar:** [abra um pedido](https://github.com/cachety/cachety/issues/new?template=partner.yml) com o endereço do seu site. Depois de aprovado e publicado, cole o código:
+
+```html
+<iframe src="https://cachety.com/embed/pt#for=Proposta%20de%20aluguel&to=Imobili%C3%A1ria%20Martins"
+        title="Cachety" loading="lazy" allow="clipboard-write"
+        style="width: 100%; min-height: 640px; border: 0"></iframe>
+```
+
+A [página para sites](https://cachety.com/pt/partners) gera esse código para você, com uma prévia real, o script curto de altura automática e um texto pronto para usar. Detalhes técnicos: [docs/embed.md](docs/embed.md).
+
 ## Desenvolvimento
 
 ```sh
