@@ -1038,4 +1038,181 @@ export const COMPARISONS_EN: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+  // ───────────────────────────── Proton ─────────────────────────────
+  {
+    slug: "cachety-vs-proton-watermark",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety vs Proton's watermark tools: two private options, compared",
+    metaTitle: "Cachety vs Proton Watermark: a Fair Comparison",
+    description:
+      "Proton and Cachety both watermark files in your browser, without uploading them. What differs: hidden data, removing the watermark, masking and copies.",
+    intro:
+      "Proton, the Swiss company behind Proton Mail and Proton Drive, offers free watermark tools for PDFs and images. Like Cachety, they run in your browser and your files are not uploaded. So the question is not who to trust with your file: both keep it on your device. The differences are in what each tool does to the document.",
+    verdict:
+      "Both are good, private choices, and either is far better than sending a bare copy of your ID. Proton is better for a logo watermark, for keeping the PDF's text selectable, and for watermarking batches of photos in their original format. Cachety is built for identity documents: it strips hidden data, blends the watermark into each page so it can't simply be edited out, lets you hide details and makes a named copy per recipient.",
+    table: [
+      {
+        criterion: "Where your file is processed",
+        cachety: "In your browser, on your own device. Nothing is uploaded.",
+        other: "In your browser, on your own device. Proton says files are not uploaded, stored or kept.",
+      },
+      {
+        criterion: "Price and account",
+        cachety: "Free, no account.",
+        other: "Free, no account.",
+      },
+      {
+        criterion: "Type of watermark",
+        cachety: "Text only, repeated diagonally across the whole page.",
+        other: "Text or image (a logo), in a tiled pattern, with font, colour, size, opacity, spacing and angle.",
+        edge: "other",
+      },
+      {
+        criterion: "How the watermark is added to a PDF",
+        cachety: "Blended into an image of each page, which is rebuilt from pixels.",
+        other: "In our test, added as separate text drawn over the original page, which is left as it was.",
+      },
+      {
+        criterion: "Can the watermark be edited out of the PDF?",
+        cachety: "No simple way: it is part of the page image.",
+        other: "Being separate text, it can in principle be removed with a PDF editor.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Hidden data (metadata, text layer, photo location)",
+        cachety: "Removed from the result.",
+        other: "Kept. Proton says watermarking does not remove metadata and advises cleaning files separately.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Selectable, searchable text",
+        cachety: "No: pages become images, on purpose.",
+        other: "Yes: the original text stays selectable.",
+        edge: "other",
+      },
+      {
+        criterion: "Hiding details (account number, photo…)",
+        cachety: "Built in: draw boxes and the hidden content is really removed.",
+        other: "Not offered by the watermark tools.",
+        edge: "cachety",
+      },
+      {
+        criterion: "One copy per recipient, unique code per copy",
+        cachety: "Yes: up to 20 recipients, each copy with their name, and an optional code.",
+        other: "Not offered.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Password on the downloaded file",
+        cachety: "Yes, AES-256 encryption.",
+        other: "Not in the watermark tool. Proton Drive offers password-protected sharing links.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Photos",
+        cachety: "JPG, PNG, WebP, HEIC (iPhone) and more.",
+        other: "JPG, PNG and WebP listed, batch processing, saved in their original format.",
+      },
+      {
+        criterion: "Analytics on the page",
+        cachety: "None.",
+        other: "Usage statistics (page views, clicks) in our test, with no document content. Proton describes self-hosted, anonymised analytics.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Source code",
+        cachety: "Public (AGPL), anyone can check it.",
+        other: "We found no public source code for these tools.",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "What both tools get right" },
+      {
+        type: "p",
+        text: "Most online watermark sites upload your document to their servers. Proton's tools and Cachety don't: the work happens in your browser, and the file stays on your phone or computer. In our test of Proton's PDF tool, the document was never sent anywhere. Proton also says it doesn't log, track or analyse your content. For a passport or a payslip, either tool is a safe choice.",
+      },
+      { type: "h2", text: "How we compared" },
+      {
+        type: "p",
+        text: "On 12 October 2026 we read Proton's public pages and ran its PDF watermark tool in Chrome with a test file containing selectable text and a title and author in its metadata. We then examined the downloaded PDF. Everything said here about Proton comes from those pages or from that test.",
+      },
+      { type: "h2", text: "The difference: what happens to the document" },
+      {
+        type: "p",
+        text: "In our test, Proton's tool kept the original page untouched and drew the watermark on top of it as text. The result is light and its text stays selectable, which is useful for contracts or reports. But the original title and author were still in the file, as Proton itself warns, and a watermark made of separate text can, in principle, be removed with a PDF editor. Cachety takes the opposite approach, designed for identity documents: each page is rebuilt from pixels with the watermark blended in, and the text layer, metadata and photo location are dropped. The file is heavier and its text can't be selected, but there is nothing hidden left in it and the watermark can't simply be deleted.",
+      },
+      { type: "h2", text: "Where Proton is better" },
+      {
+        type: "list",
+        items: [
+          "A logo or image as the watermark, with fine control over angle and spacing.",
+          "PDFs whose text must stay selectable and searchable.",
+          "Batches of photos kept in their original format.",
+          "If you already use Proton Drive, sharing the result with a password-protected link.",
+        ],
+      },
+      { type: "h2", text: "Where Cachety is better for ID documents" },
+      {
+        type: "list",
+        items: [
+          "Hidden data (metadata, text layer, GPS location of photos) is removed.",
+          "The watermark is blended into the page, so it can't simply be edited out.",
+          "You can hide details such as an account number before sending.",
+          "One copy per recipient, each with their name, and an optional unique code to trace a leak.",
+          "A password on the downloaded file, made of 12 easy-to-read words.",
+          "iPhone photos (HEIC), 11 languages, and code anyone can check.",
+        ],
+      },
+      { type: "h2", text: "How to watermark your ID with Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com. There is nothing to install and no account to create.",
+          "Add your passport, driving licence or payslip. PDFs and photos, including iPhone photos, both work.",
+          "Say what the copy is for (type it or pick an example), then who will receive it. The date is added automatically.",
+          "Check the preview and download your watermarked copy.",
+        ],
+      },
+    ],
+    chooseOther: [
+      "You want a logo or an image as the watermark.",
+      "The PDF's text must stay selectable and searchable.",
+      "You are watermarking batches of photos and want them in their original format.",
+      "You already use Proton Drive and want to share the result through it.",
+    ],
+    chooseCachety: [
+      "You are sending an ID, a payslip or a bank statement and want no hidden data left in the file.",
+      "You want a watermark that can't simply be edited out of the PDF.",
+      "You need to hide details, or send a named copy to each recipient.",
+      "You want a password on the file, or code you can check yourself.",
+    ],
+    faq: [
+      {
+        q: "Does Proton's watermark tool upload my files?",
+        a: "No. Proton says its tools process files locally in your browser, and in our test of the PDF tool the document was not sent anywhere. The page does send usage statistics such as page views and clicks, which in our test contained no document content.",
+      },
+      {
+        q: "Is Proton or Cachety more private?",
+        a: "Both keep your file on your device. The difference is in the result: Cachety removes hidden data such as metadata and photo location, while Proton's tools keep it, as Proton notes.",
+      },
+      {
+        q: "Can a Proton watermark be removed?",
+        a: "In our test, the watermark was added to the PDF as separate text over the original page. A watermark like that can in principle be removed with a PDF editor. Cachety blends it into an image of each page instead.",
+      },
+      {
+        q: "Can Cachety add a logo watermark?",
+        a: "No. Cachety only adds text watermarks. For a logo, Proton's tools accept images.",
+      },
+    ],
+    sources: [
+      { label: "Proton: watermark PDF files for free", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton: free watermark maker for images", url: "https://proton.me/drive/image-watermark" },
+      { label: "Proton privacy policy (website analytics)", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];

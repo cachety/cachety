@@ -863,4 +863,173 @@ export const COMPARISONS_DE: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+  // ───────────────────────────── Proton ─────────────────────────────
+  {
+    slug: "cachety-vs-proton-wasserzeichen",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety oder die Wasserzeichen-Tools von Proton: zwei private Optionen im Vergleich",
+    metaTitle: "Cachety oder Proton-Wasserzeichen: ein fairer Vergleich",
+    description:
+      "Proton und Cachety setzen Wasserzeichen im Browser, ohne Upload. Die Unterschiede: versteckte Daten, Entfernbarkeit, Schwärzen und Kopien pro Empfänger.",
+    intro:
+      "Proton, das Schweizer Unternehmen hinter Proton Mail und Proton Drive, bietet kostenlose Wasserzeichen-Tools für PDFs und Bilder an. Wie Cachety laufen sie in deinem Browser, und deine Dateien werden nicht hochgeladen. Die Frage ist also nicht, wem du deine Datei anvertraust: Bei beiden bleibt sie auf deinem Gerät. Die Unterschiede liegen darin, was jedes Tool mit dem Dokument macht.",
+    verdict:
+      "Beide sind gute, private Optionen, und beide sind viel besser, als eine ungeschützte Kopie deines Ausweises zu verschicken. Proton ist besser für ein Logo als Wasserzeichen, wenn der Text des PDFs markierbar bleiben soll und um ganze Serien von Fotos im Originalformat mit Wasserzeichen zu versehen. Cachety ist für Ausweisdokumente gebaut: Es entfernt versteckte Daten, verschmilzt das Wasserzeichen mit jeder Seite, sodass es sich nicht einfach herauslöschen lässt, lässt dich Angaben schwärzen und erstellt für jeden Empfänger eine Kopie mit seinem Namen.",
+    table: [
+      {
+        criterion: "Wo deine Datei verarbeitet wird",
+        cachety: "In deinem Browser, auf deinem eigenen Gerät. Nichts wird hochgeladen.",
+        other: "In deinem Browser, auf deinem eigenen Gerät. Laut Proton werden Dateien weder hochgeladen noch gespeichert oder aufbewahrt.",
+      },
+      {
+        criterion: "Preis und Konto",
+        cachety: "Kostenlos, ohne Konto.",
+        other: "Kostenlos, ohne Konto.",
+      },
+      {
+        criterion: "Art des Wasserzeichens",
+        cachety: "Nur Text, diagonal über die ganze Seite wiederholt.",
+        other: "Text oder Bild (ein Logo), als Kachelmuster, mit Schriftart, Farbe, Größe, Deckkraft, Abstand und Winkel.",
+        edge: "other",
+      },
+      {
+        criterion: "Wie das Wasserzeichen ins PDF kommt",
+        cachety: "Mit einem Bild jeder Seite verschmolzen, die aus Pixeln neu aufgebaut wird.",
+        other: "In unserem Test als separater Text über die Originalseite gelegt, die unverändert bleibt.",
+      },
+      {
+        criterion: "Lässt sich das Wasserzeichen aus dem PDF herauslöschen?",
+        cachety: "Nicht auf einfache Weise: Es ist Teil des Seitenbilds.",
+        other: "Als separater Text lässt es sich grundsätzlich mit einem PDF-Editor entfernen.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Versteckte Daten (Metadaten, Textebene, Standort von Fotos)",
+        cachety: "Werden aus dem Ergebnis entfernt.",
+        other: "Bleiben erhalten. Laut Proton entfernt das Setzen eines Wasserzeichens keine Metadaten. Proton rät, Dateien separat zu bereinigen.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Markierbarer, durchsuchbarer Text",
+        cachety: "Nein: Die Seiten werden absichtlich zu Bildern.",
+        other: "Ja: Der Originaltext bleibt markierbar.",
+        edge: "other",
+      },
+      {
+        criterion: "Angaben schwärzen (Kontonummer, Foto…)",
+        cachety: "Eingebaut: Rechtecke ziehen, und der verdeckte Inhalt wird wirklich entfernt.",
+        other: "Bieten die Wasserzeichen-Tools nicht an.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Eine Kopie pro Empfänger, eindeutiger Code pro Kopie",
+        cachety: "Ja: bis zu 20 Empfänger, jede Kopie mit dem Namen des Empfängers, auf Wunsch mit Code.",
+        other: "Nicht angeboten.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Passwort auf der heruntergeladenen Datei",
+        cachety: "Ja, AES-256-Verschlüsselung.",
+        other: "Nicht im Wasserzeichen-Tool. Proton Drive bietet passwortgeschützte Freigabelinks.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Fotos",
+        cachety: "JPG, PNG, WebP, HEIC (iPhone) und mehr.",
+        other: "JPG, PNG und WebP genannt, Stapelverarbeitung, Speichern im Originalformat.",
+      },
+      {
+        criterion: "Statistik auf der Seite",
+        cachety: "Keine.",
+        other: "In unserem Test Nutzungsstatistiken (Seitenaufrufe, Klicks), ohne Dokumentinhalt. Proton beschreibt eine selbst gehostete, anonymisierte Statistik.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Quellcode",
+        cachety: "Öffentlich (AGPL), jeder kann ihn prüfen.",
+        other: "Wir haben keinen öffentlichen Quellcode für diese Tools gefunden.",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "Was beide Tools richtig machen" },
+      {
+        type: "p",
+        text: "Die meisten Wasserzeichen-Seiten im Netz laden dein Dokument auf ihre Server hoch. Die Tools von Proton und Cachety nicht: Die Arbeit passiert in deinem Browser, und die Datei bleibt auf deinem Handy oder Computer. In unserem Test des PDF-Tools von Proton wurde das Dokument nirgendwohin geschickt. Proton sagt außerdem, dass es deine Inhalte weder protokolliert noch verfolgt oder analysiert. Für einen Reisepass oder eine Gehaltsabrechnung ist jedes der beiden Tools eine sichere Wahl.",
+      },
+      { type: "h2", text: "Wie wir verglichen haben" },
+      {
+        type: "p",
+        text: "Am 12. Oktober 2026 haben wir die öffentlichen Seiten von Proton gelesen und sein PDF-Wasserzeichen-Tool in Chrome mit einer Testdatei ausprobiert, die markierbaren Text sowie einen Titel und einen Autor in den Metadaten enthielt. Danach haben wir das heruntergeladene PDF untersucht. Alles, was hier über Proton steht, stammt von diesen Seiten oder aus diesem Test.",
+      },
+      { type: "h2", text: "Der Unterschied: Was mit dem Dokument passiert" },
+      {
+        type: "p",
+        text: "In unserem Test ließ das Tool von Proton die Originalseite unverändert und legte das Wasserzeichen als Text darüber. Das Ergebnis ist leicht, und der Text bleibt markierbar, was für Verträge oder Berichte praktisch ist. Aber Titel und Autor standen weiterhin in der Datei, wovor Proton selbst warnt, und ein Wasserzeichen aus separatem Text lässt sich grundsätzlich mit einem PDF-Editor entfernen. Cachety geht den umgekehrten Weg, gedacht für Ausweisdokumente: Jede Seite wird aus Pixeln neu aufgebaut, mit eingeschmolzenem Wasserzeichen, und Textebene, Metadaten und Standort von Fotos fallen weg. Die Datei ist größer und ihr Text lässt sich nicht markieren, aber es bleibt nichts Verstecktes darin, und das Wasserzeichen lässt sich nicht einfach löschen.",
+      },
+      { type: "h2", text: "Wo Proton besser ist" },
+      {
+        type: "list",
+        items: [
+          "Ein Logo oder Bild als Wasserzeichen, mit feiner Kontrolle über Winkel und Abstand.",
+          "PDFs, deren Text markierbar und durchsuchbar bleiben muss.",
+          "Serien von Fotos, die im Originalformat bleiben.",
+          "Wenn du Proton Drive schon nutzt: das Ergebnis über einen passwortgeschützten Link teilen.",
+        ],
+      },
+      { type: "h2", text: "Wo Cachety bei Ausweisdokumenten besser ist" },
+      {
+        type: "list",
+        items: [
+          "Versteckte Daten (Metadaten, Textebene, GPS-Standort von Fotos) werden entfernt.",
+          "Das Wasserzeichen ist mit der Seite verschmolzen und lässt sich nicht einfach herauslöschen.",
+          "Du kannst vor dem Versenden Angaben wie eine Kontonummer schwärzen.",
+          "Eine Kopie pro Empfänger, jede mit dessen Namen, auf Wunsch mit eindeutigem Code, um ein Leck zurückzuverfolgen.",
+          "Ein Passwort auf der heruntergeladenen Datei, aus 12 gut lesbaren Wörtern.",
+          "iPhone-Fotos (HEIC), 11 Sprachen und Code, den jeder prüfen kann.",
+        ],
+      },
+      { type: "h2", text: "So geht’s mit Cachety" },
+      HOW_TO,
+    ],
+    chooseOther: [
+      "Du willst ein Logo oder Bild als Wasserzeichen.",
+      "Der Text des PDFs muss markierbar und durchsuchbar bleiben.",
+      "Du versiehst ganze Serien von Fotos mit Wasserzeichen und willst sie im Originalformat behalten.",
+      "Du nutzt Proton Drive schon und willst das Ergebnis darüber teilen.",
+    ],
+    chooseCachety: [
+      "Du schickst einen Ausweis, eine Gehaltsabrechnung oder einen Kontoauszug und willst keine versteckten Daten in der Datei.",
+      "Du willst ein Wasserzeichen, das sich nicht einfach aus dem PDF herauslöschen lässt.",
+      "Du musst Angaben schwärzen oder jedem Empfänger eine Kopie mit seinem Namen schicken.",
+      "Du willst ein Passwort auf der Datei oder Code, den du selbst prüfen kannst.",
+    ],
+    faq: [
+      {
+        q: "Lädt das Wasserzeichen-Tool von Proton meine Dateien hoch?",
+        a: "Nein. Laut Proton verarbeiten seine Tools die Dateien lokal in deinem Browser, und in unserem Test des PDF-Tools wurde das Dokument nirgendwohin geschickt. Die Seite sendet aber Nutzungsstatistiken wie Seitenaufrufe und Klicks, die in unserem Test keinen Dokumentinhalt enthielten.",
+      },
+      {
+        q: "Ist Proton oder Cachety privater?",
+        a: "Bei beiden bleibt deine Datei auf deinem Gerät. Der Unterschied liegt im Ergebnis: Cachety entfernt versteckte Daten wie Metadaten und Standort von Fotos, die Tools von Proton behalten sie, wie Proton selbst anmerkt.",
+      },
+      {
+        q: "Lässt sich ein Wasserzeichen von Proton entfernen?",
+        a: "In unserem Test wurde das Wasserzeichen als separater Text über die Originalseite ins PDF eingefügt. Ein solches Wasserzeichen lässt sich grundsätzlich mit einem PDF-Editor entfernen. Cachety verschmilzt es stattdessen mit einem Bild jeder Seite.",
+      },
+      {
+        q: "Kann Cachety ein Logo als Wasserzeichen setzen?",
+        a: "Nein. Cachety setzt nur Text-Wasserzeichen. Für ein Logo nehmen die Tools von Proton Bilder an.",
+      },
+    ],
+    sources: [
+      { label: "Proton: PDF-Dateien kostenlos mit Wasserzeichen versehen", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton: kostenloser Wasserzeichen-Generator für Bilder", url: "https://proton.me/drive/image-watermark" },
+      { label: "Datenschutzerklärung von Proton (Website-Statistik)", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];

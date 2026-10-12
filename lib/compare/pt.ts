@@ -762,4 +762,174 @@ export const COMPARISONS_PT: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+
+  // ───────────────────────────── Proton ─────────────────────────────
+  {
+    slug: "cachety-vs-proton-marca-dagua",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety ou as ferramentas de marca d'água da Proton: duas opções privadas, comparadas",
+    metaTitle: "Cachety ou Proton para marca d'água: comparativo",
+    description:
+      "Proton e Cachety colocam a marca d'água no seu navegador, sem enviar o arquivo. O que muda: dados ocultos, remover a marca, ocultar dados e cópias.",
+    intro:
+      "A Proton, empresa suíça por trás do Proton Mail e do Proton Drive, oferece ferramentas grátis de marca d'água para PDF e imagens. Como o Cachety, elas funcionam no seu navegador e seus arquivos não são enviados. Então a questão não é em quem confiar o arquivo: as duas o mantêm no seu aparelho. As diferenças estão no que cada ferramenta faz com o documento.",
+    verdict:
+      "As duas são boas opções privadas, e qualquer uma é muito melhor do que enviar uma cópia sem marca do seu RG. A Proton é melhor para uma marca d'água com logo, para manter o texto do PDF selecionável e para colocar marca d'água em lotes de fotos no formato original. O Cachety foi feito para documentos de identidade: remove os dados ocultos, incorpora a marca d'água em cada página para que ela não saia simplesmente editando o arquivo, deixa você ocultar dados e cria uma cópia com nome para cada destinatário.",
+    table: [
+      {
+        criterion: "Onde o arquivo é processado",
+        cachety: "No seu navegador, no seu próprio aparelho. Nada é enviado.",
+        other: "No seu navegador, no seu próprio aparelho. A Proton diz que os arquivos não são enviados, armazenados nem guardados.",
+      },
+      {
+        criterion: "Preço e conta",
+        cachety: "Grátis, sem conta.",
+        other: "Grátis, sem conta.",
+      },
+      {
+        criterion: "Tipo de marca d'água",
+        cachety: "Só texto, repetido na diagonal pela página inteira.",
+        other: "Texto ou imagem (um logo), em mosaico, com fonte, cor, tamanho, opacidade, espaçamento e ângulo.",
+        edge: "other",
+      },
+      {
+        criterion: "Como a marca d'água é adicionada a um PDF",
+        cachety: "Incorporada a uma imagem de cada página, que é reconstruída a partir de pixels.",
+        other: "No nosso teste, adicionada como texto separado desenhado sobre a página original, que fica como estava.",
+      },
+      {
+        criterion: "Dá para tirar a marca d'água editando o PDF?",
+        cachety: "Não de forma simples: ela faz parte da imagem da página.",
+        other: "Por ser texto separado, em princípio pode ser removida com um editor de PDF.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Dados ocultos (metadados, camada de texto, localização das fotos)",
+        cachety: "Removidos do resultado.",
+        other: "Mantidos. A Proton diz que a marca d'água não remove os metadados e recomenda limpar os arquivos separadamente.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Texto selecionável e pesquisável",
+        cachety: "Não: as páginas viram imagens, de propósito.",
+        other: "Sim: o texto original continua selecionável.",
+        edge: "other",
+      },
+      {
+        criterion: "Ocultar dados (número da conta, foto…)",
+        cachety: "Incluído: você desenha retângulos e o conteúdo oculto é apagado de verdade.",
+        other: "Não oferecido pelas ferramentas de marca d'água.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Uma cópia por destinatário, código único por cópia",
+        cachety: "Sim: até 20 destinatários, cada cópia com o nome dele, e um código opcional.",
+        other: "Não oferecido.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Senha no arquivo baixado",
+        cachety: "Sim, criptografia AES-256.",
+        other: "Não na ferramenta de marca d'água. O Proton Drive oferece links de compartilhamento protegidos por senha.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Fotos",
+        cachety: "JPG, PNG, WebP, HEIC (iPhone) e outros.",
+        other: "Lista JPG, PNG e WebP, processamento em lote, salvas no formato original.",
+      },
+      {
+        criterion: "Estatísticas na página",
+        cachety: "Nenhuma.",
+        other: "Estatísticas de uso (visualizações de página, cliques) no nosso teste, sem conteúdo do documento. A Proton descreve estatísticas anonimizadas e hospedadas nos próprios servidores.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Código-fonte",
+        cachety: "Público (AGPL), qualquer pessoa pode conferir.",
+        other: "Não encontramos código-fonte público dessas ferramentas.",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "O que as duas ferramentas fazem bem" },
+      {
+        type: "p",
+        text: "A maioria dos sites de marca d'água envia seu documento para os servidores deles. As ferramentas da Proton e o Cachety não: o trabalho acontece no seu navegador, e o arquivo fica no seu celular ou computador. No nosso teste da ferramenta de PDF da Proton, o documento não foi enviado para lugar nenhum. A Proton também diz que não registra, não rastreia e não analisa seu conteúdo. Para um passaporte ou um holerite, qualquer uma das duas é uma escolha segura.",
+      },
+      { type: "h2", text: "Como comparamos" },
+      {
+        type: "p",
+        text: "Em 12 de outubro de 2026, lemos as páginas públicas da Proton e usamos a ferramenta de marca d'água em PDF dela no Chrome, com um arquivo de teste que tinha texto selecionável e um título e um autor nos metadados. Depois examinamos o PDF baixado. Tudo o que se diz aqui sobre a Proton vem dessas páginas ou desse teste.",
+      },
+      { type: "h2", text: "A diferença: o que acontece com o documento" },
+      {
+        type: "p",
+        text: "No nosso teste, a ferramenta da Proton manteve a página original intacta e desenhou a marca d'água por cima, como texto. O resultado é leve e o texto continua selecionável, o que é útil para contratos ou relatórios. Mas o título e o autor originais continuavam no arquivo, como a própria Proton avisa, e uma marca d'água feita de texto separado pode, em princípio, ser removida com um editor de PDF. O Cachety faz o contrário, pensando em documentos de identidade: cada página é reconstruída a partir de pixels com a marca d'água incorporada, e a camada de texto, os metadados e a localização das fotos são descartados. O arquivo fica mais pesado e o texto não pode ser selecionado, mas não sobra nada oculto nele e a marca d'água não pode ser simplesmente apagada.",
+      },
+      { type: "h2", text: "Em que a Proton é melhor" },
+      {
+        type: "list",
+        items: [
+          "Um logo ou uma imagem como marca d'água, com controle fino do ângulo e do espaçamento.",
+          "PDFs cujo texto precisa continuar selecionável e pesquisável.",
+          "Lotes de fotos mantidas no formato original.",
+          "Se você já usa o Proton Drive, compartilhar o resultado com um link protegido por senha.",
+        ],
+      },
+      { type: "h2", text: "Em que o Cachety é melhor para documentos de identidade" },
+      {
+        type: "list",
+        items: [
+          "Os dados ocultos (metadados, camada de texto, localização GPS das fotos) são removidos.",
+          "A marca d'água fica incorporada à página, então não sai simplesmente editando o arquivo.",
+          "Você pode ocultar dados, como um número de conta, antes de enviar.",
+          "Uma cópia por destinatário, cada uma com o nome dele, e um código único opcional para rastrear um vazamento.",
+          "Uma senha no arquivo baixado, formada por 12 palavras fáceis de ler.",
+          "Fotos do iPhone (HEIC), 11 idiomas e um código que qualquer pessoa pode conferir.",
+        ],
+      },
+      { type: "h2", text: "Como colocar marca d'água no seu RG com o Cachety" },
+      HOW_TO,
+    ],
+    chooseOther: [
+      "Você quer um logo ou uma imagem como marca d'água.",
+      "O texto do PDF precisa continuar selecionável e pesquisável.",
+      "Você coloca marca d'água em lotes de fotos e quer mantê-las no formato original.",
+      "Você já usa o Proton Drive e quer compartilhar o resultado por ele.",
+    ],
+    chooseCachety: [
+      "Vai enviar um RG, um holerite ou um extrato bancário e não quer nenhum dado oculto no arquivo.",
+      "Quer uma marca d'água que não saia simplesmente editando o PDF.",
+      "Precisa ocultar dados ou enviar uma cópia com nome para cada destinatário.",
+      "Quer uma senha no arquivo, ou um código que você mesmo pode conferir.",
+    ],
+    faq: [
+      {
+        q: "A ferramenta de marca d'água da Proton envia meus arquivos?",
+        a: "Não. A Proton diz que suas ferramentas processam os arquivos localmente no seu navegador, e no nosso teste da ferramenta de PDF o documento não foi enviado para lugar nenhum. A página envia, sim, estatísticas de uso, como visualizações de página e cliques, que no nosso teste não tinham nenhum conteúdo do documento.",
+      },
+      {
+        q: "O que é mais privado, a Proton ou o Cachety?",
+        a: "Os dois mantêm o arquivo no seu aparelho. A diferença está no resultado: o Cachety remove dados ocultos, como metadados e localização das fotos, enquanto as ferramentas da Proton os mantêm, como a Proton informa.",
+      },
+      {
+        q: "Dá para remover uma marca d'água da Proton?",
+        a: "No nosso teste, a marca d'água foi adicionada ao PDF como texto separado sobre a página original. Uma marca d'água assim pode, em princípio, ser removida com um editor de PDF. O Cachety, por sua vez, a incorpora a uma imagem de cada página.",
+      },
+      {
+        q: "O Cachety pode colocar um logo como marca d'água?",
+        a: "Não. O Cachety só faz marca d'água de texto. Para um logo, as ferramentas da Proton aceitam imagens.",
+      },
+    ],
+    sources: [
+      { label: "Proton: marca d'água grátis em arquivos PDF", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton: criador grátis de marca d'água para imagens", url: "https://proton.me/drive/image-watermark" },
+      { label: "Proton: política de privacidade (estatísticas do site)", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];

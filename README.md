@@ -47,7 +47,7 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **11 languages**, with right-to-left layout for Arabic and Persian and dedicated fonts for each script.
 - **Guided help tour** for first-time visitors, offered when someone seems unsure where to start.
 - **70 practical guides** for everyday situations in France, the UK, Germany, the Netherlands, Spain and Latin America, Brazil, Indonesia, the Arab world, Iran, Japan and China.
-- **71 fact-checked comparisons** with other watermark tools (iLovePDF, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), with sources, including when another tool is the better choice.
+- **82 fact-checked comparisons** with other watermark tools (iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), with sources, including when another tool is the better choice.
 - **On partner websites:** approved sites can show the tool in their own pages (an iframe served by cachety.com, so the host site can't see the documents). See [docs/embed.md](docs/embed.md) and [cachety.com/en/partners](https://cachety.com/en/partners).
 
 ## Privacy by design, and verifiable

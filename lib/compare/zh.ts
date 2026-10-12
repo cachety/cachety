@@ -543,4 +543,173 @@ export const COMPARISONS_ZH: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+
+  // ---------------------------------------------------------------- Proton
+  {
+    slug: "cachety-vs-proton-watermark",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety 和 Proton 水印工具对比：两个注重隐私的选择",
+    metaTitle: "Cachety vs Proton 水印工具：客观对比",
+    description:
+      "Proton 和 Cachety 都在浏览器里给文件加水印，不上传文件。不同之处在于：隐藏数据、水印能否去掉、遮盖信息和给每个接收方各做一份。",
+    intro:
+      "Proton 是一家瑞士公司，旗下有 Proton Mail 和 Proton Drive，它提供免费的 PDF 和图片水印工具。和 Cachety 一样，这些工具在浏览器里运行，文件不会上传。所以问题不在于把文件交给谁：两者都把文件留在您的设备上。区别在于每个工具对文档做了什么。",
+    verdict:
+      "两者都是注重隐私的好选择，哪一个都比直接发送没加水印的证件副本好得多。如果要加 Logo 水印、保留 PDF 里可选中的文字，或者批量给照片加水印并保持原格式，Proton 更合适。Cachety 专为证件设计：它会去除隐藏数据，把水印融进每一页，不能简单地编辑掉，还能遮盖信息，给每个接收方各做一份带名字的副本。",
+    table: [
+      {
+        criterion: "文件在哪里处理",
+        cachety: "在浏览器里，在您自己的设备上完成，不上传任何内容",
+        other: "在浏览器里，在您自己的设备上完成。Proton 表示文件不会被上传、存储或保留",
+      },
+      {
+        criterion: "费用和账号",
+        cachety: "免费，不需要账号",
+        other: "免费，不需要账号",
+      },
+      {
+        criterion: "水印类型",
+        cachety: C.type,
+        other: "文字或图片（Logo），平铺排列，可调字体、颜色、大小、透明度、间距和角度",
+        edge: "other",
+      },
+      {
+        criterion: "水印怎样加到 PDF 上",
+        cachety: "融进每一页的图片里，页面由像素重新生成",
+        other: "在我们的测试中，作为单独的文字画在原页面上方，原页面保持不变",
+      },
+      {
+        criterion: "能不能从 PDF 里编辑掉水印",
+        cachety: "没有简单的办法：水印是页面图片的一部分",
+        other: "由于是单独的文字，理论上可以用 PDF 编辑器删除",
+        edge: "cachety",
+      },
+      {
+        criterion: "隐藏数据（元数据、文字层、照片位置）",
+        cachety: "从生成的文件中删除",
+        other: "保留。Proton 表示加水印不会删除元数据，建议另外清理文件",
+        edge: "cachety",
+      },
+      {
+        criterion: "文字能否选中、搜索",
+        cachety: "不能：页面有意转成图片",
+        other: "能：原来的文字仍可选中",
+        edge: "other",
+      },
+      {
+        criterion: "遮盖信息（银行账号、照片等）",
+        cachety: "内置：框住的部分会被真正删除",
+        other: "水印工具不提供",
+        edge: "cachety",
+      },
+      {
+        criterion: "每个接收方一份，每份一个唯一编号",
+        cachety: "有：最多 20 个接收方，每份写上对方名字，还可加上编号",
+        other: "不提供",
+        edge: "cachety",
+      },
+      {
+        criterion: "下载的文件加密码",
+        cachety: "有，AES-256 加密",
+        other: "水印工具里没有。Proton Drive 提供带密码保护的分享链接",
+        edge: "cachety",
+      },
+      {
+        criterion: "照片",
+        cachety: "JPG、PNG、WebP、HEIC（iPhone）等",
+        other: "页面列出 JPG、PNG 和 WebP，可批量处理，按原格式保存",
+      },
+      {
+        criterion: "页面上的统计分析",
+        cachety: "没有",
+        other: "在我们的测试中有使用统计（页面浏览、点击），不含文档内容。Proton 称其分析为自行托管并经过匿名化处理",
+        edge: "cachety",
+      },
+      {
+        criterion: "源代码",
+        cachety: "公开（AGPL），任何人都可以检查",
+        other: "我们没有找到这些工具的公开源代码",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "两个工具都做对了什么" },
+      {
+        type: "p",
+        text: "大多数在线加水印网站会把您的文档上传到它们的服务器。Proton 的工具和 Cachety 不会：处理在浏览器里完成，文件留在您的手机或电脑上。在我们对 Proton PDF 工具的测试中，文档没有被发送到任何地方。Proton 还表示，它不会记录、跟踪或分析您的内容。对于护照或工资单，两个工具都是安全的选择。",
+      },
+      { type: "h2", text: "我们是怎么对比的" },
+      {
+        type: "p",
+        text: "2026 年 10 月 12 日，我们阅读了 Proton 的公开页面，并在 Chrome 中用一个测试文件运行了它的 PDF 水印工具。这个文件包含可选中的文字，元数据里有标题和作者。然后我们检查了下载的 PDF。本文关于 Proton 的所有内容都来自这些页面或这次测试。",
+      },
+      { type: "h2", text: "区别在于：文档会被怎样处理" },
+      {
+        type: "p",
+        text: "在我们的测试中，Proton 的工具没有改动原页面，而是把水印作为文字画在上面。生成的文件很小，文字仍可选中，适合合同或报告。但正如 Proton 自己提醒的，原来的标题和作者还留在文件里；而且由单独文字构成的水印，理论上可以用 PDF 编辑器删除。Cachety 的做法正好相反，专为证件设计：每一页都由像素重新生成，水印融入其中，文字层、元数据和照片位置都会被去掉。文件更大，文字也不能选中，但里面不再留有任何隐藏内容，水印也不能简单地删掉。",
+      },
+      { type: "h2", text: "Proton 更合适的地方" },
+      {
+        type: "list",
+        items: [
+          "用 Logo 或图片做水印，并能精细调整角度和间距。",
+          "需要保留可选中、可搜索文字的 PDF。",
+          "批量处理照片并保持原格式。",
+          "如果您已经在用 Proton Drive，可以用带密码保护的链接分享结果。",
+        ],
+      },
+      { type: "h2", text: "处理证件时 Cachety 更合适的地方" },
+      {
+        type: "list",
+        items: [
+          "删除隐藏数据（元数据、文字层、照片的 GPS 位置）。",
+          "水印融进页面，不能简单地编辑掉。",
+          "发送前可以遮盖银行账号等信息。",
+          "每个接收方一份，各写上对方名字，还可加上唯一编号，用来追查泄露来源。",
+          "下载的文件可加密码，密码由 12 个易读的单词组成。",
+          "支持 iPhone 照片（HEIC）和 11 种语言，代码任何人都可以检查。",
+        ],
+      },
+      ...HOW_TO,
+    ],
+    chooseOther: [
+      "您想用 Logo 或图片做水印。",
+      "PDF 里的文字必须保持可选中、可搜索。",
+      "您要批量给照片加水印，并希望保持原格式。",
+      "您已经在用 Proton Drive，想通过它分享结果。",
+    ],
+    chooseCachety: [
+      "您要发送身份证、工资单或银行流水，不想在文件里留下任何隐藏数据。",
+      "您想要一个不能从 PDF 里简单编辑掉的水印。",
+      "您需要遮盖信息，或者给每个接收方发一份带名字的副本。",
+      "您想给文件加密码，或者想自己检查代码。",
+    ],
+    faq: [
+      {
+        q: "Proton 的水印工具会上传我的文件吗？",
+        a: "不会。Proton 表示它的工具在浏览器里本地处理文件；在我们对 PDF 工具的测试中，文档也没有被发送到任何地方。不过页面会发送页面浏览、点击等使用统计，在我们的测试中其中不含文档内容。",
+      },
+      {
+        q: "Proton 和 Cachety 哪个更保护隐私？",
+        a: "两者都把文件留在您的设备上。区别在于生成的文件：Cachety 会删除元数据、照片位置等隐藏数据，而 Proton 的工具会保留这些数据，Proton 自己也说明了这一点。",
+      },
+      {
+        q: "Proton 加的水印能去掉吗？",
+        a: "在我们的测试中，水印是作为单独的文字加在 PDF 原页面上方的。这样的水印理论上可以用 PDF 编辑器删除。Cachety 则把水印融进每一页的图片里。",
+      },
+      {
+        q: "Cachety 能加 Logo 水印吗？",
+        a: "不能。Cachety 只能加文字水印。如果要用 Logo，Proton 的工具支持图片。",
+      },
+    ],
+    sources: [
+      { label: "Proton：免费给 PDF 文件加水印", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton：免费图片水印制作工具", url: "https://proton.me/drive/image-watermark" },
+      { label: "Proton 隐私政策（网站统计分析）", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];

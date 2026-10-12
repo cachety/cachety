@@ -839,4 +839,172 @@ export const COMPARISONS_FR: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+  // ------------------------------------------------------------------
+  {
+    slug: "cachety-vs-proton-filigrane",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety ou les outils de filigrane de Proton : deux options privées, comparées",
+    metaTitle: "Cachety ou Proton pour filigraner : comparatif",
+    description:
+      "Proton et Cachety filigranent tous deux dans votre navigateur, sans envoi. Ce qui change : données cachées, filigrane effaçable, masquage, copies.",
+    intro:
+      "Proton, l’entreprise suisse derrière Proton Mail et Proton Drive, propose des outils gratuits pour filigraner des PDF et des images. Comme Cachety, ils fonctionnent dans votre navigateur et vos fichiers ne sont pas envoyés. La question n’est donc pas à qui confier votre fichier : les deux le gardent sur votre appareil. Les différences tiennent à ce que chaque outil fait du document.",
+    verdict:
+      "Ce sont deux bons choix, respectueux de la vie privée, et l’un comme l’autre vaut bien mieux qu’une copie nue de votre pièce d’identité. Proton est meilleur pour un filigrane avec logo, pour garder le texte du PDF sélectionnable et pour traiter des lots de photos dans leur format d’origine. Cachety est conçu pour les pièces d’identité : il supprime les données cachées, fond le filigrane dans chaque page pour qu’on ne puisse pas simplement l’effacer, permet de masquer des informations et fait une copie nominative par destinataire.",
+    table: [
+      {
+        criterion: "Où le fichier est traité",
+        cachety: "Dans votre navigateur, sur votre appareil. Rien n’est envoyé.",
+        other: "Dans votre navigateur, sur votre appareil. Proton indique que les fichiers ne sont ni envoyés, ni stockés, ni conservés.",
+      },
+      {
+        criterion: "Prix et compte",
+        cachety: "Gratuit, sans compte.",
+        other: "Gratuit, sans compte.",
+      },
+      {
+        criterion: "Type de filigrane",
+        cachety: "Texte seulement, répété en diagonale sur toute la page.",
+        other: "Texte ou image (un logo), en mosaïque, avec police, couleur, taille, opacité, espacement et angle.",
+        edge: "other",
+      },
+      {
+        criterion: "Comment le filigrane est ajouté au PDF",
+        cachety: "Fondu dans une image de chaque page, reconstruite à partir des pixels.",
+        other: "Dans notre test, ajouté comme du texte séparé, dessiné par-dessus la page d’origine, laissée telle quelle.",
+      },
+      {
+        criterion: "Peut-on retirer le filigrane en modifiant le PDF ?",
+        cachety: "Pas simplement : il fait partie de l’image de la page.",
+        other: "Étant du texte séparé, il peut en principe être retiré avec un éditeur de PDF.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Données cachées (métadonnées, couche texte, position des photos)",
+        cachety: "Supprimées du résultat.",
+        other: "Conservées. Proton précise que le filigrane ne retire pas les métadonnées et conseille de nettoyer les fichiers à part.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Texte sélectionnable et consultable",
+        cachety: "Non : les pages deviennent des images, volontairement.",
+        other: "Oui : le texte d’origine reste sélectionnable.",
+        edge: "other",
+      },
+      {
+        criterion: "Masquer des informations (numéro de compte, photo…)",
+        cachety: "Intégré : tracez des zones, le contenu masqué est réellement supprimé.",
+        other: "Non proposé par les outils de filigrane.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Une copie par destinataire, un code unique par copie",
+        cachety: "Oui : jusqu’à 20 destinataires, chaque copie à son nom, et un code en option.",
+        other: "Non proposé.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Mot de passe sur le fichier téléchargé",
+        cachety: "Oui, chiffrement AES-256.",
+        other: "Pas dans l’outil de filigrane. Proton Drive propose des liens de partage protégés par mot de passe.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Photos",
+        cachety: "JPG, PNG, WebP, HEIC (iPhone) et d’autres.",
+        other: "JPG, PNG et WebP indiqués, traitement par lots, enregistrées dans leur format d’origine.",
+      },
+      {
+        criterion: "Mesure d’audience sur la page",
+        cachety: "Aucune.",
+        other: "Statistiques d’usage (pages vues, clics) dans notre test, sans contenu du document. Proton décrit une mesure anonymisée et hébergée chez lui.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Code source",
+        cachety: "Public (AGPL), vérifiable par tous.",
+        other: "Nous n’avons pas trouvé de code source public pour ces outils.",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "Ce que les deux outils font bien" },
+      {
+        type: "p",
+        text: "La plupart des sites de filigrane en ligne envoient votre document sur leurs serveurs. Les outils de Proton et Cachety, non : tout se passe dans votre navigateur, et le fichier reste sur votre téléphone ou votre ordinateur. Dans notre test de l’outil PDF de Proton, le document n’a été envoyé nulle part. Proton indique aussi ne pas enregistrer, suivre ni analyser votre contenu. Pour une pièce d’identité ou une fiche de paie, les deux sont un choix sûr.",
+      },
+      { type: "h2", text: "Comment nous avons comparé" },
+      {
+        type: "p",
+        text: "Le 12 octobre 2026, nous avons lu les pages publiques de Proton et utilisé son outil de filigrane PDF dans Chrome, avec un fichier de test contenant du texte sélectionnable, ainsi qu’un titre et un auteur dans ses métadonnées. Nous avons ensuite examiné le PDF téléchargé. Tout ce qui est dit ici de Proton vient de ces pages ou de ce test.",
+      },
+      { type: "h2", text: "La différence : ce que devient le document" },
+      {
+        type: "p",
+        text: "Dans notre test, l’outil de Proton a laissé la page d’origine intacte et dessiné le filigrane par-dessus, sous forme de texte. Le résultat est léger et son texte reste sélectionnable, ce qui est pratique pour un contrat ou un rapport. Mais le titre et l’auteur d’origine étaient toujours dans le fichier, comme Proton le signale lui-même, et un filigrane fait de texte séparé peut, en principe, être retiré avec un éditeur de PDF. Cachety fait l’inverse, en pensant aux pièces d’identité : chaque page est reconstruite à partir des pixels avec le filigrane fondu dedans, et la couche texte, les métadonnées et la position des photos disparaissent. Le fichier est plus lourd et son texte n’est plus sélectionnable, mais il ne contient plus rien de caché et le filigrane ne s’efface pas simplement.",
+      },
+      { type: "h2", text: "Quand Proton est meilleur" },
+      {
+        type: "list",
+        items: [
+          "Un logo ou une image comme filigrane, avec un réglage fin de l’angle et de l’espacement.",
+          "Des PDF dont le texte doit rester sélectionnable et consultable.",
+          "Des lots de photos gardées dans leur format d’origine.",
+          "Si vous utilisez déjà Proton Drive, pour partager le résultat avec un lien protégé par mot de passe.",
+        ],
+      },
+      { type: "h2", text: "Quand Cachety est meilleur pour une pièce d’identité" },
+      {
+        type: "list",
+        items: [
+          "Les données cachées (métadonnées, couche texte, position GPS des photos) sont supprimées.",
+          "Le filigrane est fondu dans la page : on ne peut pas simplement l’effacer en modifiant le PDF.",
+          "Vous pouvez masquer des informations, comme un numéro de compte, avant l’envoi.",
+          "Une copie par destinataire, chacune à son nom, et un code unique en option pour retrouver l’origine d’une fuite.",
+          "Un mot de passe sur le fichier téléchargé, fait de 12 mots faciles à lire.",
+          "Les photos d’iPhone (HEIC), 11 langues, et un code que chacun peut vérifier.",
+        ],
+      },
+      ...HOW_TO,
+    ],
+    chooseOther: [
+      "Vous voulez un logo ou une image comme filigrane.",
+      "Le texte du PDF doit rester sélectionnable et consultable.",
+      "Vous filigranez des lots de photos et voulez les garder dans leur format d’origine.",
+      "Vous utilisez déjà Proton Drive et voulez partager le résultat par ce biais.",
+    ],
+    chooseCachety: [
+      "Vous envoyez une pièce d’identité, une fiche de paie ou un relevé bancaire et ne voulez plus aucune donnée cachée dans le fichier.",
+      "Vous voulez un filigrane qu’on ne peut pas simplement effacer du PDF.",
+      "Vous devez masquer des informations, ou envoyer une copie nominative à chaque destinataire.",
+      "Vous voulez un mot de passe sur le fichier, ou un code que vous pouvez vérifier vous-même.",
+    ],
+    faq: [
+      {
+        q: "L’outil de filigrane de Proton envoie-t-il mes fichiers ?",
+        a: "Non. Proton indique que ses outils traitent les fichiers localement, dans votre navigateur, et dans notre test de l’outil PDF le document n’a été envoyé nulle part. La page envoie en revanche des statistiques d’usage, comme les pages vues et les clics, qui dans notre test ne contenaient rien du document.",
+      },
+      {
+        q: "Proton ou Cachety : lequel est le plus respectueux de la vie privée ?",
+        a: "Les deux gardent votre fichier sur votre appareil. La différence est dans le résultat : Cachety supprime les données cachées comme les métadonnées et la position des photos, alors que les outils de Proton les conservent, comme Proton le précise.",
+      },
+      {
+        q: "Un filigrane Proton peut-il être retiré ?",
+        a: "Dans notre test, le filigrane a été ajouté au PDF comme du texte séparé, par-dessus la page d’origine. Un filigrane de ce type peut en principe être retiré avec un éditeur de PDF. Cachety le fond au contraire dans une image de chaque page.",
+      },
+      {
+        q: "Cachety peut-il ajouter un logo en filigrane ?",
+        a: "Non. Cachety n’ajoute que du texte. Pour un logo, les outils de Proton acceptent les images.",
+      },
+    ],
+    sources: [
+      { label: "Proton : filigraner des PDF gratuitement", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton : créateur de filigranes pour images", url: "https://proton.me/drive/image-watermark" },
+      { label: "Proton : politique de confidentialité (mesure d’audience du site)", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];

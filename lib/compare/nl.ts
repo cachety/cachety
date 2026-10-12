@@ -839,4 +839,173 @@ export const COMPARISONS_NL: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+  // ───────────────────────────── Proton ─────────────────────────────
+  {
+    slug: "cachety-vs-proton-watermerk",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety of de watermerktools van Proton: twee privé-opties vergeleken",
+    metaTitle: "Cachety of Proton watermerk: een eerlijke vergelijking",
+    description:
+      "Proton en Cachety zetten allebei een watermerk in je browser, zonder upload. Het verschil: verborgen gegevens, watermerk verwijderen, afdekken en kopieën.",
+    intro:
+      "Proton, het Zwitserse bedrijf achter Proton Mail en Proton Drive, biedt gratis watermerktools voor pdf's en afbeeldingen. Net als Cachety werken ze in je browser en worden je bestanden niet geüpload. De vraag is dus niet wie je je bestand toevertrouwt: bij allebei blijft het op je apparaat. De verschillen zitten in wat elke tool met het document doet.",
+    verdict:
+      "Allebei zijn het goede, privé keuzes, en allebei zijn ze veel beter dan een onbeschermde kopie van je ID versturen. Proton is beter voor een logo als watermerk, om de tekst van de pdf selecteerbaar te houden en om reeksen foto's in hun oorspronkelijke formaat van een watermerk te voorzien. Cachety is gemaakt voor identiteitsbewijzen: het verwijdert verborgen gegevens, neemt het watermerk op in elke pagina zodat je het er niet zomaar uit kunt bewerken, laat je gegevens afdekken en maakt per ontvanger een kopie op naam.",
+    table: [
+      {
+        criterion: "Waar je bestand wordt verwerkt",
+        cachety: "In je browser, op je eigen apparaat. Er wordt niets geüpload.",
+        other: "In je browser, op je eigen apparaat. Volgens Proton worden bestanden niet geüpload, opgeslagen of bewaard.",
+      },
+      {
+        criterion: "Prijs en account",
+        cachety: "Gratis, zonder account.",
+        other: "Gratis, zonder account.",
+      },
+      {
+        criterion: "Soort watermerk",
+        cachety: "Alleen tekst, schuin herhaald over de hele pagina.",
+        other: "Tekst of afbeelding (een logo), in een tegelpatroon, met lettertype, kleur, grootte, dekking, tussenruimte en hoek.",
+        edge: "other",
+      },
+      {
+        criterion: "Hoe het watermerk in een pdf komt",
+        cachety: "Opgenomen in een beeld van elke pagina, die uit pixels opnieuw wordt opgebouwd.",
+        other: "In onze test toegevoegd als aparte tekst over de originele pagina, die ongewijzigd blijft.",
+      },
+      {
+        criterion: "Kan het watermerk uit de pdf worden bewerkt?",
+        cachety: "Niet op een simpele manier: het hoort bij het beeld van de pagina.",
+        other: "Omdat het aparte tekst is, kan het in principe met een pdf-editor worden verwijderd.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Verborgen gegevens (metadata, tekstlaag, locatie van foto's)",
+        cachety: "Verwijderd uit het resultaat.",
+        other: "Blijven behouden. Volgens Proton verwijdert een watermerk geen metadata, en Proton raadt aan bestanden apart op te schonen.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Selecteerbare, doorzoekbare tekst",
+        cachety: "Nee: de pagina's worden bewust afbeeldingen.",
+        other: "Ja: de originele tekst blijft selecteerbaar.",
+        edge: "other",
+      },
+      {
+        criterion: "Gegevens afdekken (rekeningnummer, foto…)",
+        cachety: "Ingebouwd: teken rechthoeken en de afgedekte inhoud wordt echt verwijderd.",
+        other: "Niet aangeboden door de watermerktools.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Eén kopie per ontvanger, unieke code per kopie",
+        cachety: "Ja: tot 20 ontvangers, elke kopie met hun naam, en optioneel een code.",
+        other: "Niet aangeboden.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Wachtwoord op het gedownloade bestand",
+        cachety: "Ja, AES-256-versleuteling.",
+        other: "Niet in de watermerktool. Proton Drive biedt deellinks met een wachtwoord.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Foto's",
+        cachety: "JPG, PNG, WebP, HEIC (iPhone) en meer.",
+        other: "JPG, PNG en WebP vermeld, verwerking in batches, opgeslagen in het oorspronkelijke formaat.",
+      },
+      {
+        criterion: "Statistieken op de pagina",
+        cachety: "Geen.",
+        other: "In onze test gebruiksstatistieken (paginaweergaven, klikken), zonder inhoud van het document. Proton beschrijft zelf gehoste, geanonimiseerde statistieken.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Broncode",
+        cachety: "Openbaar (AGPL), iedereen kan hem controleren.",
+        other: "We hebben geen openbare broncode voor deze tools gevonden.",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "Wat beide tools goed doen" },
+      {
+        type: "p",
+        text: "De meeste watermerksites uploaden je document naar hun servers. De tools van Proton en Cachety niet: het werk gebeurt in je browser en het bestand blijft op je telefoon of computer. In onze test van de pdf-tool van Proton werd het document nergens heen gestuurd. Proton zegt ook dat het je inhoud niet logt, volgt of analyseert. Voor een paspoort of loonstrook is elk van beide tools een veilige keuze.",
+      },
+      { type: "h2", text: "Hoe we hebben vergeleken" },
+      {
+        type: "p",
+        text: "Op 12 oktober 2026 hebben we de openbare pagina's van Proton gelezen en de pdf-watermerktool in Chrome gebruikt met een testbestand met selecteerbare tekst en een titel en auteur in de metadata. Daarna hebben we de gedownloade pdf onderzocht. Alles wat hier over Proton staat, komt van die pagina's of uit die test.",
+      },
+      { type: "h2", text: "Het verschil: wat er met het document gebeurt" },
+      {
+        type: "p",
+        text: "In onze test liet de tool van Proton de originele pagina ongemoeid en zette het watermerk er als tekst overheen. Het resultaat is licht en de tekst blijft selecteerbaar, handig voor contracten of rapporten. Maar de oorspronkelijke titel en auteur stonden nog in het bestand, waar Proton zelf voor waarschuwt, en een watermerk van aparte tekst kan in principe met een pdf-editor worden verwijderd. Cachety kiest de omgekeerde aanpak, bedoeld voor identiteitsbewijzen: elke pagina wordt uit pixels opnieuw opgebouwd met het watermerk erin opgenomen, en de tekstlaag, metadata en locatie van foto's verdwijnen. Het bestand is zwaarder en de tekst is niet te selecteren, maar er zit niets verborgens meer in en het watermerk is niet zomaar te verwijderen.",
+      },
+      { type: "h2", text: "Waar Proton beter is" },
+      {
+        type: "list",
+        items: [
+          "Een logo of afbeelding als watermerk, met nauwkeurige controle over hoek en tussenruimte.",
+          "Pdf's waarvan de tekst selecteerbaar en doorzoekbaar moet blijven.",
+          "Reeksen foto's die in hun oorspronkelijke formaat blijven.",
+          "Als je Proton Drive al gebruikt: het resultaat delen met een link met een wachtwoord.",
+        ],
+      },
+      { type: "h2", text: "Waar Cachety beter is voor identiteitsbewijzen" },
+      {
+        type: "list",
+        items: [
+          "Verborgen gegevens (metadata, tekstlaag, gps-locatie van foto's) worden verwijderd.",
+          "Het watermerk zit in de pagina zelf, dus je kunt het er niet zomaar uit bewerken.",
+          "Je kunt gegevens zoals een rekeningnummer afdekken voordat je verstuurt.",
+          "Eén kopie per ontvanger, elk met hun naam, en optioneel een unieke code om een lek te herleiden.",
+          "Een wachtwoord op het gedownloade bestand, van 12 goed leesbare woorden.",
+          "iPhone-foto's (HEIC), 11 talen en code die iedereen kan controleren.",
+        ],
+      },
+      { type: "h2", text: "Zo doe je het met Cachety" },
+      HOW_TO,
+    ],
+    chooseOther: [
+      "Je wilt een logo of afbeelding als watermerk.",
+      "De tekst van de pdf moet selecteerbaar en doorzoekbaar blijven.",
+      "Je voorziet reeksen foto's van een watermerk en wilt ze in hun oorspronkelijke formaat houden.",
+      "Je gebruikt Proton Drive al en wilt het resultaat daarmee delen.",
+    ],
+    chooseCachety: [
+      "Je verstuurt een ID, loonstrook of bankafschrift en wilt geen verborgen gegevens in het bestand.",
+      "Je wilt een watermerk dat je niet zomaar uit de pdf kunt bewerken.",
+      "Je moet gegevens afdekken, of elke ontvanger een kopie op naam sturen.",
+      "Je wilt een wachtwoord op het bestand, of code die je zelf kunt controleren.",
+    ],
+    faq: [
+      {
+        q: "Uploadt de watermerktool van Proton mijn bestanden?",
+        a: "Nee. Volgens Proton verwerken de tools bestanden lokaal in je browser, en in onze test van de pdf-tool werd het document nergens heen gestuurd. De pagina stuurt wel gebruiksstatistieken zoals paginaweergaven en klikken, die in onze test geen inhoud van het document bevatten.",
+      },
+      {
+        q: "Is Proton of Cachety privacyvriendelijker?",
+        a: "Bij allebei blijft je bestand op je apparaat. Het verschil zit in het resultaat: Cachety verwijdert verborgen gegevens zoals metadata en de locatie van foto's, terwijl de tools van Proton ze behouden, zoals Proton zelf aangeeft.",
+      },
+      {
+        q: "Kan een watermerk van Proton worden verwijderd?",
+        a: "In onze test werd het watermerk als aparte tekst over de originele pagina aan de pdf toegevoegd. Zo'n watermerk kan in principe met een pdf-editor worden verwijderd. Cachety neemt het in plaats daarvan op in een beeld van elke pagina.",
+      },
+      {
+        q: "Kan Cachety een logo als watermerk toevoegen?",
+        a: "Nee. Cachety doet alleen tekstwatermerken. Voor een logo accepteren de tools van Proton afbeeldingen.",
+      },
+    ],
+    sources: [
+      { label: "Proton: gratis een watermerk op pdf-bestanden zetten", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton: gratis watermerkmaker voor afbeeldingen", url: "https://proton.me/drive/image-watermark" },
+      { label: "Privacybeleid van Proton (websitestatistieken)", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];

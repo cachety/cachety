@@ -951,4 +951,182 @@ export const COMPARISONS_ID: Comparison[] = [
     checked: CHECKED,
     updated: UPDATED,
   },
+
+  // ───────────────────────────── Proton ─────────────────────────────
+  {
+    slug: "cachety-vs-proton-watermark",
+    competitor: "proton",
+    competitorName: "Proton",
+    competitorUrl: "https://proton.me/drive/watermark-pdf",
+    title: "Cachety atau alat watermark Proton: dua pilihan yang menjaga privasi, dibandingkan",
+    metaTitle: "Cachety atau Watermark Proton: Perbandingan Adil",
+    description:
+      "Proton dan Cachety sama-sama memberi watermark di browser, tanpa meng-upload file. Bedanya: data tersembunyi, penghapusan watermark, sensor, dan salinan.",
+    intro:
+      "Proton, perusahaan Swiss di balik Proton Mail dan Proton Drive, menyediakan alat watermark gratis untuk PDF dan gambar. Seperti Cachety, alat ini berjalan di browser Anda dan file Anda tidak di-upload. Jadi pertanyaannya bukan kepada siapa Anda memercayakan file: keduanya menyimpannya di perangkat Anda. Perbedaannya ada pada apa yang dilakukan masing-masing alat terhadap dokumen.",
+    verdict:
+      "Keduanya pilihan yang baik dan menjaga privasi, dan mana pun jauh lebih baik daripada mengirim salinan KTP tanpa watermark. Proton lebih baik untuk watermark berupa logo, untuk menjaga teks PDF tetap bisa diseleksi, dan untuk memberi watermark pada banyak foto sekaligus dalam format aslinya. Cachety dibuat untuk dokumen identitas: menghapus data tersembunyi, menyatukan watermark dengan setiap halaman sehingga tidak bisa dihapus hanya dengan mengedit, memungkinkan sensor data, dan membuat satu salinan bernama per penerima.",
+    table: [
+      {
+        criterion: "Di mana file diproses",
+        cachety: "Di browser, di perangkat Anda sendiri. Tidak ada yang di-upload.",
+        other: "Di browser, di perangkat Anda sendiri. Proton menyatakan file tidak di-upload, tidak disimpan, dan tidak dipertahankan.",
+      },
+      {
+        criterion: "Harga dan akun",
+        cachety: "Gratis, tanpa akun.",
+        other: "Gratis, tanpa akun.",
+      },
+      {
+        criterion: "Jenis watermark",
+        cachety: "Hanya teks, diulang miring di seluruh halaman.",
+        other: "Teks atau gambar (logo), dalam pola berulang, dengan pilihan font, warna, ukuran, transparansi, jarak, dan sudut.",
+        edge: "other",
+      },
+      {
+        criterion: "Cara watermark ditambahkan ke PDF",
+        cachety: "Menyatu dengan gambar setiap halaman, yang dibangun ulang dari piksel.",
+        other: "Dalam pengujian kami, ditambahkan sebagai teks terpisah yang digambar di atas halaman asli, yang dibiarkan seperti semula.",
+      },
+      {
+        criterion: "Bisakah watermark dihapus dengan mengedit PDF?",
+        cachety: "Tidak dengan cara sederhana: watermark menjadi bagian dari gambar halaman.",
+        other: "Karena berupa teks terpisah, pada prinsipnya bisa dihapus dengan editor PDF.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Data tersembunyi (metadata, lapisan teks, lokasi foto)",
+        cachety: "Dihapus dari hasil.",
+        other: "Tetap ada. Proton menyebut pemberian watermark tidak menghapus metadata dan menyarankan membersihkan file secara terpisah.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Teks yang bisa diseleksi dan dicari",
+        cachety: "Tidak: halaman sengaja diubah menjadi gambar.",
+        other: "Ya: teks asli tetap bisa diseleksi.",
+        edge: "other",
+      },
+      {
+        criterion: "Sensor data (nomor rekening, foto…)",
+        cachety: "Tersedia: gambar kotak, dan isi yang disensor benar-benar dihapus.",
+        other: "Tidak tersedia di alat watermark-nya.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Satu salinan per penerima, kode unik per salinan",
+        cachety: "Ya: sampai 20 penerima, setiap salinan dengan nama penerimanya, dan kode opsional.",
+        other: "Tidak tersedia.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Kata sandi pada file yang diunduh",
+        cachety: "Ya, enkripsi AES-256.",
+        other: "Tidak ada di alat watermark-nya. Proton Drive menyediakan tautan berbagi yang dilindungi kata sandi.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Foto",
+        cachety: "JPG, PNG, WebP, HEIC (iPhone), dan lainnya.",
+        other: "Menyebut JPG, PNG, dan WebP, pemrosesan banyak foto sekaligus, disimpan dalam format aslinya.",
+      },
+      {
+        criterion: "Analitik di halaman",
+        cachety: "Tidak ada.",
+        other: "Statistik penggunaan (tampilan halaman, klik) dalam pengujian kami, tanpa isi dokumen. Proton menyebut analitiknya di-host sendiri dan dianonimkan.",
+        edge: "cachety",
+      },
+      {
+        criterion: "Kode sumber",
+        cachety: "Terbuka (AGPL), siapa pun bisa memeriksanya.",
+        other: "Kami tidak menemukan kode sumber publik untuk alat ini.",
+        edge: "cachety",
+      },
+    ],
+    body: [
+      { type: "h2", text: "Yang sudah tepat dari kedua alat" },
+      {
+        type: "p",
+        text: "Kebanyakan situs watermark online meng-upload dokumen Anda ke server mereka. Alat Proton dan Cachety tidak: prosesnya terjadi di browser Anda, dan file tetap di HP atau komputer Anda. Dalam pengujian kami terhadap alat PDF Proton, dokumen tidak pernah dikirim ke mana pun. Proton juga menyatakan tidak mencatat, melacak, atau menganalisis konten Anda. Untuk paspor atau slip gaji, kedua alat ini pilihan yang aman.",
+      },
+      { type: "h2", text: "Cara kami membandingkan" },
+      {
+        type: "p",
+        text: "Pada 12 Oktober 2026, kami membaca halaman publik Proton dan menjalankan alat watermark PDF-nya di Chrome dengan file uji yang berisi teks yang bisa diseleksi serta judul dan nama penulis di metadatanya. Lalu kami memeriksa PDF yang diunduh. Semua yang dikatakan di sini tentang Proton berasal dari halaman tersebut atau dari pengujian itu.",
+      },
+      { type: "h2", text: "Perbedaannya: apa yang terjadi pada dokumen" },
+      {
+        type: "p",
+        text: "Dalam pengujian kami, alat Proton membiarkan halaman asli utuh dan menggambar watermark di atasnya sebagai teks. Hasilnya ringan dan teksnya tetap bisa diseleksi, yang berguna untuk kontrak atau laporan. Tetapi judul dan nama penulis asli masih ada di file, seperti yang diperingatkan Proton sendiri, dan watermark yang berupa teks terpisah pada prinsipnya bisa dihapus dengan editor PDF. Cachety memakai pendekatan sebaliknya, yang dirancang untuk dokumen identitas: setiap halaman dibangun ulang dari piksel dengan watermark yang menyatu, dan lapisan teks, metadata, serta lokasi foto dibuang. File menjadi lebih besar dan teksnya tidak bisa diseleksi, tetapi tidak ada lagi yang tersembunyi di dalamnya dan watermark tidak bisa dihapus begitu saja.",
+      },
+      { type: "h2", text: "Kelebihan Proton" },
+      {
+        type: "list",
+        items: [
+          "Logo atau gambar sebagai watermark, dengan pengaturan sudut dan jarak yang detail.",
+          "PDF yang teksnya harus tetap bisa diseleksi dan dicari.",
+          "Banyak foto sekaligus yang disimpan dalam format aslinya.",
+          "Jika Anda sudah memakai Proton Drive, berbagi hasilnya lewat tautan yang dilindungi kata sandi.",
+        ],
+      },
+      { type: "h2", text: "Kelebihan Cachety untuk dokumen identitas" },
+      {
+        type: "list",
+        items: [
+          "Data tersembunyi (metadata, lapisan teks, lokasi GPS foto) dihapus.",
+          "Watermark menyatu dengan halaman, sehingga tidak bisa dihapus hanya dengan mengedit.",
+          "Anda bisa menyensor data seperti nomor rekening sebelum mengirim.",
+          "Satu salinan per penerima, masing-masing dengan namanya, dan kode unik opsional untuk melacak kebocoran.",
+          "Kata sandi pada file yang diunduh, berupa 12 kata yang mudah dibaca.",
+          "Foto iPhone (HEIC), 11 bahasa, dan kode yang bisa diperiksa siapa pun.",
+        ],
+      },
+      { type: "h2", text: "Cara memberi watermark KTP dengan Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Buka cachety.com. Tidak perlu instal apa pun atau membuat akun.",
+          "Masukkan KTP, SIM, paspor, atau slip gaji Anda. PDF dan foto, termasuk foto iPhone, sama-sama bisa.",
+          "Tulis keperluan salinan (ketik sendiri atau pilih contoh), lalu siapa penerimanya. Tanggal ditambahkan otomatis.",
+          "Periksa pratinjau dan unduh salinan ber-watermark.",
+        ],
+      },
+    ],
+    chooseOther: [
+      "Anda ingin watermark berupa logo atau gambar.",
+      "Teks PDF harus tetap bisa diseleksi dan dicari.",
+      "Anda memberi watermark pada banyak foto sekaligus dan ingin tetap dalam format aslinya.",
+      "Anda sudah memakai Proton Drive dan ingin berbagi hasilnya lewat layanan itu.",
+    ],
+    chooseCachety: [
+      "Anda mengirim KTP, slip gaji, atau rekening koran dan tidak ingin ada data tersembunyi tersisa di file.",
+      "Anda ingin watermark yang tidak bisa dihapus hanya dengan mengedit PDF.",
+      "Anda perlu menyensor data, atau mengirim salinan bernama ke setiap penerima.",
+      "Anda ingin kata sandi pada file, atau kode yang bisa Anda periksa sendiri.",
+    ],
+    faq: [
+      {
+        q: "Apakah alat watermark Proton meng-upload file saya?",
+        a: "Tidak. Proton menyatakan alatnya memproses file secara lokal di browser Anda, dan dalam pengujian kami terhadap alat PDF-nya, dokumen tidak dikirim ke mana pun. Halamannya memang mengirim statistik penggunaan seperti tampilan halaman dan klik, yang dalam pengujian kami tidak berisi isi dokumen.",
+      },
+      {
+        q: "Mana yang lebih menjaga privasi, Proton atau Cachety?",
+        a: "Keduanya menyimpan file di perangkat Anda. Perbedaannya ada pada hasilnya: Cachety menghapus data tersembunyi seperti metadata dan lokasi foto, sedangkan alat Proton tetap menyimpannya, seperti yang disebutkan Proton.",
+      },
+      {
+        q: "Bisakah watermark Proton dihapus?",
+        a: "Dalam pengujian kami, watermark ditambahkan ke PDF sebagai teks terpisah di atas halaman asli. Watermark seperti itu pada prinsipnya bisa dihapus dengan editor PDF. Cachety justru menyatukannya dengan gambar setiap halaman.",
+      },
+      {
+        q: "Bisakah Cachety menambahkan watermark berupa logo?",
+        a: "Tidak. Cachety hanya menambahkan watermark teks. Untuk logo, alat Proton menerima gambar.",
+      },
+    ],
+    sources: [
+      { label: "Proton: watermark file PDF gratis", url: "https://proton.me/drive/watermark-pdf" },
+      { label: "Proton: pembuat watermark gambar gratis", url: "https://proton.me/drive/image-watermark" },
+      { label: "Proton: kebijakan privasi (analitik situs web)", url: "https://proton.me/legal/privacy" },
+    ],
+    checked: "2026-10-12",
+    updated: "2026-10-12",
+  },
 ];
