@@ -130,6 +130,35 @@ describe("plusieurs destinataires, copies traçables", () => {
   );
 });
 
+describe("après le téléchargement", () => {
+  test(
+    "Fermer et « Filigraner un autre document » fonctionnent sans casser la page",
+    async () => {
+      const page = await openPage("/fr");
+      const errors: string[] = [];
+      page.on("pageerror", (e) => errors.push(e.message));
+      await addPdf(page, "bulletin.pdf", await makePdf([[300, 400]]));
+      await page.getByLabel(t.purpose.label).fill("Dossier location");
+      const button = page.getByRole("button", { name: t.download.one, exact: true });
+      await button.and(page.locator(":enabled")).waitFor({ timeout: 30_000 });
+
+      await download(page, t.download.one);
+      await page.getByText(t.done.title).waitFor();
+      await page.getByRole("button", { name: t.done.close }).click();
+      await page.getByText(t.done.title).waitFor({ state: "detached" });
+      // L'outil est toujours là, avec le document.
+      await page.locator("li").filter({ hasText: "bulletin.pdf" }).first().waitFor();
+
+      await download(page, t.download.one);
+      await page.getByRole("button", { name: t.done.another }).click();
+      await page.getByText(t.dropTitle).waitFor();
+      expect(await page.getByLabel(t.purpose.label).inputValue()).toBe("");
+      expect(errors).toEqual([]);
+    },
+    90_000
+  );
+});
+
 describe("masquage depuis l'aperçu", () => {
   test(
     "tracer une zone puis Terminé la noircit dans le document produit",

@@ -528,7 +528,9 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   // Quelle étape a échoué : le message doit nommer la bonne (assemblage ou
   // chiffrement), pas se fier au mot de passe saisi au moment de l'affichage.
   const [bundleError, setBundleError] = useState<null | "export" | "encrypt" | "stale">(null);
-  useEffect(() => setBundleError(null), [stamp, ready.length, filePassword]);
+  useEffect(() => {
+    setBundleError(null);
+  }, [stamp, ready.length, filePassword]);
   // Tout ce qui change le contenu d'un téléchargement : réglage de l'aperçu,
   // autres destinataires et leurs références. Relu à la fin d'un assemblage long.
   const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}`;

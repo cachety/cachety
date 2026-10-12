@@ -27,7 +27,12 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
   const [copied, setCopied] = useState(false);
   const ref = useRef<HTMLElement>(null);
   // Sur téléphone, le panneau apparaît sous l'aperçu : on l'amène à l'écran.
-  useEffect(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), []);
+  // Accolades obligatoires : un effet ne doit rien renvoyer d'autre qu'une
+  // fonction de nettoyage, et scrollIntoView renvoie une promesse dans les
+  // navigateurs récents (React tenterait de l'appeler à la fermeture).
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, []);
   const title = info.copies > 1 ? d.titleMany(info.copies) : info.files.length > 1 ? d.titleFiles : d.title;
 
   const copy = async () => {
