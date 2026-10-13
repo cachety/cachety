@@ -45,7 +45,7 @@ Pull requests and the weekly audit run never deploy.
 
 4. **Optional but recommended**: GitHub → *Settings* → *Environments* → `production`. Restrict deployments to the `main` branch, and add yourself as a required reviewer if you want to approve each release.
 
-5. **Custom domain**: Cloudflare → *Workers & Pages* → `cachety` → *Custom domains* → add `cachety.com`, then `www.cachety.com`. If the domain's DNS is already on Cloudflare, the records are created for you. Then redirect `www` to the apex: *Rules* → *Redirect Rules* → `www.cachety.com/*` → `https://cachety.com/${1}`, 301.
+5. **Custom domain**: Cloudflare → *Workers & Pages* → `cachety` → *Custom domains* → add `cachety.com`, then `www.cachety.com`. If the domain's DNS is already on Cloudflare, the records are created for you. Then redirect `www` to the apex: *Rules* → *Redirect Rules* → `www.cachety.com/*` → `https://cachety.com/${1}`, 301. Do not skip it: without it, `www` serves a second copy of the site (kept out of search by an `X-Robots-Tag: noindex` rule in `_headers`, as is `cachety.pages.dev`), and in Google Search Console use a **Domain** property (`cachety.com`) or the `https://cachety.com/` prefix, not `https://www.cachety.com/`, or the sitemap is rejected because its URLs are on another host.
 
 6. **Keep it tracker-free**: do **not** enable *Web Analytics* or *Zaraz* on the zone or the Pages project. They inject a third-party script, which the CSP would block, and they would contradict the privacy page. Leave *Email obfuscation* and *Rocket Loader* off too, since they rewrite HTML and break the CSP hashes.
 

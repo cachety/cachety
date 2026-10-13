@@ -74,6 +74,15 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
     for (const line of headersText.split("\n")) expect(line.length).toBeLessThanOrEqual(2000);
   });
 
+  test("seules les copies (www, pages.dev) sont hors index, jamais cachety.com", () => {
+    const noindex = headerRules(headersText)
+      .filter((r) => r.headers.some(([n, v]) => n === "x-robots-tag" && v.includes("noindex")))
+      .map((r) => r.pattern);
+    expect(noindex).toContain("https://www.cachety.com/*");
+    expect(noindex).toContain("https://cachety.pages.dev/*");
+    for (const p of noindex) expect(p === "/embed/*" || p.startsWith("https://www.") || p.includes(".pages.dev")).toBe(true);
+  });
+
   test("le bloc « /* » ne pose pas de CSP (elle serait jointe à celle de chaque page)", () => {
     const root = headerRules(headersText).find((r) => r.pattern === "/*");
     expect(root?.headers.some(([n]) => n === "content-security-policy")).toBe(false);

@@ -20,3 +20,11 @@
 # sécurité se propage alors dès le chargement suivant.
 /sw.js
   Cache-Control: no-cache
+
+# Copies du site sur d'autres noms d'hôte : hors index, l'original est
+# https://cachety.com (balises canonical et sitemap.xml y pointent déjà).
+# www doit en plus rediriger vers l'apex (règle Cloudflare, docs/deploy.md).
+https://www.cachety.com/*
+  X-Robots-Tag: noindex
+https://cachety.pages.dev/*
+  X-Robots-Tag: noindex
