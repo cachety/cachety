@@ -301,7 +301,8 @@ export function outlineRgba(style: WatermarkStyle) {
 
 /**
  * Plancher du contour (celui de l'ancien réglage par défaut, 45 %), quelle que soit
- * l'opacité choisie : sur fond blanc, un
+ * l'opacité choisie. Le contour est tracé autour des lettres (intérieur évidé,
+ * voir drawWatermarkRun) : la couleur choisie reste visible. Sur fond blanc, un
  * contour moins dense passe au-dessus du seuil « sombre » (≈ 110 sur 255) et
  * disparaît avec les niveaux (blanchir tout sauf le sombre). Le réglage
  * « Léger » reste léger (remplissage pâle, petite taille) sans devenir
@@ -328,7 +329,12 @@ export function drawWatermark(
   if (!line) return;
 
   const look = normalizeStyle(style);
-  ctx.save();
+  // Calque transparent : le contour est évidé à l'intérieur des lettres
+  // (destination-out, voir drawWatermarkRun), ce qui effacerait la page
+  // si l'on dessinait directement dessus.
+  const layer = makeLayer(width, height);
+  const page = ctx;
+  ctx = layer.getContext("2d") as CanvasRenderingContext2D;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   // Sens de base pour l'algorithme bidi : un texte arabe ou persan qui contient
@@ -382,7 +388,16 @@ export function drawWatermark(
     }
   }
 
-  ctx.restore();
+  page.drawImage(layer, 0, 0);
+  layer.width = 0;
+}
+
+function makeLayer(width: number, height: number): HTMLCanvasElement | OffscreenCanvas {
+  if (typeof OffscreenCanvas !== "undefined") return new OffscreenCanvas(Math.max(1, width), Math.max(1, height));
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, width);
+  c.height = Math.max(1, height);
+  return c;
 }
 
 /** 0 laisse le texte droit. Sinon chaque glyphe suit une sinusoïde, tangent à la pente. */
@@ -393,19 +408,29 @@ export function drawWatermarkRun(
   y: number,
   fontSize: number,
   wave: number,
-  /** Couleur du contour sombre (outlineRgba) ; absent : pas de contour. */
+  /** Couleur du contour sombre (outlineRgba) ; absent : pas de contour. Exige un canevas transparent (calque). */
   outline?: string
 ) {
   const ink = (s: string, px: number, py: number) => {
     ctx.strokeText(s, px, py); // halo de lisibilité
+    if (outline) {
+      // Contour sombre autour des lettres, jamais dessus : trait double
+      // largeur, puis intérieur évidé. Il garde sa densité (résistance aux
+      // niveaux et à la sélection de couleur), et l'intérieur montre la
+      // couleur choisie au lieu d'un gris sombre aux petites tailles.
+      const [style, width, fill, op] = [ctx.strokeStyle, ctx.lineWidth, ctx.fillStyle, ctx.globalCompositeOperation];
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = outlineWidth(fontSize) * 3;
+      ctx.strokeText(s, px, py);
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = "#000";
+      ctx.fillText(s, px, py);
+      ctx.globalCompositeOperation = op;
+      ctx.strokeStyle = style;
+      ctx.lineWidth = width;
+      ctx.fillStyle = fill;
+    }
     ctx.fillText(s, px, py);
-    if (!outline) return;
-    const [style, width] = [ctx.strokeStyle, ctx.lineWidth];
-    ctx.strokeStyle = outline;
-    ctx.lineWidth = outlineWidth(fontSize);
-    ctx.strokeText(s, px, py);
-    ctx.strokeStyle = style;
-    ctx.lineWidth = width;
   };
   // Écriture de droite à gauche (arabe, hébreu…) : poser les lettres une à une
   // inverserait le sens et casserait les liaisons. Le texte reste alors droit.

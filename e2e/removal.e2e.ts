@@ -95,6 +95,18 @@ beforeAll(async () => {
         const dh = Math.abs(((hueOf(r, g, b) - inkHue + 540) % 360) - 180);
         if ((chroma > 20 && dh < 35) || Math.min(r, g, b) > 200) hue[i] = hue[i + 1] = hue[i + 2] = 255;
       }
+      // Couleur visible : part des pixels du filigrane dans la teinte choisie
+      // (un contour posé sur les lettres les rendait gris aux petites tailles).
+      let touched = 0;
+      let inked = 0;
+      for (let i = 0; i < target.d.length; i += 4) {
+        const d0 =
+          Math.abs(target.d[i] - clean.d[i]) + Math.abs(target.d[i + 1] - clean.d[i + 1]) + Math.abs(target.d[i + 2] - clean.d[i + 2]);
+        if (d0 < 40) continue;
+        touched++;
+        const [r, g, b] = [target.d[i], target.d[i + 1], target.d[i + 2]];
+        if (Math.max(r, g, b) - Math.min(r, g, b) > 20 && Math.abs(((hueOf(r, g, b) - inkHue + 540) % 360) - 180) < 35) inked++;
+      }
       // 2. Niveaux : seul le sombre survit.
       const levels = new Uint8ClampedArray(target.d);
       for (let i = 0; i < levels.length; i += 4)
@@ -137,6 +149,7 @@ beforeAll(async () => {
         median: survival(median),
         multi: survival(multi),
         identity: survival(target.d),
+        inkShare: inked / touched,
       };
     },
     { docs: docs.map(toBase64), text: TEXT, ink: INK, copies: COPIES }
@@ -158,6 +171,10 @@ describe("banc d'essai : suppression du filigrane", () => {
 
   test("sélection de la couleur : le contour sombre survit (lettres lisibles en creux)", () => {
     expect(scores.hue).toBeGreaterThan(0.33);
+  });
+
+  test("la couleur choisie se voit : le contour entoure les lettres sans les recouvrir", () => {
+    expect(scores.inkShare).toBeGreaterThan(0.3); // 0,25 quand le contour était posé dessus
   });
 
   test("niveaux (blanchir tout sauf le sombre) : le contour survit", () => {
