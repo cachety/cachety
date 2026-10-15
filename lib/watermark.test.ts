@@ -90,7 +90,8 @@ describe("contour sombre (résistance à la sélection par couleur)", () => {
 
   test("assez épais pour garder un cœur neutre après le sous-échantillonnage JPEG", () => {
     expect(outlineWidth(60)).toBe(4);
-    expect(outlineWidth(10)).toBe(1.5);
+    expect(outlineWidth(30)).toBe(2); // suit la taille
+    expect(outlineWidth(10)).toBe(1);
   });
 });
 

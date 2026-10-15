@@ -64,6 +64,8 @@ describe("apparence du filigrane", () => {
       wave: 1,
     });
     expect(normalizeStyle({ font: "serif", color: "#ABC" }).color).toBe("#aabbcc");
+    expect(normalizeStyle({ scale: 0.2 }).scale).toBe(0.2); // plus petit réglage : 20 %
+    expect(normalizeStyle({ scale: 0.1 }).scale).toBe(0.2);
     expect(normalizeStyle({ color: "  #C4262E " }).color).toBe("#c4262e");
   });
 

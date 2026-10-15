@@ -244,6 +244,41 @@ describe("masquage depuis l'aperçu", () => {
   );
 });
 
+describe("aperçu stable", () => {
+  test(
+    "plusieurs documents de tailles différentes : changer le réglage ne fait pas sauter l'aperçu d'un document à l'autre",
+    async () => {
+      const page = await openPage("/fr");
+      await page.locator(`input[aria-label="${t.inputAria}"]`).setInputFiles([
+        { name: "a4.pdf", mimeType: "application/pdf", buffer: Buffer.from(await makePdf([[595, 842]])) },
+        { name: "carte.pdf", mimeType: "application/pdf", buffer: Buffer.from(await makePdf([[300, 190]])) },
+      ]);
+      await page.getByLabel(t.purpose.label).fill("Copie e2e");
+      await page.getByText(t.status.ready, { exact: true }).nth(1).waitFor({ timeout: 30_000 });
+      await page.waitForFunction(() => !document.querySelector('#apercu [aria-busy="true"]'), null, { timeout: 30_000 });
+
+      const shownDoc = () =>
+        page.evaluate(() => {
+          const alt = document.querySelector<HTMLImageElement>("#apercu img[alt]")?.alt ?? "";
+          return alt.includes("a4.pdf") ? "a4" : alt.includes("carte.pdf") ? "carte" : "";
+        });
+      const before = await shownDoc();
+      expect(before).not.toBe("");
+
+      await page.getByRole("button", { name: t.tools.adjust }).click();
+      await page.getByRole("radio", { name: t.style.presets.strong }).click();
+      const seen = new Set<string>();
+      const until = Date.now() + 4_000;
+      while (Date.now() < until) {
+        seen.add(await shownDoc());
+        await page.waitForTimeout(40);
+      }
+      expect([...seen]).toEqual([before]);
+    },
+    90_000
+  );
+});
+
 describe("partage depuis le téléphone (Web Share Target)", () => {
   test(
     "un fichier partagé arrive dans la liste et la boîte de réception locale est vidée",

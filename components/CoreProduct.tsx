@@ -344,6 +344,8 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   // entre-temps, le fichier porterait l'ancien filigrane) et à l'arrêt d'un lot.
   const stampRef = useRef(stamp);
   stampRef.current = stamp;
+  /** Document de l'aperçu (calculé plus bas), rendu en premier par la file. */
+  const shownIdRef = useRef<string | undefined>(undefined);
   const liveDocs = useRef(docs);
   liveDocs.current = docs;
   // Documents en cours de rendu. Un lot relancé parce qu'un fichier a été
@@ -378,7 +380,10 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     };
     const timer = setTimeout(async () => {
       // File d'attente figée : la progression remplace prevDocs.current.
-      const queue = prevDocs.current.slice();
+      // Le document affiché d'abord : l'aperçu se met à jour sans attendre les autres.
+      const queue = prevDocs.current
+        .slice()
+        .sort((a, b) => Number(b.id === shownIdRef.current) - Number(a.id === shownIdRef.current));
       for (const doc of queue) {
         if (cancelled) return;
         const own = docStamp(doc, stamp);
@@ -519,10 +524,20 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   };
 
   // Sans sélection explicite, l'aperçu suit le dernier document terminé.
+  // Mais un réglage modifié ne le fait pas sauter d'un document à l'autre
+  // (tailles différentes, page qui saute) : il reste sur celui affiché, avec
+  // son aperçu précédent le temps du nouveau rendu. Seul un ajout de fichier
+  // le libère.
+  const sticky = useRef<{ id: string; fileKey: string } | null>(null);
+  const kept =
+    sticky.current?.fileKey === fileKey ? docs.find((d) => d.id === sticky.current!.id && (d.result || d.error)) : undefined;
   const shown =
     docs.find((d) => d.id === activeId) ??
+    kept ??
     [...docs].reverse().find((d) => isFresh(d, stamp)) ??
     docs.find((d) => d.result || d.error);
+  sticky.current = shown ? { id: shown.id, fileKey } : null;
+  shownIdRef.current = shown?.id;
 
   const [bundling, setBundling] = useState(false);
   // Quelle étape a échoué : le message doit nommer la bonne (assemblage ou

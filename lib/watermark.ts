@@ -310,7 +310,12 @@ export function outlineRgba(style: WatermarkStyle) {
  */
 export const OUTLINE_MIN_ALPHA = 0.72;
 
-export const outlineWidth = (fontSize: number) => Math.max(1.5, fontSize / 15);
+/**
+ * Suit la taille du texte : un petit filigrane garde un contour fin. Plancher
+ * d'1 px (rebord extérieur de 1,5 px, voir drawWatermarkRun), en dessous
+ * duquel le sous-échantillonnage JPEG le dissoudrait.
+ */
+export const outlineWidth = (fontSize: number) => Math.max(1, fontSize / 15);
 
 /** Pas horizontal du pavage : la ligne entière, plus un écart variable (jamais de chevauchement). */
 export const watermarkStepX = (lineWidth: number, fontSize: number, spacing = 1) =>

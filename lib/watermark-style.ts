@@ -17,12 +17,12 @@ export type WatermarkStyle = {
   wave: number;
 };
 
-export const SCALE_PERCENT = { min: 40, max: 220, step: 5 } as const;
+export const SCALE_PERCENT = { min: 20, max: 220, step: 5 } as const;
 export const OPACITY_PERCENT = { min: 5, max: 100, step: 5 } as const;
 export const WAVE_PERCENT = { min: 0, max: 100, step: 5 } as const;
 
 // Par défaut : le réglage « Léger » (taille 50 %, opacité 25 %).
-const SCALE = { min: 0.4, max: 2.2, step: 0.05, fallback: 0.5 };
+const SCALE = { min: 0.2, max: 2.2, step: 0.05, fallback: 0.5 };
 const OPACITY = { min: 0.05, max: 1, step: 0.05, fallback: 0.25 };
 const WAVE = { min: 0, max: 1, step: 0.05, fallback: 0 };
 
