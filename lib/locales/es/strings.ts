@@ -351,6 +351,7 @@ export const STRINGS_ES: Strings = {
       typeHint: "No se guarda.",
       uploadHint: "Una foto de tu firma sobre papel blanco, o una imagen ya recortada.",
       uploadButton: "Elegir una imagen",
+      uploadTooLarge: "Archivo de imagen demasiado grande (50 MB como máximo).",
       removeBg: "Quitar el fondo",
       keepBg: "Mantener el fondo",
       threshold: "Sensibilidad",

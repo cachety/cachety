@@ -353,6 +353,7 @@ export const STRINGS_NL: Strings = {
       typeHint: "Je naam wordt niet opgeslagen.",
       uploadHint: "Een foto van je handtekening op wit papier, of een al uitgeknipte afbeelding.",
       uploadButton: "Afbeelding kiezen",
+      uploadTooLarge: "Afbeeldingsbestand te groot (maximaal 50 MB).",
       removeBg: "Achtergrond verwijderen",
       keepBg: "Achtergrond behouden",
       threshold: "Gevoeligheid",

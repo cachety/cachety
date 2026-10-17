@@ -9,6 +9,7 @@
 // ni URL blob: (docs/prd-sign.md §4.4). Le PNG est décodé en ImageBitmap
 // directement depuis ses octets.
 
+import { fileKind } from "@/lib/files";
 import { sha256Hex } from "@/lib/fingerprint";
 import { decodeHeic, isHeic } from "@/lib/heic";
 import { imageSize, tooManyPixels } from "@/lib/image-size";
@@ -250,8 +251,9 @@ function drawToPixels(source: CanvasImageSource, width: number, height: number, 
  * ou `image_unreadable`.
  */
 export async function fromFile(file: File): Promise<Pixels> {
-  const type = file.type.toLowerCase();
-  if (type && !type.startsWith("image/") && !isHeic(file)) throw new Error("unsupported");
+  // Mêmes formats que le moteur (fileKind) : un SVG (document vectoriel, pas
+  // une photo) est refusé, même renommé en .png.
+  if (fileKind(file) !== "image") throw new Error("unsupported");
   if (file.size > SIGNATURE_MAX_FILE_BYTES) throw new Error("file_too_large");
   let bitmap: ImageBitmap | null = null;
   try {

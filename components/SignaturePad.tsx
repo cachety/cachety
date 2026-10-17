@@ -538,7 +538,8 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
           {uploaded && <span className="ms-3 text-sm break-all text-encre-2">{uploaded.name}</span>}
           {uploadError && (
             <p role="alert" className="mt-2 text-sm text-sceau-fonce">
-              {t.errors[uploadError]}
+              {/* Plafond propre à la signature (50 Mo), pas celui des documents. */}
+              {uploadError === "file_too_large" ? s.uploadTooLarge : t.errors[uploadError]}
             </p>
           )}
           {uploaded && (
