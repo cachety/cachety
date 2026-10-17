@@ -30,6 +30,12 @@ export type InkBox = { x: number; y: number; w: number; h: number };
 export const SIGNATURE_MIN_WIDTH = 1200;
 /** Au-delà, on réduit : une photo de 4000 px ne rend pas la signature plus nette. */
 export const SIGNATURE_MAX_WIDTH = 2400;
+/**
+ * Plafond de hauteur : une encre haute et étroite (paraphe vertical, 50 × 400 px)
+ * agrandie à SIGNATURE_MIN_WIDTH ferait près de 10 000 px de haut. Aucun côté
+ * ne dépasse ce plafond, quitte à rester sous la largeur minimale.
+ */
+export const SIGNATURE_MAX_HEIGHT = 2400;
 /** Marge autour de l'encre, en fraction du plus grand côté de la boîte. */
 export const SIGNATURE_PAD = 0.06;
 /** Alpha minimal d'un pixel compté comme de l'encre (ignore l'anticrénelage quasi invisible). */
@@ -154,11 +160,14 @@ export function trim(data: Pixels, pad = SIGNATURE_PAD): Pixels {
   return box ? crop(data, box) : copy(data);
 }
 
-/** Largeur finale : au moins SIGNATURE_MIN_WIDTH (agrandie), au plus SIGNATURE_MAX_WIDTH. */
+/**
+ * Taille finale : largeur d'au moins SIGNATURE_MIN_WIDTH (agrandie), au plus
+ * SIGNATURE_MAX_WIDTH ; hauteur bornée à SIGNATURE_MAX_HEIGHT (rapport conservé).
+ */
 export function exportSize(width: number, height: number): { width: number; height: number } {
   const target = Math.min(SIGNATURE_MAX_WIDTH, Math.max(SIGNATURE_MIN_WIDTH, width));
-  const scale = target / width;
-  return { width: target, height: Math.max(1, Math.round(height * scale)) };
+  const scale = Math.min(target / width, SIGNATURE_MAX_HEIGHT / height);
+  return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
 }
 
 // ---------------------------------------------------------------------------
