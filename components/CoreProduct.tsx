@@ -537,8 +537,9 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
         if (sign && sigReady && !doc.overlays) {
           try {
             const last = await lastPageAspect(doc.file, doc.password);
-            // Signature changée entre-temps : le passage suivant recalcule.
-            if (cancelled) return;
+            // Signature changée entre-temps : le passage suivant recalcule (avec
+            // le rapport de la nouvelle image, que le recalage n'aurait pas vu).
+            if (cancelled || sigLive.current !== sigReady) return;
             const overlays: PageOverlays = {
               [last.pageCount - 1]: [
                 { rect: defaultPlacement(last.aspect, sigReady.sig.width / sigReady.sig.height), image: "signature" },
