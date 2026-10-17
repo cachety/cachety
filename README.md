@@ -48,7 +48,7 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **Guided help tour** for first-time visitors, offered when someone seems unsure where to start.
 - **92 practical guides** for everyday situations in France, the UK, Germany, the Netherlands, Spain and Latin America, Brazil, Indonesia, the Arab world, Iran, Japan and China.
 - **82 fact-checked comparisons** with other watermark tools (iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), with sources, including when another tool is the better choice.
-- **On partner websites:** approved sites can show the tool in their own pages (an iframe served by cachety.com, so the host site can't see the documents). See [docs/embed.md](docs/embed.md) and [cachety.com/en/partners](https://cachety.com/en/partners).
+- **On partner websites:** approved sites can show the watermark tool, the sign tool or both in their own pages (an iframe served by cachety.com, so the host site can't see the documents). See [docs/embed.md](docs/embed.md) and [cachety.com/en/partners](https://cachety.com/en/partners).
 
 ## Sign a document
 
@@ -102,6 +102,8 @@ Letting agencies, HR platforms, associations: approved websites can show the ful
         title="Cachety" loading="lazy" allow="clipboard-write"
         style="width: 100%; min-height: 640px; border: 0"></iframe>
 ```
+
+To offer signing too, add `tools=sign` (signing only) or `tools=watermark,sign` (both, the visitor switches) to the fragment, with an optional pre-filled place and note under the signature: `#tools=watermark,sign&place=Lyon&note=Agreed`.
 
 The [partners page](https://cachety.com/en/partners) builds this code for you, with a live preview, the short script for automatic height, and wording you can reuse. Technical details: [docs/embed.md](docs/embed.md).
 

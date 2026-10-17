@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Unterschreiben auf Partner-Websites",
-    body: "Freigegebene Websites könnten das Unterschreiben in ihren eigenen Seiten zeigen, mit bereits ausgefülltem Ort und Vermerk. Die Dokumente blieben trotzdem auf dem Gerät der Besucher.",
+    body: "Freigegebene Websites können das Unterschreiben in ihren eigenen Seiten zeigen, allein oder neben dem Wasserzeichen, mit bereits ausgefülltem Ort und Vermerk. Die Dokumente bleiben auf dem Gerät der Besucher.",
   },
   "sign": {
     title: "Dokumente unterschreiben",

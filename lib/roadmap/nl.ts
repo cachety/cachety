@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Ondertekenen op partnerwebsites",
-    body: "Goedgekeurde websites zouden het ondertekenen in hun eigen pagina's kunnen tonen, met plaats en opmerking al ingevuld. De documenten blijven dan nog steeds op het apparaat van de bezoeker.",
+    body: "Goedgekeurde websites kunnen het ondertekenen in hun eigen pagina's tonen, alleen of naast het watermerk, met plaats en opmerking al ingevuld. De documenten blijven op het apparaat van de bezoeker.",
   },
   "sign": {
     title: "Een document ondertekenen",

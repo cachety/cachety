@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "La signature sur les sites partenaires",
-    body: "Les sites approuvés pourraient afficher l'outil de signature dans leurs pages, avec le lieu et la mention déjà remplis. Les documents resteraient sur l'appareil du visiteur.",
+    body: "Les sites approuvés peuvent afficher l'outil de signature dans leurs pages, seul ou à côté du filigrane, avec le lieu et la mention déjà remplis. Les documents restent sur l'appareil du visiteur.",
   },
   "sign": {
     title: "Signer un document",

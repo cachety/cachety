@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Firmar en webs asociadas",
-    body: "Las webs aprobadas podrían mostrar la herramienta de firma en sus propias páginas, con el lugar y la nota ya rellenados. Los documentos seguirían en el dispositivo del visitante.",
+    body: "Las webs aprobadas pueden mostrar la herramienta de firma en sus propias páginas, sola o junto a la marca de agua, con el lugar y la nota ya rellenados. Los documentos siguen en el dispositivo del visitante.",
   },
   "sign": {
     title: "Firmar un documento",

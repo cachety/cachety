@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Assinatura em sites parceiros",
-    body: "Sites aprovados poderiam mostrar a ferramenta de assinatura nas próprias páginas, com o local e a frase já preenchidos. Os documentos continuariam no aparelho do visitante.",
+    body: "Sites aprovados podem mostrar a ferramenta de assinatura nas próprias páginas, sozinha ou ao lado da marca d'água, com o local e a frase já preenchidos. Os documentos continuam no aparelho do visitante.",
   },
   "sign": {
     title: "Assinar um documento",

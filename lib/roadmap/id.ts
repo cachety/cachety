@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Tanda tangan di situs mitra",
-    body: "Situs yang disetujui bisa menampilkan alat tanda tangan di halaman mereka sendiri, dengan tempat dan catatan yang sudah terisi. Dokumen tetap berada di perangkat pengunjung.",
+    body: "Situs yang disetujui bisa menampilkan alat tanda tangan di halaman mereka sendiri, sendiri atau di samping alat watermark, dengan tempat dan catatan yang sudah terisi. Dokumen tetap berada di perangkat pengunjung.",
   },
   "sign": {
     title: "Tanda tangani dokumen",

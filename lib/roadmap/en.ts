@@ -31,7 +31,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Signing on partner websites",
-    body: "Approved websites could show the sign tool in their own pages, with the place and note already filled in. The documents would still stay on the visitor's device.",
+    body: "Approved websites can show the sign tool in their own pages, alone or next to the watermark tool, with the place and note already filled in. The documents still stay on the visitor's device.",
   },
   "sign": {
     title: "Sign a document",

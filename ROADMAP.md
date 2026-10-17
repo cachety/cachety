@@ -65,11 +65,6 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   JavaScript, annotations) and a seam test proving it, since rebuilding pages
   from pixels is what removes hidden data today.
 
-### `sign-embed`: signing on partner websites
-- **Status:** idea
-- `/embed/<lang>/sign` for approved partners, with a pre-filled place and
-  note, using the same `partners.json` allow-list as `partner-embed`.
-
 ## Backlog (internal)
 
 - **Large batches:** show the progress bar and the All / Needs attention /
@@ -82,6 +77,9 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   sign roadmap entries in the nine languages other than French and English,
   which are drafts translated from the English guide. Each of those guide
   files marks them with a "Draft translation, awaiting native review" comment.
+  Also the partner page's tool choice and embed switch strings
+  (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
+  roadmap text, added in English and French first.
 - **Sign, later (v1.1+):** several placements per page (`multi-placement`), a
   self-hosted handwriting font for the Type tab (`script-font`), fact-checked
   "Cachety vs Yousign / DocuSign / Adobe Fill & Sign / iLovePDF Sign /
@@ -94,6 +92,14 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   letting agency with the bank details hidden".
 
 ## Shipped
+
+### `sign-embed`: signing on partner websites (2026-10)
+Partners choose the tools in the embed code: watermark (default), sign, or
+both with a switch (`#tools=watermark,sign`). Signing reads a pre-filled place
+and note (`#place=…&note=…`); a pre-filled purpose or recipient also ticks
+"add a watermark" on the signed copy. Same page `/embed/<lang>`, same
+`partners.json` allow-list and headers. Switching tools with documents loaded
+asks first, since only one tool is mounted at a time.
 
 ### `sign`: sign a document (2026-10)
 A second mode at `/<lang>/sign`: draw, type or upload a signature, add the
