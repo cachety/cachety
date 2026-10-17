@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Easy-to-read passwords in your language",
     body: "Password words in your own language, limited to plain letters so they type the same on any keyboard.",
   },
+  "remember-signature": {
+    title: "Remember my signature on this device",
+    body: "An opt-in choice to keep your signature on this device, with a plain sentence about what is stored and a one-tap delete. Today it is never saved.",
+  },
+  "keep-vector-pages": {
+    title: "Keep the text of signed PDFs",
+    body: "An option to sign without rebuilding the pages from pixels, so the text stays searchable. It would come with its own removal of hidden data.",
+  },
+  "sign-embed": {
+    title: "Signing on partner websites",
+    body: "Approved websites could show the sign tool in their own pages, with the place and note already filled in. The documents would still stay on the visitor's device.",
+  },
+  "sign": {
+    title: "Sign a document",
+    body: "Draw, type or upload your signature, place it on a PDF or a photo, and download a signed PDF. Like the watermark tool, nothing is uploaded.",
+  },
   "simpler-tool": {
     title: "A simpler tool",
     body: "Three steps in plain words: your document, what it's for and who gets it, then preview and download. Every advanced option stays one tap away.",

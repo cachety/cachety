@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Senhas fáceis de ler no seu idioma",
     body: "Palavras da senha no seu próprio idioma, só com letras sem acento, para digitar do mesmo jeito em qualquer teclado.",
   },
+  "remember-signature": {
+    title: "Lembrar minha assinatura neste aparelho",
+    body: "Uma opção, só se você quiser, para guardar sua assinatura neste aparelho, com uma frase clara sobre o que fica salvo e um toque para apagar. Hoje ela nunca é salva.",
+  },
+  "keep-vector-pages": {
+    title: "Manter o texto dos PDFs assinados",
+    body: "Uma opção para assinar sem refazer as páginas a partir dos pixels, para que o texto continue pesquisável. Ela viria com a sua própria remoção dos dados ocultos.",
+  },
+  "sign-embed": {
+    title: "Assinatura em sites parceiros",
+    body: "Sites aprovados poderiam mostrar a ferramenta de assinatura nas próprias páginas, com o local e a frase já preenchidos. Os documentos continuariam no aparelho do visitante.",
+  },
+  "sign": {
+    title: "Assinar um documento",
+    body: "Desenhe, digite ou envie a imagem da sua assinatura, coloque num PDF ou numa foto e baixe um PDF assinado. Como na marca d'água, nada é enviado.",
+  },
   "simpler-tool": {
     title: "Uma ferramenta mais simples",
     body: "Três passos em palavras simples: seu documento, para que serve e quem recebe, depois a prévia e o download. As opções avançadas continuam a um toque.",

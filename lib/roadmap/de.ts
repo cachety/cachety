@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Gut lesbare Passwörter in deiner Sprache",
     body: "Passwortwörter in deiner eigenen Sprache, nur mit einfachen Buchstaben, damit sie sich auf jeder Tastatur gleich tippen lassen.",
   },
+  "remember-signature": {
+    title: "Meine Unterschrift auf diesem Gerät merken",
+    body: "Eine freiwillige Option, deine Unterschrift auf diesem Gerät zu behalten, mit einem klaren Satz dazu, was gespeichert wird, und Löschen mit einem Tipp. Heute wird sie nie gespeichert.",
+  },
+  "keep-vector-pages": {
+    title: "Den Text unterschriebener PDFs behalten",
+    body: "Eine Option, zu unterschreiben, ohne die Seiten aus Pixeln neu aufzubauen, damit der Text durchsuchbar bleibt. Sie bekäme ihre eigene Entfernung versteckter Daten.",
+  },
+  "sign-embed": {
+    title: "Unterschreiben auf Partner-Websites",
+    body: "Freigegebene Websites könnten das Unterschreiben in ihren eigenen Seiten zeigen, mit bereits ausgefülltem Ort und Vermerk. Die Dokumente blieben trotzdem auf dem Gerät der Besucher.",
+  },
+  "sign": {
+    title: "Dokumente unterschreiben",
+    body: "Zeichne, tippe oder lade deine Unterschrift hoch, setze sie auf ein PDF oder Foto und lade ein unterschriebenes PDF herunter. Wie beim Wasserzeichen wird nichts hochgeladen.",
+  },
   "simpler-tool": {
     title: "Ein einfacheres Tool",
     body: "Drei Schritte in klaren Worten: dein Dokument, wofür und für wen, dann Vorschau und Download. Alle weiteren Optionen sind nur einen Tipp entfernt.",
