@@ -429,6 +429,10 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
   // Mode « signer » : image de la signature remplacée. L'ancienne est fermée
   // (.close()) dès qu'aucun rendu ni téléchargement ne peut plus la peindre.
   const sigLive = useRef<SigReady | null>(null);
+  // Rapport largeur / hauteur de l'image sur lequel les placements sont
+  // calés. Gardé quand la signature est effacée (null) : la suivante recale
+  // les boîtes depuis ce rapport, sinon elle serait étirée dans l'ancienne.
+  const fitAspect = useRef<number | null>(null);
   const retired = useRef(new Set<ImageBitmap>());
   const bundlingRef = useRef(false);
   const flushRetired = () => {
@@ -441,6 +445,13 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     let live = true;
     const replace = (next: SigReady | null) => {
       const old = sigLive.current;
+      // Même image (même PNG : espace ajoutée en fin de nom, encre reprise…) :
+      // on garde l'ancienne. La retirer fermerait un bitmap qu'un passage de
+      // la file, lancé avec ce même réglage, s'apprête encore à peindre.
+      if (next && old && next.key === old.key) {
+        next.bitmap.close();
+        return;
+      }
       sigLive.current = next;
       setSigReady(next);
       if (old) {
@@ -448,10 +459,13 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
         flushRetired();
       }
       // Autre rapport largeur / hauteur : chaque placement garde sa largeur
-      // et son bord bas, la hauteur suit la nouvelle image.
-      const before = old && old.sig.width / old.sig.height;
-      const after = next && next.sig.width / next.sig.height;
-      if (before && after && Math.abs(before - after) > 1e-6) {
+      // et son bord bas, la hauteur suit la nouvelle image. Depuis le dernier
+      // rapport connu, même si la signature a été effacée entre-temps.
+      if (!next) return;
+      const before = fitAspect.current;
+      const after = next.sig.width / next.sig.height;
+      fitAspect.current = after;
+      if (before && Math.abs(before - after) > 1e-6) {
         setDocs((prev) => prev.map((d) => (d.overlays ? { ...d, overlays: refitOverlays(d.overlays, before, after) } : d)));
       }
     };
@@ -556,6 +570,10 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
           )
         )
           continue;
+        // Signature remplacée depuis le début de ce passage : son image a pu
+        // être fermée entre deux documents. Le passage suivant (réglage changé)
+        // reprend avec la nouvelle.
+        if (sign && sigLive.current !== sigReady) return;
         const job = { id: doc.id, stamp: own, tries: doc.tries ?? 0, aborter: new AbortController() };
         inFlight.current.add(job);
         // Un travail en cours publie son résultat même si ce passage a été

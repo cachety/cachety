@@ -453,6 +453,77 @@ describe("signer : retirer puis replacer", () => {
   );
 });
 
+describe("signer : nouvelle signature", () => {
+  /** Rapport largeur / hauteur de la boîte posée, et de l'image dessinée dedans. */
+  const ratios = (page: Page) =>
+    page.evaluate(() => {
+      const box = document.querySelector('[data-testid="signature-box"]') as HTMLElement | null;
+      const ink = box?.querySelector("canvas");
+      if (!box || !ink || !ink.height) return null;
+      const b = box.getBoundingClientRect();
+      return { box: b.width / b.height, image: ink.width / ink.height };
+    });
+
+  test(
+    "dessinée (large) → effacée → tapée (plus étroite) : la boîte prend le rapport de la nouvelle image",
+    async () => {
+      const page = await openPage("/en/sign");
+      await addFile(page, "lease.pdf", await makePdf([[595, 842]]));
+      await page.getByRole("tab", { name: en.sign.pad.draw }).click();
+      await drawStroke(page);
+      await signatureBox(page, 1).waitFor({ timeout: 60_000 });
+      await page.waitForFunction(() => (document.querySelector('[data-testid="signature-box"] canvas') as HTMLCanvasElement | null)?.height);
+      const wide = (await ratios(page))!;
+      expect(Math.abs(wide.box / wide.image - 1)).toBeLessThan(0.05);
+
+      // Effacer : plus de signature (passage par null), puis une autre, tapée.
+      await page.getByRole("button", { name: en.sign.pad.clear, exact: true }).click();
+      await typeName(page, "Jo");
+      await page.waitForFunction(
+        (r0) => {
+          const ink = document.querySelector('[data-testid="signature-box"] canvas') as HTMLCanvasElement | null;
+          return !!ink?.height && Math.abs(ink.width / ink.height - r0) > 0.3;
+        },
+        wide.image,
+        { timeout: 60_000 }
+      );
+      await page.waitForTimeout(300);
+      const narrow = (await ratios(page))!;
+      expect(narrow.image).toBeLessThan(wide.image - 0.3);
+      // Sans recalage, la boîte garderait le rapport de l'ancienne image (signature écrasée).
+      expect(Math.abs(narrow.box / narrow.image - 1)).toBeLessThan(0.05);
+      await waitDownloadable(page);
+    },
+    120_000
+  );
+
+  test(
+    "même signature reçue à nouveau pendant un lot (espace en fin de nom) : aucun document en échec",
+    async () => {
+      const page = await openPage("/en/sign");
+      const n = 6;
+      const pdf = await makePdf(Array.from({ length: 8 }, () => [595, 842] as [number, number]));
+      await page.locator(`input[aria-label="${en.sign.inputAria}"]`).setInputFiles(
+        Array.from({ length: n }, (_, i) => ({ name: `doc-${i + 1}.pdf`, mimeType: "application/pdf", buffer: Buffer.from(pdf) }))
+      );
+      // Sans ligne de date : la signature est émise sans délai supplémentaire.
+      await page.getByRole("checkbox", { name: new RegExp(en.sign.block.date) }).uncheck();
+      await typeName(page, "Jane Doe");
+      await page.getByText(en.sign.srProcessing).waitFor({ timeout: 60_000 });
+      // Même PNG, nouvel objet : l'image retirée ne doit pas être fermée sous le lot en cours.
+      await page.getByLabel(en.sign.pad.typeLabel).press("End");
+      await page.getByLabel(en.sign.pad.typeLabel).pressSequentially(" ");
+      await page
+        .getByText(en.srReady(n))
+        .or(page.getByText(en.errors.generic).first())
+        .waitFor({ timeout: 90_000 });
+      expect(await page.getByText(en.errors.generic).count()).toBe(0);
+      await page.getByText(en.srReady(n)).waitFor();
+    },
+    120_000
+  );
+});
+
 describe("signer : options", () => {
   test(
     "parapher chaque page : la page 1 porte le petit paraphe, la dernière la signature",
