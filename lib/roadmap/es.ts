@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "¿Echas algo en falta? Abre una incidencia en GitHub. Las ideas son bienvenidas en cualquier idioma.",
   meta: {
     title: "Lo que viene en Cachety: próximas funciones",
-    description: "Próximas funciones de Cachety, la herramienta gratuita de marcas de agua que no saca tus documentos de tu dispositivo: lo próximo, ideas y novedades.",
+    description: "Próximas funciones de Cachety, la herramienta gratuita para poner marcas de agua y firmar sin que tus documentos salgan de tu dispositivo: ideas y novedades.",
   },
 };
 

@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Missing something? Open an issue on GitHub. Ideas are welcome in any language.",
   meta: {
     title: "Roadmap: what's coming to Cachety",
-    description: "Upcoming features of Cachety, the free watermarking tool that keeps your documents on your device: what's next, ideas, and what was added recently.",
+    description: "Upcoming features of Cachety, the free tool to watermark and sign documents without them leaving your device: what's next, ideas, and recent additions.",
   },
 };
 

@@ -5,7 +5,7 @@ import Prose from "@/components/Prose";
 import GuideBody from "@/components/GuideBody";
 import { ChevronIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
-import { findGuide, GUIDES, guideAlternates, guidePath, relatedGuides } from "@/lib/guides";
+import { findGuide, GUIDES, guideAlternates, guidePath, guideToolPath, relatedGuides } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
 import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage, pageTitle } from "@/lib/site-meta";
 
@@ -90,10 +90,10 @@ export default async function GuidePage({ params }: Props) {
         <aside className="mt-12 flex flex-col items-start gap-3 rounded-2xl bg-encre p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <p className="text-pretty text-white/85">{ui.ctaNote}</p>
           <Link
-            href={`/${lang}`}
+            href={guideToolPath(lang, g)}
             className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            {ui.cta}
+            {g.tool === "sign" ? ui.ctaSign : ui.cta}
             <ChevronIcon direction="right" className="h-4 w-4" />
           </Link>
         </aside>

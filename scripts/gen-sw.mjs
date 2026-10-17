@@ -23,8 +23,10 @@ const LANGS = ["fr", "en", "ja", "zh", "es", "ar", "fa", "de", "pt", "id", "nl"]
 const HTML_LANG = { zh: "zh-CN" };
 const RTL = new Set(["ar", "fa"]);
 const LANG_ALT = LANGS.join("|");
-const LANG_PAGE = new RegExp(`^/(${LANG_ALT}|about)\\.html$`); //   /fr.html       -> /fr
-const LANG_ABOUT = new RegExp(`^/(${LANG_ALT})/about\\.html$`); //  /fr/about.html -> /fr/about
+// Accueils, « à propos » et l'outil Signer (/sign, /fr/sign…) : précachés,
+// ils marchent hors ligne (test du mode avion, docs/prd-sign.md §4.1).
+const LANG_PAGE = new RegExp(`^/(${LANG_ALT}|about|sign)\\.html$`); //   /fr.html       -> /fr
+const LANG_ABOUT = new RegExp(`^/(${LANG_ALT})/(about|sign)\\.html$`); //  /fr/about.html -> /fr/about
 
 // Décodeur HEIC (libheif, ~2 Mo) : chargé à la demande, au premier fichier
 // HEIC seulement. Le précacher l'imposerait à chaque visiteur ; le service
@@ -53,7 +55,7 @@ const precache = files
   )
   // Les URL servies n'ont pas d'extension : /fr.html est exposé comme /fr.
   .map((u) =>
-    u === "/index.html" ? "/" : u.replace(LANG_PAGE, "/$1").replace(LANG_ABOUT, "/$1/about")
+    u === "/index.html" ? "/" : u.replace(LANG_PAGE, "/$1").replace(LANG_ABOUT, "/$1/$2")
   )
   .sort();
 

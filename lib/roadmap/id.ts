@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Ada yang kurang? Buka issue di GitHub. Ide dalam bahasa apa pun kami terima.",
   meta: {
     title: "Rencana: yang akan datang di Cachety",
-    description: "Fitur Cachety yang akan datang, alat watermark gratis yang menjaga dokumen tetap di perangkat Anda: rencana berikutnya, ide, dan fitur baru.",
+    description: "Fitur Cachety yang akan datang, alat gratis untuk memberi watermark dan menandatangani dokumen yang tetap di perangkat Anda: rencana, ide, dan fitur baru.",
   },
 };
 

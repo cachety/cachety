@@ -11,6 +11,7 @@ import {
   CpuIcon,
   Flag,
   HeartIcon,
+  PencilIcon,
   ShieldIcon,
   UserOffIcon,
   WifiOffIcon,
@@ -96,6 +97,8 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
         </ul>
       </section>
 
+      <ToolLink id="sign-link" href={`/${lang}/sign`} copy={l.signLink} Icon={PencilIcon} />
+
       <section aria-labelledby="faq" className="mx-auto w-full max-w-3xl">
         <h2 id="faq" className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
           {l.faqTitle}
@@ -113,35 +116,7 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
         </div>
       </section>
 
-      {guides.length > 0 && (
-        <section aria-labelledby="guides">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2 id="guides" className="text-2xl font-bold tracking-tight sm:text-3xl">
-                {l.guidesTitle}
-              </h2>
-              <p className="mt-2 text-encre-2">{l.guidesLead}</p>
-            </div>
-            <Link href={`/${lang}/guides`} className="inline-flex items-center gap-1 font-medium text-bleu hover:underline">
-              {l.guidesAll}
-              <ChevronIcon direction="right" className="h-4 w-4" />
-            </Link>
-          </div>
-          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {guides.map((g) => (
-              <li key={g.slug}>
-                <Link
-                  href={`/${lang}/guides/${g.slug}`}
-                  className="flex h-full flex-col rounded-2xl border border-trait bg-feuille p-5 transition-colors hover:border-bleu focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-                >
-                  <span className="font-semibold text-encre text-pretty">{g.title}</span>
-                  <span className="mt-2 line-clamp-3 text-sm text-encre-2">{g.description}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <GuideTeasers lang={lang} guides={guides} />
 
       <section
         aria-labelledby="origin"
@@ -200,5 +175,80 @@ export default function Landing({ teasers }: { teasers: Record<Lang, GuideTeaser
         </a>
       </div>
     </div>
+  );
+}
+
+/**
+ * Encart qui renvoie vers l'autre outil (filigrane ↔ signature, docs/prd-sign.md
+ * §4.5) : une phrase, un bouton. Partagé par l'accueil et la page /sign.
+ */
+export function ToolLink({
+  id,
+  href,
+  copy,
+  Icon,
+}: {
+  id: string;
+  href: string;
+  copy: { title: string; body: string; cta: string };
+  Icon: typeof PencilIcon;
+}) {
+  return (
+    <section
+      aria-labelledby={id}
+      className="mx-auto flex w-full max-w-4xl flex-col items-start gap-5 rounded-3xl border border-trait bg-feuille p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8"
+    >
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sceau/10 text-sceau">
+        <Icon className="h-6 w-6" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <h2 id={id} className="text-xl font-bold tracking-tight sm:text-2xl">
+          {copy.title}
+        </h2>
+        <p className="mt-1.5 text-encre-2 text-pretty">{copy.body}</p>
+      </div>
+      <Link
+        href={href}
+        className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border-2 border-sceau px-5 py-2.5 font-semibold text-sceau transition-colors hover:bg-sceau hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sceau focus-visible:ring-offset-2"
+      >
+        {copy.cta}
+        <ChevronIcon direction="right" className="h-4 w-4" />
+      </Link>
+    </section>
+  );
+}
+
+/** Aperçus de guides (titre et résumé), avec le lien vers tous les guides. */
+export function GuideTeasers({ lang, guides }: { lang: Lang; guides: GuideTeaser[] }) {
+  const l = SITE_COPY[lang].landing;
+  if (guides.length === 0) return null;
+  return (
+    <section aria-labelledby="guides">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 id="guides" className="text-2xl font-bold tracking-tight sm:text-3xl">
+            {l.guidesTitle}
+          </h2>
+          <p className="mt-2 text-encre-2">{l.guidesLead}</p>
+        </div>
+        <Link href={`/${lang}/guides`} className="inline-flex items-center gap-1 font-medium text-bleu hover:underline">
+          {l.guidesAll}
+          <ChevronIcon direction="right" className="h-4 w-4" />
+        </Link>
+      </div>
+      <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {guides.map((g) => (
+          <li key={g.slug}>
+            <Link
+              href={`/${lang}/guides/${g.slug}`}
+              className="flex h-full flex-col rounded-2xl border border-trait bg-feuille p-5 transition-colors hover:border-bleu focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+            >
+              <span className="font-semibold text-encre text-pretty">{g.title}</span>
+              <span className="mt-2 line-clamp-3 text-sm text-encre-2">{g.description}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

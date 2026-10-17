@@ -69,7 +69,7 @@ function triggerDownload(url: string, name: string) {
   a.remove();
 }
 
-export default function CoreProduct({ embed = false }: { embed?: boolean } = {}) {
+export default function CoreProduct({ embed = false, mode = "watermark" }: { embed?: boolean; mode?: "watermark" | "sign" } = {}) {
   const t = useT();
   const [docs, setDocs] = useState<Doc[]>([]);
   // Étape 2 : motif, destinataires (un champ chacun), texte libre éventuel.

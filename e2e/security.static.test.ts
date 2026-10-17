@@ -192,4 +192,73 @@ describe.skipIf(!built)("sécurité de l'export statique", () => {
   test("aucune source map publiée (code source et chemins internes)", () => {
     expect(files.filter((f) => f.endsWith(".map"))).toEqual([]);
   });
+
+  // Outil Signer (docs/prd-sign.md §4.1, §11.4) : même promesse, même preuve.
+  // Les tests généraux ci-dessus couvrent déjà toutes les pages ; ceux-ci
+  // échouent nommément si /sign ou /<lang>/sign manque ou dévie.
+  describe("page Signer", () => {
+    const LANGS = ["fr", "en", "ja", "zh", "es", "ar", "fa", "de", "pt", "id", "nl"];
+    const pages = [
+      { rel: "sign.html", route: "/sign", lang: null as string | null },
+      ...LANGS.map((l) => ({ rel: `${l}/sign.html`, route: `/${l}/sign`, lang: l as string | null })),
+    ];
+
+    test("exportée dans les 11 langues, plus /sign", () => {
+      for (const { rel } of pages) expect(existsSync(join(OUT_DIR, rel)), rel).toBe(true);
+    });
+
+    for (const { rel, route, lang } of pages) {
+      test(`${route} : une seule CSP <meta>, script-src par hachages seulement`, () => {
+        const html = readFileSync(join(OUT_DIR, rel), "utf8");
+        const metas = [...html.matchAll(/<meta http-equiv="Content-Security-Policy" content="([^"]*)"\/>/g)];
+        expect(metas).toHaveLength(1);
+        const csp = parseCsp(metas[0][1]);
+        expect(csp["connect-src"]).toEqual(["'self'", "blob:", "data:"]);
+        expect(csp["form-action"]).toEqual(["'none'"]);
+        const scriptSrc = csp["script-src"] ?? [];
+        expect(scriptSrc).not.toContain("'unsafe-inline'");
+        expect(scriptSrc).not.toContain("'unsafe-eval'");
+        for (const v of scriptSrc.filter((v) => !["'self'", "'wasm-unsafe-eval'"].includes(v))) {
+          expect(v).toMatch(/^'sha256-[A-Za-z0-9+/]+=*'$/);
+        }
+        // Chaque script inline émis est autorisé par son empreinte, et rien d'autre.
+        const emitted = [...new Set(inlineScriptHashes(html))].sort();
+        expect(emitted.length).toBeGreaterThan(0);
+        expect(scriptSrc.filter((v) => v.startsWith("'sha256-")).sort()).toEqual(emitted);
+        // Scripts externes : du même site uniquement.
+        for (const m of html.matchAll(/<script\b[^>]*\bsrc="([^"]*)"/gi)) expect(m[1]).toMatch(/^\/(?!\/)/);
+      });
+
+      test(`${route} : en-tête CSP unique, scripts de la page et de sa langue seulement, pas de cadre`, () => {
+        const html = readFileSync(join(OUT_DIR, rel), "utf8");
+        const h = headersFor(headersText, route);
+        const csp = h["content-security-policy"] ?? "";
+        expect(csp).not.toContain(", ");
+        expect(parseCsp(csp)["frame-ancestors"]).toEqual(["'none'"]);
+        expect(h["x-frame-options"]).toBe("DENY");
+        const allowed = (parseCsp(csp)["script-src"] ?? []).filter((v) => v.startsWith("'sha256-"));
+        for (const hash of inlineScriptHashes(html)) expect(allowed).toContain(hash);
+        if (!lang) {
+          // /sign : règle exacte, copie de la <meta>.
+          expect(allowed.sort()).toEqual([...new Set(inlineScriptHashes(html))].sort());
+          return;
+        }
+        const own = new Set(
+          htmlFiles
+            .filter((f) => relative(OUT_DIR, f).startsWith(`${lang}/`))
+            .flatMap((f) => inlineScriptHashes(readFileSync(f, "utf8")))
+        );
+        for (const hash of allowed) expect(own.has(hash), hash).toBe(true);
+      });
+    }
+
+    test("/sign : la redirection vers la langue du visiteur est un script inline haché", () => {
+      const html = readFileSync(join(OUT_DIR, "sign.html"), "utf8");
+      const redirect = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].find((m) => m[1].includes("location.replace"));
+      expect(redirect).toBeDefined();
+      expect(redirect![1]).toContain('"/sign"+location.search+location.hash');
+      const meta = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]*)"\/>/)![1];
+      expect(parseCsp(meta)["script-src"]).toContain(sha(redirect![1]));
+    });
+  });
 });

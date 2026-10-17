@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Sentiu falta de algo? Abra uma issue no GitHub. Ideias são bem-vindas em qualquer idioma.",
   meta: {
     title: "O que vem por aí no Cachety",
-    description: "Próximos recursos do Cachety, a ferramenta grátis de marca d'água que mantém seus documentos no seu aparelho: o que vem aí, ideias e novidades recentes.",
+    description: "Próximos recursos do Cachety, a ferramenta grátis para pôr marca d'água e assinar sem que seus documentos saiam do seu aparelho: o que vem aí e novidades.",
   },
 };
 
