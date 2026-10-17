@@ -337,6 +337,7 @@ export const STRINGS_NL: Strings = {
     step2: "Je handtekening",
     step3: "Plaatsen, controleren, downloaden",
     stepShort: ["Documenten", "Handtekening", "Download"],
+    next: { signature: "Volgende: uw handtekening", place: "Volgende: plaatsen en downloaden" },
     pad: {
       tabsLabel: "Hoe wil je ondertekenen?",
       draw: "Tekenen",
@@ -382,6 +383,8 @@ export const STRINGS_NL: Strings = {
       remove: "Handtekening verwijderen",
       resize: "Formaat van de handtekening wijzigen",
       reset: "Handtekening terugzetten op de standaardplek",
+      here: "Handtekening op deze pagina zetten",
+      isOn: (p: number) => `De handtekening staat op pagina ${p}.`,
       tooSmall: "Deze pagina is klein: op dit formaat is de handtekening slecht leesbaar. Maak hem groter.",
     },
     withWatermark: "Ook een watermerk toevoegen (doel, ontvanger, datum)",
