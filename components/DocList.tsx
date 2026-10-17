@@ -20,6 +20,7 @@ export const DocRow = memo(function DocRow({
   onDragStart,
   dragging,
   dropEdge,
+  placeMissing,
 }: {
   doc: Doc;
   selected: boolean;
@@ -35,6 +36,8 @@ export const DocRow = memo(function DocRow({
   dragging?: boolean;
   /** Où la ligne glissée atterrira, s'il s'agit de cette ligne. */
   dropEdge?: "before" | "after";
+  /** Mode « signer » : signature retirée de ce document, à replacer (pastille d'attention). */
+  placeMissing?: boolean;
 }) {
   const t = useT();
   const reorder = !!onMoveTo && !!onDragStart;
@@ -108,7 +111,7 @@ export const DocRow = memo(function DocRow({
               <span className="block text-sm text-sceau-fonce">{t.errors[doc.error]}</span>
             )}
           </span>
-          <DocStatus doc={doc} />
+          <DocStatus doc={doc} placeMissing={placeMissing} />
         </button>
         <button
           onClick={() => onRemove(doc.id)}
@@ -190,8 +193,15 @@ function PositionInput({
   );
 }
 
-function DocStatus({ doc }: { doc: Doc }) {
+function DocStatus({ doc, placeMissing }: { doc: Doc; placeMissing?: boolean }) {
   const t = useT();
+  if (placeMissing && doc.status === "ready") {
+    return (
+      <span className="whitespace-nowrap rounded-full bg-amber-500/15 px-3 py-1 text-sm font-medium text-amber-900">
+        {t.sign.attentionPlace}
+      </span>
+    );
+  }
   if (needsPassword(doc)) {
     return (
       <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-encre/5 px-3 py-1 text-sm font-medium text-encre-2">

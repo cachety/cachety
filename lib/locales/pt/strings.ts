@@ -336,6 +336,7 @@ export const STRINGS_PT: Strings = {
     step2: "Sua assinatura",
     step3: "Posicione, confira e baixe",
     stepShort: ["Documentos", "Assinatura", "Download"],
+    next: { signature: "Próximo: sua assinatura", place: "Próximo: posicionar e baixar" },
     pad: {
       tabsLabel: "Como você quer assinar?",
       draw: "Desenhar",
@@ -381,6 +382,8 @@ export const STRINGS_PT: Strings = {
       remove: "Remover a assinatura",
       resize: "Mudar o tamanho da assinatura",
       reset: "Voltar a assinatura para a posição padrão",
+      here: "Colocar a assinatura nesta página",
+      isOn: (p: number) => `A assinatura está na página ${p}.`,
       tooSmall: "Esta página é pequena: nesse tamanho, a assinatura ficaria difícil de ler. Aumente-a.",
     },
     withWatermark: "Adicionar também uma marca d'água (finalidade, destinatário, data)",

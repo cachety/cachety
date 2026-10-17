@@ -337,6 +337,7 @@ export const STRINGS_DE: Strings = {
     step2: "Deine Unterschrift",
     step3: "Platzieren, prüfen, herunterladen",
     stepShort: ["Dokumente", "Unterschrift", "Download"],
+    next: { signature: "Weiter: Ihre Unterschrift", place: "Weiter: platzieren und herunterladen" },
     pad: {
       tabsLabel: "Wie möchtest du unterschreiben?",
       draw: "Zeichnen",
@@ -382,6 +383,8 @@ export const STRINGS_DE: Strings = {
       remove: "Unterschrift entfernen",
       resize: "Größe der Unterschrift ändern",
       reset: "Unterschrift wieder an die Standardstelle setzen",
+      here: "Unterschrift auf diese Seite setzen",
+      isOn: (p: number) => `Die Unterschrift ist auf Seite ${p}.`,
       tooSmall: "Diese Seite ist klein: In dieser Größe wäre die Unterschrift schwer zu lesen. Mach sie größer.",
     },
     withWatermark: "Zusätzlich ein Wasserzeichen setzen (Zweck, Empfänger, Datum)",

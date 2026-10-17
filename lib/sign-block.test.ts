@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { STRINGS } from "./i18n";
+import { LANG_CODES } from "./site-meta";
 import { composeSignBlock, signDate } from "./sign-block";
 
 describe("composeSignBlock", () => {
@@ -51,8 +52,21 @@ describe("signDate", () => {
     }
   });
 
-  // Les mentions prédéfinies (« Lu et approuvé »…) sont ajoutées à lib/i18n
-  // en parallèle (WP i18n) : à écrire quand les clés existent, sur le modèle
-  // du test des préréglages de lib/i18n.test.ts.
-  test.todo("mentions prédéfinies présentes dans les 11 langues", () => {});
+  // Même modèle que le test des préréglages de lib/i18n.test.ts.
+  test("mentions prédéfinies présentes dans les 11 langues", () => {
+    const count = STRINGS.fr.sign.block.mentions.length;
+    expect(count).toBe(3);
+    for (const lang of LANG_CODES) {
+      const mentions = STRINGS[lang].sign.block.mentions;
+      expect(mentions).toHaveLength(count);
+      expect(new Set(mentions).size).toBe(count);
+      for (const m of mentions) {
+        expect(m.trim()).toBe(m);
+        expect(m.length).toBeGreaterThan(1);
+        // Une ligne sous la signature : au-delà, le texte devient minuscule.
+        expect(m.length).toBeLessThanOrEqual(60);
+        expect(composeSignBlock({ mention: m })).toEqual([m]);
+      }
+    }
+  });
 });

@@ -330,6 +330,7 @@ export const STRINGS_ID: Strings = {
     step2: "Tanda tangan Anda",
     step3: "Tempatkan, periksa, unduh",
     stepShort: ["Dokumen", "Tanda tangan", "Unduh"],
+    next: { signature: "Lanjut: tanda tangan Anda", place: "Lanjut: tempatkan dan unduh" },
     pad: {
       tabsLabel: "Bagaimana Anda ingin menandatangani?",
       draw: "Gambar",
@@ -374,6 +375,8 @@ export const STRINGS_ID: Strings = {
       remove: "Hapus tanda tangan",
       resize: "Ubah ukuran tanda tangan",
       reset: "Kembalikan tanda tangan ke posisi bawaan",
+      here: "Taruh tanda tangan di halaman ini",
+      isOn: (p: number) => `Tanda tangan ada di halaman ${p}.`,
       tooSmall: "Halaman ini kecil: dengan ukuran ini, tanda tangan akan sulit dibaca. Perbesar tanda tangannya.",
     },
     withWatermark: "Tambahkan juga watermark (keperluan, penerima, tanggal)",

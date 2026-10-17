@@ -10,6 +10,7 @@ import {
   parseHex,
   recolor,
   removeBackground,
+  SIGNATURE_MAX_HEIGHT,
   SIGNATURE_MAX_WIDTH,
   SIGNATURE_MIN_WIDTH,
   trim,
@@ -166,5 +167,15 @@ describe("exportSize", () => {
   test("réduite au-delà de la largeur maximale ; entre les deux, inchangée", () => {
     expect(exportSize(4800, 1200)).toEqual({ width: SIGNATURE_MAX_WIDTH, height: 600 });
     expect(exportSize(1500, 500)).toEqual({ width: 1500, height: 500 });
+  });
+  test("encre haute et étroite : la hauteur est plafonnée, aucun côté ne dépasse le plafond", () => {
+    // 50 × 400 agrandi à 1200 de large donnerait 9600 px de haut.
+    expect(exportSize(50, 400)).toEqual({ width: 300, height: SIGNATURE_MAX_HEIGHT });
+    expect(exportSize(1300, 5000)).toEqual({ width: 624, height: SIGNATURE_MAX_HEIGHT });
+    for (const [w, h] of [[50, 400], [10, 3000], [3000, 10], [1, 1], [2400, 2400], [9000, 9000]]) {
+      const s = exportSize(w, h);
+      expect(Math.max(s.width, s.height)).toBeLessThanOrEqual(Math.max(SIGNATURE_MAX_WIDTH, SIGNATURE_MAX_HEIGHT));
+      expect(Math.abs(s.width / s.height - w / h) / (w / h)).toBeLessThan(0.15);
+    }
   });
 });

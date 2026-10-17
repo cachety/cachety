@@ -335,6 +335,7 @@ export const STRINGS_ES: Strings = {
     step2: "Tu firma",
     step3: "Coloca, revisa y descarga",
     stepShort: ["Documentos", "Firma", "Descarga"],
+    next: { signature: "Siguiente: tu firma", place: "Siguiente: colocar y descargar" },
     pad: {
       tabsLabel: "¿Cómo quieres firmar?",
       draw: "Dibujar",
@@ -380,6 +381,8 @@ export const STRINGS_ES: Strings = {
       remove: "Quitar la firma",
       resize: "Cambiar el tamaño de la firma",
       reset: "Devolver la firma a su sitio predeterminado",
+      here: "Poner la firma en esta página",
+      isOn: (p: number) => `La firma está en la página ${p}.`,
       tooSmall: "Esta página es pequeña: con este tamaño, la firma sería difícil de leer. Hazla más grande.",
     },
     withWatermark: "Añadir también una marca de agua (uso, destinatario, fecha)",
