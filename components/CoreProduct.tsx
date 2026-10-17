@@ -45,6 +45,7 @@ import {
   docId,
   docStamp,
   isFresh,
+  isPlaced,
   moveTo,
   needsAttention,
   needsPassword,
@@ -428,6 +429,10 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
   // Mode « signer » : image de la signature remplacée. L'ancienne est fermée
   // (.close()) dès qu'aucun rendu ni téléchargement ne peut plus la peindre.
   const sigLive = useRef<SigReady | null>(null);
+  // Rapport largeur / hauteur de l'image sur lequel les placements sont
+  // calés. Gardé quand la signature est effacée (null) : la suivante recale
+  // les boîtes depuis ce rapport, sinon elle serait étirée dans l'ancienne.
+  const fitAspect = useRef<number | null>(null);
   const retired = useRef(new Set<ImageBitmap>());
   const bundlingRef = useRef(false);
   const flushRetired = () => {
@@ -440,6 +445,13 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     let live = true;
     const replace = (next: SigReady | null) => {
       const old = sigLive.current;
+      // Même image (même PNG : espace ajoutée en fin de nom, encre reprise…) :
+      // on garde l'ancienne. La retirer fermerait un bitmap qu'un passage de
+      // la file, lancé avec ce même réglage, s'apprête encore à peindre.
+      if (next && old && next.key === old.key) {
+        next.bitmap.close();
+        return;
+      }
       sigLive.current = next;
       setSigReady(next);
       if (old) {
@@ -447,10 +459,13 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
         flushRetired();
       }
       // Autre rapport largeur / hauteur : chaque placement garde sa largeur
-      // et son bord bas, la hauteur suit la nouvelle image.
-      const before = old && old.sig.width / old.sig.height;
-      const after = next && next.sig.width / next.sig.height;
-      if (before && after && Math.abs(before - after) > 1e-6) {
+      // et son bord bas, la hauteur suit la nouvelle image. Depuis le dernier
+      // rapport connu, même si la signature a été effacée entre-temps.
+      if (!next) return;
+      const before = fitAspect.current;
+      const after = next.sig.width / next.sig.height;
+      fitAspect.current = after;
+      if (before && Math.abs(before - after) > 1e-6) {
         setDocs((prev) => prev.map((d) => (d.overlays ? { ...d, overlays: refitOverlays(d.overlays, before, after) } : d)));
       }
     };
@@ -512,17 +527,19 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
         if (cancelled) return;
         let doc = queued;
         let own = docStamp(doc, stamp);
-        if (doc.result && doc.stampedWith === own) continue;
         // Échec déjà constaté avec ce réglage et cet essai : inutile de retenter.
         if (doc.error && doc.failedWith === attemptKey(doc, own)) continue;
-        // Mode « signer », document jamais placé : signature posée d'office en
-        // bas à droite de la dernière page. Format de la page lu sans rendu,
-        // pour que le premier rendu soit déjà le bon.
+        // Mode « signer », document jamais placé (ou remis « à sa place par
+        // défaut ») : signature posée d'office en bas à droite de la dernière
+        // page. AVANT le test « déjà à jour » : un rendu précédent, fait sans
+        // signature, ne doit pas dispenser de la reposer. Format de la page lu
+        // sans rendu, pour que le premier rendu soit déjà le bon.
         if (sign && sigReady && !doc.overlays) {
           try {
             const last = await lastPageAspect(doc.file, doc.password);
-            // Signature changée entre-temps : le passage suivant recalcule.
-            if (cancelled) return;
+            // Signature changée entre-temps : le passage suivant recalcule (avec
+            // le rapport de la nouvelle image, que le recalage n'aurait pas vu).
+            if (cancelled || sigLive.current !== sigReady) return;
             const overlays: PageOverlays = {
               [last.pageCount - 1]: [
                 { rect: defaultPlacement(last.aspect, sigReady.sig.width / sigReady.sig.height), image: "signature" },
@@ -545,6 +562,7 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
             continue;
           }
         }
+        if (doc.result && doc.stampedWith === own) continue;
         // Déjà en cours, lancé par un passage précédent avec ce même réglage :
         // il se termine de lui-même et publie son résultat.
         if (
@@ -553,6 +571,10 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
           )
         )
           continue;
+        // Signature remplacée depuis le début de ce passage : son image a pu
+        // être fermée entre deux documents. Le passage suivant (réglage changé)
+        // reprend avec la nouvelle.
+        if (sign && sigLive.current !== sigReady) return;
         const job = { id: doc.id, stamp: own, tries: doc.tries ?? 0, aborter: new AbortController() };
         inFlight.current.add(job);
         // Un travail en cours publie son résultat même si ce passage a été
@@ -629,8 +651,9 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
   }, []);
 
-  // Mode « signer » : un document dont la signature a été retirée n'est pas prêt.
-  const isReady = (d: Doc) => isFresh(d, stamp) && !(sign && needsPlacement(d));
+  // Mode « signer » : un document n'est prêt que signé (signature ni retirée,
+  // ni encore à reposer par la file).
+  const isReady = (d: Doc) => isFresh(d, stamp) && (!sign || isPlaced(d));
   const ready = docs.filter(isReady);
   const processing = docs.some((d) => d.status === "processing");
 
@@ -659,7 +682,7 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
       docs
         .filter((d) => {
           if (effFilter === "attention") return needsAttention(d, sign);
-          if (effFilter === "ready") return isFresh(d, stamp) && !(sign && needsPlacement(d));
+          if (effFilter === "ready") return isFresh(d, stamp) && (!sign || isPlaced(d));
           return true;
         })
         .filter((d) => !needle || d.file.name.toLocaleLowerCase(t.locale).includes(needle)),
@@ -705,8 +728,12 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     setBundleError(null);
   }, [stamp, ready.length, filePassword]);
   // Tout ce qui change le contenu d'un téléchargement : réglage de l'aperçu,
-  // autres destinataires et leurs références. Relu à la fin d'un assemblage long.
-  const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}`;
+  // autres destinataires et leurs références, et chaque document prêt (dans
+  // l'ordre du PDF unique) avec ses masques et sa signature. Relu à la fin
+  // d'un assemblage long : la signature déplacée entre-temps rend le fichier périmé.
+  const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}\0${ready
+    .map((d) => `${d.id}\0${docStamp(d, "")}`)
+    .join("|")}`;
   const bundleKeyRef = useRef(bundleKey);
   bundleKeyRef.current = bundleKey;
   const [bundleProgress, setBundleProgress] = useState("");

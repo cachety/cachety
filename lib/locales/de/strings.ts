@@ -353,6 +353,7 @@ export const STRINGS_DE: Strings = {
       typeHint: "Er wird nicht gespeichert.",
       uploadHint: "Ein Foto deiner Unterschrift auf weißem Papier oder ein bereits freigestelltes Bild.",
       uploadButton: "Bild auswählen",
+      uploadTooLarge: "Bilddatei zu groß (höchstens 50 MB).",
       removeBg: "Hintergrund entfernen",
       keepBg: "Hintergrund behalten",
       threshold: "Empfindlichkeit",

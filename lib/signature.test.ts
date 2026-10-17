@@ -4,12 +4,14 @@ import {
   BACKGROUND_THRESHOLD,
   crop,
   exportSize,
+  fromFile,
   hasInk,
   inkBounds,
   type Pixels,
   parseHex,
   recolor,
   removeBackground,
+  SIGNATURE_MAX_FILE_BYTES,
   SIGNATURE_MAX_HEIGHT,
   SIGNATURE_MAX_WIDTH,
   SIGNATURE_MIN_WIDTH,
@@ -177,5 +179,17 @@ describe("exportSize", () => {
       expect(Math.max(s.width, s.height)).toBeLessThanOrEqual(Math.max(SIGNATURE_MAX_WIDTH, SIGNATURE_MAX_HEIGHT));
       expect(Math.abs(s.width / s.height - w / h) / (w / h)).toBeLessThan(0.15);
     }
+  });
+});
+
+describe("fromFile (image importée)", () => {
+  test("SVG refusé comme par le moteur, même renommé ; PDF refusé ; trop lourd refusé", async () => {
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>';
+    await expect(fromFile(new File([svg], "signature.svg", { type: "image/svg+xml" }))).rejects.toThrow("unsupported");
+    await expect(fromFile(new File([svg], "signature.png", { type: "image/svg+xml" }))).rejects.toThrow("unsupported");
+    await expect(fromFile(new File([svg], "signature.svg", { type: "" }))).rejects.toThrow("unsupported");
+    await expect(fromFile(new File(["%PDF-1.7"], "signature.pdf", { type: "application/pdf" }))).rejects.toThrow("unsupported");
+    const heavy = new File([new Uint8Array(SIGNATURE_MAX_FILE_BYTES + 1)], "photo.jpg", { type: "image/jpeg" });
+    await expect(fromFile(heavy)).rejects.toThrow("file_too_large");
   });
 });

@@ -345,6 +345,7 @@ export const STRINGS_ID: Strings = {
       typeHint: "Nama ini tidak disimpan.",
       uploadHint: "Foto tanda tangan Anda di atas kertas putih, atau gambar yang latarnya sudah dihapus.",
       uploadButton: "Pilih gambar",
+      uploadTooLarge: "File gambar terlalu besar (maksimal 50 MB).",
       removeBg: "Hapus latar",
       keepBg: "Pertahankan latar",
       threshold: "Sensitivitas",

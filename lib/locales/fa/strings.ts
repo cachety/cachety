@@ -330,6 +330,7 @@ export const STRINGS_FA: Strings = {
       typeHint: "نام شما ذخیره نمی‌شود.",
       uploadHint: "عکسی از امضایتان روی کاغذ سفید، یا تصویری که پس‌زمینه‌اش از قبل حذف شده است.",
       uploadButton: "انتخاب تصویر",
+      uploadTooLarge: "فایل تصویر خیلی بزرگ است (حداکثر ۵۰ مگابایت).",
       removeBg: "حذف پس‌زمینه",
       keepBg: "نگه داشتن پس‌زمینه",
       threshold: "حساسیت",

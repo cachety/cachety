@@ -40,6 +40,8 @@ import { UndoIcon, UploadIcon } from "@/components/icons";
 type Tab = "draw" | "type" | "upload";
 const TABS: Tab[] = ["draw", "type", "upload"];
 type UploadInk = "keep" | InkId;
+const INKS: readonly InkId[] = ["black", "blue"];
+const UPLOAD_INKS: readonly UploadInk[] = ["keep", "black", "blue"];
 
 /** Point du tracé, en fractions de la LARGEUR de la toile (x et y) : la toile garde son rapport 3:1. */
 type Point = { x: number; y: number };
@@ -91,6 +93,25 @@ function paintStrokes(
     ctx.lineTo(last.x, last.y);
     ctx.stroke();
   }
+}
+
+/**
+ * Groupe role="radio" (tabindex mobile) : un seul arrêt de Tab, sur le choix
+ * coché ; les flèches changent de choix et déplacent le focus, comme des
+ * boutons radio natifs (gauche et droite inversées en arabe et en persan).
+ */
+function radioKeys<T>(values: readonly T[], current: T, pick: (v: T) => void) {
+  return (e: React.KeyboardEvent<HTMLElement>) => {
+    const rtl = getComputedStyle(e.currentTarget).direction === "rtl";
+    const next = e.key === "ArrowDown" || e.key === (rtl ? "ArrowLeft" : "ArrowRight");
+    const prev = e.key === "ArrowUp" || e.key === (rtl ? "ArrowRight" : "ArrowLeft");
+    if (!next && !prev) return;
+    e.preventDefault();
+    const i = Math.max(0, values.indexOf(current));
+    const j = (i + (next ? 1 : -1) + values.length) % values.length;
+    pick(values[j]);
+    e.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]')[j]?.focus();
+  };
 }
 
 /** Petit aperçu de la signature finale, dessiné depuis ses octets (pas d'URL blob:). */
@@ -371,6 +392,7 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
       type="button"
       role="radio"
       aria-checked={selected}
+      tabIndex={selected ? 0 : -1}
       onClick={onPick}
       className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu ${
         selected ? "border-bleu bg-bleu/5 font-semibold text-encre" : "border-trait bg-white text-encre-2 hover:border-bleu"
@@ -516,18 +538,25 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
           {uploaded && <span className="ms-3 text-sm break-all text-encre-2">{uploaded.name}</span>}
           {uploadError && (
             <p role="alert" className="mt-2 text-sm text-sceau-fonce">
-              {t.errors[uploadError]}
+              {/* Plafond propre à la signature (50 Mo), pas celui des documents. */}
+              {uploadError === "file_too_large" ? s.uploadTooLarge : t.errors[uploadError]}
             </p>
           )}
           {uploaded && (
             <div className="mt-3 flex flex-col gap-3">
-              <div role="radiogroup" aria-label={s.removeBg} className="flex flex-wrap gap-2">
+              <div
+                role="radiogroup"
+                aria-label={s.removeBg}
+                onKeyDown={radioKeys([true, false], removeBg, setRemoveBg)}
+                className="flex flex-wrap gap-2"
+              >
                 {([true, false] as const).map((on) => (
                   <button
                     key={String(on)}
                     type="button"
                     role="radio"
                     aria-checked={removeBg === on}
+                    tabIndex={removeBg === on ? 0 : -1}
                     onClick={() => setRemoveBg(on)}
                     className={`min-h-10 rounded-lg border px-3 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu ${
                       removeBg === on ? "border-bleu bg-bleu/5 font-semibold" : "border-trait bg-white text-encre-2 hover:border-bleu"
@@ -553,8 +582,13 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
               )}
               <div>
                 <p className="text-sm">{s.ink}</p>
-                <div role="radiogroup" aria-label={s.ink} className="mt-1.5 flex flex-wrap gap-2">
-                  {(["keep", "black", "blue"] as const).map((v) => inkChoice(v, uploadInk === v, () => setUploadInk(v)))}
+                <div
+                  role="radiogroup"
+                  aria-label={s.ink}
+                  onKeyDown={radioKeys(UPLOAD_INKS, uploadInk, setUploadInk)}
+                  className="mt-1.5 flex flex-wrap gap-2"
+                >
+                  {UPLOAD_INKS.map((v) => inkChoice(v, uploadInk === v, () => setUploadInk(v)))}
                 </div>
               </div>
               {uploadEmpty && (
@@ -569,8 +603,8 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
         {tab !== "upload" && (
           <div className="mt-3">
             <p className="text-sm">{s.ink}</p>
-            <div role="radiogroup" aria-label={s.ink} className="mt-1.5 flex flex-wrap gap-2">
-              {(["black", "blue"] as const).map((v) => inkChoice(v, ink === v, () => chooseInk(v)))}
+            <div role="radiogroup" aria-label={s.ink} onKeyDown={radioKeys(INKS, ink, chooseInk)} className="mt-1.5 flex flex-wrap gap-2">
+              {INKS.map((v) => inkChoice(v, ink === v, () => chooseInk(v)))}
             </div>
           </div>
         )}

@@ -354,6 +354,7 @@ export const STRINGS_AR: Strings = {
       typeHint: "لا يُحفظ الاسم.",
       uploadHint: "صورة لتوقيعك على ورقة بيضاء، أو صورة أُزيلت خلفيتها مسبقًا.",
       uploadButton: "اختر صورة",
+      uploadTooLarge: "ملف الصورة كبير جدًا (50 MB كحد أقصى).",
       removeBg: "إزالة الخلفية",
       keepBg: "الإبقاء على الخلفية",
       threshold: "الحساسية",

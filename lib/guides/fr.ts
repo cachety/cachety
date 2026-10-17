@@ -552,7 +552,7 @@ export const GUIDES_FR: Guide[] = [
       { type: "h2", text: "Quelle valeur a cette signature pour un bail ?" },
       {
         type: "p",
-        text: "Une signature dessinée ou tapée puis posée sur le document est une signature électronique dite « simple ». En Europe, une signature ne peut pas être refusée seulement parce qu’elle est électronique (règlement eIDAS, article 25). En France, une signature vaut si elle identifie son auteur et montre qu’il consent à l’acte (Code civil, article 1367). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, cela suffit en général.",
+        text: "Une signature dessinée ou tapée puis posée sur le document est une signature électronique dite « simple ». En Europe, une signature ne peut pas être refusée seulement parce qu’elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu’il consent à l’acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, cela suffit en général.",
       },
       {
         type: "p",

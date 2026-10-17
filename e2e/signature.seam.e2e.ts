@@ -313,4 +313,17 @@ describe("composeSignatureWithBlock", () => {
     expect(r.lowInk).toBeGreaterThan(100);
     expect(r.unchanged).toBe(true);
   });
+
+  test("sens de la ligne : un lieu latin dans une date arabe change de côté en RTL", async () => {
+    const r = await engine.page.evaluate(async () => {
+      const w = window as any;
+      const sig = await w.__sig.signatureFromCanvas(w.__drawn(600, 200));
+      const line = `Paris، ${new Date(2026, 9, 17).toLocaleDateString("ar")}`;
+      const png = async (dir?: string) => Array.from((await w.__blk.composeSignatureWithBlock(sig, [line], "black", dir)).png as Uint8Array).join(",");
+      const [ltr, rtl, auto] = await Promise.all([png("ltr"), png("rtl"), png()]);
+      return { differs: ltr !== rtl, autoIsPageDir: auto === (document.documentElement.dir === "rtl" ? rtl : ltr) };
+    });
+    expect(r.differs).toBe(true);
+    expect(r.autoIsPageDir).toBe(true);
+  });
 });

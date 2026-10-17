@@ -57,6 +57,11 @@ function sansFamily(): string {
 
 const blockFont = (px: number, family: string) => `500 ${px}px ${family}`;
 
+/** Sens de la page (<html dir>) : en arabe et en persan, « lieu، date » se lit de droite à gauche. */
+function pageDirection(): CanvasDirection {
+  return typeof document !== "undefined" && document.documentElement.dir === "rtl" ? "rtl" : "ltr";
+}
+
 /**
  * Nouvelle signature : `lines` centrées sous l'image, en sans-serif gris
  * foncé, taille relative à la largeur de la signature. Toujours rognée et
@@ -65,7 +70,8 @@ const blockFont = (px: number, family: string) => `500 ${px}px ${family}`;
 export async function composeSignatureWithBlock(
   sig: SignatureImage,
   lines: string[],
-  ink: InkId = "black"
+  ink: InkId = "black",
+  direction: CanvasDirection = pageDirection()
 ): Promise<SignatureImage> {
   const text = lines.map(clean).filter(Boolean);
   if (!text.length) return sig;
@@ -100,6 +106,9 @@ export async function composeSignatureWithBlock(
   ctx.fillStyle = BLOCK_COLOR[ink] ?? BLOCK_COLOR.black;
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
+  // Comme le nom tapé : sans cela, un nom de lieu latin dans une ligne arabe
+  // ou persane (« Paris، ۱۴۰۵/۷/۲۵ ») s'afficherait dans le mauvais ordre.
+  ctx.direction = direction;
   let y = sig.height + Math.round(px * GAP);
   for (const line of text) {
     ctx.fillText(line, width / 2, y);

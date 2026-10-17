@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   docStamp,
+  isFresh,
+  isPlaced,
   moveTo,
   needsAttention,
   needsPlacement,
@@ -67,7 +69,10 @@ const sig = (x: number, y: number, w: number, h: number) => ({ rect: { x, y, w, 
 describe("mode « signer » : placement par document", () => {
   test("docStamp : inchangé sans signature, change quand elle bouge", () => {
     expect(docStamp(doc(), "s")).toBe("s");
-    expect(docStamp(doc({ overlays: {} }), "s")).toBe("s");
+    // Retirée (×) ≠ jamais placée : sinon le rendu sans signature fait après ×
+    // passerait pour à jour quand « remettre à sa place » revient à undefined.
+    expect(docStamp(doc({ overlays: {} }), "s")).not.toBe("s");
+    expect(docStamp(doc({ overlays: {} }), "s")).not.toBe(docStamp(doc({ overlays: { 0: [sig(0, 0, 0.1, 0.1)] } }), "s"));
     const a = docStamp(doc({ overlays: { 2: [sig(0.5, 0.8, 0.28, 0.1)] } }), "s");
     const b = docStamp(doc({ overlays: { 2: [sig(0.51, 0.8, 0.28, 0.1)] } }), "s");
     expect(a).not.toBe("s");
@@ -89,6 +94,19 @@ describe("mode « signer » : placement par document", () => {
     expect(needsPlacement(doc({ overlays: { 1: [sig(0, 0, 0.1, 0.1)] } }))).toBe(false);
     expect(needsAttention(doc({ overlays: {} }))).toBe(false);
     expect(needsAttention(doc({ overlays: {} }), true)).toBe(true);
+  });
+
+  test("isPlaced et isFresh : un rendu sans signature n'est jamais prêt à signer", () => {
+    expect(isPlaced(doc())).toBe(false);
+    expect(isPlaced(doc({ overlays: {} }))).toBe(false);
+    expect(isPlaced(doc({ overlays: { 1: [sig(0, 0, 0.1, 0.1)] } }))).toBe(true);
+    // × puis rendu (overlays {}), puis « remettre à sa place » (undefined) :
+    // l'ancien résultat, sans signature, n'est plus à jour.
+    const result = { blob: new Blob([]), extension: "pdf", pageCount: 1 } as unknown as Doc["result"];
+    const removed = doc({ overlays: {}, result });
+    const stampedWith = docStamp(removed, "s");
+    expect(isFresh({ ...removed, stampedWith }, "s")).toBe(true);
+    expect(isFresh({ ...removed, stampedWith, overlays: undefined }, "s")).toBe(false);
   });
 
   test("placeSignature : une seule signature, déplacée d'une page à l'autre ou retirée", () => {
