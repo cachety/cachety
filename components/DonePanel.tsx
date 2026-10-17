@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
 import { copySecret } from "@/lib/clipboard";
 import { CheckIcon } from "@/components/icons";
+import { Fingerprint, type FingerprintItem } from "@/components/Fingerprint";
 
 export type DoneInfo = {
   files: string[];
@@ -19,9 +20,22 @@ export type DoneInfo = {
   date: string;
   /** Fichier produit, gardé pour « Télécharger à nouveau » (téléchargement bloqué, cadre intégré…). */
   file?: { url: string; name: string };
+  /** Mode « signer » : empreinte SHA-256 de chaque fichier produit (montrée, jamais conservée). */
+  fingerprints?: FingerprintItem[];
 };
 
-export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClose: () => void; onAnother: () => void }) {
+export function DonePanel({
+  info,
+  onClose,
+  onAnother,
+  anotherLabel,
+}: {
+  info: DoneInfo;
+  onClose: () => void;
+  onAnother: () => void;
+  /** Libellé du bouton « recommencer » (mode « signer » : « Signer un autre document »). */
+  anotherLabel?: string;
+}) {
   const t = useT();
   const d = t.done;
   const [copied, setCopied] = useState(false);
@@ -101,6 +115,8 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
           </li>
         ))}
       </ul>
+
+      {info.fingerprints && <Fingerprint items={info.fingerprints} />}
 
       {info.password && (
         <div className="mt-4 rounded-xl border border-amber-600/30 bg-amber-50 p-3">
@@ -183,7 +199,7 @@ export function DonePanel({ info, onClose, onAnother }: { info: DoneInfo; onClos
             onClick={() => leave(onAnother)}
             className="rounded-xl bg-encre px-4 py-2.5 text-sm font-semibold text-white hover:bg-encre/85"
           >
-            {d.another}
+            {anotherLabel ?? d.another}
           </button>
           <button
             type="button"

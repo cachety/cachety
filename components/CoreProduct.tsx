@@ -5,12 +5,25 @@
 // 1 et 2 à gauche, aperçu et téléchargement à droite). Sur téléphone, une
 // étape à la fois, avec une barre d'étapes et un bouton en bas ; les sections
 // d'information de la page ne s'affichent qu'à l'étape 1.
+//
+// Mode « signer » (mode="sign", page /<lang>/sign) : même outil, même file
+// de rendu. L'étape 2 devient la signature (SignaturePad), l'aperçu de
+// l'étape 3 l'éditeur de placement (SignatureEditor) ; la sortie est toujours
+// un PDF « -signed ». Le filigrane n'est qu'une option (« Ajouter aussi un
+// filigrane »). Le mode filigrane, par défaut, ne change pas.
 
 import HelpTour from "@/components/HelpTour";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ACCEPT, hasVisibleText, isSupported, zipDocuments } from "@/lib/files";
 import { isBrowserSupported } from "@/lib/compat";
-import { releaseResult, watermarkFile, type WatermarkResult } from "@/lib/watermark";
+import {
+  releaseResult,
+  renderFile,
+  signPreviewPages,
+  watermarkFile,
+  type RenderOptions,
+  type WatermarkResult,
+} from "@/lib/watermark";
 import {
   DEFAULT_WATERMARK_STYLE,
   normalizeStyle,
@@ -35,11 +48,20 @@ import {
   moveTo,
   needsAttention,
   needsPassword,
+  needsPlacement,
   outName,
+  placeSignature,
+  refitOverlays,
   slotToIndex,
   type Doc,
   type Filter,
 } from "@/lib/doc";
+import { defaultPlacement, overlaysKey, type PageOverlays } from "@/lib/overlays";
+import { signatureBitmap, signatureKey, type SignatureImage } from "@/lib/signature";
+import { sha256Hex } from "@/lib/fingerprint";
+import { lastPageAspect } from "@/lib/page-aspect";
+import { SignaturePad } from "@/components/SignaturePad";
+import type { FingerprintItem } from "@/components/Fingerprint";
 import { DownloadIcon, HideIcon, LockIcon, SlidersIcon, UploadIcon } from "@/components/icons";
 import { readPref, writePref } from "@/lib/storage";
 import { masksKey, type PageMasks } from "@/lib/masks";
@@ -69,8 +91,15 @@ function triggerDownload(url: string, name: string) {
   a.remove();
 }
 
-export default function CoreProduct({ embed = false }: { embed?: boolean } = {}) {
+/** Signature prête pour le moteur : empreinte courte (clé du tampon) et image décodée. */
+type SigReady = { sig: SignatureImage; key: string; bitmap: ImageBitmap };
+
+export default function CoreProduct({ embed = false, mode = "watermark" }: { embed?: boolean; mode?: "watermark" | "sign" } = {}) {
   const t = useT();
+  const sign = mode === "sign";
+  const ts = t.sign;
+  // Libellés communs aux deux modes (étapes, champ de dépôt).
+  const labels = sign ? ts : t;
   const [docs, setDocs] = useState<Doc[]>([]);
   // Étape 2 : motif, destinataires (un champ chacun), texte libre éventuel.
   const [purpose, setPurpose] = useState("");
@@ -100,6 +129,14 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   // Étape affichée sur téléphone (sur ordinateur, tout est visible).
   const [step, setStep] = useState<Step>(1);
   const toolRef = useRef<HTMLDivElement>(null);
+  // Mode « signer » : signature finale (lignes sous la signature comprises),
+  // en mémoire seulement ; paraphe sur chaque page ; filigrane en option.
+  const [signature, setSignature] = useState<SignatureImage | null>(null);
+  const [sigReady, setSigReady] = useState<SigReady | null>(null);
+  const [initials, setInitials] = useState(false);
+  const [withWatermark, setWithWatermark] = useState(false);
+  // Change à « Signer un autre document » : le pavé repart de zéro.
+  const [padKey, setPadKey] = useState(0);
 
   // Sur téléphone, les étapes 2 et 3 occupent l'écran : l'en-tête et les
   // sections d'information de la page sont masqués (voir globals.css).
@@ -211,6 +248,10 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   const setMasks = useCallback((id: string, masks: PageMasks) => {
     setDocs((prev) => prev.map((d) => (d.id === id ? { ...d, masks } : d)));
   }, []);
+  /** Mode « signer » : nouveau placement ; `undefined` le fait reposer à sa place par défaut par la file. */
+  const setOverlays = useCallback((id: string, overlays: PageOverlays | undefined) => {
+    setDocs((prev) => prev.map((d) => (d.id === id ? { ...d, overlays } : d)));
+  }, []);
   const listRef = useRef<HTMLUListElement>(null);
   const { drag, start: startDrag } = useDragReorder(listRef, moveDoc);
 
@@ -309,25 +350,52 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     if (!ref) refs.current.set(key, (ref = makeRef()));
     return ref;
   };
-  const recipients = cleanRecipients(fields);
+  // Mode « signer » : un seul destinataire, et seulement avec l'option filigrane.
+  const recipients = sign ? (withWatermark ? cleanRecipients(fields).slice(0, 1) : []) : cleanRecipients(fields);
   const tokens = t.stampCard.tokens;
   const trace = custom && hasToken(customText, "code", tokens);
   /** Texte réellement apposé pour un destinataire (ou sans destinataire). */
   const stampFor = (recipient?: string) =>
-    custom
-      ? fillTemplate(customText, { recipient, date: today(), code: trace ? refFor(recipient ?? "") : undefined }, tokens)
-      : composeSimple({ purpose, recipient, date: today() }, { sep: t.stampSep, onDate: t.onDate });
+    sign
+      ? // Texte vide : pas de filigrane (le moteur ne charge même pas la police).
+        withWatermark && (hasVisibleText(purpose) || recipient)
+        ? composeSimple({ purpose, recipient, date: today() }, { sep: t.stampSep, onDate: t.onDate })
+        : ""
+      : custom
+        ? fillTemplate(customText, { recipient, date: today(), code: trace ? refFor(recipient ?? "") : undefined }, tokens)
+        : composeSimple({ purpose, recipient, date: today() }, { sep: t.stampSep, onDate: t.onDate });
   // Aperçu : le destinataire choisi (le premier par défaut). Les autres sont
   // rendus au téléchargement.
   const viewIndex = Math.min(view, Math.max(recipients.length - 1, 0));
   const previewRecipient = recipients[viewIndex];
   const previewText = stampFor(previewRecipient);
   const liveStyle = style;
-  const stamp = `${stampKey(previewText, liveStyle)}\0${sizeMb}`;
+  // Mode « signer » : la signature (son empreinte) et le paraphe font partie
+  // du réglage commun ; son placement, propre à chaque document, est dans docStamp.
+  const stamp = sign
+    ? `${stampKey(previewText, liveStyle)}\0${sizeMb}\0${sigReady?.key ?? ""}\0${initials ? "i" : ""}`
+    : `${stampKey(previewText, liveStyle)}\0${sizeMb}`;
   // Le formulaire simple porte toujours la date : il faut un motif ou un destinataire.
-  const meaningful = custom
-    ? hasVisibleText(fillTemplate(customText, { date: "" }, tokens))
-    : hasVisibleText(purpose) || recipients.length > 0;
+  // Mode « signer » : il faut une signature.
+  const meaningful = sign
+    ? !!sigReady
+    : custom
+      ? hasVisibleText(fillTemplate(customText, { date: "" }, tokens))
+      : hasVisibleText(purpose) || recipients.length > 0;
+  /** Options du moteur pour un document : en mode « signer », signature, paraphe, PDF toujours, aperçus jusqu'à la dernière page. */
+  const renderOptions = (doc: Doc, budget: number | undefined, overlays = doc.overlays): RenderOptions =>
+    sign
+      ? {
+          masks: doc.masks,
+          maxBytes: budget,
+          overlays,
+          overlayImages: sigReady ? { signature: sigReady.bitmap } : undefined,
+          initialsEveryPage: initials,
+          forcePdf: true,
+          previewPages: signPreviewPages,
+        }
+      : { masks: doc.masks, maxBytes: budget };
+  const render = sign ? renderFile : watermarkFile;
   // Trié : réordonner la liste ne change pas la clé, donc ne relance pas
   // le filigrane. L'ordre n'intervient qu'au moment du PDF unique.
   const fileKey = docs
@@ -337,7 +405,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   // Change à chaque déverrouillage soumis ou masque modifié : relance le
   // traitement sans toucher aux documents déjà prêts (protégés par stampedWith).
   const unlockKey = docs
-    .map((d) => `${d.id}:${d.tries ?? 0}:${masksKey(d.masks)}`)
+    .map((d) => `${d.id}:${d.tries ?? 0}:${masksKey(d.masks)}${sign ? `:${d.overlays ? overlaysKey(d.overlays) || "-" : ""}` : ""}`)
     .sort()
     .join("|");
   // Réglage courant, lu à la fin d'un assemblage long (si le texte a changé
@@ -357,6 +425,59 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     return () => jobs.forEach((job) => job.aborter.abort());
   }, []);
 
+  // Mode « signer » : image de la signature remplacée. L'ancienne est fermée
+  // (.close()) dès qu'aucun rendu ni téléchargement ne peut plus la peindre.
+  const sigLive = useRef<SigReady | null>(null);
+  const retired = useRef(new Set<ImageBitmap>());
+  const bundlingRef = useRef(false);
+  const flushRetired = () => {
+    if (inFlight.current.size || bundlingRef.current) return;
+    retired.current.forEach((b) => b.close());
+    retired.current.clear();
+  };
+  useEffect(() => {
+    if (!sign) return;
+    let live = true;
+    const replace = (next: SigReady | null) => {
+      const old = sigLive.current;
+      sigLive.current = next;
+      setSigReady(next);
+      if (old) {
+        retired.current.add(old.bitmap);
+        flushRetired();
+      }
+      // Autre rapport largeur / hauteur : chaque placement garde sa largeur
+      // et son bord bas, la hauteur suit la nouvelle image.
+      const before = old && old.sig.width / old.sig.height;
+      const after = next && next.sig.width / next.sig.height;
+      if (before && after && Math.abs(before - after) > 1e-6) {
+        setDocs((prev) => prev.map((d) => (d.overlays ? { ...d, overlays: refitOverlays(d.overlays, before, after) } : d)));
+      }
+    };
+    if (!signature) {
+      if (sigLive.current) replace(null);
+      return;
+    }
+    Promise.all([signatureKey(signature), signatureBitmap(signature)]).then(
+      ([key, bitmap]) => {
+        if (live) replace({ sig: signature, key, bitmap });
+        else bitmap.close();
+      },
+      () => live && replace(null)
+    );
+    return () => {
+      live = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature, sign]);
+  useEffect(
+    () => () => {
+      retired.current.forEach((b) => b.close());
+      sigLive.current?.bitmap.close();
+    },
+    []
+  );
+
   useEffect(() => {
     if (!fileKey || !meaningful) {
       setDocs((prev) =>
@@ -367,6 +488,9 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
               status: "pending" as const,
               password: d.password,
               tries: d.tries,
+              // Mode « signer » : signature effacée puis refaite, les masques et
+              // les placements de chaque document restent.
+              ...(sign ? { masks: d.masks, overlays: d.overlays } : {}),
             }))
           : prev
       );
@@ -384,12 +508,43 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
       const queue = prevDocs.current
         .slice()
         .sort((a, b) => Number(b.id === shownIdRef.current) - Number(a.id === shownIdRef.current));
-      for (const doc of queue) {
+      for (const queued of queue) {
         if (cancelled) return;
-        const own = docStamp(doc, stamp);
+        let doc = queued;
+        let own = docStamp(doc, stamp);
         if (doc.result && doc.stampedWith === own) continue;
         // Échec déjà constaté avec ce réglage et cet essai : inutile de retenter.
         if (doc.error && doc.failedWith === attemptKey(doc, own)) continue;
+        // Mode « signer », document jamais placé : signature posée d'office en
+        // bas à droite de la dernière page. Format de la page lu sans rendu,
+        // pour que le premier rendu soit déjà le bon.
+        if (sign && sigReady && !doc.overlays) {
+          try {
+            const last = await lastPageAspect(doc.file, doc.password);
+            // Signature changée entre-temps : le passage suivant recalcule.
+            if (cancelled) return;
+            const overlays: PageOverlays = {
+              [last.pageCount - 1]: [
+                { rect: defaultPlacement(last.aspect, sigReady.sig.width / sigReady.sig.height), image: "signature" },
+              ],
+            };
+            doc = { ...doc, overlays };
+            own = docStamp(doc, stamp);
+            update(doc.id, { overlays });
+          } catch (e) {
+            if (cancelled) return;
+            const key = e instanceof Error ? (e.message as ErrorKey) : "";
+            update(doc.id, {
+              status: "error",
+              result: undefined,
+              stampedWith: undefined,
+              error: t.errors[key as ErrorKey] ? (key as ErrorKey) : "generic",
+              failedWith: attemptKey(doc, own),
+              progress: undefined,
+            });
+            continue;
+          }
+        }
         // Déjà en cours, lancé par un passage précédent avec ce même réglage :
         // il se termine de lui-même et publie son résultat.
         if (
@@ -406,14 +561,14 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
           !job.aborter.signal.aborted && liveDocs.current.some((d) => d.id === doc.id);
         patch(doc.id, { status: "processing", error: undefined, failedWith: undefined });
         try {
-          const result = await watermarkFile(
+          const result = await render(
             doc.file,
             previewText,
             (done, total) => keep() && update(doc.id, { progress: [done, total] }),
             doc.password,
             job.aborter.signal,
             liveStyle,
-            { masks: doc.masks, maxBytes }
+            renderOptions(doc, maxBytes)
           );
           if (!keep()) releaseResult(result);
           else update(doc.id, { status: "ready", result, stampedWith: own, progress: undefined });
@@ -431,6 +586,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
           }
         } finally {
           inFlight.current.delete(job);
+          flushRetired();
         }
       }
     }, 500);
@@ -473,13 +629,15 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
   }, []);
 
-  const ready = docs.filter((d) => isFresh(d, stamp));
+  // Mode « signer » : un document dont la signature a été retirée n'est pas prêt.
+  const isReady = (d: Doc) => isFresh(d, stamp) && !(sign && needsPlacement(d));
+  const ready = docs.filter(isReady);
   const processing = docs.some((d) => d.status === "processing");
 
   // Un lot volumineux ne doit pas repousser les étapes 2 et 3 hors de l'écran :
   // au-delà de LIST_COMPACT_FROM, la liste devient une zone à hauteur bornée,
   // coiffée d'un résumé (progression + filtres).
-  const attention = docs.filter(needsAttention);
+  const attention = docs.filter((d) => needsAttention(d, sign));
   const doneCount = docs.filter((d) => d.status === "ready" || d.error).length;
   const compact = docs.length > LIST_COMPACT_FROM;
   // Filtre et recherche n'existent que dans le résumé (mode compact). Sous le
@@ -500,12 +658,12 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     () =>
       docs
         .filter((d) => {
-          if (effFilter === "attention") return needsAttention(d);
-          if (effFilter === "ready") return isFresh(d, stamp);
+          if (effFilter === "attention") return needsAttention(d, sign);
+          if (effFilter === "ready") return isFresh(d, stamp) && !(sign && needsPlacement(d));
           return true;
         })
         .filter((d) => !needle || d.file.name.toLocaleLowerCase(t.locale).includes(needle)),
-    [docs, effFilter, needle, stamp, t.locale]
+    [docs, effFilter, needle, stamp, t.locale, sign]
   );
 
   // Index de chaque document : une recherche par ligne rendrait la liste
@@ -563,10 +721,15 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     const out: Rendered[] = [];
     try {
       for (const doc of ready) {
-        const result = await watermarkFile(doc.file, text, undefined, doc.password, undefined, liveStyle, {
-          masks: doc.masks,
-          maxBytes: budget ? budget(doc) : maxBytes,
-        });
+        const result = await render(
+          doc.file,
+          text,
+          undefined,
+          doc.password,
+          undefined,
+          liveStyle,
+          renderOptions(doc, budget ? budget(doc) : maxBytes)
+        );
         out.push({ doc, result });
       }
       return out;
@@ -607,7 +770,10 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   const download = async () => {
     const startKey = bundleKey;
     setBundling(true);
+    bundlingRef.current = true;
     setBundleError(null);
+    const zipName = sign ? ts.zipName : t.zipName;
+    const suffix = sign ? ts.suffix : undefined;
     let step: "export" | "encrypt" = "export";
     const targets: (string | undefined)[] = recipients.length ? recipients : [undefined];
     const kind: BundleFormat = ready.length > 1 ? format : "pdf";
@@ -627,7 +793,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
             const file = await protectFile(result.blob, result.extension, filePassword);
             step = "export";
             const type = file.extension === "pdf" ? "application/pdf" : `image/${file.extension === "jpg" ? "jpeg" : "png"}`;
-            single = { name: outName(doc, t, file.extension), bytes: file.bytes, type };
+            single = { name: outName(doc, t, file.extension, suffix), bytes: file.bytes, type };
           } else if (kind === "zip") {
             // Un document à la fois : chiffrer des centaines de fichiers en
             // parallèle garderait tous les originaux et leurs copies en mémoire.
@@ -635,7 +801,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
             for (const { doc, result } of items) {
               const file = await protectFile(result.blob, result.extension, filePassword);
               entries.push({
-                name: outName(doc, t, file.extension),
+                name: outName(doc, t, file.extension, suffix),
                 bytes: file.bytes,
                 folder: recipient && targets.length > 1 ? recipientSlug(recipient) : undefined,
               });
@@ -649,9 +815,9 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
               step = "export";
             }
             if (targets.length > 1 && recipient) {
-              entries.push({ name: `${t.zipName}-${recipientSlug(recipient)}.pdf`, bytes });
+              entries.push({ name: `${zipName}-${recipientSlug(recipient)}.pdf`, bytes });
             } else {
-              single = { name: `${t.zipName}.pdf`, bytes, type: "application/pdf" };
+              single = { name: `${zipName}.pdf`, bytes, type: "application/pdf" };
             }
           }
         } finally {
@@ -659,7 +825,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
         }
       }
       const out = single ?? {
-        name: `${t.zipName}.zip`,
+        name: `${zipName}.zip`,
         bytes: zipDocuments(entries),
         type: "application/zip",
       };
@@ -674,7 +840,14 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
       // (un navigateur peut bloquer un téléchargement lancé trop tard après le clic).
       if (lastFileUrl.current) URL.revokeObjectURL(lastFileUrl.current);
       lastFileUrl.current = url;
+      // Mode « signer » : empreinte de chaque fichier produit (dans le ZIP, chaque PDF).
+      let fingerprints: FingerprintItem[] | undefined;
+      if (sign) {
+        const files = single ? [{ name: out.name, bytes: out.bytes }] : entries.map((e) => ({ name: e.folder ? `${e.folder}/${e.name}` : e.name, bytes: e.bytes }));
+        fingerprints = await Promise.all(files.map(async (f) => ({ name: f.name, hash: await sha256Hex(f.bytes) })));
+      }
       setDone({
+        fingerprints,
         file: { url, name: out.name },
         files: single ? [out.name] : entries.map((e) => (e.folder ? `${out.name} › ${e.folder}/${e.name}` : `${out.name} › ${e.name}`)),
         copies: targets.length,
@@ -687,6 +860,8 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
       setBundleError(step);
     } finally {
       setBundling(false);
+      bundlingRef.current = false;
+      flushRetired();
       setBundleProgress("");
     }
   };
@@ -697,7 +872,8 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
   const estimate = !sizes.length ? null : ready.length > 1 && format === "zip" ? Math.max(...sizes) : sizes.reduce((a, b) => a + b, 0);
   const hiddenCount = docs.reduce((n, d) => n + Object.values(d.masks ?? {}).reduce((m, list) => m + list.length, 0), 0);
   const summary = [
-    t.summary.copies(Math.max(1, recipients.length)),
+    // Mode « signer » : une seule copie, toujours ; le dire n'apprend rien.
+    ...(sign ? [] : [t.summary.copies(Math.max(1, recipients.length))]),
     ...(ready.length > 1 ? [t.summary.docs(ready.length, format === "zip")] : []),
     t.summary.hidden(hiddenCount),
     filePassword ? t.summary.locked : t.summary.notLocked,
@@ -711,7 +887,16 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     : recipients.length > 1
       ? t.download.copies(recipients.length)
       : t.download.one;
-  const downloadHint = !docs.length ? t.needDoc : !meaningful ? t.needText : summary;
+  const unplaced = sign && docs.some(needsPlacement);
+  const downloadHint = !docs.length
+    ? t.needDoc
+    : !meaningful
+      ? sign
+        ? ts.needSignature
+        : t.needText
+      : unplaced
+        ? ts.needPlacement
+        : summary;
 
   const startOver = () => {
     clearAll();
@@ -723,6 +908,12 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
     setLockPassword("");
     setOwnPassword(false);
     setIsWords(false);
+    if (sign) {
+      setSignature(null);
+      setPadKey((k) => k + 1);
+      setInitials(false);
+      setWithWatermark(false);
+    }
     window.scrollTo({ top: 0 });
   };
 
@@ -779,17 +970,17 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
             >
               {s}
             </span>
-            <span className="truncate">{t.stepShort[s - 1]}</span>
+            <span className="truncate">{labels.stepShort[s - 1]}</span>
           </button>
         ))}
       </nav>
 
       <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[400px_minmax(0,1fr)] lg:items-start lg:gap-10 xl:grid-cols-[460px_minmax(0,1fr)] 2xl:grid-cols-[520px_minmax(0,1fr)]">
         <div className="flex flex-col gap-8">
-          <section aria-label={t.step1} className={onPhone(1)}>
+          <section aria-label={labels.step1} className={onPhone(1)}>
             <div className="flex items-center justify-between gap-3">
               <StepLabel n={1} active={docs.length === 0}>
-                {t.step1}
+                {labels.step1}
               </StepLabel>
               {docs.length > 0 && (
                 <button
@@ -812,7 +1003,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                 type="file"
                 multiple
                 accept={ACCEPT}
-                aria-label={t.inputAria}
+                aria-label={labels.inputAria}
                 className="sr-only"
                 onChange={(e) => {
                   addFiles(e.target.files);
@@ -894,6 +1085,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                       onDragStart={reorder ? startDrag : undefined}
                       dragging={drag?.id === doc.id}
                       dropEdge={dropEdgeFor(index)}
+                      placeMissing={sign && needsPlacement(doc)}
                     />
                   );
                 })}
@@ -901,11 +1093,15 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
             )}
           </section>
 
-          <section aria-label={t.step2} data-tour="details" className={onPhone(2)}>
+          <section aria-label={labels.step2} data-tour="details" className={onPhone(2)}>
             <StepLabel n={2} active={docs.length > 0 && !meaningful} phoneHidden>
-              {t.step2}
+              {labels.step2}
             </StepLabel>
+            {sign && !meaningful && <p className="mt-1 text-sm text-encre-2 max-lg:mb-3 lg:ms-10">{ts.pad.empty}</p>}
             <div className="lg:mt-4">
+              {sign ? (
+                <SignaturePad key={padKey} onChange={setSignature} />
+              ) : (
               <StampDetails
                 purpose={purpose}
                 onPurpose={setPurpose}
@@ -932,6 +1128,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                   renewRefs((n) => n + 1);
                 }}
               />
+              )}
             </div>
           </section>
         </div>
@@ -939,14 +1136,15 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
         <section
           id="apercu"
           data-tour="result"
-          aria-label={t.step3}
+          aria-label={labels.step3}
           className={`flex min-w-0 scroll-mt-4 flex-col gap-4 ${onPhone(3)}`}
         >
           <StepLabel n={3} active={ready.length > 0} phoneHidden>
-            {t.step3}
+            {labels.step3}
           </StepLabel>
 
-          {(ready.length > 1 || recipients.length > 1) && meaningful && (
+          {/* Mode « signer » : un document à replacer n'est pas prêt, mais doit rester choisissable. */}
+          {((sign ? docs.length : ready.length) > 1 || recipients.length > 1) && meaningful && (
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-encre-2">
               {docs.length > 1 && (
                 <label className="inline-flex items-center gap-2">
@@ -984,7 +1182,11 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
           )}
 
           <div>
-            {docs.length === 0 || !meaningful ? (
+            {sign && (docs.length === 0 || !meaningful) ? (
+              <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
+                <p>{docs.length === 0 ? t.emptyStart : ts.pad.empty}</p>
+              </div>
+            ) : docs.length === 0 || !meaningful ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center gap-6 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
                 <div className="w-full max-w-[280px] -rotate-2">
                   <SpecimenCard title={t.about.specimenCard} specimen={t.about.specimen}>
@@ -1022,13 +1224,26 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                   maskEditing={tool === "hide" && fresh}
                   onMaskEditing={(on) => setTool(on ? "hide" : null)}
                   updating={!fresh}
+                  signing={
+                    sign && sigReady
+                      ? {
+                          sigAspect: sigReady.sig.width / sigReady.sig.height,
+                          bitmap: sigReady.bitmap,
+                          onPlace: (page, rect) => setOverlays(shown.id, placeSignature(shown.overlays, page, rect)),
+                          // Sans placement, la file la repose en bas à droite de la dernière page.
+                          onReset: () => setOverlays(shown.id, undefined),
+                        }
+                      : undefined
+                  }
                 />
               </>
             ) : (
               <div className="flex min-h-[420px] items-center justify-center rounded-2xl border border-trait bg-feuille text-encre-2">
                 {/* Pas d'aria-live ici : la région sr-only en fin de composant
                     annonce déjà le traitement, sans répéter chaque page. */}
-                {shown ? t.processingDoc(shown.file.name, shown.progress) : t.processingGeneric}
+                {shown
+                  ? (sign ? ts : t).processingDoc(shown.file.name, shown.progress)
+                  : t.processingGeneric}
               </div>
             )}
           </div>
@@ -1045,6 +1260,8 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                   <HideIcon className="h-4 w-4 shrink-0" />
                   {hiddenCount ? t.tools.hidden(hiddenCount) : t.tools.hide}
                 </button>
+                {/* Mode « signer » : l'apparence ne concerne que le filigrane optionnel. */}
+                {(!sign || withWatermark) && (
                 <button
                   type="button"
                   onClick={() => setTool(tool === "adjust" ? null : "adjust")}
@@ -1056,11 +1273,63 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                   <SlidersIcon className="h-4 w-4 shrink-0" />
                   {t.tools.adjust}
                 </button>
+                )}
               </div>
-              {tool === "adjust" && (
+              {tool === "adjust" && (!sign || withWatermark) && (
                 <WatermarkAppearance style={style} sample={previewText || t.style.sample} onChange={updateStyle} />
               )}
             </div>
+          )}
+
+          {sign && docs.length > 0 && meaningful && (
+            <section aria-label={ts.place.initials} className="flex flex-col gap-3 rounded-2xl border border-trait bg-feuille p-4">
+              <label className="flex cursor-pointer items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={initials}
+                  onChange={(e) => setInitials(e.target.checked)}
+                  className="mt-0.5 h-5 w-5 shrink-0 accent-bleu"
+                />
+                <span className="font-semibold">{ts.place.initials}</span>
+              </label>
+              <label className="flex cursor-pointer items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={withWatermark}
+                  onChange={(e) => {
+                    setWithWatermark(e.target.checked);
+                    if (!e.target.checked && tool === "adjust") setTool(null);
+                  }}
+                  className="mt-0.5 h-5 w-5 shrink-0 accent-bleu"
+                />
+                <span className="font-semibold">{ts.withWatermark}</span>
+              </label>
+              {/* Usage et un destinataire seulement : l'outil complet est sur la page d'accueil. */}
+              {withWatermark && (
+                <div className="ms-8 flex flex-col gap-3">
+                  <label className="flex flex-col gap-1.5 text-sm font-medium">
+                    {t.purpose.label}
+                    <input
+                      type="text"
+                      value={purpose}
+                      onChange={(e) => setPurpose(e.target.value)}
+                      placeholder={t.purpose.placeholder}
+                      className="rounded-xl border border-trait bg-white px-3 py-2.5 text-base font-normal focus:outline-none focus:ring-2 focus:ring-bleu"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1.5 text-sm font-medium">
+                    {t.recipients.label}
+                    <input
+                      type="text"
+                      value={fields[0] ?? ""}
+                      onChange={(e) => setFields([e.target.value])}
+                      placeholder={t.recipients.placeholder}
+                      className="rounded-xl border border-trait bg-white px-3 py-2.5 text-base font-normal focus:outline-none focus:ring-2 focus:ring-bleu"
+                    />
+                  </label>
+                </div>
+              )}
+            </section>
           )}
 
           {docs.length > 0 && meaningful && (
@@ -1117,12 +1386,20 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
             )}
           </div>
 
-          {done && <DonePanel key={done.file?.url} info={done} onClose={() => setDone(null)} onAnother={startOver} />}
+          {done && (
+            <DonePanel
+              key={done.file?.url}
+              info={done}
+              onClose={() => setDone(null)}
+              onAnother={startOver}
+              anotherLabel={sign ? ts.another : undefined}
+            />
+          )}
         </section>
       </div>
 
       <p className="sr-only" role="status" aria-live="polite">
-        {processing ? t.srProcessing : ready.length > 0 ? t.srReady(ready.length) : ""}
+        {processing ? (sign ? ts : t).srProcessing : ready.length > 0 ? t.srReady(ready.length) : ""}
       </p>
 
       {!embed && (
@@ -1132,6 +1409,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
         revealed={step}
         hideOnPhone={step > 1}
         reveal={(i) => setStep((i + 1) as Step)}
+        strings={sign ? ts.tour : undefined}
       />
       )}
 
@@ -1145,7 +1423,7 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
               disabled={!docs.length}
               className="w-full rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
             >
-              {t.next.details}
+              {sign ? ts.next.signature : t.next.details}
             </button>
           )}
           {step === 2 && (
@@ -1156,9 +1434,9 @@ export default function CoreProduct({ embed = false }: { embed?: boolean } = {})
                 disabled={!meaningful}
                 className="w-full rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
               >
-                {t.next.preview}
+                {sign ? ts.next.place : t.next.preview}
               </button>
-              {!meaningful && <p className="text-center text-sm text-encre-2">{t.needText}</p>}
+              {!meaningful && <p className="text-center text-sm text-encre-2">{sign ? ts.pad.empty : t.needText}</p>}
             </>
           )}
           {step === 3 && (

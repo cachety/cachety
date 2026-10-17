@@ -213,6 +213,20 @@ export const PencilIcon = ({ className }: IconProps) => (
   </Stroke>
 );
 
+export const UndoIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M9 14L4 9l5-5" />
+    <path d="M4 9h10.5a5.5 5.5 0 010 11H11" />
+  </Stroke>
+);
+
+export const ZoomIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <circle cx="11" cy="11" r="7" />
+    <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
+  </Stroke>
+);
+
 export const HideIcon = ({ className }: IconProps) => (
   <Stroke className={className}>
     <rect x="3" y="9" width="18" height="6" rx="1" fill="currentColor" />
