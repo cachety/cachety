@@ -289,7 +289,7 @@ identifies the copy.
   **after** the masks, so a mask cannot hide it, and **before** the
   watermark, so a watermark, if added, covers it too. The page is then
   re-encoded like any other (§4.4): the signature cannot be moved or deleted
-  by editing the PDF, and the signed copy carries no text layer, metadata,
+  as a PDF element, and the signed copy carries no text layer, metadata,
   attachment, JavaScript or link from the original. The output is always a
   PDF: an image is wrapped into a one-page PDF (`forcePdf`).
 - **Memory only.** The signature is a transparent PNG (`SignatureImage`,
@@ -514,9 +514,11 @@ What the application **does not guarantee**, stated plainly:
   image of a signature on the pages. The PDF carries no cryptographic
   signature, no certificate and no trusted timestamp, and the tool **does
   not prove who signed**: anyone can type any name or upload any image.
-  Under eIDAS this is a *simple* electronic signature, without the
-  presumption of reliability of a qualified one; the sign page says so, with
-  the cases where it is not the right tool. The SHA-256 fingerprint shown
+  This is what is commonly called a *simple* electronic signature, without
+  the presumption of reliability of a qualified one; French courts treat a
+  signature image as weak evidence once it is disputed, and the file proves
+  neither who placed it nor that the document was not changed afterwards.
+  The sign page says so, with the cases where it is not the right tool. The SHA-256 fingerprint shown
   after the download proves nothing to a third party on its own.
 - **The signature can be reused** (T11): a recipient can cut it out of the
   signed copy and paste it elsewhere, as with a scanned paper signature. A

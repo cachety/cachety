@@ -59,7 +59,7 @@ Cachety sait aussi signer un PDF, sur **[cachety.com/fr/sign](https://cachety.co
 - **Options :** parapher chaque page, ajouter un filigrane (usage, destinataire, date), réduire la taille, verrouiller avec un mot de passe (désactivé par défaut, pour que le destinataire puisse l'ouvrir), et garder l'empreinte SHA-256 de chaque fichier envoyé.
 - **PDF et photos**, plusieurs documents à la fois, sur ordinateur et sur téléphone, dans les 11 langues.
 
-**Quelle valeur ?** Une signature posée ainsi est une *signature électronique simple*. Elle suffit en général pour les documents de tous les jours (dossier de location, attestation, devis, formulaire d'école ou d'association). Ce n'est pas une signature qualifiée : pas de certificat, pas d'horodatage, et rien qui prouve qui a signé. Quand une signature qualifiée ou une plateforme précise est exigée, utilisez-la. Ceci n'est pas un conseil juridique.
+**Quelle valeur ?** Une signature posée ainsi est ce qu'on appelle couramment une *signature électronique simple*. Elle est en général acceptée pour les documents de tous les jours (dossier de location, attestation, devis, formulaire d'école ou d'association). Ce n'est pas une signature qualifiée : pas de certificat, pas d'horodatage, et rien qui prouve qui a signé. Quand une signature qualifiée, une mention écrite de votre main, un testament ou un acte devant notaire est exigé, ou quand l'autre partie impose une plateforme précise, utilisez l'outil demandé. Ceci n'est pas un conseil juridique.
 
 ## Confidentialité dès la conception, et vérifiable
 

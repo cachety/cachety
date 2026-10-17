@@ -372,6 +372,7 @@ export const STRINGS_DE: Strings = {
       mention: "Vermerk",
       mentionPh: "z. B. Gelesen und genehmigt",
       mentions: ["Gelesen und genehmigt", "Einverstanden", "Für die Richtigkeit"],
+      mentionHint: "Eine übliche Formel, ohne eigene rechtliche Wirkung.",
     },
     place: {
       hint: "Zieh die Unterschrift an ihren Platz. Mit der Ecke änderst du die Größe.",

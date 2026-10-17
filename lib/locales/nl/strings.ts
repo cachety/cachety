@@ -372,6 +372,7 @@ export const STRINGS_NL: Strings = {
       mention: "Vermelding",
       mentionPh: "Bijv. Gelezen en goedgekeurd",
       mentions: ["Gelezen en goedgekeurd", "Akkoord", "Naar waarheid ingevuld"],
+      mentionHint: "Een gebruikelijke formule, zonder eigen juridische werking.",
     },
     place: {
       hint: "Sleep de handtekening naar de juiste plek. Met de hoek wijzig je het formaat.",

@@ -59,7 +59,7 @@ Cachety can also sign a PDF, at **[cachety.com/en/sign](https://cachety.com/en/s
 - **Options:** initial every page, add a watermark (purpose, recipient, date), make the file smaller, lock it with a password (off by default, so the recipient can open it), and keep a SHA-256 fingerprint of each file you send.
 - **PDFs and photos**, several documents at once, on computers and phones, in all 11 languages.
 
-**What it's worth:** a signature placed this way is a *simple electronic signature*. It is generally enough for everyday documents (rental paperwork, attestations, quotes, school and association forms). It is not a qualified signature: there is no certificate, no timestamp, and nothing that proves who signed. When a qualified signature or a specific platform is required, use that instead. This is not legal advice.
+**What it's worth:** a signature placed this way is what is commonly called a *simple electronic signature*. It is usually accepted for everyday documents (rental paperwork, attestations, quotes, school and association forms). It is not a qualified signature: there is no certificate, no timestamp, and nothing that proves who signed. When a qualified signature, a statement in your own handwriting, a will or a notarial deed is required, or the other party imposes a specific platform, use that instead. This is not legal advice.
 
 ## Privacy by design, and verifiable
 

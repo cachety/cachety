@@ -163,9 +163,9 @@ export const SITE_PT: SiteCopy = {
       "Abra esta página e depois desligue a internet (modo avião). Solte um documento e assine: o Cachety continua funcionando. É a prova de que nada passa pela internet.",
     legal: {
       title: "Que valor tem esta assinatura?",
-      p1: "Uma assinatura desenhada ou digitada e colocada no documento é o que a lei chama de assinatura eletrônica “simples”. Na União Europeia, uma assinatura não pode ser recusada só por ser eletrônica (Regulamento eIDAS, artigo 25). Na França, uma assinatura identifica o seu autor e mostra o seu consentimento; na forma eletrônica, deve basear-se em um processo confiável que a vincule ao documento (Código Civil, artigo 1367).",
-      p2: "Para documentos do dia a dia, isso costuma bastar: papéis de aluguel, declarações, orçamentos, formulários de escola ou de associação. Em caso de contestação, cabe a você mostrar que é o autor; uma assinatura “qualificada” (com certificado de um prestador credenciado) tem uma presunção de confiabilidade que a assinatura simples não tem.",
-      p3: "Não é a ferramenta certa quando se exige uma assinatura qualificada, ou quando a outra parte impõe uma plataforma específica: alguns contratos de empréstimo ou de seguro, escrituras em cartório, certos procedimentos oficiais. Nesse caso, use a ferramenta que pedirem.",
+      p1: "Uma assinatura desenhada ou digitada e colocada no documento é o que se costuma chamar de assinatura eletrônica “simples”. Na União Europeia, um juiz não pode rejeitá-la como prova só por ser eletrônica (Regulamento eIDAS, artigo 25). Na França, uma assinatura identifica o seu autor e mostra o seu consentimento; na forma eletrônica, deve basear-se em um processo confiável que a vincule ao documento (Código Civil, artigo 1367). Uma imagem de assinatura, como uma assinatura escaneada, não cumpre sozinha essa condição: vale como assinatura se ninguém a contestar, mas tem pouco peso se for contestada (Corte de Cassação da França, 2022 e 2024).",
+      p2: "Para documentos do dia a dia, isso costuma ser aceito: papéis de aluguel, declarações, orçamentos, formulários de escola ou de associação. Em caso de disputa, quem se apoia no documento é que deve provar quem o assinou; guarde o e-mail ou a mensagem com que ele foi enviado. Só uma assinatura “qualificada” (com certificado de um prestador qualificado) é presumida confiável e equivale a uma assinatura de próprio punho.",
+      p3: "Não é a ferramenta certa quando se exige uma assinatura qualificada, quando a lei pede uma declaração escrita de próprio punho (fiança, confissão de dívida), para um testamento ou uma escritura em cartório, ou quando a outra parte impõe uma plataforma específica (alguns contratos de empréstimo ou de seguro, certos procedimentos oficiais). Nesse caso, use a ferramenta que pedirem.",
       note: "Isto não é aconselhamento jurídico. As regras para alguns documentos mudam de país para país. Esta tradução ainda aguarda revisão por um falante nativo.",
     },
     faqTitle: "Perguntas frequentes",
@@ -180,7 +180,7 @@ export const SITE_PT: SiteCopy = {
       },
       {
         q: "Minha assinatura pode ser removida ou reutilizada?",
-        a: "Ela faz parte da imagem de cada página: não dá para movê-la ou apagá-la editando o PDF. Como acontece com uma assinatura em papel escaneada, alguém poderia recortá-la e colar em outro lugar. Para limitar esse risco, adicione uma marca d'água que vincule a cópia à sua finalidade e rubrique cada página.",
+        a: "Ela faz parte da imagem de cada página: não dá para movê-la ou apagá-la como um elemento do PDF. Como acontece com uma assinatura em papel escaneada, alguém poderia recortá-la e colar em outro lugar, e o arquivo não prova quem a colocou nem que o documento não foi alterado depois. Guarde a sua cópia. Para limitar esse risco, adicione uma marca d'água que vincule a cópia à sua finalidade e rubrique cada página.",
       },
       {
         q: "O texto do PDF assinado ainda pode ser selecionado?",

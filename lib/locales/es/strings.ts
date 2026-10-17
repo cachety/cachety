@@ -370,6 +370,7 @@ export const STRINGS_ES: Strings = {
       mention: "Nota",
       mentionPh: "Ej.: Leído y conforme",
       mentions: ["Leído y conforme", "Aceptado", "Certifico que es correcto"],
+      mentionHint: "Una fórmula habitual, sin efecto jurídico propio.",
     },
     place: {
       hint: "Arrastra la firma a su sitio. La esquina cambia el tamaño.",

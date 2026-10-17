@@ -163,9 +163,9 @@ export const SITE_NL: SiteCopy = {
       "Open deze pagina en zet daarna je internet uit (vliegtuigmodus). Sleep een document erin en onderteken het: Cachety blijft werken. Het bewijs dat er niets over internet gaat.",
     legal: {
       title: "Wat is deze handtekening waard?",
-      p1: "Een getekende of getypte handtekening die op het document wordt geplaatst, is wat de wet een 'gewone' elektronische handtekening noemt. In de EU mag een handtekening niet worden geweigerd alleen omdat ze elektronisch is (eIDAS-verordening, artikel 25). In Frankrijk identificeert een handtekening de ondertekenaar en laat ze zijn instemming zien; in elektronische vorm moet ze berusten op een betrouwbaar procedé dat haar aan het document koppelt (Code civil, artikel 1367).",
-      p2: "Voor alledaagse documenten is dat meestal genoeg: huurpapieren, verklaringen, offertes, formulieren van school of vereniging. Bij een geschil moet jij laten zien dat jij de ondertekenaar bent; een 'gekwalificeerde' handtekening (met een certificaat van een erkende aanbieder) geniet een vermoeden van betrouwbaarheid dat een gewone handtekening niet heeft.",
-      p3: "Het is niet de juiste tool als een gekwalificeerde handtekening verplicht is, of als de andere partij een bepaald platform eist: sommige leen- of verzekeringscontracten, notariële akten, bepaalde officiële procedures. Gebruik in dat geval de tool die zij vragen.",
+      p1: "Een getekende of getypte handtekening die op het document wordt geplaatst, is wat men gewoonlijk een 'gewone' elektronische handtekening noemt. In de EU mag een rechter haar niet als bewijs weigeren alleen omdat ze elektronisch is (eIDAS-verordening, artikel 25). In Frankrijk identificeert een handtekening de ondertekenaar en laat ze zijn instemming zien; in elektronische vorm moet ze berusten op een betrouwbaar procedé dat haar aan het document koppelt (Code civil, artikel 1367). Een afbeelding van een handtekening, zoals een ingescande handtekening, voldoet daar op zich niet aan: ze telt als handtekening als niemand haar betwist, maar weegt weinig als iemand dat wel doet (Cour de cassation, 2022 en 2024).",
+      p2: "Voor alledaagse documenten wordt dat meestal geaccepteerd: huurpapieren, verklaringen, offertes, formulieren van school of vereniging. Bij een geschil moet wie zich op het document beroept, bewijzen wie het heeft ondertekend; bewaar de e-mail of het bericht waarmee het is verstuurd. Alleen een 'gekwalificeerde' handtekening (met een certificaat van een gekwalificeerde aanbieder) wordt vermoed betrouwbaar te zijn en staat gelijk aan een handgeschreven handtekening.",
+      p3: "Het is niet de juiste tool als een gekwalificeerde handtekening verplicht is, als de wet een vermelding in je eigen handschrift eist (borgtocht, schuldbekentenis), voor een testament of een notariële akte, of als de andere partij een bepaald platform eist (sommige leen- of verzekeringscontracten, bepaalde officiële procedures). Gebruik in dat geval de tool die zij vragen.",
       note: "Dit is geen juridisch advies. De regels voor sommige documenten verschillen per land. Deze vertaling wacht nog op controle door een moedertaalspreker.",
     },
     faqTitle: "Veelgestelde vragen",
@@ -180,7 +180,7 @@ export const SITE_NL: SiteCopy = {
       },
       {
         q: "Kan mijn handtekening worden verwijderd of hergebruikt?",
-        a: "Hij maakt deel uit van het beeld van elke pagina: je kunt hem niet verplaatsen of wissen door de pdf te bewerken. Net als bij een ingescande handtekening op papier zou iemand hem kunnen uitknippen en ergens anders plakken. Om dat risico te beperken, voeg je een watermerk toe dat de kopie aan het doel koppelt, en parafeer je elke pagina.",
+        a: "Hij maakt deel uit van het beeld van elke pagina: je kunt hem niet als onderdeel van de pdf verplaatsen of wissen. Net als bij een ingescande handtekening op papier zou iemand hem kunnen uitknippen en ergens anders plakken, en het bestand bewijst niet wie hem heeft geplaatst of dat het document daarna niet is gewijzigd. Bewaar je kopie. Om dat risico te beperken, voeg je een watermerk toe dat de kopie aan het doel koppelt, en parafeer je elke pagina.",
       },
       {
         q: "Is de tekst van de ondertekende pdf nog te selecteren?",
