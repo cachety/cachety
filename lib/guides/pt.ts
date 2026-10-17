@@ -638,20 +638,20 @@ export const GUIDES_PT: Guide[] = [
       { type: "h2", text: "Essa assinatura vale para um contrato de aluguel?" },
       {
         type: "p",
-        text: "Uma assinatura desenhada ou digitada e colocada no documento é o que se chama de assinatura eletrônica simples. As regras mudam de um país para outro e de um documento para outro, mas a assinatura eletrônica é aceita em muitos lugares, e para a papelada do dia a dia, como contrato de locação residencial, laudo de vistoria ou ficha cadastral, isso costuma bastar.",
+        text: "Uma assinatura desenhada ou digitada e colocada no documento é o que se costuma chamar de assinatura eletrônica simples. As regras mudam de um país para outro e de um documento para outro, mas a assinatura eletrônica é aceita em muitos lugares, e para a papelada do dia a dia, como contrato de locação residencial, laudo de vistoria ou ficha cadastral, isso costuma ser aceito.",
       },
       {
         type: "p",
-        text: "Se a assinatura for contestada, pode caber a você mostrar que foi você quem assinou. Uma assinatura qualificada, feita com um certificado digital emitido por uma autoridade credenciada, tem uma presunção de autenticidade que a assinatura simples não tem.",
+        text: "Em caso de disputa, quem se apoia no documento é que deve provar quem o assinou; guarde o e-mail ou a mensagem com que ele foi enviado. Uma assinatura qualificada, feita com um certificado digital emitido por uma autoridade credenciada, tem uma presunção de autenticidade que a assinatura simples não tem.",
       },
       {
         type: "warning",
-        text: "Esta não é a ferramenta certa quando se exige assinatura qualificada, quando a outra parte insiste numa plataforma de assinatura específica ou quando o contrato precisa passar por uma plataforma oficial. Alguns contratos de financiamento e de seguro, as escrituras em cartório e certos procedimentos oficiais também pedem mais. Nesses casos, use o que for pedido. Isto não é aconselhamento jurídico.",
+        text: "Esta não é a ferramenta certa quando se exige assinatura qualificada, quando a lei exige uma forma especial, como um testamento ou uma escritura em cartório, ou quando a outra parte ou um procedimento oficial impõe uma plataforma de assinatura específica (alguns contratos de financiamento ou de seguro, certos procedimentos oficiais). Nesses casos, use o que for pedido. Isto não é aconselhamento jurídico.",
       },
       { type: "h2", text: "Alguém pode reaproveitar minha assinatura?" },
       {
         type: "p",
-        text: "Sua assinatura faz parte da imagem de cada página, então não dá para movê-la ou apagá-la editando o PDF. Mas, como acontece com uma assinatura em papel escaneada, alguém poderia recortá-la da imagem e colar em outro lugar. Nenhuma imagem de assinatura impede isso. Para reduzir o risco, adicione uma marca d'água que ligue a cópia à finalidade e ao destinatário, e rubrique todas as páginas.",
+        text: "Sua assinatura faz parte da imagem de cada página, então não dá para movê-la ou apagá-la como um elemento do PDF. Mas, como acontece com uma assinatura em papel escaneada, alguém poderia recortá-la da imagem e colar em outro lugar. Nenhuma imagem de assinatura impede isso, e o arquivo não prova quem a colocou nem que o documento não foi alterado depois: guarde a sua cópia. Para reduzir o risco, adicione uma marca d'água que ligue a cópia à finalidade e ao destinatário, e rubrique todas as páginas.",
       },
     ],
     faq: [
@@ -734,11 +734,11 @@ export const GUIDES_PT: Guide[] = [
       { type: "h2", text: "Quanto vale essa assinatura" },
       {
         type: "p",
-        text: "Uma assinatura desenhada no celular e colocada no documento é uma assinatura eletrônica simples. Em geral, ela serve para documentos do dia a dia, como autorizações e fichas de escola ou de clube, orçamentos e papelada de aluguel. As regras mudam de país para país. Se a assinatura for contestada, pode caber a você mostrar que foi você quem assinou.",
+        text: "Uma assinatura desenhada no celular e colocada no documento é o que se costuma chamar de assinatura eletrônica simples. Em geral, ela é aceita para documentos do dia a dia, como autorizações e fichas de escola ou de clube, orçamentos e papelada de aluguel. As regras mudam de país para país. Em caso de disputa, quem se apoia no documento é que deve provar quem o assinou; guarde o e-mail ou a mensagem com que ele foi enviado.",
       },
       {
         type: "warning",
-        text: "Esta não é a ferramenta certa quando se exige uma assinatura qualificada, com certificado digital, ou quando a outra parte insiste na própria plataforma de assinatura: alguns contratos de financiamento e de seguro, escrituras em cartório e certos procedimentos oficiais. E, como acontece com uma assinatura em papel escaneada, alguém poderia recortar sua assinatura da cópia e reaproveitar. Uma marca d'água com a finalidade e o destinatário, e uma rubrica em cada página, reduzem esse risco. Isto não é aconselhamento jurídico.",
+        text: "Esta não é a ferramenta certa quando se exige uma assinatura qualificada, com certificado digital, quando a lei exige uma forma especial, como um testamento ou uma escritura em cartório, ou quando a outra parte impõe a própria plataforma de assinatura (alguns contratos de financiamento ou de seguro, certos procedimentos oficiais). E, como acontece com uma assinatura em papel escaneada, alguém poderia recortar sua assinatura da cópia e reaproveitar. Uma marca d'água com a finalidade e o destinatário, e uma rubrica em cada página, reduzem esse risco. Isto não é aconselhamento jurídico.",
       },
     ],
     faq: [

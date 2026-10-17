@@ -157,9 +157,9 @@ export const SITE_ES: SiteCopy = {
       "Abre esta página y luego desconecta internet (modo avión). Suelta un documento y fírmalo: Cachety sigue funcionando. Es la prueba de que nada pasa por internet.",
     legal: {
       title: "¿Qué valor tiene esta firma?",
-      p1: "Una firma dibujada o escrita y colocada en el documento es lo que la ley llama una firma electrónica «simple». En la UE, no se puede rechazar una firma solo por ser electrónica (Reglamento eIDAS, artículo 25). En Francia, una firma identifica a su autor y muestra su consentimiento; en forma electrónica, debe basarse en un procedimiento fiable que la vincule al documento (Código Civil, artículo 1367).",
-      p2: "Para los documentos del día a día suele bastar: papeles del alquiler, certificados, presupuestos, formularios del colegio o de asociaciones. Si alguien la impugna, te toca demostrar que eres el autor; una firma «cualificada» (con un certificado de un proveedor acreditado) goza de una presunción de fiabilidad que la firma simple no tiene.",
-      p3: "No es la herramienta adecuada cuando se exige una firma cualificada, o cuando la otra parte impone una plataforma concreta: algunos contratos de préstamo o de seguro, las escrituras notariales, ciertos trámites oficiales. En ese caso, usa la herramienta que te pidan.",
+      p1: "Una firma dibujada o escrita y colocada en el documento es lo que se suele llamar una firma electrónica «simple». En la UE, un juez no puede rechazarla como prueba solo por ser electrónica (Reglamento eIDAS, artículo 25). En Francia, una firma identifica a su autor y muestra su consentimiento; en forma electrónica, debe basarse en un procedimiento fiable que la vincule al documento (Código Civil, artículo 1367). Una imagen de firma, como una firma escaneada, no cumple por sí sola esa condición: vale como firma si nadie la impugna, pero pesa poco si alguien lo hace (Tribunal de Casación francés, 2022 y 2024).",
+      p2: "Para los documentos del día a día, suele aceptarse: papeles del alquiler, certificados, presupuestos, formularios del colegio o de asociaciones. En caso de litigio, quien se apoya en el documento debe demostrar quién lo firmó; guarda el correo o el mensaje con el que se envió. Solo una firma «cualificada» (con un certificado de un prestador cualificado) se presume fiable y equivale a una firma manuscrita.",
+      p3: "No es la herramienta adecuada cuando se exige una firma cualificada, cuando la ley pide una mención escrita de tu puño y letra (fianza, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone una plataforma concreta (algunos contratos de préstamo o de seguro, ciertos trámites oficiales). En ese caso, usa la herramienta que te pidan.",
       note: "Esto no es asesoramiento jurídico. Las normas para algunos documentos cambian de un país a otro. Esta traducción está pendiente de revisión por un hablante nativo.",
     },
     faqTitle: "Preguntas frecuentes",
@@ -174,7 +174,7 @@ export const SITE_ES: SiteCopy = {
       },
       {
         q: "¿Pueden quitar o reutilizar mi firma?",
-        a: "Forma parte de la imagen de cada página: no se puede mover ni borrar editando el PDF. Como con una firma en papel escaneada, alguien podría recortarla y pegarla en otro sitio. Para limitar ese riesgo, añade una marca de agua que vincule la copia a su uso y rubrica cada página.",
+        a: "Forma parte de la imagen de cada página: no se puede mover ni borrar como un elemento del PDF. Como con una firma en papel escaneada, alguien podría recortarla y pegarla en otro sitio, y el archivo no demuestra quién la puso ni que el documento no se modificó después. Guarda tu copia. Para limitar ese riesgo, añade una marca de agua que vincule la copia a su uso y rubrica cada página.",
       },
       {
         q: "¿Se puede seleccionar el texto del PDF firmado?",

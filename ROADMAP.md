@@ -77,6 +77,12 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   sign roadmap entries in the nine languages other than French and English,
   which are drafts translated from the English guide. Each of those guide
   files marks them with a "Draft translation, awaiting native review" comment.
+  The sign page's legal section, the "removed or reused" FAQ answer, the
+  legal passages of the sign guides and the new hint under the mention
+  presets (`block.mentionHint`) were rewritten on 2026-10-17 after a check
+  against primary sources (eIDAS art. 25, Code civil art. 1367, 1376, 1175,
+  décret 2017-1416, Cour de cassation 2022 and 2024, 1993 on "lu et
+  approuvé"); the nine translations other than FR and EN need native review.
   Also the partner page's tool choice and embed switch strings
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.

@@ -663,6 +663,7 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
           value={mention}
           onChange={(e) => setMention(e.target.value.slice(0, 80))}
           placeholder={b.mentionPh}
+          aria-describedby={`${id}-mention-hint`}
           autoComplete="off"
           className={`mt-1.5 ${inputClass}`}
         />
@@ -681,6 +682,9 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
             </button>
           ))}
         </div>
+        <p id={`${id}-mention-hint`} className="mt-1.5 text-sm text-encre-2">
+          {b.mentionHint}
+        </p>
       </fieldset>
     </div>
   );

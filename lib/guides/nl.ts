@@ -544,20 +544,20 @@ export const GUIDES_NL: Guide[] = [
       { type: "h2", text: "Is deze handtekening geldig voor een huurcontract?" },
       {
         type: "p",
-        text: "Een handtekening die je tekent of typt en op het document zet, is wat de wet een gewone elektronische handtekening noemt. In de EU mag een handtekening niet worden geweigerd alleen omdat ze elektronisch is (eIDAS-verordening, artikel 25). Voor alledaagse huurdocumenten is dat meestal genoeg. De regels verschillen wel per land en per document.",
+        text: "Een handtekening die je tekent of typt en op het document zet, is wat men gewoonlijk een gewone elektronische handtekening noemt. In de EU mag een rechter haar niet als bewijs weigeren alleen omdat ze elektronisch is (eIDAS-verordening, artikel 25). Voor alledaagse huurdocumenten is dat meestal genoeg. De regels verschillen wel per land en per document.",
       },
       {
         type: "p",
-        text: "Wordt de handtekening ooit betwist, dan moet je misschien zelf aantonen dat jij hebt getekend. Een gekwalificeerde handtekening, gezet met een certificaat van een erkende aanbieder, krijgt een vermoeden van betrouwbaarheid dat een gewone handtekening niet heeft.",
+        text: "Wordt de handtekening ooit betwist, dan moet wie zich op het document beroept, bewijzen wie het heeft ondertekend. Bewaar daarom de e-mail of het bericht waarmee het is verstuurd. Alleen een gekwalificeerde handtekening, gezet met een certificaat van een gekwalificeerde aanbieder, wordt vermoed betrouwbaar te zijn en staat gelijk aan een handgeschreven handtekening.",
       },
       {
         type: "warning",
-        text: "Dit is niet de juiste tool als een gekwalificeerde handtekening verplicht is, of als de andere partij een bepaald platform eist: sommige leen- en verzekeringscontracten, notariële akten, bepaalde procedures bij de overheid. Gebruik dan wat zij vragen. Dit is geen juridisch advies.",
+        text: "Dit is niet de juiste tool als een gekwalificeerde handtekening verplicht is, als de wet een vermelding in je eigen handschrift eist (borgtocht, schuldbekentenis), voor een testament of een notariële akte, of als de andere partij een bepaald platform eist (sommige leen- of verzekeringscontracten, bepaalde procedures bij de overheid). Gebruik dan wat zij vragen. Dit is geen juridisch advies.",
       },
       { type: "h2", text: "Kan iemand mijn handtekening hergebruiken?" },
       {
         type: "p",
-        text: "Je handtekening is deel van het beeld van elke pagina. Je kunt hem dus niet verplaatsen of verwijderen door de pdf te bewerken. Maar net als bij een gescande handtekening op papier zou iemand hem uit het beeld kunnen knippen en ergens anders kunnen plakken. Geen enkele afbeelding van een handtekening kan dat voorkomen. Beperk het risico met een watermerk dat de kopie aan het doel en de ontvanger koppelt, en paraaf elke pagina.",
+        text: "Je handtekening is deel van het beeld van elke pagina. Je kunt hem dus niet als onderdeel van de pdf verplaatsen of verwijderen. Maar net als bij een gescande handtekening op papier zou iemand hem uit het beeld kunnen knippen en ergens anders kunnen plakken. Geen enkele afbeelding van een handtekening kan dat voorkomen, en het bestand bewijst niet wie hem heeft geplaatst of dat het document daarna niet is gewijzigd. Bewaar je kopie. Beperk het risico met een watermerk dat de kopie aan het doel en de ontvanger koppelt, en paraaf elke pagina.",
       },
     ],
     faq: [
@@ -640,11 +640,11 @@ export const GUIDES_NL: Guide[] = [
       { type: "h2", text: "Wat deze handtekening waard is" },
       {
         type: "p",
-        text: "Een handtekening die je op je telefoon tekent en op het document zet, is een gewone elektronische handtekening. Voor alledaagse documenten is die meestal prima, zoals formulieren van school of de sportclub, toestemmingsformulieren, offertes en huurdocumenten. Wordt hij ooit betwist, dan moet je misschien zelf aantonen dat jij hebt getekend.",
+        text: "Een handtekening die je op je telefoon tekent en op het document zet, noemt men gewoonlijk een gewone elektronische handtekening. Voor alledaagse documenten wordt die meestal geaccepteerd, zoals formulieren van school of de sportclub, toestemmingsformulieren, offertes en huurdocumenten. Wordt hij ooit betwist, dan moet wie zich op het document beroept, bewijzen wie het heeft ondertekend; bewaar de e-mail of het bericht waarmee het is verstuurd.",
       },
       {
         type: "warning",
-        text: "Dit is niet de juiste tool als een gekwalificeerde handtekening met certificaat verplicht is, of als de andere partij haar eigen ondertekenplatform eist: sommige leen- en verzekeringscontracten, notariële akten, bepaalde procedures bij de overheid. En net als bij een gescande handtekening op papier kan iemand je handtekening uit de kopie knippen en hergebruiken. Een watermerk met het doel en de ontvanger, en een paraaf op elke pagina, beperken dat risico. Dit is geen juridisch advies.",
+        text: "Dit is niet de juiste tool als een gekwalificeerde handtekening met certificaat verplicht is, als de wet een vermelding in je eigen handschrift eist (borgtocht, schuldbekentenis), voor een testament of een notariële akte, of als de andere partij haar eigen ondertekenplatform eist (sommige leen- of verzekeringscontracten, bepaalde procedures bij de overheid). En net als bij een gescande handtekening op papier kan iemand je handtekening uit de kopie knippen en hergebruiken. Een watermerk met het doel en de ontvanger, en een paraaf op elke pagina, beperken dat risico. Dit is geen juridisch advies.",
       },
     ],
     faq: [

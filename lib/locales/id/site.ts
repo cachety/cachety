@@ -163,9 +163,9 @@ export const SITE_ID: SiteCopy = {
       "Buka halaman ini, lalu matikan internet (mode pesawat). Masukkan dokumen dan tanda tangani: Cachety tetap berjalan. Itu bukti bahwa tidak ada yang lewat internet.",
     legal: {
       title: "Seberapa kuat tanda tangan ini?",
-      p1: "Tanda tangan yang digambar atau diketik lalu ditempatkan di dokumen disebut tanda tangan elektronik “sederhana” menurut hukum. Di Uni Eropa, tanda tangan tidak boleh ditolak hanya karena berbentuk elektronik (Regulasi eIDAS, pasal 25). Di Prancis, tanda tangan mengidentifikasi penandatangannya dan menunjukkan persetujuannya; dalam bentuk elektronik, tanda tangan harus menggunakan cara yang andal yang mengaitkannya dengan dokumen (Kode Sipil, pasal 1367).",
-      p2: "Untuk dokumen sehari-hari, ini biasanya sudah cukup: berkas sewa, surat keterangan, penawaran harga, formulir sekolah atau perkumpulan. Jika dipersoalkan, Anda yang harus menunjukkan bahwa Anda penandatangannya; tanda tangan “terkualifikasi” (dengan sertifikat dari penyedia yang diakui) mendapat praduga keandalan yang tidak dimiliki tanda tangan sederhana.",
-      p3: "Alat ini tidak tepat jika tanda tangan terkualifikasi diwajibkan, atau jika pihak lain mengharuskan platform tertentu: sebagian kontrak pinjaman atau asuransi, akta notaris, prosedur resmi tertentu. Dalam hal ini, gunakan alat yang mereka minta.",
+      p1: "Tanda tangan yang digambar atau diketik lalu ditempatkan di dokumen biasa disebut tanda tangan elektronik “sederhana”. Di Uni Eropa, pengadilan tidak boleh menolaknya sebagai alat bukti hanya karena berbentuk elektronik (Regulasi eIDAS, pasal 25). Di Prancis, tanda tangan mengidentifikasi penandatangannya dan menunjukkan persetujuannya; dalam bentuk elektronik, tanda tangan harus menggunakan cara yang andal yang mengaitkannya dengan dokumen (Kode Sipil, pasal 1367). Gambar tanda tangan, seperti tanda tangan yang dipindai, tidak memenuhi syarat itu dengan sendirinya: gambar itu dianggap tanda tangan jika tidak ada yang membantahnya, tetapi bobotnya kecil jika dibantah (Mahkamah Kasasi Prancis, 2022 dan 2024).",
+      p2: "Untuk dokumen sehari-hari, ini biasanya diterima: berkas sewa, surat keterangan, penawaran harga, formulir sekolah atau perkumpulan. Jika terjadi sengketa, pihak yang mengandalkan dokumen itulah yang harus membuktikan siapa yang menandatanganinya; simpan email atau pesan yang dipakai untuk mengirimnya. Hanya tanda tangan “terkualifikasi” (dengan sertifikat dari penyedia terkualifikasi) yang dianggap andal dan setara dengan tanda tangan tulisan tangan.",
+      p3: "Alat ini tidak tepat jika tanda tangan terkualifikasi diwajibkan, jika hukum mewajibkan pernyataan yang ditulis dengan tangan Anda sendiri (penjaminan utang, surat pengakuan utang), untuk surat wasiat atau akta notaris, atau jika pihak lain mengharuskan platform tertentu (sebagian kontrak pinjaman atau asuransi, prosedur resmi tertentu). Dalam hal ini, gunakan alat yang mereka minta.",
       note: "Ini bukan nasihat hukum. Aturan untuk sebagian dokumen berbeda di tiap negara. Terjemahan ini masih menunggu ditinjau oleh penutur asli.",
     },
     faqTitle: "Pertanyaan umum",
@@ -180,7 +180,7 @@ export const SITE_ID: SiteCopy = {
       },
       {
         q: "Bisakah tanda tangan saya dihapus atau dipakai ulang?",
-        a: "Tanda tangan menjadi bagian dari gambar setiap halaman: tidak bisa dipindahkan atau dihapus dengan mengedit PDF. Sama seperti tanda tangan di kertas yang dipindai, seseorang bisa memotongnya dan menempelkannya di tempat lain. Untuk mengurangi risiko itu, tambahkan watermark yang mengikat salinan pada keperluannya, dan paraf setiap halaman.",
+        a: "Tanda tangan menjadi bagian dari gambar setiap halaman: tidak bisa dipindahkan atau dihapus sebagai elemen PDF. Sama seperti tanda tangan di kertas yang dipindai, seseorang bisa memotongnya dan menempelkannya di tempat lain, dan file ini tidak membuktikan siapa yang menempatkannya atau bahwa dokumen tidak diubah sesudahnya. Simpan salinan Anda. Untuk mengurangi risiko itu, tambahkan watermark yang mengikat salinan pada keperluannya, dan paraf setiap halaman.",
       },
       {
         q: "Apakah teks di PDF yang sudah ditandatangani masih bisa dipilih?",

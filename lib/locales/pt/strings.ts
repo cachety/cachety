@@ -371,6 +371,7 @@ export const STRINGS_PT: Strings = {
       mention: "Observação",
       mentionPh: "Ex.: Ciente e de acordo",
       mentions: ["Ciente e de acordo", "Li e aprovo", "Declaro que as informações são verdadeiras"],
+      mentionHint: "Uma fórmula habitual, sem efeito jurídico próprio.",
     },
     place: {
       hint: "Arraste a assinatura para o lugar certo. O canto muda o tamanho.",

@@ -590,20 +590,20 @@ export const GUIDES_DE: Guide[] = [
       { type: "h2", text: "Ist diese Unterschrift für einen Mietvertrag gültig?" },
       {
         type: "p",
-        text: "Eine Unterschrift, die du zeichnest oder tippst und auf das Dokument setzt, ist rechtlich eine einfache elektronische Signatur. In der EU darf einer Signatur die Rechtswirkung nicht allein deshalb abgesprochen werden, weil sie elektronisch ist (eIDAS-Verordnung, Artikel 25). Für alltägliche Mietunterlagen reicht das in der Regel. Die Regeln unterscheiden sich aber je nach Land und Dokument.",
+        text: "Eine Unterschrift, die du zeichnest oder tippst und auf das Dokument setzt, nennt man üblicherweise eine einfache elektronische Signatur. In der EU darf einer Signatur die Rechtswirkung nicht allein deshalb abgesprochen werden, weil sie elektronisch ist (eIDAS-Verordnung, Artikel 25). Für alltägliche Mietunterlagen reicht das in der Regel. Die Regeln unterscheiden sich aber je nach Land und Dokument.",
       },
       {
         type: "p",
-        text: "Wird die Unterschrift einmal angezweifelt, musst du unter Umständen selbst zeigen, dass du unterschrieben hast. Eine qualifizierte Signatur, erstellt mit einem Zertifikat eines zugelassenen Anbieters, genießt eine Vermutung der Zuverlässigkeit, die eine einfache Signatur nicht hat.",
+        text: "Wird die Unterschrift einmal bestritten, muss derjenige, der sich auf das Dokument beruft, beweisen, wer es unterschrieben hat. Bewahre deshalb die E-Mail oder Nachricht auf, mit der es verschickt wurde. Nur bei einer qualifizierten Signatur, erstellt mit einem Zertifikat eines qualifizierten Anbieters, wird die Zuverlässigkeit vermutet, und nur sie steht einer handschriftlichen Unterschrift gleich.",
       },
       {
         type: "warning",
-        text: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur verlangt wird oder die andere Seite auf einer bestimmten Plattform besteht: manche Kredit- und Versicherungsverträge, notarielle Urkunden, bestimmte Behördenverfahren. Nutze dann, was verlangt wird. Das ist keine Rechtsberatung.",
+        text: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur verlangt wird, wenn das Gesetz einen eigenhändig geschriebenen Vermerk verlangt (Bürgschaft, Schuldschein), für ein Testament oder eine notarielle Urkunde, oder wenn die andere Seite eine bestimmte Plattform vorgibt (manche Kredit- oder Versicherungsverträge, bestimmte Behördenverfahren). Nutze dann, was verlangt wird. Das ist keine Rechtsberatung.",
       },
       { type: "h2", text: "Kann jemand meine Unterschrift wiederverwenden?" },
       {
         type: "p",
-        text: "Deine Unterschrift ist Teil des Bildes jeder Seite. Man kann sie also nicht verschieben oder löschen, indem man das PDF bearbeitet. Aber wie bei einer eingescannten Unterschrift auf Papier könnte jemand sie aus dem Bild ausschneiden und woanders einfügen. Das kann kein Bild einer Unterschrift verhindern. Um das Risiko zu senken, füge ein Wasserzeichen hinzu, das die Kopie an Zweck und Empfänger bindet, und paraphiere jede Seite.",
+        text: "Deine Unterschrift ist Teil des Bildes jeder Seite. Man kann sie also nicht als Element des PDF verschieben oder löschen. Aber wie bei einer eingescannten Unterschrift auf Papier könnte jemand sie aus dem Bild ausschneiden und woanders einfügen. Das kann kein Bild einer Unterschrift verhindern, und die Datei beweist weder, wer sie gesetzt hat, noch, dass das Dokument danach nicht verändert wurde. Bewahre deine Kopie auf. Um das Risiko zu senken, füge ein Wasserzeichen hinzu, das die Kopie an Zweck und Empfänger bindet, und paraphiere jede Seite.",
       },
     ],
     faq: [
@@ -686,11 +686,11 @@ export const GUIDES_DE: Guide[] = [
       { type: "h2", text: "Was diese Unterschrift wert ist" },
       {
         type: "p",
-        text: "Eine Unterschrift, die du auf dem Handy zeichnest und auf das Dokument setzt, ist eine einfache elektronische Signatur. Für alltägliche Dokumente reicht sie in der Regel, etwa für Schul- und Vereinsformulare, Einverständniserklärungen, Angebote und Mietunterlagen. Wird sie angezweifelt, musst du unter Umständen selbst zeigen, dass du unterschrieben hast.",
+        text: "Eine Unterschrift, die du auf dem Handy zeichnest und auf das Dokument setzt, nennt man üblicherweise eine einfache elektronische Signatur. Für alltägliche Dokumente wird sie in der Regel akzeptiert, etwa für Schul- und Vereinsformulare, Einverständniserklärungen, Angebote und Mietunterlagen. Wird sie bestritten, muss derjenige, der sich auf das Dokument beruft, beweisen, wer es unterschrieben hat; bewahre die E-Mail oder Nachricht auf, mit der es verschickt wurde.",
       },
       {
         type: "warning",
-        text: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur mit Zertifikat verlangt wird oder die andere Seite auf ihrer eigenen Plattform besteht: manche Kredit- und Versicherungsverträge, notarielle Urkunden, bestimmte Behördenverfahren. Und wie bei einer eingescannten Unterschrift auf Papier könnte jemand deine Unterschrift aus der Kopie ausschneiden und wiederverwenden. Ein Wasserzeichen mit Zweck und Empfänger und ein Kürzel auf jeder Seite senken dieses Risiko. Das ist keine Rechtsberatung.",
+        text: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur mit Zertifikat verlangt wird, wenn das Gesetz einen eigenhändig geschriebenen Vermerk verlangt (Bürgschaft, Schuldschein), für ein Testament oder eine notarielle Urkunde, oder wenn die andere Seite ihre eigene Plattform vorgibt (manche Kredit- oder Versicherungsverträge, bestimmte Behördenverfahren). Und wie bei einer eingescannten Unterschrift auf Papier könnte jemand deine Unterschrift aus der Kopie ausschneiden und wiederverwenden. Ein Wasserzeichen mit Zweck und Empfänger und ein Kürzel auf jeder Seite senken dieses Risiko. Das ist keine Rechtsberatung.",
       },
     ],
     faq: [

@@ -383,6 +383,7 @@ const BASE_STRINGS = {
         mention: "Mention",
         mentionPh: "Ex. : Lu et approuvé",
         mentions: ["Lu et approuvé", "Bon pour accord", "Certifié exact"],
+        mentionHint: "Mention d'usage, sans valeur juridique propre.",
       },
       place: {
         hint: "Faites glisser la signature à sa place. Le coin la redimensionne.",
@@ -796,6 +797,7 @@ const BASE_STRINGS = {
         mention: "Note",
         mentionPh: "E.g. Read and approved",
         mentions: ["Read and approved", "Agreed", "Certified correct"],
+        mentionHint: "A customary phrase, with no legal effect of its own.",
       },
       place: {
         hint: "Drag the signature into place. The corner resizes it.",
@@ -1209,6 +1211,7 @@ const BASE_STRINGS = {
         mention: "添え書き",
         mentionPh: "例：内容を確認しました",
         mentions: ["内容を確認しました", "上記に同意します", "上記のとおり相違ありません"],
+        mentionHint: "慣例的な文言で、それ自体に法的な効力はありません。",
       },
       place: {
         hint: "署名をドラッグして位置を決めます。角をドラッグすると大きさが変わります。",
@@ -1618,6 +1621,7 @@ const BASE_STRINGS = {
         mention: "附言",
         mentionPh: "例如：已阅读并同意",
         mentions: ["已阅读并同意", "同意", "以上内容属实"],
+        mentionHint: "这只是惯用语，本身没有法律效力。",
       },
       place: {
         hint: "把签名拖到合适的位置。拖动角可调整大小。",

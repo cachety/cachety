@@ -364,6 +364,7 @@ export const STRINGS_ID: Strings = {
       mention: "Keterangan",
       mentionPh: "Mis. Telah dibaca dan disetujui",
       mentions: ["Telah dibaca dan disetujui", "Setuju", "Dinyatakan dengan sebenarnya"],
+      mentionHint: "Ungkapan yang lazim, tanpa kekuatan hukum tersendiri.",
     },
     place: {
       hint: "Geser tanda tangan ke tempatnya. Geser sudutnya untuk mengubah ukuran.",
