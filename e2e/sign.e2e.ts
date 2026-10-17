@@ -484,9 +484,15 @@ describe("signer : clavier", () => {
       await page.keyboard.press("Backspace");
       await page.waitForTimeout(300);
       expect((await boxFraction(page))!.x).toBeCloseTo(before.x, 4);
-      // Entrée sur × : la signature est retirée.
+      // Entrée sur × : la signature est retirée, le focus va à « Placer ici »
+      // et y reste après le nouveau rendu de la page (sans signature).
       await page.keyboard.press("Enter");
       await page.getByText(en.sign.place.missing).waitFor();
+      const here = page.getByRole("button", { name: en.sign.place.here });
+      await page.waitForTimeout(2500);
+      expect(await here.evaluate((el) => el === document.activeElement)).toBe(true);
+      await page.keyboard.press("Enter");
+      await box.waitFor();
     },
     120_000
   );

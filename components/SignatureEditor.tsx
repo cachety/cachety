@@ -90,16 +90,18 @@ export function SignatureEditor({
   const [draft, setDraft] = useState<OverlayRect | null>(null);
   // Dimensions réelles du rendu : rapport de la page, et largeur en pixels
   // (pour l'avertissement « trop petite »).
-  const [natural, setNatural] = useState<{ w: number; h: number } | null>(null);
-  // Rapport inconnu tant que l'image n'est pas chargée : on ne pose rien
-  // avant (un A4 supposé donnerait une boîte à la mauvaise hauteur ailleurs).
-  const pageAspect = natural ? natural.w / natural.h : null;
+  // Lues pour une page donnée : une autre page (format peut-être différent)
+  // attend son propre chargement. Un nouveau rendu de la même page les garde.
+  const [natural, setNatural] = useState<{ w: number; h: number; page: number } | null>(null);
+  // Rapport inconnu tant que l'image de cette page n'est pas chargée : on ne
+  // pose rien avant (un A4 supposé donnerait une boîte à la mauvaise hauteur).
+  const pageAspect = natural?.page === page ? natural.w / natural.h : null;
   const imgRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
+    // Image déjà chargée avant que le gestionnaire ne soit posé.
     const img = imgRef.current;
-    // Autre page (format peut-être différent) : rapport relu au chargement.
-    setNatural(img?.complete && img.naturalWidth ? { w: img.naturalWidth, h: img.naturalHeight } : null);
-  }, [src]);
+    if (img?.complete && img.naturalWidth) setNatural({ w: img.naturalWidth, h: img.naturalHeight, page });
+  }, [src, page]);
   const shown = draft ?? rect;
 
   // La signature dans la boîte : elle suit le geste avant que le moteur ait
@@ -135,7 +137,7 @@ export function SignatureEditor({
   const lastWidth = useRef(DEFAULT_SIGNATURE_WIDTH);
   if (rect) lastWidth.current = rect.w;
 
-  const small = !!shown && !!natural && overlayTooSmall(shown, natural.w);
+  const small = !!shown && !!pageAspect && overlayTooSmall(shown, natural!.w);
 
   return (
     <div className="mt-3">
@@ -145,7 +147,7 @@ export function SignatureEditor({
           src={src}
           alt={alt}
           draggable={false}
-          onLoad={(e) => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
+          onLoad={(e) => setNatural({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight, page })}
           className={`block max-h-[70vh] w-auto max-w-full select-none rounded-lg border border-trait shadow-sm transition-opacity ${
             updating ? "opacity-60" : ""
           }`}
@@ -274,9 +276,9 @@ export function SignatureEditor({
             <button
               ref={hereRef}
               type="button"
-              disabled={!pageAspect}
+              // Pas de disabled : le focus y est posé après × et serait perdu.
               onClick={() => pageAspect && onPlace(defaultPlacement(pageAspect, sigAspect, lastWidth.current))}
-              className="rounded-xl bg-bleu px-4 py-2 font-semibold text-white transition-colors hover:bg-bleu/90 disabled:opacity-50"
+              className="rounded-xl bg-bleu px-4 py-2 font-semibold text-white transition-colors hover:bg-bleu/90"
             >
               {p.here}
             </button>
