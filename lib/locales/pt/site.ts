@@ -5,7 +5,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_PT: SiteCopy = {
   nav: {
-    tool: "A ferramenta",
+    tool: "Marca d'água",
     sign: "Assinar",
     about: "Por que uma marca d'água?",
     guides: "Guias",

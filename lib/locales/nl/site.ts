@@ -5,7 +5,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_NL: SiteCopy = {
   nav: {
-    tool: "De tool",
+    tool: "Watermerk",
     sign: "Ondertekenen",
     about: "Waarom een watermerk?",
     guides: "Uitleg",

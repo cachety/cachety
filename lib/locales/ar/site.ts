@@ -5,7 +5,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_AR: SiteCopy = {
   nav: {
-    tool: "الأداة",
+    tool: "العلامة المائية",
     sign: "التوقيع",
     about: "لماذا العلامة المائية؟",
     guides: "الأدلة",

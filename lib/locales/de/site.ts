@@ -6,7 +6,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_DE: SiteCopy = {
   nav: {
-    tool: "Zum Tool",
+    tool: "Wasserzeichen",
     sign: "Unterschreiben",
     about: "Warum ein Wasserzeichen?",
     guides: "Ratgeber",

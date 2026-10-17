@@ -5,7 +5,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_FA: SiteCopy = {
   nav: {
-    tool: "ابزار",
+    tool: "واترمارک",
     sign: "امضا",
     about: "چرا واترمارک؟",
     guides: "راهنماها",

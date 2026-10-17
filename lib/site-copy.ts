@@ -132,7 +132,7 @@ export type SiteCopy = {
 const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
   fr: {
     nav: {
-      tool: "L'outil",
+      tool: "Filigraner",
       sign: "Signer",
       about: "Pourquoi filigraner ?",
       guides: "Guides",
@@ -396,7 +396,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
 
   en: {
     nav: {
-      tool: "The tool",
+      tool: "Watermark",
       sign: "Sign",
       about: "Why watermark?",
       guides: "Guides",
@@ -659,7 +659,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
 
   ja: {
     nav: {
-      tool: "ツール",
+      tool: "透かし",
       sign: "署名",
       about: "なぜ透かしを？",
       guides: "ガイド",
@@ -923,7 +923,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
 
   zh: {
     nav: {
-      tool: "工具",
+      tool: "水印",
       sign: "签名",
       about: "为什么加水印？",
       guides: "指南",

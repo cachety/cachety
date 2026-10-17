@@ -5,7 +5,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_ID: SiteCopy = {
   nav: {
-    tool: "Alat watermark",
+    tool: "Watermark",
     sign: "Tanda tangan",
     about: "Mengapa perlu watermark?",
     guides: "Panduan",
