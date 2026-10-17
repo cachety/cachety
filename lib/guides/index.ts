@@ -2,7 +2,7 @@
 
 import type { Lang } from "@/lib/site-meta";
 import { LANG_CODES } from "@/lib/site-meta";
-import type { Guide } from "./types";
+import type { Guide, GuideTopic } from "./types";
 import { GUIDES_EN } from "./en";
 import { GUIDES_FR } from "./fr";
 import { GUIDES_JA } from "./ja";
@@ -15,7 +15,7 @@ import { GUIDES_PT } from "./pt";
 import { GUIDES_ID } from "./id";
 import { GUIDES_NL } from "./nl";
 
-export type { Guide, GuideBlock, GuideTopic } from "./types";
+export type { Guide, GuideBlock, GuideTool, GuideTopic } from "./types";
 
 export const GUIDES: Record<Lang, Guide[]> = {
   fr: GUIDES_FR,
@@ -34,9 +34,16 @@ export const GUIDES: Record<Lang, Guide[]> = {
 export const guidePath = (lang: Lang, slug: string) => `/${lang}/guides/${slug}`;
 export const guidesIndexPath = (lang: Lang) => `/${lang}/guides`;
 
+/** Page de l'outil expliqué par le guide (cible du bouton d'appel). */
+export const guideToolPath = (lang: Lang, guide: Guide) =>
+  guide.tool === "sign" ? `/${lang}/sign` : `/${lang}`;
+
 export function findGuide(lang: Lang, slug: string): Guide | undefined {
   return GUIDES[lang].find((g) => g.slug === slug);
 }
+
+/** Sujets traités avec l'outil Signer : leurs guides doivent y mener. */
+export const SIGN_TOPICS: readonly GuideTopic[] = ["sign", "sign-phone"];
 
 /** hreflang : le guide de même sujet dans chaque autre langue, s'il existe. */
 export function guideAlternates(lang: Lang, guide: Guide): Record<string, string> {

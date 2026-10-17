@@ -468,4 +468,187 @@ export const GUIDES_EN: Guide[] = [
     ],
     updated: "2026-10-12",
   },
+  // Signing guides (Cachety Sign, /en/sign). The legal paragraphs follow the
+  // wording of the sign page (docs/prd-sign.md, sections 10.6 and 10.7).
+  {
+    slug: "sign-a-lease-or-rental-document",
+    topic: "sign",
+    tool: "sign",
+    title: "How to sign a tenancy agreement or rental document online, without uploading it",
+    metaTitle: "Sign a Tenancy Agreement or Rental Document for Free",
+    description:
+      "Sign a tenancy agreement, inventory or rental form in your browser: draw or type your signature, place it, download. Free, and nothing is uploaded.",
+    intro:
+      "Letting agents and landlords often send the tenancy agreement as a PDF and ask for it back, signed, by email. You do not need to print, scan or create an account: you can sign it in your browser in about a minute, and the document never leaves your device.",
+    example: "Signed tenancy agreement – for Martin Lettings only – 17/10/2026",
+    body: [
+      { type: "h2", text: "What you may be asked to sign" },
+      {
+        type: "p",
+        text: "Renting a home comes with paperwork: the tenancy agreement itself, the inventory or check-in report, a holding deposit form, sometimes a short statement for referencing. Most of it arrives as a PDF with a line that says ‘Signature’. The usual choices are a signing website that wants you to upload the file and open an account, or printing, signing, scanning and sending it back. Cachety does it in your browser instead.",
+      },
+      { type: "h2", text: "How to sign your rental documents with Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com/en/sign in your browser, on a computer or a phone. There is nothing to install and no account to create.",
+          "Your documents: drop the PDF onto the page, or tap to choose it. You can add several files at once, such as the agreement and the inventory. A photo of a paper document works too: it becomes a one-page PDF.",
+          "Your signature: draw it with your finger, a stylus or the mouse, type your name, or upload a photo of your signature on white paper. Under ‘Under the signature (optional)’, keep today's date and, if you wish, add the place and a short note such as ‘Read and approved’.",
+          "Place, check, download: your signature appears at the bottom right of the last page. Drag it onto the signature line and use the corner to resize it. Tick ‘Also initial every page’ if the agent asks for initials on each page.",
+          "Check the preview, then download. The signed copy keeps the original name with -signed at the end. Send that copy back to the agent.",
+        ],
+      },
+      {
+        type: "p",
+        text: "With several documents, each one gets its own placement. A document is not ready until your signature is on it: the list tells you which ones are still waiting.",
+      },
+      {
+        type: "tip",
+        text: "After the download, Cachety shows a fingerprint of each file: a short code worked out from the exact file you sent. Copy it and keep it with your records. If a different version of the agreement ever turns up, you can show it is not the one you signed.",
+      },
+      { type: "h2", text: "Options worth knowing" },
+      {
+        type: "list",
+        items: [
+          "‘Also initial every page’ puts a small copy of your signature at the bottom right of every other page, so a swapped page is easier to spot.",
+          "‘Lock with a password’ is off by default, because the agent must be able to open the file. Turn it on only if you give them the password another way, for example by phone.",
+          "‘Make it smaller’ helps when the agent's email or portal limits the file size.",
+          "‘Also add a watermark’ writes the purpose, the recipient and the date across the signed copy.",
+        ],
+      },
+      { type: "h2", text: "Your documents never leave your device" },
+      {
+        type: "p",
+        text: "Cachety works inside your browser. There is no server that receives your documents, and the page is technically forbidden from contacting any other website. Check it yourself: once the page has loaded, switch on aeroplane mode, then sign your document. Everything still works. Your signature is not saved either: it only exists in the tab's memory and is gone when you close it.",
+      },
+      {
+        type: "p",
+        text: "Each page of the signed copy is rebuilt from its pixels. This removes hidden text and metadata, and it means the text can no longer be selected in the signed copy. Your original stays with you, untouched.",
+      },
+      { type: "h2", text: "Is this signature valid for a tenancy?" },
+      {
+        type: "p",
+        text: "A signature you draw or type and place on a document is what the law calls a simple electronic signature. In the UK, electronic signatures are generally accepted, and in the EU a signature cannot be refused solely because it is electronic (eIDAS Regulation, article 25). For everyday rental paperwork, such as a tenancy agreement, an inventory or a holding deposit form, this is generally enough.",
+      },
+      {
+        type: "p",
+        text: "If the signature is ever challenged, it may be up to you to show that you signed. A qualified signature, made with a certificate from an approved provider, carries a presumption of reliability that a simple signature does not.",
+      },
+      {
+        type: "warning",
+        text: "This is not the right tool when a qualified signature is required, when the other party insists on a specific signing platform, or for a document that must be signed as a deed in front of a witness, as some longer leases must. Some loan and insurance contracts and certain official procedures also need more. In those cases, use what they ask for. This is not legal advice.",
+      },
+      { type: "h2", text: "Can someone reuse my signature?" },
+      {
+        type: "p",
+        text: "Your signature is part of the image of each page, so it cannot be moved or deleted by editing the PDF. But, as with a scanned paper signature, someone could cut it out of the image and paste it elsewhere. No image of a signature can prevent that. To limit the risk, add a watermark that ties the copy to its purpose and recipient, and initial every page.",
+      },
+    ],
+    faq: [
+      {
+        q: "Will a letting agent accept a document signed this way?",
+        a: "In most cases, yes: sending back a signed PDF by email is common for rental paperwork. If the agent uses its own signing platform and insists on it, use theirs.",
+      },
+      {
+        q: "Do I need to print anything?",
+        a: "No. You sign on screen and send back the signed PDF. If you only have a paper copy, take a clear photo of it in good light and sign the photo.",
+      },
+      {
+        q: "Is my signature saved?",
+        a: "No. It only exists in the tab's memory. Close the tab and it is gone. Next time, you draw or type it again.",
+      },
+      {
+        q: "Can I still copy text from the signed PDF?",
+        a: "No. Each page is rebuilt from its pixels, which also strips hidden text and metadata. Keep your original if you need the text.",
+      },
+      {
+        q: "Is Cachety really free?",
+        a: "Yes. It is free, with no account and no tracking. It is open-source software made in France by Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
+  {
+    slug: "sign-a-pdf-on-your-phone",
+    topic: "sign-phone",
+    tool: "sign",
+    title: "How to sign a PDF on your iPhone or Android phone",
+    metaTitle: "Sign a PDF on Your iPhone or Android Phone, for Free",
+    description:
+      "Sign a PDF on your iPhone or Android phone with your finger. No app to install, no account, and the document is never uploaded. Free and open source.",
+    intro:
+      "Someone has emailed you a PDF to sign and send back, and you are nowhere near a computer. You can sign it on your phone with your finger, right in the browser, in about a minute.",
+    example: "Signed consent form – for Hillside Primary School – 17/10/2026",
+    body: [
+      { type: "h2", text: "No app, no account, no upload" },
+      {
+        type: "p",
+        text: "Cachety runs in your phone's browser, such as Safari or Chrome. There is nothing to download from an app store and no account to create. The document is processed on the phone itself and never uploaded: the page is technically forbidden from contacting any other website.",
+      },
+      { type: "h2", text: "Step by step" },
+      {
+        type: "steps",
+        items: [
+          "Save the PDF you received to your phone. In most email apps, tap the attachment, then save it to Files on iPhone or to Downloads on Android.",
+          "Open cachety.com/en/sign in your browser, tap the drop area and choose the PDF. A photo of a paper document works too.",
+          "Draw your signature in the box with your finger. Not happy with it? Tap Undo last stroke, or Clear, and try again. You can also type your name instead, or upload a photo of your signature.",
+          "Choose what goes under the signature, if anything. Today's date is on by default, and you can add the place and a note such as ‘Read and approved’.",
+          "Go to Place, check, download. Your signature appears at the bottom right of the last page. Drag it with your finger and use the corner to resize it.",
+          "Check the preview, download the signed PDF, then send it back by email or messaging app.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Write a little larger than you would on paper, and take your time. The empty space around your signature is trimmed automatically, so it stays sharp once it is placed on the page.",
+      },
+      { type: "h2", text: "Prefer a photo of your signature?" },
+      {
+        type: "p",
+        text: "If signing with your finger feels awkward, sign a sheet of white paper with a dark pen, take a photo of it in daylight, and choose Upload. The white background is removed for you. If some of the paper still shows, move the Sensitivity slider. iPhone photos (HEIC) work too.",
+      },
+      { type: "h2", text: "Check that it stays on your phone" },
+      {
+        type: "p",
+        text: "Once the page has loaded, switch on aeroplane mode, then choose your PDF and sign it. Everything keeps working, which shows that nothing is sent anywhere. Your signature is not saved: close the tab and it is gone.",
+      },
+      { type: "h2", text: "Options before you download" },
+      {
+        type: "list",
+        items: [
+          "‘Also initial every page’ adds a small copy of your signature to the other pages.",
+          "‘Make it smaller’ keeps the file under the size an email or a website allows.",
+          "‘Lock with a password’ is off by default, so the recipient can open the file straight away.",
+          "After the download, a fingerprint of the file is shown. Keep it: if a different version ever turns up, you can show it is not the one you signed.",
+        ],
+      },
+      { type: "h2", text: "What this signature is worth" },
+      {
+        type: "p",
+        text: "A signature drawn on your phone and placed on the document is a simple electronic signature. It is generally fine for everyday documents, such as school and club forms, consent forms, quotes and rental paperwork. If it is ever challenged, it may be up to you to show that you signed.",
+      },
+      {
+        type: "warning",
+        text: "It is not the right tool when a qualified signature with a certificate is required, or when the other party insists on its own signing platform: some loan and insurance contracts, deeds and certain official procedures. And as with a scanned paper signature, someone could cut your signature out of the copy and reuse it. Adding a watermark with the purpose and the recipient, and initialling every page, limits that risk. This is not legal advice.",
+      },
+    ],
+    faq: [
+      {
+        q: "Do I need to download an app?",
+        a: "No. Cachety works in your phone's browser. You can add it to your home screen for quick access, but you do not have to.",
+      },
+      {
+        q: "Can I sign with a stylus?",
+        a: "Yes. The signature box works with a finger, a stylus or, on a computer, a mouse.",
+      },
+      {
+        q: "Is the PDF uploaded anywhere?",
+        a: "No. Everything happens on your phone. Switch on aeroplane mode after the page has loaded and it keeps working.",
+      },
+      {
+        q: "Why can I no longer select the text in the signed PDF?",
+        a: "Each page is rebuilt from its pixels, so the signature cannot be lifted off and hidden data is removed. Your original stays on your phone, untouched.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
 ];

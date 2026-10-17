@@ -46,7 +46,8 @@ Hospedar por conta própria continua possível e com suporte completo (veja abai
 - **Funciona no celular**, pode ser instalado como app e funciona **offline** depois de carregado.
 - **11 idiomas**, com layout da direita para a esquerda para árabe e persa e fontes próprias para cada escrita.
 - **Tour de ajuda guiado** para quem chega pela primeira vez, oferecido quando a pessoa parece não saber por onde começar.
-- **70 guias práticos** para situações do dia a dia na França, no Reino Unido, na Alemanha, na Holanda, na Espanha e na América Latina, no Brasil, na Indonésia, no mundo árabe, no Irã, no Japão e na China.
+- **92 guias práticos** para situações do dia a dia na França, no Reino Unido, na Alemanha, na Holanda, na Espanha e na América Latina, no Brasil, na Indonésia, no mundo árabe, no Irã, no Japão e na China.
+- **Assinar um documento:** assine um PDF ou uma foto no navegador, desenhando, digitando ou enviando a imagem da sua assinatura, sem enviar nada a lugar nenhum: [cachety.com/pt/sign](https://cachety.com/pt/sign). É uma assinatura eletrônica simples, não uma assinatura qualificada.
 - **82 comparativos verificados** com outras ferramentas de marca d'água (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat e outras), com fontes, incluindo quando outra ferramenta é a melhor escolha.
 - **Em sites parceiros:** sites aprovados podem mostrar a ferramenta nas próprias páginas (um iframe servido por cachety.com, então o site anfitrião não vê os documentos). Veja [docs/embed.md](docs/embed.md) e [cachety.com/pt/partners](https://cachety.com/pt/partners).
 

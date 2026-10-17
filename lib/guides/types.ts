@@ -21,7 +21,14 @@ export type GuideTopic =
   | "redact"
   | "phone"
   | "identity-theft"
-  | "password";
+  | "password"
+  /** Signer un bail ou un document de location (outil Signer). */
+  | "sign"
+  /** Signer un PDF sur téléphone (outil Signer). */
+  | "sign-phone";
+
+/** Outil vers lequel pointe le bouton d'appel du guide. */
+export type GuideTool = "watermark" | "sign";
 
 export type GuideBlock =
   | { type: "h2"; text: string }
@@ -39,6 +46,11 @@ export type Guide = {
   /** Segment d'URL : ASCII, minuscules, tirets (ex. "watermark-passport-copy"). */
   slug: string;
   topic: GuideTopic;
+  /**
+   * Outil que le guide explique : le bouton d'appel mène à /<lang> pour
+   * « watermark » (défaut, si absent) et à /<lang>/sign pour « sign ».
+   */
+  tool?: GuideTool;
   /** Titre affiché (h1). */
   title: string;
   /** <title> : 60 caractères au plus (marque ajoutée automatiquement). */
