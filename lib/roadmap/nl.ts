@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Mis je iets? Open een issue op GitHub. Ideeën zijn welkom in elke taal.",
   meta: {
     title: "Roadmap: wat er aankomt voor Cachety",
-    description: "Geplande functies van Cachety, de gratis watermerktool waarbij je documenten op je apparaat blijven: wat eraan komt, ideeën en wat nieuw is.",
+    description: "Geplande functies van Cachety, de gratis tool om te watermerken en te ondertekenen terwijl je documenten op je apparaat blijven: wat eraan komt en wat nieuw is.",
   },
 };
 

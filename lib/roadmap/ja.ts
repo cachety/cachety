@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "足りない機能はありますか？GitHub で issue を作成してください。どの言語でもかまいません。",
   meta: {
     title: "ロードマップ：Cachety の今後の予定",
-    description: "書類を端末から出さない無料の透かしツール Cachety の今後の機能。次の予定、検討中のアイデア、最近追加された機能をまとめています。",
+    description: "書類を端末から出さずに透かしと署名ができる無料ツール Cachety の今後の機能。次の予定、検討中のアイデア、最近追加された機能をまとめています。",
   },
 };
 

@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Il vous manque quelque chose ? Ouvrez un ticket sur GitHub. Les idées sont bienvenues dans toutes les langues.",
   meta: {
     title: "Feuille de route : ce qui arrive sur Cachety",
-    description: "Les prochaines fonctionnalités de Cachety, l'outil gratuit de filigrane qui garde vos documents sur votre appareil : à venir, idées, et nouveautés récentes.",
+    description: "Prochaines fonctionnalités de Cachety, l'outil gratuit pour filigraner et signer sans que vos documents quittent votre appareil : à venir, idées, nouveautés.",
   },
 };
 

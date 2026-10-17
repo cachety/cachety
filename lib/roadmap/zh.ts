@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "缺少什么功能？在 GitHub 上提交 issue 即可，任何语言都欢迎。",
   meta: {
     title: "路线图：Cachety 即将推出的功能",
-    description: "Cachety 是免费的水印工具，文件始终留在您的设备上。这里列出即将推出的功能、正在考虑的想法和最近新增的内容。",
+    description: "Cachety 是免费的水印和签名工具，文件始终留在您的设备上。这里列出即将推出的功能、正在考虑的想法和最近新增的内容。",
   },
 };
 

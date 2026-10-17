@@ -62,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Fehlt dir etwas? Eröffne ein Issue auf GitHub. Ideen sind in jeder Sprache willkommen.",
   meta: {
     title: "Roadmap: was als Nächstes zu Cachety kommt",
-    description: "Geplante Funktionen von Cachety, dem kostenlosen Wasserzeichen-Tool, bei dem deine Dokumente auf deinem Gerät bleiben: nächste Schritte, Ideen, Neues.",
+    description: "Geplante Funktionen von Cachety, dem kostenlosen Tool für Wasserzeichen und Unterschriften, bei dem deine Dokumente auf deinem Gerät bleiben: Ideen, Neues.",
   },
 };
 
