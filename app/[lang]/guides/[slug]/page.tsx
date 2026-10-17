@@ -7,6 +7,7 @@ import { ChevronIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
 import { findGuide, GUIDES, guideAlternates, guidePath, guideToolPath, relatedGuides } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
+import { displayTitle } from "@/lib/typography";
 import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage, pageTitle } from "@/lib/site-meta";
 
 // Export statique : seuls les guides déclarés dans lib/guides existent.
@@ -74,7 +75,7 @@ export default async function GuidePage({ params }: Props) {
       </nav>
 
       <article className="mt-4">
-        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{g.title}</h1>
+        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{displayTitle(lang, g.title)}</h1>
         <p className="mt-2 text-sm text-encre-2">{ui.updated(updated)}</p>
         <p className="mt-5 text-pretty text-xl text-encre-2"><Prose text={g.intro} /></p>
 
