@@ -5,8 +5,9 @@ import { pdfjsWorkerSrc } from "@/lib/compat";
 import { decodeHeic, isHeic } from "@/lib/heic";
 import { imageSize, tooManyPixels } from "@/lib/image-size";
 import { paintMasks, type PageMasks } from "@/lib/masks";
+import { overlaysOnPage, paintOverlays, type OverlayImages, type PageOverlays } from "@/lib/overlays";
 import { ENCODE_LADDER, pageBudget } from "@/lib/size-budget";
-import { fileKind } from "@/lib/files";
+import { fileKind, imageToPdf } from "@/lib/files";
 import {
   fillRgba,
   fontCss,
@@ -21,6 +22,8 @@ export type WatermarkResult = {
   /** jpg : image réencodée pour tenir sous une taille cible (le PNG dépassait). */
   extension: "pdf" | "png" | "jpg";
   previews: string[];
+  /** Page (index 0) de chaque aperçu, dans le même ordre que `previews`. */
+  previewPageIndexes: number[];
   pageCount: number;
   /** Taille cible demandée mais non atteinte, même à la compression maximale. */
   overBudget?: boolean;
@@ -33,6 +36,16 @@ export type RenderOptions = {
   maxBytes?: number;
   /** Graine de variation du pavage ; absente : tirée au hasard à chaque rendu. */
   layoutSeed?: number;
+  /** Signatures à peindre après les masques, avant le filigrane, par page (index 0). */
+  overlays?: PageOverlays;
+  /** Images des signatures (jamais persistées) ; sans elles, rien n'est peint. */
+  overlayImages?: OverlayImages;
+  /** Paraphe sur chaque page sans signature, placé d'après le format réel de la page. */
+  initialsEveryPage?: boolean;
+  /** Image en entrée : sortie PDF d'une page plutôt que PNG/JPEG (mode « signer »). */
+  forcePdf?: boolean;
+  /** Pages (index 0) à prévisualiser ; par défaut les PREVIEW_MAX_PAGES premières. */
+  previewPages?: (pageCount: number) => number[];
 };
 
 const randomSeed = () => crypto.getRandomValues(new Uint32Array(1))[0];
@@ -46,7 +59,7 @@ type ProgressFn = (done: number, total: number) => void;
 
 const RENDER_SCALE = 2;
 const JPEG_QUALITY = 0.85;
-const PREVIEW_MAX_PAGES = 12;
+export const PREVIEW_MAX_PAGES = 12;
 const MIN_IMAGE_SIDE = 800;
 export const MAX_CANVAS_AREA = 16_777_216;
 const MAX_CANVAS_SIDE = 8192;
@@ -60,6 +73,31 @@ export function fitScale(width: number, height: number, scale: number) {
   const byArea = Math.sqrt(MAX_CANVAS_AREA / (width * height * scale * scale));
   const bySide = MAX_CANVAS_SIDE / (Math.max(width, height) * scale);
   return scale * Math.min(1, byArea, bySide);
+}
+
+const firstPages = (pageCount: number) =>
+  Array.from({ length: Math.min(pageCount, PREVIEW_MAX_PAGES) }, (_, i) => i);
+
+/**
+ * Aperçus du mode « signer » : les 11 premières pages et la dernière, là où
+ * l'on signe. Un document court est prévisualisé en entier.
+ */
+export function signPreviewPages(pageCount: number): number[] {
+  if (pageCount <= PREVIEW_MAX_PAGES) return firstPages(pageCount);
+  return [...firstPages(PREVIEW_MAX_PAGES - 1), pageCount - 1];
+}
+
+/** Pages réellement prévisualisées : entiers dans le document, sans doublon, dans l'ordre. */
+function previewSet(pageCount: number, pick?: (pageCount: number) => number[]) {
+  const pages = (pick ?? firstPages)(pageCount);
+  return new Set(pages.filter((p) => Number.isInteger(p) && p >= 0 && p < pageCount));
+}
+
+/** Paraphe demandé : rapport de la page rendue et de l'image du paraphe. */
+function initialsFor(canvas: HTMLCanvasElement, { initialsEveryPage, overlayImages }: RenderOptions) {
+  const image = overlayImages && (overlayImages.initials ?? overlayImages.signature);
+  if (!initialsEveryPage || !image) return undefined;
+  return { pageAspect: canvas.width / canvas.height, imageAspect: image.width / image.height };
 }
 
 export async function watermarkFile(
@@ -79,6 +117,9 @@ export async function watermarkFile(
   throw new Error("unsupported");
 }
 
+/** Alias pour le mode « signer » : même moteur, nom qui dit l'intention. */
+export const renderFile = watermarkFile;
+
 async function watermarkPdf(
   file: File,
   text: string,
@@ -86,8 +127,9 @@ async function watermarkPdf(
   onProgress?: ProgressFn,
   password?: string,
   signal?: AbortSignal,
-  { masks, maxBytes, layoutSeed }: RenderOptions = {}
+  options: RenderOptions = {}
 ): Promise<WatermarkResult> {
+  const { masks, maxBytes, layoutSeed, overlays, overlayImages } = options;
   const pdfjs = await import("pdfjs-dist");
   // Une graine par document : toutes ses pages varient, différemment d'un rendu à l'autre.
   const seed = layoutSeed ?? randomSeed();
@@ -131,6 +173,8 @@ async function watermarkPdf(
   await ensureFont(style, text);
   const out = await PDFDocument.create();
   const previews: string[] = [];
+  const previewPageIndexes: number[] = [];
+  const toPreview = previewSet(pageCount, options.previewPages);
 
   try {
     for (let i = 1; i <= pageCount; i++) {
@@ -153,7 +197,16 @@ async function watermarkPdf(
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvas, viewport }).promise;
 
+      // Ordre voulu : les masques retirent, la signature ajoute, le filigrane
+      // recouvre le tout (pas plus facile à effacer que la signature).
       paintMasks(ctx, canvas.width, canvas.height, masks?.[i - 1]);
+      paintOverlays(
+        ctx,
+        canvas.width,
+        canvas.height,
+        overlaysOnPage(overlays, i - 1, initialsFor(canvas, options)),
+        overlayImages
+      );
       drawWatermark(ctx, canvas.width, canvas.height, text, style, (seed + i) >>> 0);
 
       const pageBlob = maxBytes
@@ -168,8 +221,9 @@ async function watermarkPdf(
         height: outPage.getHeight(),
       });
 
-      if (previews.length < PREVIEW_MAX_PAGES) {
+      if (toPreview.has(i - 1)) {
         previews.push(URL.createObjectURL(pageBlob));
+        previewPageIndexes.push(i - 1);
       }
       canvas.width = 0;
       onProgress?.(i, pageCount);
@@ -182,6 +236,7 @@ async function watermarkPdf(
       url: URL.createObjectURL(blob),
       extension: "pdf",
       previews,
+      previewPageIndexes,
       pageCount,
       overBudget: !!maxBytes && blob.size > maxBytes,
     };
@@ -198,8 +253,9 @@ async function watermarkImage(
   text: string,
   style: WatermarkStyle,
   signal?: AbortSignal,
-  { masks, maxBytes, layoutSeed }: RenderOptions = {}
+  options: RenderOptions = {}
 ): Promise<WatermarkResult> {
+  const { masks, maxBytes, layoutSeed, overlays, overlayImages, forcePdf } = options;
   if (signal?.aborted) throw new Error("aborted");
   let bitmap: ImageBitmap;
   try {
@@ -231,22 +287,31 @@ async function watermarkImage(
   ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   bitmap.close();
   paintMasks(ctx, canvas.width, canvas.height, masks?.[0]);
+  paintOverlays(ctx, canvas.width, canvas.height, overlaysOnPage(overlays, 0, initialsFor(canvas, options)), overlayImages);
   await ensureFont(style, text);
   drawWatermark(ctx, canvas.width, canvas.height, text, style, layoutSeed ?? randomSeed());
 
   // PNG par défaut (sans perte). Trop lourd pour la taille cible : JPEG,
   // avec la même échelle qualité puis résolution que les pages de PDF.
-  let blob = await canvasToBlob(canvas, "image/png");
-  let extension: WatermarkResult["extension"] = "png";
-  if (maxBytes && blob.size > maxBytes) {
-    blob = await encodeWithin(canvas, maxBytes);
-    extension = "jpg";
+  let image = await canvasToBlob(canvas, "image/png");
+  let imageExtension: "png" | "jpg" = "png";
+  if (maxBytes && image.size > maxBytes) {
+    image = await encodeWithin(canvas, maxBytes);
+    imageExtension = "jpg";
   }
+  // Mode « signer » : toujours un PDF (une page aux dimensions de l'image) ;
+  // l'aperçu reste l'image elle-même.
+  const blob = forcePdf
+    ? new Blob([(await imageToPdf(new Uint8Array(await image.arrayBuffer()), imageExtension)) as BlobPart], {
+        type: "application/pdf",
+      })
+    : image;
   return {
     blob,
     url: URL.createObjectURL(blob),
-    extension,
-    previews: [URL.createObjectURL(blob)],
+    extension: forcePdf ? "pdf" : imageExtension,
+    previews: [URL.createObjectURL(image)],
+    previewPageIndexes: [0],
     pageCount: 1,
     overBudget: !!maxBytes && blob.size > maxBytes,
   };
@@ -498,7 +563,8 @@ export function watermarkMaxLineWidth(width: number, height: number, lineHeight:
 }
 
 async function ensureFont(style: WatermarkStyle, text: string) {
-  if (typeof document === "undefined" || !document.fonts?.load) return;
+  // Sans texte (mode « signer » sans filigrane), rien ne sera écrit : aucune police à charger.
+  if (!text.trim() || typeof document === "undefined" || !document.fonts?.load) return;
   try {
     // Avec le texte : seuls les sous-ensembles utiles (arabe, latin…) sont chargés.
     await document.fonts.load(fontCss(style, 64, text), text || " ");

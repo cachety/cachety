@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { unzipSync, strToU8 } from "fflate";
-import { fileKind, hasVisibleText, isSupported, outputName, uniqueName, zipDocuments } from "./files";
+import { PDFDocument } from "pdf-lib";
+import { fileKind, hasVisibleText, imageToPdf, isSupported, outputName, uniqueName, zipDocuments } from "./files";
 
 describe("isSupported (whitelist des formats)", () => {
   test("accepte PDF et les images réellement décodables", () => {
@@ -87,6 +88,38 @@ describe("outputName", () => {
 
   test("le suffixe FR est sans accent (nom de fichier sûr)", () => {
     expect(outputName("id.pdf", "pdf", "filigrane")).not.toMatch(/[éèêà]/);
+  });
+
+  test("mode « signer » : <original>-signed.pdf, y compris pour une photo", () => {
+    expect(outputName("bail.pdf", "pdf", "signed")).toBe("bail-signed.pdf");
+    expect(outputName("attestation.jpg", "pdf", "signed")).toBe("attestation-signed.pdf");
+  });
+});
+
+describe("imageToPdf", () => {
+  const PNG_1x1 = Uint8Array.from(
+    Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "base64"
+    )
+  );
+  // JPEG minimal (1 × 1, niveaux de gris) : seul l'en-tête SOF compte pour pdf-lib.
+  const JPG_1x1 = Uint8Array.from(
+    Buffer.from(
+      "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////wgALCAABAAEBAREA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/aAAgBAQABPxA=",
+      "base64"
+    )
+  );
+
+  test("une page par image, en points ce que l'image mesure en pixels (PNG et JPEG)", async () => {
+    for (const [bytes, extension] of [
+      [PNG_1x1, "png"],
+      [JPG_1x1, "jpg"],
+    ] as const) {
+      const doc = await PDFDocument.load(await imageToPdf(bytes, extension));
+      expect(doc.getPageCount()).toBe(1);
+      expect(doc.getPage(0).getSize()).toEqual({ width: 1, height: 1 });
+    }
   });
 });
 
