@@ -102,15 +102,32 @@ export function zipDocuments(files: { name: string; bytes: Uint8Array; folder?: 
  */
 export const newPdf = () => PDFDocument.create({ updateMetadata: false });
 
+/** A4 en points (210 × 297 mm). */
+const A4 = { short: 595.28, long: 841.89 };
+
 /**
- * Image (PNG ou JPEG déjà produite) en PDF d'une page, sans réencodage : la
- * page mesure en points ce que l'image mesure en pixels. Sert au PDF unique,
- * au verrouillage d'une image et au mode « signer » (sortie toujours PDF).
+ * Page d'une image signée : la plus grande qui tient dans un A4 (paysage si
+ * l'image est plus large que haute), aux proportions de l'image et sans marge.
+ * Une photo de 4000 px ne fait plus une page de 1,4 m, une image de 320 px
+ * ne devient plus une page minuscule ou agrandie au hasard : le destinataire
+ * imprime une page A4, et l'aperçu reste exactement la page produite.
  */
-export async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg") {
+export function a4PageFor(width: number, height: number) {
+  const [maxW, maxH] = width > height ? [A4.long, A4.short] : [A4.short, A4.long];
+  const scale = Math.min(maxW / width, maxH / height);
+  const round = (v: number) => Math.round(v * 100) / 100;
+  return { width: round(width * scale), height: round(height * scale) };
+}
+
+/**
+ * Image (PNG ou JPEG déjà produite) en PDF d'une page, sans réencodage. Par
+ * défaut la page mesure en points ce que l'image mesure en pixels (PDF unique
+ * et verrouillage du filigrane) ; « a4 » : la page de a4PageFor (mode « signer »).
+ */
+export async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg", page: "image" | "a4" = "image") {
   const doc = await newPdf();
   const image = extension === "jpg" ? await doc.embedJpg(bytes) : await doc.embedPng(bytes);
-  const page = doc.addPage([image.width, image.height]);
-  page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+  const size = page === "a4" ? a4PageFor(image.width, image.height) : { width: image.width, height: image.height };
+  doc.addPage([size.width, size.height]).drawImage(image, { x: 0, y: 0, ...size });
   return doc.save();
 }

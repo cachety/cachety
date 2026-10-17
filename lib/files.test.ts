@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { unzipSync, strToU8 } from "fflate";
 import { PDFDocument } from "pdf-lib";
-import { fileKind, hasVisibleText, imageToPdf, isSupported, outputName, uniqueName, zipDocuments } from "./files";
+import { a4PageFor, fileKind, hasVisibleText, imageToPdf, isSupported, outputName, uniqueName, zipDocuments } from "./files";
 
 describe("isSupported (whitelist des formats)", () => {
   test("accepte PDF et les images réellement décodables", () => {
@@ -120,6 +120,19 @@ describe("imageToPdf", () => {
       expect(doc.getPageCount()).toBe(1);
       expect(doc.getPage(0).getSize()).toEqual({ width: 1, height: 1 });
     }
+  });
+
+  test("« a4 » (mode signer) : page qui tient dans un A4, aux proportions de l'image, sans marge", async () => {
+    // Portrait : photo de téléphone de 3000 × 4000 px, largeur A4.
+    expect(a4PageFor(3000, 4000)).toEqual({ width: 595.28, height: 793.71 });
+    // Paysage : petite image de 320 × 240 px, plus agrandie au hasard (800 × 600 avant).
+    expect(a4PageFor(320, 240)).toEqual({ width: 793.71, height: 595.28 });
+    // Plus allongée qu'un A4 : c'est la hauteur qui borne.
+    expect(a4PageFor(1000, 4000)).toEqual({ width: 210.47, height: 841.89 });
+    // Carré : côté du petit bord.
+    expect(a4PageFor(50, 50)).toEqual({ width: 595.28, height: 595.28 });
+    const doc = await PDFDocument.load(await imageToPdf(PNG_1x1, "png", "a4"));
+    expect(doc.getPage(0).getSize()).toEqual({ width: 595.28, height: 595.28 });
   });
 
   test("aucune métadonnée : ni Producer, ni Creator, ni dates", async () => {

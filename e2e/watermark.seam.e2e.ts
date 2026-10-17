@@ -832,7 +832,7 @@ describe("signature (mode « signer »)", () => {
   );
 
   test(
-    "image JPEG + forcePdf → PDF d'une page aux dimensions de l'image, signature comprise",
+    "image JPEG + forcePdf → PDF d'une page aux proportions de l'image, dans un A4 paysage, signature comprise",
     async () => {
       const jpegB64 = await page.evaluate(async () => {
         const c = document.createElement("canvas");
@@ -863,7 +863,10 @@ describe("signature (mode « signer »)", () => {
       expect(res.previewPageIndexes).toEqual([0]);
       const out = await PDFDocument.load(fromBase64(res.outB64));
       expect(out.getPageCount()).toBe(1);
-      expect(out.getPage(0).getSize()).toEqual({ width: 1000, height: 700 });
+      // 1000 × 700 px, plus large que haute : la largeur d'un A4 paysage (841,89 pt).
+      const size = out.getPage(0).getSize();
+      expect(size.width).toBeCloseTo(841.89, 1);
+      expect(size.height).toBeCloseTo(589.32, 1);
       expect((await inspectRegion(res.previews[0], core(rect))).share).toBeGreaterThan(0.95);
     },
     30_000

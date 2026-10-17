@@ -521,7 +521,7 @@ faq.phone.a           FR "Oui, sur iPhone et Android. Signez avec le doigt, impo
 - Overlay pixels: sign a 3-page fixture with a solid-red 100×30 PNG overlay at a known rect on page 3; sample the output page 3 raster at the centre of the rect → red; sample page 1 at the same spot → page colour. Prove the overlay lands where the editor says.
 - Order: masks painted before overlay (a mask covering the overlay rect must not hide the signature); watermark drawn after (when text is non-empty).
 - Sanitisation unchanged: signed output has no text content, no `/Info` author/producer values from the source, no attachments, no JavaScript, no annotations (run the existing sanitisation assertions on the signed output).
-- Image input: a JPG signed with `forcePdf` returns `extension: "pdf"`, one page, page size equal to the image size.
+- Image input: a JPG signed with `forcePdf` returns `extension: "pdf"`, one page with the image's proportions, as large as fits in an A4 sheet (landscape when the image is wider than tall). Decided 2026-10-17: page = pixel size made phone photos 1.4 m tall and upscaled small images to arbitrary sizes; A4 is what recipients print.
 - `previewPages` "first 11 + last" on a 40-page fixture yields 12 previews and the 12th is the last page.
 - Adversarial corpus: run the existing corpus through sign mode with an overlay; same expectations (no crash, no leak).
 

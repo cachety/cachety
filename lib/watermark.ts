@@ -298,10 +298,10 @@ async function watermarkImage(
     image = await encodeWithin(canvas, maxBytes);
     imageExtension = "jpg";
   }
-  // Mode « signer » : toujours un PDF (une page aux dimensions de l'image) ;
-  // l'aperçu reste l'image elle-même.
+  // Mode « signer » : toujours un PDF, une page aux proportions de l'image
+  // qui tient dans un A4 ; l'aperçu reste l'image elle-même.
   const blob = forcePdf
-    ? new Blob([(await imageToPdf(new Uint8Array(await image.arrayBuffer()), imageExtension)) as BlobPart], {
+    ? new Blob([(await imageToPdf(new Uint8Array(await image.arrayBuffer()), imageExtension, "a4")) as BlobPart], {
         type: "application/pdf",
       })
     : image;
