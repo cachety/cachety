@@ -139,7 +139,7 @@ export const SITE_ES: SiteCopy = {
     guidesAll: "Todas las guías",
     backToTop: "Poner una marca de agua",
   },
-  // «legal»: traducido del inglés, pendiente de revisión nativa (ROADMAP, Native review).
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   sign: {
     hero: {
       title: "Firma un documento sin enviarlo a ninguna parte",

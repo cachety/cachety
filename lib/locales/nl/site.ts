@@ -139,7 +139,7 @@ export const SITE_NL: SiteCopy = {
     guidesAll: "Alle uitleg",
     backToTop: "Een document watermerken",
   },
-  // "legal": vertaald uit het Engels, wacht op controle door een moedertaalspreker (ROADMAP, Native review).
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   sign: {
     hero: {
       title: "Onderteken een document zonder het ergens heen te sturen",

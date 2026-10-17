@@ -93,7 +93,7 @@ export const SITE_FA: SiteCopy = {
     guidesAll: "همهٔ راهنماها",
     backToTop: "واترمارک گذاشتن روی یک سند",
   },
-  // « legal » : traduit de l'anglais, en attente de relecture native (ROADMAP, Native review).
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   sign: {
     hero: {
       title: "سند را امضا کنید، بدون اینکه جایی فرستاده شود",

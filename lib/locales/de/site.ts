@@ -140,7 +140,7 @@ export const SITE_DE: SiteCopy = {
     guidesAll: "Alle Ratgeber",
     backToTop: "Wasserzeichen setzen",
   },
-  // „legal“: aus dem Englischen übersetzt, Prüfung durch Muttersprachler steht aus (ROADMAP, Native review).
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   sign: {
     hero: {
       title: "Dokumente unterschreiben, ohne sie irgendwohin zu schicken",

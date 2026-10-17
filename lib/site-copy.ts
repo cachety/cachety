@@ -747,7 +747,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       guidesAll: "ガイド一覧",
       backToTop: "書類に透かしを入れる",
     },
-    // 「legal」は英語版からの翻訳。ネイティブによる確認待ち（ROADMAP の Native review）。
+    // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
     sign: {
       hero: {
         title: "書類を、どこにも送らずに署名",
@@ -1011,7 +1011,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       guidesAll: "全部指南",
       backToTop: "给文件加水印",
     },
-    // “legal”部分译自英文，尚待母语人士审校（ROADMAP 中的 Native review）。
+    // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
     sign: {
       hero: {
         title: "签署文件，无需发送到任何地方",

@@ -93,7 +93,7 @@ export const SITE_AR: SiteCopy = {
     guidesAll: "كل الأدلة",
     backToTop: "ضع علامة مائية على مستند",
   },
-  // « legal » : traduit de l'anglais, en attente de relecture native (ROADMAP, Native review).
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   sign: {
     hero: {
       title: "وقّع مستندًا دون إرساله إلى أي مكان",

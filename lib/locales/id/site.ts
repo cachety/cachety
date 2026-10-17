@@ -142,7 +142,7 @@ export const SITE_ID: SiteCopy = {
     guidesAll: "Semua panduan",
     backToTop: "Beri watermark pada dokumen",
   },
-  // "legal": diterjemahkan dari bahasa Inggris, menunggu tinjauan penutur asli (ROADMAP, Native review).
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   sign: {
     hero: {
       title: "Tanda tangani dokumen tanpa mengirimnya ke mana pun",
