@@ -727,8 +727,12 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     setBundleError(null);
   }, [stamp, ready.length, filePassword]);
   // Tout ce qui change le contenu d'un téléchargement : réglage de l'aperçu,
-  // autres destinataires et leurs références. Relu à la fin d'un assemblage long.
-  const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}`;
+  // autres destinataires et leurs références, et chaque document prêt (dans
+  // l'ordre du PDF unique) avec ses masques et sa signature. Relu à la fin
+  // d'un assemblage long : la signature déplacée entre-temps rend le fichier périmé.
+  const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}\0${ready
+    .map((d) => `${d.id}\0${docStamp(d, "")}`)
+    .join("|")}`;
   const bundleKeyRef = useRef(bundleKey);
   bundleKeyRef.current = bundleKey;
   const [bundleProgress, setBundleProgress] = useState("");
