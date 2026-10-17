@@ -83,6 +83,8 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   against primary sources (eIDAS art. 25, Code civil art. 1367, 1376, 1175,
   décret 2017-1416, Cour de cassation 2022 and 2024, 1993 on "lu et
   approuvé"); the nine translations other than FR and EN need native review.
+  The public "awaiting native review" sentence under the legal section was
+  removed from those nine languages for v1.1.0; the review itself is still due.
   Also the partner page's tool choice and embed switch strings
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.
