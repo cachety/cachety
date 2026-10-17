@@ -144,7 +144,14 @@ function SignaturePreview({ sig, label }: { sig: SignatureImage; label: string }
   );
 }
 
-export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | null) => void }) {
+export function SignaturePad({
+  onChange,
+  prefill = false,
+}: {
+  onChange: (sig: SignatureImage | null) => void;
+  /** Page intégrée seulement : lieu et mention lus dans le lien du partenaire. */
+  prefill?: boolean;
+}) {
   const t = useT();
   const s = t.sign.pad;
   const b = t.sign.block;
@@ -339,13 +346,20 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
   // --- Lignes sous la signature ---
   const [place, setPlace] = useState("");
   const [mention, setMention] = useState("");
-  // Lien pré-rempli (partenaires) : lieu et mention, modifiables par le visiteur.
+  // Lien pré-rempli (partenaires approuvés, page intégrée seulement) : lieu et
+  // mention, modifiables par le visiteur. Sur cachety.com, un lien quelconque
+  // ne doit pas pouvoir glisser une mention dans l'image de la signature.
   useEffect(() => {
-    const prefill = readPrefill(window.location.hash);
-    if (prefill.place) setPlace(prefill.place);
-    if (prefill.note) setMention(prefill.note);
-  }, []);
-  const date = dateOn ? signDate(t.locale) : "";
+    if (!prefill) return;
+    const fromLink = readPrefill(window.location.hash);
+    if (fromLink.place) setPlace(fromLink.place);
+    if (fromLink.note) setMention(fromLink.note);
+  }, [prefill]);
+  // Date du jour lue après le montage : le HTML statique est construit un
+  // autre jour (il afficherait la date du build, puis changerait au chargement).
+  const [today, setToday] = useState("");
+  useEffect(() => setToday(signDate(t.locale)), [t.locale]);
+  const date = dateOn ? today : "";
   const placeLine = place.trim() && date ? t.onDate(place.trim(), date) : place.trim() || date;
   const lines = composeSignBlock({ mention, place: placeLine });
   const linesKey = lines.join("\n");
@@ -639,7 +653,8 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
             className="h-5 w-5 shrink-0 accent-bleu"
           />
           <span>
-            {b.date} <span className="text-sm text-encre-2">({b.dateToday}, {signDate(t.locale)})</span>
+            {b.date} <span className="text-sm text-encre-2">({b.dateToday}
+              {today && `, ${today}`})</span>
           </span>
         </label>
         <label htmlFor={`${id}-place`} className="mt-3 block text-sm font-medium">

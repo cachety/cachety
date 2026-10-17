@@ -67,6 +67,10 @@ describe("cadre intégré", () => {
     expect(p.note).toBe("Lu et approuvé");
     expect(readPrefill(`#note=${"x".repeat(200)}`).note).toHaveLength(80);
     expect(readPrefill("#place=%20%20").place).toBeUndefined();
+    // Emoji en 80e position : gardé entier ou retiré, jamais coupé en deux.
+    const note = readPrefill(`#note=${"x".repeat(79)}${encodeURIComponent("✍️😀")}`).note!;
+    expect(note.isWellFormed()).toBe(true);
+    expect(Array.from(note)).toHaveLength(80);
   });
 
   test("contraste et variante sombre", () => {

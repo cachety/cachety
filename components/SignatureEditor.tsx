@@ -87,7 +87,14 @@ export function SignatureEditor({
   const boxRef = useRef<HTMLDivElement>(null);
   const hereRef = useRef<HTMLButtonElement>(null);
   const inkRef = useRef<HTMLCanvasElement>(null);
-  const [draft, setDraft] = useState<OverlayRect | null>(null);
+  const [draft, setDraftState] = useState<OverlayRect | null>(null);
+  // Copie synchrone : un relâchement juste après un déplacement (avant le
+  // rendu suivant) lirait sinon l'ancien état, et le glisser serait perdu.
+  const draftRef = useRef<OverlayRect | null>(null);
+  const setDraft = (next: OverlayRect | null) => {
+    draftRef.current = next;
+    setDraftState(next);
+  };
   // Dimensions réelles du rendu : rapport de la page, et largeur en pixels
   // (pour l'avertissement « trop petite »).
   // Lues pour une page donnée : une autre page (format peut-être différent)
@@ -178,7 +185,7 @@ export function SignatureEditor({
             if (!g || g.pointer !== e.pointerId) return;
             gesture.current = null;
             quietUntil.current = performance.now() + 400;
-            if (g.moved && draft) onPlace(draft);
+            if (g.moved && draftRef.current) onPlace(draftRef.current);
             setDraft(null);
           }}
           onPointerCancel={() => {

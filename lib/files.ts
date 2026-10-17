@@ -81,18 +81,29 @@ export function uniqueName(name: string, used: Set<string>) {
 const basename = (name: string) => name.split(/[/\\]/).pop() || "document";
 
 /**
+ * Chemins des fichiers dans l'archive, dans l'ordre donné : ceux que
+ * zipDocuments écrit (doublons renommés « -2 », « -3 »…). Sert aussi à
+ * nommer les empreintes, pour qu'elles correspondent au contenu du ZIP.
+ */
+export function zipPaths(files: { name: string; folder?: string }[]): string[] {
+  const used = new Set<string>();
+  return files.map((f) => {
+    const folder = f.folder ? basename(f.folder).replace(/^\.+$/, "") : "";
+    return uniqueName(folder ? `${folder}/${basename(f.name)}` : basename(f.name), used);
+  });
+}
+
+/**
  * Archive ZIP, à plat ou avec un dossier par destinataire. Le dossier est
  * lui aussi réduit à un seul segment : jamais de « ../ » dans un chemin.
  */
 export function zipDocuments(files: { name: string; bytes: Uint8Array; folder?: string }[]): Uint8Array {
-  const used = new Set<string>();
   const entries: Record<string, [Uint8Array, { level: 0 }]> = {};
-  for (const f of files) {
-    const folder = f.folder ? basename(f.folder).replace(/^\.+$/, "") : "";
-    const path = folder ? `${folder}/${basename(f.name)}` : basename(f.name);
-    entries[uniqueName(path, used)] = [f.bytes, { level: 0 }];
-  }
-  return zipSync(entries);
+  zipPaths(files).forEach((path, i) => (entries[path] = [files[i].bytes, { level: 0 }]));
+  // Date fixe pour chaque entrée : par défaut, l'heure de création (donc de
+  // la signature) serait inscrite dans l'archive. Heure locale, jamais avant
+  // 1980 (limite du format ZIP) quel que soit le fuseau.
+  return zipSync(entries, { mtime: new Date(2000, 0, 1) });
 }
 
 /**

@@ -14,7 +14,7 @@
 
 import HelpTour from "@/components/HelpTour";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ACCEPT, hasVisibleText, isSupported, zipDocuments } from "@/lib/files";
+import { ACCEPT, hasVisibleText, isSupported, zipDocuments, zipPaths } from "@/lib/files";
 import { isBrowserSupported } from "@/lib/compat";
 import {
   releaseResult,
@@ -539,8 +539,8 @@ export default function CoreProduct({
         .sort((a, b) => Number(b.id === shownIdRef.current) - Number(a.id === shownIdRef.current));
       for (const queued of queue) {
         if (cancelled) return;
-        let doc = queued;
-        let own = docStamp(doc, stamp);
+        const doc = queued;
+        const own = docStamp(doc, stamp);
         // Échec déjà constaté avec ce réglage et cet essai : inutile de retenter.
         if (doc.error && doc.failedWith === attemptKey(doc, own)) continue;
         // Mode « signer », document jamais placé (ou remis « à sa place par
@@ -559,9 +559,12 @@ export default function CoreProduct({
                 { rect: defaultPlacement(last.aspect, sigReady.sig.width / sigReady.sig.height), image: "signature" },
               ],
             };
-            doc = { ...doc, overlays };
-            own = docStamp(doc, stamp);
+            // Rien d'autre dans ce passage : le placement change unlockKey, le
+            // passage suivant rend ce document. Continuer ici lancerait son
+            // rendu puis placerait le suivant 500 ms plus tard sans attendre :
+            // tout un lot rendu en parallèle (onglet saturé sur téléphone).
             update(doc.id, { overlays });
+            return;
           } catch (e) {
             if (cancelled) return;
             const key = e instanceof Error ? (e.message as ErrorKey) : "";
@@ -885,13 +888,15 @@ export default function CoreProduct({
       // Mode « signer » : empreinte de chaque fichier produit (dans le ZIP, chaque PDF).
       let fingerprints: FingerprintItem[] | undefined;
       if (sign) {
-        const files = single ? [{ name: out.name, bytes: out.bytes }] : entries.map((e) => ({ name: e.folder ? `${e.folder}/${e.name}` : e.name, bytes: e.bytes }));
+        // Noms tels qu'écrits dans le ZIP (doublons renommés) : une empreinte par fichier, sans ambiguïté.
+        const paths = zipPaths(entries);
+        const files = single ? [{ name: out.name, bytes: out.bytes }] : entries.map((e, i) => ({ name: paths[i], bytes: e.bytes }));
         fingerprints = await Promise.all(files.map(async (f) => ({ name: f.name, hash: await sha256Hex(f.bytes) })));
       }
       setDone({
         fingerprints,
         file: { url, name: out.name },
-        files: single ? [out.name] : entries.map((e) => (e.folder ? `${out.name} › ${e.folder}/${e.name}` : `${out.name} › ${e.name}`)),
+        files: single ? [out.name] : zipPaths(entries).map((path) => `${out.name} › ${path}`),
         copies: targets.length,
         password: filePassword,
         isWords: isWords && !ownPassword,
@@ -923,13 +928,17 @@ export default function CoreProduct({
   ].join(" · ");
   // En mode masquage, les zones tracées ne sont pas encore appliquées : « Terminé » d'abord.
   const fresh = !!shown && isFresh(shown, stamp);
-  const canDownload = ready.length > 0 && !bundling && !processing && tool !== "hide";
+  // Mode « signer » : chaque document doit porter la signature. Un document
+  // dont la signature a été retirée, ou pas encore posée, bloque le
+  // téléchargement : sinon le lot partirait sans lui, sans le dire.
+  const unplaced = sign && docs.some(needsPlacement);
+  const placing = sign && meaningful && docs.some((d) => d.overlays === undefined && !d.error && !needsPassword(d));
+  const canDownload = ready.length > 0 && !bundling && !processing && tool !== "hide" && !unplaced && !placing;
   const downloadLabel = bundling
     ? bundleProgress || (filePassword ? t.filePassword.encrypting : t.processingGeneric)
     : recipients.length > 1
       ? t.download.copies(recipients.length)
       : t.download.one;
-  const unplaced = sign && docs.some(needsPlacement);
   const downloadHint = !docs.length
     ? t.needDoc
     : !meaningful
@@ -1142,7 +1151,7 @@ export default function CoreProduct({
             {sign && !meaningful && <p className="mt-1 text-sm text-encre-2 max-lg:mb-3 lg:ms-10">{ts.pad.empty}</p>}
             <div className="lg:mt-4">
               {sign ? (
-                <SignaturePad key={padKey} onChange={setSignature} />
+                <SignaturePad key={padKey} onChange={setSignature} prefill={embed} />
               ) : (
               <StampDetails
                 purpose={purpose}
@@ -1324,7 +1333,7 @@ export default function CoreProduct({
           )}
 
           {sign && docs.length > 0 && meaningful && (
-            <section aria-label={ts.place.initials} className="flex flex-col gap-3 rounded-2xl border border-trait bg-feuille p-4">
+            <div className="flex flex-col gap-3 rounded-2xl border border-trait bg-feuille p-4">
               <label className="flex cursor-pointer items-start gap-3">
                 <input
                   type="checkbox"
@@ -1371,7 +1380,7 @@ export default function CoreProduct({
                   </label>
                 </div>
               )}
-            </section>
+            </div>
           )}
 
           {docs.length > 0 && meaningful && (

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useLang, type Lang } from "@/lib/i18n";
 import { SITE_COPY } from "@/lib/site-copy";
+import { displayTitle } from "@/lib/typography";
 import { SIGN_META } from "@/lib/site-meta";
 import { GuideTeasers, ToolLink, type GuideTeaser } from "@/components/Landing";
 import { ChevronIcon, ShieldIcon, WifiOffIcon } from "@/components/icons";
@@ -42,7 +43,7 @@ export default function SignLanding({ teasers }: { teasers: Record<Lang, GuideTe
     <div data-tool-aside className="mx-auto mt-20 flex w-full max-w-7xl flex-col gap-20 sm:mt-28 sm:gap-28">
       <section aria-labelledby="how">
         <h2 id="how" className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
-          {s.howTitle}
+          {displayTitle(lang, s.howTitle)}
         </h2>
         <ol className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
           {s.how.map((step, i) => (
@@ -62,7 +63,7 @@ export default function SignLanding({ teasers }: { teasers: Record<Lang, GuideTe
           <WifiOffIcon className="mt-0.5 h-8 w-8 shrink-0 text-green-400" />
           <div>
             <h2 id="airplane" className="text-balance text-xl font-bold tracking-tight sm:text-2xl">
-              {s.airplaneTitle}
+              {displayTitle(lang, s.airplaneTitle)}
             </h2>
             <p className="mt-2 text-white/80 text-pretty sm:text-lg">{s.airplaneBody}</p>
           </div>
@@ -71,7 +72,7 @@ export default function SignLanding({ teasers }: { teasers: Record<Lang, GuideTe
 
       <section aria-labelledby="legal" className="mx-auto w-full max-w-3xl rounded-3xl border border-trait bg-feuille p-6 sm:p-10">
         <h2 id="legal" className="text-2xl font-bold tracking-tight sm:text-3xl">
-          {s.legal.title}
+          {displayTitle(lang, s.legal.title)}
         </h2>
         <div className="mt-5 flex flex-col gap-4 text-encre-2">
           <p className="text-pretty">{s.legal.p1}</p>
@@ -83,13 +84,13 @@ export default function SignLanding({ teasers }: { teasers: Record<Lang, GuideTe
 
       <section aria-labelledby="faq" className="mx-auto w-full max-w-3xl">
         <h2 id="faq" className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
-          {s.faqTitle}
+          {displayTitle(lang, s.faqTitle)}
         </h2>
         <div className="mt-8 flex flex-col gap-3">
           {s.faq.map((item) => (
             <details key={item.q} className="group rounded-2xl border border-trait bg-feuille px-5 py-4 open:pb-5">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold [&::-webkit-details-marker]:hidden">
-                {item.q}
+                {displayTitle(lang, item.q)}
                 <ChevronIcon direction="right" className="h-4 w-4 shrink-0 text-encre-2 transition-transform group-open:rotate-90 rtl:group-open:-rotate-90" />
               </summary>
               <p className="mt-3 text-encre-2 text-pretty">{item.a}</p>

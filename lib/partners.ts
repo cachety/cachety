@@ -68,7 +68,8 @@ export function readPrefill(hash: string): Prefill {
   const params = new URLSearchParams(hash.replace(/^#/, ""));
   const text = (key: string, max: number) => {
     const v = params.get(key)?.replace(/\s+/g, " ").trim();
-    return v ? v.slice(0, max) : undefined;
+    // Coupe sur des caractères entiers : jamais la moitié d'un emoji.
+    return v ? Array.from(v).slice(0, max).join("").trim() : undefined;
   };
   const accent = params.get("accent")?.trim().toLowerCase();
   const asked = (params.get("tools") ?? "").split(",").map((v) => v.trim().toLowerCase());

@@ -107,6 +107,19 @@ describe("page intégrée", () => {
   );
 
   test(
+    "hors de la page intégrée, un lien ne pré-remplit pas les lignes sous la signature",
+    async () => {
+      const page = await open(`${E2E_ORIGIN}/en/sign#place=Lyon&note=I%20owe%20you`);
+      await page.locator(`input[aria-label="${t.sign.inputAria}"]`).waitFor({ state: "attached", timeout: 15_000 });
+      // Laisse aux effets de montage le temps de s'exécuter.
+      await page.waitForTimeout(1000);
+      expect(await page.getByLabel(t.sign.block.place, { exact: true }).inputValue()).toBe("");
+      expect(await page.getByLabel(t.sign.block.mention, { exact: true }).inputValue()).toBe("");
+    },
+    30_000
+  );
+
+  test(
     "les deux outils : sélecteur, et confirmation avant de retirer les documents",
     async () => {
       const page = await open(`${E2E_ORIGIN}/embed/en#tools=watermark,sign`);
@@ -182,8 +195,10 @@ describe("page intégrée", () => {
       const page = await open(`${FOREIGN}/`);
       await page.waitForTimeout(2000);
       const embedded = page.frames().find((f) => f.url().startsWith(`${E2E_ORIGIN}/embed/`));
+      // Le bandeau est dans le HTML statique, avant même le choix de l'outil :
+      // s'il était affiché, la page aurait été chargée dans le cadre.
       const loaded = embedded
-        ? await embedded.locator(`input[aria-label="${t.inputAria}"]`).count().catch(() => 0)
+        ? await embedded.locator('a[href="https://cachety.com/en"]').count().catch(() => 0)
         : 0;
       expect(loaded).toBe(0);
     },

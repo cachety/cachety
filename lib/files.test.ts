@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { unzipSync, strToU8 } from "fflate";
 import { PDFDocument } from "pdf-lib";
-import { a4PageFor, fileKind, hasVisibleText, imageToPdf, isSupported, outputName, uniqueName, zipDocuments } from "./files";
+import { a4PageFor, fileKind, hasVisibleText, imageToPdf, zipPaths, isSupported, outputName, uniqueName, zipDocuments } from "./files";
 
 describe("isSupported (whitelist des formats)", () => {
   test("accepte PDF et les images réellement décodables", () => {
@@ -93,6 +93,36 @@ describe("outputName", () => {
   test("mode « signer » : <original>-signed.pdf, y compris pour une photo", () => {
     expect(outputName("bail.pdf", "pdf", "signed")).toBe("bail-signed.pdf");
     expect(outputName("attestation.jpg", "pdf", "signed")).toBe("attestation-signed.pdf");
+  });
+});
+
+describe("zipPaths", () => {
+  test("mêmes chemins que l'archive, doublons renommés : une empreinte par fichier", () => {
+    const files = [
+      { name: "contract-signed.pdf", bytes: new Uint8Array([1]) },
+      { name: "contract-signed.pdf", bytes: new Uint8Array([2]) },
+      { name: "../x.pdf", folder: "Agence", bytes: new Uint8Array([3]) },
+    ];
+    expect(zipPaths(files)).toEqual(["contract-signed.pdf", "contract-signed-2.pdf", "Agence/x.pdf"]);
+    expect(Object.keys(unzipSync(zipDocuments(files)))).toEqual(zipPaths(files));
+  });
+});
+
+describe("zipDocuments : aucune heure de création", () => {
+  test("chaque entrée porte la même date fixe (2000-01-01), pas l'heure du téléchargement", () => {
+    const zip = zipDocuments([
+      { name: "a.pdf", bytes: new Uint8Array([1, 2, 3]) },
+      { name: "b.pdf", bytes: new Uint8Array([4]) },
+    ]);
+    // En-têtes locaux (signature PK\x03\x04) : date DOS aux octets 12-13 (année depuis 1980 sur 7 bits).
+    const years: number[] = [];
+    for (let i = 0; i + 30 <= zip.length; i++) {
+      if (zip[i] === 0x50 && zip[i + 1] === 0x4b && zip[i + 2] === 3 && zip[i + 3] === 4) {
+        const dosDate = zip[i + 12] | (zip[i + 13] << 8);
+        years.push((dosDate >> 9) + 1980);
+      }
+    }
+    expect(years).toEqual([2000, 2000]);
   });
 });
 

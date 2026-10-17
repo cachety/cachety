@@ -458,6 +458,31 @@ describe("signer : retirer puis replacer", () => {
   );
 });
 
+describe("signer : plusieurs documents", () => {
+  test(
+    "signature retirée d'un seul document : pas de téléchargement (le lot partirait sans lui)",
+    async () => {
+      const page = await openPage("/en/sign");
+      await addFile(page, "lease.pdf", await makePdf([[595, 842]]));
+      await addFile(page, "inventory.pdf", await makePdf([[595, 842]]));
+      await typeName(page, "Jane Doe");
+      await signatureBox(page, 1).waitFor({ timeout: 60_000 });
+      await waitDownloadable(page);
+
+      // Le document affiché perd sa signature ; l'autre reste prêt.
+      await page.getByRole("button", { name: en.sign.place.remove }).click();
+      await page.getByText(en.sign.needPlacement).waitFor();
+      await page.waitForTimeout(2500);
+      expect(await downloadButton(page).isDisabled()).toBe(true);
+
+      // Remise en place : téléchargeable à nouveau.
+      await page.getByRole("button", { name: en.sign.place.reset }).click();
+      await waitDownloadable(page);
+    },
+    120_000
+  );
+});
+
 describe("signer : clavier", () => {
   test(
     "× n'est pas dans la boîte : ses touches ne la déplacent pas ; encres : flèches entre les choix",
