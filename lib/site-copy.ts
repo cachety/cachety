@@ -238,7 +238,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "Ouvrez cette page, puis coupez Internet (mode avion). Déposez un document et signez-le : Cachety fonctionne toujours. La preuve que rien ne passe par Internet.",
       legal: {
         title: "Quelle valeur a cette signature ?",
-        p1: "Une signature dessinée ou tapée puis posée sur le document est une signature électronique dite « simple ». En Europe, une signature ne peut pas être refusée seulement parce qu'elle est électronique (règlement eIDAS, article 25). En France, une signature vaut si elle identifie son auteur et montre qu'il consent à l'acte (Code civil, article 1367).",
+        p1: "Une signature dessinée ou tapée puis posée sur le document est une signature électronique dite « simple ». En Europe, une signature ne peut pas être refusée seulement parce qu'elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu'il consent à l'acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367).",
         p2: "Pour les documents de tous les jours, cela suffit en général : dossier de location, attestation, devis, formulaire d'école ou d'association. En cas de litige, c'est à vous de montrer que vous êtes bien l'auteur ; une signature « qualifiée » (avec certificat, délivrée par un prestataire agréé) bénéficie d'une présomption de fiabilité que la signature simple n'a pas.",
         p3: "Ce n'est pas le bon outil quand une signature qualifiée est exigée, ou quand l'autre partie impose une plateforme précise : certains contrats de prêt ou d'assurance, les actes notariés, certaines démarches administratives. Dans ce cas, utilisez l'outil demandé.",
         note: "Ceci n'est pas un conseil juridique.",
@@ -501,7 +501,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "Open this page, then switch off the internet (aeroplane mode). Drop in a document and sign it: Cachety still works. Proof that nothing goes over the internet.",
       legal: {
         title: "What is this signature worth?",
-        p1: "A signature drawn or typed and placed on the document is what the law calls a 'simple' electronic signature. In the EU, a signature cannot be refused solely because it is electronic (eIDAS Regulation, article 25). In France, a signature is valid if it identifies its author and shows their consent (Civil Code, article 1367).",
+        p1: "A signature drawn or typed and placed on the document is what the law calls a 'simple' electronic signature. In the EU, a signature cannot be refused solely because it is electronic (eIDAS Regulation, article 25). In France, a signature identifies its author and shows their consent; in electronic form, it must rely on a reliable process linking it to the document (Civil Code, article 1367).",
         p2: "For everyday documents this is generally enough: rental paperwork, attestations, quotes, school and association forms. If challenged, it is up to you to show you were the author; a 'qualified' signature (with a certificate from an approved provider) benefits from a presumption of reliability that a simple signature does not.",
         p3: "It is not the right tool when a qualified signature is required, or when the other party insists on a specific platform: some loan or insurance contracts, notarial deeds, certain official procedures. In that case, use the tool they ask for.",
         note: "This is not legal advice.",
@@ -765,7 +765,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "このページを開いてから、インターネットを切ってください（機内モード）。書類をドロップして署名しても、Cachety はそのまま動きます。何もネットに送られていない証拠です。",
       legal: {
         title: "この署名にはどんな効力がありますか？",
-        p1: "手書きまたは入力した署名を書類に配置したものは、法律上「シンプルな」電子署名と呼ばれるものです。EU では、電子的であるという理由だけで署名を拒むことはできません（eIDAS 規則第 25 条）。フランスでは、署名は作成者を特定し、その人の同意を示していれば有効です（民法典第 1367 条）。",
+        p1: "手書きまたは入力した署名を書類に配置したものは、法律上「シンプルな」電子署名と呼ばれるものです。EU では、電子的であるという理由だけで署名を拒むことはできません（eIDAS 規則第 25 条）。フランスでは、署名は作成者を特定し、その人の同意を示すものです。電子的な署名は、書類との結びつきを保証する信頼できる方法によるものでなければなりません（民法典第 1367 条）。",
         p2: "日常の書類なら、ふつうはこれで十分です：賃貸の書類、証明書、見積書、学校や団体の書類など。争いになった場合は、自分が作成者であることを自分で示す必要があります。「適格」電子署名（認定事業者が発行する証明書付き）には、シンプルな署名にはない信頼性の推定が働きます。",
         p3: "適格署名が求められる場合や、相手が特定のサービスを指定している場合には向いていません：一部のローン契約や保険契約、公証証書、一部の行政手続きなどです。その場合は、指定されたツールを使ってください。",
         note: "これは法的助言ではありません。書類によっては、国ごとにルールが異なります。この訳はネイティブスピーカーによる確認待ちです。",
@@ -1029,7 +1029,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "先打开本页，然后断网（开启飞行模式）。再拖入一个文件并签名：Cachety 照常工作。这就证明没有任何东西经过互联网。",
       legal: {
         title: "这种签名有什么效力？",
-        p1: "手写或输入后放到文件上的签名，在法律上称为“简单”电子签名。在欧盟，不能仅因签名是电子形式就拒绝承认它（eIDAS 条例第 25 条）。在法国，签名只要能识别签署人并表明其同意，即为有效（《民法典》第 1367 条）。",
+        p1: "手写或输入后放到文件上的签名，在法律上称为“简单”电子签名。在欧盟，不能仅因签名是电子形式就拒绝承认它（eIDAS 条例第 25 条）。在法国，签名用于识别签署人并表明其同意；电子形式的签名还必须采用可靠的方法，确保它与文件相关联（《民法典》第 1367 条）。",
         p2: "对于日常文件，这通常已经足够：租房材料、证明、报价单、学校和社团表格。如有争议，需要由您证明签名确实出自您本人；“合格”电子签名（由经认可的服务机构颁发证书）享有简单签名所没有的可靠性推定。",
         p3: "如果要求使用合格签名，或对方指定了某个平台，本工具就不合适：例如某些贷款或保险合同、公证文书、某些政务手续。这种情况下，请使用对方要求的工具。",
         note: "以上内容不构成法律意见。某些文件的规定因国家而异。本译文尚待母语人士审校。",
