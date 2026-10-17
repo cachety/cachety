@@ -5,6 +5,7 @@
 // dans aucun lecteur PDF.
 
 import { PDFDocument } from "pdf-lib";
+import { imageToPdf } from "@/lib/files";
 
 const PDF_PASSWORD_MAX_BYTES = 127;
 
@@ -55,14 +56,6 @@ export async function encryptPdf(bytes: Uint8Array, password: string) {
   // bibliothèque l'omet. Sans cela, « é » tapé décomposé (fréquent sur macOS)
   // produirait un fichier que son propre auteur ne peut plus ouvrir.
   return lock(bytes, password.normalize("NFKC"));
-}
-
-async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg") {
-  const doc = await PDFDocument.create();
-  const image = extension === "jpg" ? await doc.embedJpg(bytes) : await doc.embedPng(bytes);
-  const page = doc.addPage([image.width, image.height]);
-  page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
-  return doc.save();
 }
 
 /** Réunit des PDF et des images filigranés en un seul PDF, dans l'ordre donné. */

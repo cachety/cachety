@@ -1,5 +1,6 @@
 import { HEIC_TYPES } from "@/lib/heic";
 import { zipSync } from "fflate";
+import { PDFDocument } from "pdf-lib";
 
 const DECODED_TYPES =
   "application/pdf,image/png,image/jpeg,image/webp,image/gif,image/bmp,image/avif";
@@ -92,4 +93,17 @@ export function zipDocuments(files: { name: string; bytes: Uint8Array; folder?: 
     entries[uniqueName(path, used)] = [f.bytes, { level: 0 }];
   }
   return zipSync(entries);
+}
+
+/**
+ * Image (PNG ou JPEG déjà produite) en PDF d'une page, sans réencodage : la
+ * page mesure en points ce que l'image mesure en pixels. Sert au PDF unique,
+ * au verrouillage d'une image et au mode « signer » (sortie toujours PDF).
+ */
+export async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg") {
+  const doc = await PDFDocument.create();
+  const image = extension === "jpg" ? await doc.embedJpg(bytes) : await doc.embedPng(bytes);
+  const page = doc.addPage([image.width, image.height]);
+  page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+  return doc.save();
 }

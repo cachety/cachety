@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { fitScale, graphemes, layoutVariation, watermarkStepX, outlineRgba, outlineWidth, MAX_CANVAS_AREA, watermarkMaxLineWidth, waveDisplacement } from "./watermark";
+import { fitScale, graphemes, layoutVariation, watermarkStepX, outlineRgba, outlineWidth, MAX_CANVAS_AREA, PREVIEW_MAX_PAGES, signPreviewPages, watermarkMaxLineWidth, waveDisplacement } from "./watermark";
 
 describe("watermarkMaxLineWidth (une occurrence entière tient toujours)", () => {
   test("une ligne à la largeur max reste dans le canvas une fois pivotée de -45deg", () => {
@@ -102,5 +102,20 @@ describe("pavage", () => {
       const line = 2000; // texte très long : plus de 20 fois la taille de police
       expect(watermarkStepX(line, 80, spacing) - line).toBeGreaterThanOrEqual(80 * 2);
     }
+  });
+});
+
+describe("aperçus du mode « signer » (les 11 premières pages et la dernière)", () => {
+  test("document long : 12 aperçus, le dernier est la dernière page", () => {
+    const pages = signPreviewPages(40);
+    expect(pages).toHaveLength(PREVIEW_MAX_PAGES);
+    expect(pages.slice(0, 11)).toEqual(Array.from({ length: 11 }, (_, i) => i));
+    expect(pages[11]).toBe(39);
+  });
+
+  test("document court : toutes les pages, sans doublon", () => {
+    expect(signPreviewPages(1)).toEqual([0]);
+    expect(signPreviewPages(12)).toEqual(Array.from({ length: 12 }, (_, i) => i));
+    expect(signPreviewPages(13)).toEqual([...Array.from({ length: 11 }, (_, i) => i), 12]);
   });
 });
