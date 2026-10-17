@@ -191,9 +191,14 @@ describe("signer : parcours complet", () => {
       await waitDownloadable(page);
       const out = await download(page);
       expect(out.name).toBe("lease-signed.pdf");
-      const pdf = await PDFDocument.load(out.bytes);
+      const pdf = await PDFDocument.load(out.bytes, { updateMetadata: false });
       expect(pdf.getPageCount()).toBe(3);
       expect(pdf.getAuthor()).toBeUndefined();
+      // Ni outil ni heure : la date de création dirait quand le document a été signé.
+      expect(pdf.getProducer()).toBeUndefined();
+      expect(pdf.getCreator()).toBeUndefined();
+      expect(pdf.getCreationDate()).toBeUndefined();
+      expect(pdf.getModificationDate()).toBeUndefined();
       const leaks = await scanPdfForLeaks(out.bytes);
       expect(leaks.markerHits).toBe(0);
       expect(leaks.keys).toEqual([]);

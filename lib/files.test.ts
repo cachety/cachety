@@ -121,6 +121,15 @@ describe("imageToPdf", () => {
       expect(doc.getPage(0).getSize()).toEqual({ width: 1, height: 1 });
     }
   });
+
+  test("aucune métadonnée : ni Producer, ni Creator, ni dates", async () => {
+    // Relu sans updateMetadata : sinon pdf-lib remplit lui-même ces champs à la lecture.
+    const doc = await PDFDocument.load(await imageToPdf(PNG_1x1, "png"), { updateMetadata: false });
+    expect(doc.getProducer()).toBeUndefined();
+    expect(doc.getCreator()).toBeUndefined();
+    expect(doc.getCreationDate()).toBeUndefined();
+    expect(doc.getModificationDate()).toBeUndefined();
+  });
 });
 
 describe("uniqueName (dédoublonnage)", () => {

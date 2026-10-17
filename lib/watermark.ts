@@ -1,4 +1,3 @@
-import { PDFDocument } from "pdf-lib";
 // Importé avant pdfjs-dist : installe les polyfills que pdf.js 6 suppose
 // présents (Map.getOrInsertComputed…) et fournit l'URL de worker adaptée.
 import { pdfjsWorkerSrc } from "@/lib/compat";
@@ -7,7 +6,7 @@ import { imageSize, tooManyPixels } from "@/lib/image-size";
 import { paintMasks, type PageMasks } from "@/lib/masks";
 import { overlaysOnPage, paintOverlays, type OverlayImages, type PageOverlays } from "@/lib/overlays";
 import { ENCODE_LADDER, pageBudget } from "@/lib/size-budget";
-import { fileKind, imageToPdf } from "@/lib/files";
+import { fileKind, imageToPdf, newPdf } from "@/lib/files";
 import {
   fillRgba,
   fontCss,
@@ -171,7 +170,7 @@ async function watermarkPdf(
   }
 
   await ensureFont(style, text);
-  const out = await PDFDocument.create();
+  const out = await newPdf();
   const previews: string[] = [];
   const previewPageIndexes: number[] = [];
   const toPreview = previewSet(pageCount, options.previewPages);

@@ -96,12 +96,19 @@ export function zipDocuments(files: { name: string; bytes: Uint8Array; folder?: 
 }
 
 /**
+ * PDF vide, sans les champs que pdf-lib ajoute par défaut (Producer, Creator,
+ * dates de création et de modification). L'heure de création trahirait celle
+ * de la signature ; aucun fichier produit ici n'en porte.
+ */
+export const newPdf = () => PDFDocument.create({ updateMetadata: false });
+
+/**
  * Image (PNG ou JPEG déjà produite) en PDF d'une page, sans réencodage : la
  * page mesure en points ce que l'image mesure en pixels. Sert au PDF unique,
  * au verrouillage d'une image et au mode « signer » (sortie toujours PDF).
  */
 export async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg") {
-  const doc = await PDFDocument.create();
+  const doc = await newPdf();
   const image = extension === "jpg" ? await doc.embedJpg(bytes) : await doc.embedPng(bytes);
   const page = doc.addPage([image.width, image.height]);
   page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
