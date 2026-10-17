@@ -11,7 +11,8 @@ import { extname, join, resolve, sep } from "node:path";
 import { headersFor } from "../../lib/http-headers";
 import { MAP_UPSERT_POLYFILL } from "./browser";
 
-export const E2E_PORT = 4181;
+// Surchargeable (E2E_PORT) : plusieurs suites peuvent tourner en parallèle sur un même poste.
+export const E2E_PORT = Number(process.env.E2E_PORT ?? 4181);
 export const E2E_ORIGIN = `http://127.0.0.1:${E2E_PORT}`;
 
 const MIME: Record<string, string> = {
