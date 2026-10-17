@@ -45,6 +45,7 @@ import {
   docId,
   docStamp,
   isFresh,
+  isPlaced,
   moveTo,
   needsAttention,
   needsPassword,
@@ -512,12 +513,13 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
         if (cancelled) return;
         let doc = queued;
         let own = docStamp(doc, stamp);
-        if (doc.result && doc.stampedWith === own) continue;
         // Échec déjà constaté avec ce réglage et cet essai : inutile de retenter.
         if (doc.error && doc.failedWith === attemptKey(doc, own)) continue;
-        // Mode « signer », document jamais placé : signature posée d'office en
-        // bas à droite de la dernière page. Format de la page lu sans rendu,
-        // pour que le premier rendu soit déjà le bon.
+        // Mode « signer », document jamais placé (ou remis « à sa place par
+        // défaut ») : signature posée d'office en bas à droite de la dernière
+        // page. AVANT le test « déjà à jour » : un rendu précédent, fait sans
+        // signature, ne doit pas dispenser de la reposer. Format de la page lu
+        // sans rendu, pour que le premier rendu soit déjà le bon.
         if (sign && sigReady && !doc.overlays) {
           try {
             const last = await lastPageAspect(doc.file, doc.password);
@@ -545,6 +547,7 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
             continue;
           }
         }
+        if (doc.result && doc.stampedWith === own) continue;
         // Déjà en cours, lancé par un passage précédent avec ce même réglage :
         // il se termine de lui-même et publie son résultat.
         if (
@@ -629,8 +632,9 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     requestAnimationFrame(() => document.getElementById(`doc-${id}`)?.focus());
   }, []);
 
-  // Mode « signer » : un document dont la signature a été retirée n'est pas prêt.
-  const isReady = (d: Doc) => isFresh(d, stamp) && !(sign && needsPlacement(d));
+  // Mode « signer » : un document n'est prêt que signé (signature ni retirée,
+  // ni encore à reposer par la file).
+  const isReady = (d: Doc) => isFresh(d, stamp) && (!sign || isPlaced(d));
   const ready = docs.filter(isReady);
   const processing = docs.some((d) => d.status === "processing");
 
@@ -659,7 +663,7 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
       docs
         .filter((d) => {
           if (effFilter === "attention") return needsAttention(d, sign);
-          if (effFilter === "ready") return isFresh(d, stamp) && !(sign && needsPlacement(d));
+          if (effFilter === "ready") return isFresh(d, stamp) && (!sign || isPlaced(d));
           return true;
         })
         .filter((d) => !needle || d.file.name.toLocaleLowerCase(t.locale).includes(needle)),

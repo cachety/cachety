@@ -424,6 +424,35 @@ describe("signer : droite à gauche", () => {
   );
 });
 
+describe("signer : retirer puis replacer", () => {
+  test(
+    "× puis « remettre à sa place » : pas de téléchargement sans signature, puis PDF signé",
+    async () => {
+      const page = await openPage("/en/sign");
+      await addFile(page, "lease.pdf", await makePdf([[595, 842]]));
+      await typeName(page, "Jane Doe");
+      await signatureBox(page, 1).waitFor({ timeout: 60_000 });
+      await waitDownloadable(page);
+
+      // Retirée : le document est re-rendu sans signature, mais n'est pas prêt.
+      await page.getByRole("button", { name: en.sign.place.remove }).click();
+      await page.getByText(en.sign.place.missing).waitFor();
+      await page.getByText(en.sign.needPlacement).waitFor();
+      // Le temps du rendu sans signature (file : 500 ms d'attente, puis la page).
+      await page.waitForTimeout(2500);
+      expect(await downloadButton(page).isDisabled()).toBe(true);
+
+      // Remise à sa place par défaut : la file la repose et refait le rendu.
+      await page.getByRole("button", { name: en.sign.place.reset }).click();
+      await signatureBox(page, 1).waitFor({ timeout: 60_000 });
+      await waitDownloadable(page);
+      const out = await download(page);
+      expect(await darkShare(page, await pageJpeg(out.bytes, 0), DEFAULT_SPOT)).toBeGreaterThan(0.003);
+    },
+    120_000
+  );
+});
+
 describe("signer : options", () => {
   test(
     "parapher chaque page : la page 1 porte le petit paraphe, la dernière la signature",

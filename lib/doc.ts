@@ -53,6 +53,13 @@ export function signaturePage(overlays: PageOverlays | undefined): number | null
 /** Mode « signer » : signature retirée de ce document, à replacer avant le téléchargement. */
 export const needsPlacement = (d: Doc) => d.overlays !== undefined && signaturePage(d.overlays) === null;
 
+/**
+ * Mode « signer » : la signature est posée quelque part sur ce document.
+ * Condition du téléchargement : ni « jamais placée » (la file ne l'a pas
+ * encore posée), ni « retirée ».
+ */
+export const isPlaced = (d: Doc) => signaturePage(d.overlays) !== null;
+
 /** Ce qui réclame une action de l'utilisateur : mot de passe, échec, ou (mode « signer ») signature à placer. */
 export const needsAttention = (d: Doc, sign = false) =>
   needsPassword(d) || !!d.error || (sign && needsPlacement(d));
@@ -89,12 +96,16 @@ export function refitOverlays(overlays: PageOverlays | undefined, oldAspect: num
  * Réglage effectif d'un document : réglage commun (texte, apparence, taille
  * cible) plus ses propres masques et signatures. Changer un masque ou
  * déplacer la signature ne refait que ce document.
+ *
+ * Mode « signer » : « retirée » (`{}`) et « jamais placée » (`undefined`)
+ * donnent deux clés différentes. Sinon, un rendu sans signature (après ×)
+ * passerait pour à jour une fois la signature remise à sa place par défaut,
+ * et un PDF non signé serait téléchargeable.
  */
 export const docStamp = (d: Doc, stamp: string) => {
   const masks = masksKey(d.masks);
-  const overlays = overlaysKey(d.overlays);
   const own = masks ? `${stamp}\0${masks}` : stamp;
-  return overlays ? `${own}\0sig:${overlays}` : own;
+  return d.overlays === undefined ? own : `${own}\0sig:${overlaysKey(d.overlays)}`;
 };
 
 /** Prêt ET filigrané avec le réglage courant (texte, apparence ou masques modifiés : résultat périmé). */
