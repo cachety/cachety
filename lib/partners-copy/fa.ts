@@ -53,7 +53,7 @@ const COPY: PartnersCopy = {
     runsOn: "اجرا روی سایت cachety.com",
     private: "فایل‌های شما روی دستگاه خودتان می‌ماند",
     switchLabel: "ابزار",
-    switchWarn: "تغییر ابزار مدارکی را که این‌جا اضافه شده‌اند برمی‌دارد.",
+    switchWarn: "تغییر ابزار مدارکی را که اینجا اضافه شده‌اند برمی‌دارد.",
     switchConfirm: "تغییر ابزار",
     switchCancel: "انصراف",
   },

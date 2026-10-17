@@ -19,7 +19,7 @@ const C = {
   account: "Geen account, niet inloggen.",
   price: "Gratis, zonder betaalde versie.",
   level:
-    "Een afbeelding van je handtekening op de pagina, wat men gewoonlijk een 'gewone' elektronische handtekening noemt. Geen certificaat, geen tijdstempel.",
+    "Een afbeelding van je handtekening op de pagina, wat men gewoonlijk een “gewone” elektronische handtekening noemt. Geen certificaat, geen tijdstempel.",
   audit:
     "Nee: geen audittrail en geen voltooiingscertificaat. Na het downloaden toont Cachety een SHA-256-vingerafdruk van het bestand, die je kunt bewaren.",
   sending: "Nee: je ondertekent zelf. Niets versturen ter ondertekening, geen volgorde, één ondertekenaar.",
@@ -215,7 +215,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
     description:
       "Youtrust, voorheen Yousign, biedt gewone, geavanceerde en gekwalificeerde handtekeningen. Cachety ondertekent je pdf zonder account op je apparaat.",
     intro:
-      "Sinds juli 2026 heet Yousign Youtrust; tijdens de overgang kan de oude naam nog in de app staan. Youtrust is een Frans platform voor elektronische handtekeningen, gehost in Frankrijk. Cachety is een kleine browsertool waarmee je zelf een document ondertekent, zonder account en zonder upload.",
+      "Sinds juli 2026 vervangt de naam Youtrust de naam Yousign; tijdens de overgang kan de oude naam nog in de app staan. Youtrust is een Frans platform voor elektronische handtekeningen, gehost in Frankrijk. Cachety is een kleine browsertool waarmee je zelf een document ondertekent, zonder account en zonder upload.",
     verdict:
       "Moeten anderen tekenen, heb je een bewijsdossier met tijdstempel nodig of wordt een geavanceerde of gekwalificeerde handtekening gevraagd, dan is Youtrust de betere keuze, en al in het gratis abonnement zitten twee ondertekenverzoeken per maand. Cachety past als je alleen zelf wilt tekenen, zonder account en zonder het document te uploaden. Het resultaat is een gewone elektronische handtekening, een afbeelding op een platgemaakte pdf.",
     table: [
@@ -266,7 +266,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
       { type: "h2", text: "Wat Youtrust doet" },
       {
         type: "p",
-        text: "Youtrust, tot juli 2026 Yousign, is een platform voor elektronische handtekeningen van Youtrust SAS in Caen. Je tekent zelf of stuurt documenten ter ondertekening rond, bepaalt de volgorde, en Youtrust stuurt ondertekenaars automatisch herinneringen. Elke ondertekening krijgt een bewijsdossier met tijdstempel dat tien jaar wordt gearchiveerd. Er zijn drie niveaus, tot en met de gekwalificeerde handtekening met video-identificatie, die Youtrust omschrijft als het juridische equivalent van een handgeschreven handtekening.",
+        text: "Youtrust, dat in juli 2026 de naam Yousign begon te vervangen, is een platform voor elektronische handtekeningen van Youtrust SAS in Caen. Je tekent zelf of stuurt documenten ter ondertekening rond, bepaalt de volgorde, en Youtrust stuurt ondertekenaars automatisch herinneringen. Elke ondertekening krijgt een bewijsdossier met tijdstempel dat tien jaar wordt gearchiveerd. Er zijn drie niveaus, tot en met de gekwalificeerde handtekening met video-identificatie, die Youtrust omschrijft als het juridische equivalent van een handgeschreven handtekening.",
       },
       {
         type: "p",
@@ -312,7 +312,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
     faq: [
       {
         q: "Is Yousign nu Youtrust?",
-        a: "Ja. Volgens de aankondiging van de aanbieder wordt Yousign vanaf juli 2026 Youtrust. Tijdens de overgang kan er in de app nog 'Yousign' staan; de migratie moet in 2027 klaar zijn.",
+        a: "Ja. Volgens de aankondiging van de aanbieder wordt Yousign vanaf juli 2026 Youtrust. Tijdens de overgang kan er in de app nog “Yousign” staan; de migratie moet in 2027 klaar zijn.",
       },
       {
         q: "Is Youtrust gratis?",
@@ -353,7 +353,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
     description:
       "Adobe Acrobat ondertekent pdf's online op Adobe-servers, Acrobat Sign stuurt ze naar meerdere mensen. Cachety werkt in je browser, zonder account.",
     intro:
-      "Met Adobe Acrobat kun je op verschillende manieren ondertekenen: in de online tool 'Pdf ondertekenen', in de apps Acrobat Reader en Fill & Sign, en in het zakelijke Acrobat Sign. Cachety is een eenvoudige browsertool waarmee je zelf je document ondertekent, zonder dat het je apparaat verlaat.",
+      "Met Adobe Acrobat kun je op verschillende manieren ondertekenen: in de online tool “Pdf ondertekenen”, in de apps Acrobat Reader en Fill & Sign, en in het zakelijke Acrobat Sign. Cachety is een eenvoudige browsertool waarmee je zelf je document ondertekent, zonder dat het je apparaat verlaat.",
     verdict:
       "Moeten meerdere mensen tekenen, heb je een audittrail nodig of een geavanceerde of gekwalificeerde handtekening, dan is Adobe met Acrobat Sign de betere keuze. Voor een snelle eigen handtekening op een pdf bespaart Cachety je de upload en het inloggen. Het maakt een afbeelding van je handtekening op een platgemaakte pdf, dus een gewone elektronische handtekening.",
     table: [
@@ -407,7 +407,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
       { type: "h2", text: "Wat Adobe biedt" },
       {
         type: "p",
-        text: "In de online tool 'Pdf ondertekenen' typ of teken je je handtekening of upload je er een afbeelding van, en je kunt initialen, tekst, vinkjes en lijnen toevoegen. Het bestand wordt daarbij op servers van Adobe verwerkt en gewist, tenzij je inlogt om het op te slaan. Wie documenten naar meerdere mensen wil sturen, met sjablonen en audittrails, gebruikt Acrobat Sign, dat ook werkt vanuit Word, Teams, Salesforce of Workday.",
+        text: "In de online tool “Pdf ondertekenen” typ of teken je je handtekening of upload je er een afbeelding van, en je kunt initialen, tekst, vinkjes en lijnen toevoegen. Het bestand wordt daarbij op servers van Adobe verwerkt en gewist, tenzij je inlogt om het op te slaan. Wie documenten naar meerdere mensen wil sturen, met sjablonen en audittrails, gebruikt Acrobat Sign, dat ook werkt vanuit Word, Teams, Salesforce of Workday.",
       },
       {
         type: "p",
@@ -533,7 +533,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Naar anderen sturen om te tekenen",
         cachety: C.sending,
-        other: "Ja: 'Alleen ik' of 'Meerdere personen', met volgorde, vervaldatum en herinneringen; met Premium 5 uitnodigingen per maand.",
+        other: "Ja: “Alleen ik” of “Meerdere personen”, met volgorde, vervaldatum en herinneringen; met Premium 5 uitnodigingen per maand.",
         edge: "other",
       },
       {
@@ -634,7 +634,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
     description:
       "Smallpdf ondertekent pdf's zonder account op servers in de EU en wist ze na een uur. Cachety ondertekent op je apparaat. Een eerlijke vergelijking.",
     intro:
-      "Smallpdf uit Zürich is een van de bekendste pdf-websites. De tool 'Pdf ondertekenen' werkt zonder account en zonder installatie; verzoeken aan anderen lopen via Sign.com. Het bestand gaat daarvoor naar de servers van Smallpdf. Cachety ondertekent in de browser, zonder upload.",
+      "Smallpdf uit Zürich is een van de bekendste pdf-websites. De tool “Pdf ondertekenen” werkt zonder account en zonder installatie; verzoeken aan anderen lopen via Sign.com. Het bestand gaat daarvoor naar de servers van Smallpdf. Cachety ondertekent in de browser, zonder upload.",
     verdict:
       "Allebei werken ze zonder account als je zelf tekent. Het verschil: Smallpdf verwerkt het bestand op zijn servers en wist het na een uur, Cachety uploadt het helemaal niet. Moeten anderen tekenen, met opvolging, digitaal zegel en voltooiingscertificaat, dan is Smallpdf met Sign.com de betere keuze; Cachety maakt alleen een gewone elektronische handtekening, een afbeelding op een platgemaakte pdf.",
     table: [
@@ -665,7 +665,7 @@ export const SIGN_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Niveau van de handtekening",
         cachety: C.level,
-        other: "Sign.com noemt zijn handtekeningen 'juridisch geldig en bindend volgens eIDAS-normen', zonder een niveau te noemen.",
+        other: "Sign.com noemt zijn handtekeningen “juridisch geldig en bindend volgens eIDAS-normen”, zonder een niveau te noemen.",
       },
       {
         criterion: "Zegel en certificaat",

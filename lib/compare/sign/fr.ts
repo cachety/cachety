@@ -28,7 +28,7 @@ const CACHETY = {
 
 const LEGAL: Comparison["body"][number] = {
   type: "p",
-  text: "Une signature dessinée, tapée ou importée puis posée sur la page est ce qu’on appelle couramment une signature électronique « simple ». En Europe, un juge ne peut pas l’écarter comme preuve au seul motif qu’elle est électronique. Mais en France, la Cour de cassation (2022 et 2024) a jugé qu’une image de signature, comme une signature scannée, ne remplit pas seule les conditions de l’article 1367 du Code civil : elle vaut signature si personne ne la conteste, mais pèse peu si elle l’est. Seule une signature qualifiée est présumée fiable. Ceci n’est pas un conseil juridique.",
+  text: "Une signature dessinée, tapée ou importée puis posée sur la page est ce qu’on appelle couramment une signature électronique « simple ». Dans l’Union européenne, un juge ne peut pas l’écarter comme preuve au seul motif qu’elle est électronique. Mais en France, la Cour de cassation (2022 et 2024) a jugé qu’une image de signature, comme une signature scannée, ne remplit pas seule les conditions de l’article 1367 du Code civil : elle vaut signature si personne ne la conteste, mais pèse peu si elle l’est. Seule une signature qualifiée est présumée fiable. Ceci n’est pas un conseil juridique.",
 };
 
 const NOT_FOR: Comparison["body"][number] = {
@@ -66,9 +66,9 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
     title: "Cachety ou DocuSign : quel outil pour signer un document ?",
     metaTitle: "Alternative à DocuSign pour signer soi-même un PDF",
     description:
-      "DocuSign envoie des contrats à signer, avec un journal d’audit. Cachety vous fait signer un PDF vous-même, dans le navigateur, gratuitement et sans compte.",
+      "DocuSign envoie des contrats à signer, avec un journal d’audit. Cachety vous permet de signer vous-même un PDF, dans le navigateur, gratuitement et sans compte.",
     intro:
-      "DocuSign est la plateforme de signature électronique la plus connue. Elle sert à envoyer un document à d’autres personnes pour signature et à garder la trace de qui a signé, et quand. Cachety fait un travail plus modeste : signer vous-même un document, dans votre navigateur, sans l’envoyer en ligne ni créer de compte.",
+      "DocuSign est l’une des plateformes de signature électronique les plus connues. Elle sert à envoyer un document à d’autres personnes pour signature et à garder la trace de qui a signé, et quand. Cachety fait un travail plus modeste : signer vous-même un document, dans votre navigateur, sans l’envoyer en ligne ni créer de compte.",
     verdict:
       "Ces deux outils ne font pas le même travail. Pour un contrat à plusieurs signataires, avec journal d’audit, vérification d’identité ou signature avancée ou qualifiée, DocuSign est le meilleur choix, et Cachety ne fait rien de tout cela. S’il s’agit seulement de poser votre signature sur un PDF et de le renvoyer, Cachety le fait gratuitement, sans compte, et le document ne quitte jamais votre appareil.",
     table: [
@@ -230,9 +230,9 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
     title: "Cachety ou Youtrust (ex-Yousign) : quel outil pour signer un PDF ?",
     metaTitle: "Alternative à Yousign (Youtrust) pour signer un PDF",
     description:
-      "Youtrust, ex-Yousign, envoie des documents à signer avec un dossier de preuve. Cachety vous fait signer un PDF vous-même, dans le navigateur, sans compte.",
+      "Youtrust, ex-Yousign, envoie des documents à signer avec un dossier de preuve. Cachety vous permet de signer vous-même un PDF, dans le navigateur, sans compte.",
     intro:
-      "Youtrust, qui s’appelait Yousign jusqu’en juillet 2026, est une plateforme française de signature électronique. Elle envoie des documents à signer et garde un dossier de preuve horodaté. Cachety est un outil plus simple : il vous fait signer un PDF vous-même, dans le navigateur, sans compte et sans envoi en ligne.",
+      "Youtrust, le nom qui remplace progressivement Yousign depuis juillet 2026, est une plateforme française de signature électronique. Elle envoie des documents à signer et garde un dossier de preuve horodaté. Cachety est un outil plus simple : il vous permet de signer vous-même un PDF, dans le navigateur, sans compte et sans envoi en ligne.",
     verdict:
       "Pour un contrat à plusieurs signataires, avec dossier de preuve, vérification d’identité ou signature avancée ou qualifiée, Youtrust est le meilleur choix. Sa formule gratuite permet de signer vos propres documents sans limite, une fois le compte créé, et chaque formule comprend un dossier de preuve horodaté. Si vous voulez seulement poser votre signature sur un PDF sans créer de compte ni envoyer le fichier, Cachety s’en charge.",
     table: [
@@ -284,7 +284,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       },
     ],
     body: [
-      { type: "h2", text: "Yousign s’appelle désormais Youtrust" },
+      { type: "h2", text: "Yousign devient Youtrust" },
       {
         type: "p",
         text: "Dans sa propre annonce, l’éditeur indique que Yousign devient Youtrust à partir de juillet 2026. Pendant la transition, l’application peut encore afficher le nom Yousign : elle doit basculer d’ici 2027. L’entreprise est Youtrust SAS, basée à Caen.",
@@ -373,16 +373,16 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
     tool: "sign",
     slug: "cachety-vs-adobe-fill-sign",
     competitor: "adobe-fill-sign",
-    competitorName: "Adobe Acrobat Sign",
+    competitorName: "Adobe Acrobat",
     competitorUrl: "https://www.adobe.com/acrobat/online/sign-pdf.html",
-    title: "Cachety ou Adobe Acrobat Sign : quel outil pour signer un PDF ?",
+    title: "Cachety ou Adobe Acrobat : quel outil pour signer un PDF ?",
     metaTitle: "Alternative à Adobe Fill & Sign : signer un PDF sans envoi",
     description:
       "Adobe signe votre PDF sur ses serveurs. Cachety le signe dans votre navigateur, gratuitement, sans compte et sans rien envoyer. Un comparatif honnête.",
     intro:
-      "Adobe propose deux façons de signer un PDF : un outil en ligne gratuit pour signer un PDF, aussi appelé Fill & Sign, et Acrobat Sign, son service de signature électronique pour les entreprises. Cachety est proche du premier : il sert à signer vous-même un document. La différence : Cachety le fait dans votre navigateur, sans envoyer le fichier.",
+      "Adobe propose deux façons de signer un PDF : un outil en ligne gratuit pour signer un PDF (et, sur iPhone, l’appli Adobe Fill & Sign), et Acrobat Sign, son service de signature électronique pour les entreprises. Cachety est proche du premier : il sert à signer vous-même un document. La différence : Cachety le fait dans votre navigateur, sans envoyer le fichier.",
     verdict:
-      "Pour envoyer un document à plusieurs signataires, garder un journal d’audit ou utiliser la signature avancée ou qualifiée, Adobe Acrobat Sign est le meilleur choix, et Cachety ne fait rien de tout cela. Pour signer vous-même un PDF, les deux conviennent. L’outil en ligne d’Adobe traite le fichier sur ses serveurs, et sa page indique qu’il faut être connecté pour terminer le formulaire. Cachety ne demande aucun compte et n’envoie jamais le document.",
+      "Pour envoyer un document à plusieurs signataires, garder un journal d’audit ou utiliser la signature avancée ou qualifiée, Adobe Acrobat Sign est le meilleur choix, et Cachety ne fait rien de tout cela. Pour signer vous-même un PDF, les deux conviennent. L’outil en ligne d’Adobe traite le fichier sur ses serveurs, et sa page indique qu’il faut être connecté pour terminer un formulaire à remplir. Cachety ne demande aucun compte et n’envoie jamais le document.",
     table: [
       {
         criterion: "Où le document est traité",
@@ -393,7 +393,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       {
         criterion: "Compte",
         cachety: CACHETY.account,
-        other: "La page de l’outil en ligne indique qu’il faut être connecté pour terminer le formulaire.",
+        other: "La page de l’outil en ligne indique qu’il faut être connecté pour terminer un formulaire à remplir.",
         edge: "cachety",
       },
       {
@@ -431,7 +431,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       },
     ],
     body: [
-      { type: "h2", text: "Fill & Sign et Acrobat Sign, ce n’est pas la même chose" },
+      { type: "h2", text: "L’outil en ligne et Acrobat Sign, ce n’est pas la même chose" },
       {
         type: "p",
         text: "L’outil en ligne gratuit d’Adobe sert à signer vous-même un document. Vous ouvrez la page, vous déposez votre PDF, puis vous tapez, dessinez ou importez une image de votre signature, et ajoutez initiales, texte ou coches. Adobe indique que le fichier est traité par ses serveurs, puis supprimé, sauf si vous vous connectez pour l’enregistrer. Sur iPhone, l’appli Adobe Fill & Sign permet aussi de signer la photo d’un formulaire papier.",
@@ -488,7 +488,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       FAQ_VALID("Adobe Acrobat Sign"),
       {
         q: "Faut-il un compte ?",
-        a: "Pas avec Cachety. La page de l’outil en ligne d’Adobe indique qu’il faut être connecté pour terminer le formulaire.",
+        a: "Pas avec Cachety. La page de l’outil en ligne d’Adobe indique qu’il faut être connecté pour terminer un formulaire à remplir.",
       },
       {
         q: "Puis-je envoyer le document à quelqu’un d’autre pour qu’il le signe ?",
@@ -520,11 +520,11 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
     title: "Cachety ou iLovePDF : quel outil pour signer un PDF ?",
     metaTitle: "Signer un PDF sans l’envoyer : alternative à iLovePDF",
     description:
-      "iLovePDF signe votre PDF sur ses serveurs, avec piste d’audit et signature numérique Premium. Cachety le signe dans votre navigateur, sans compte.",
+      "iLovePDF signe votre PDF sur ses serveurs, avec journal d’audit et signature numérique Premium. Cachety le signe dans votre navigateur, sans compte.",
     intro:
       "L’outil de signature de PDF d’iLovePDF, aussi proposé sous le nom iLoveSign, permet de signer vous-même un document ou de l’envoyer à d’autres personnes pour signature. Cachety ne fait que le premier, mais dans votre navigateur, sans envoyer le fichier.",
     verdict:
-      "Pour inviter d’autres signataires, obtenir une piste d’audit ou une signature avancée, iLovePDF est le meilleur choix. Sa signature numérique Premium intègre aussi un hachage certifié et un horodatage qualifié. Pour signer vous-même un PDF et le renvoyer, Cachety le fait sans compte, sans publicité, et sans rien envoyer.",
+      "Pour inviter d’autres signataires, obtenir un journal d’audit ou une signature avancée, iLovePDF est le meilleur choix. Sa signature numérique Premium intègre aussi un hachage certifié et un horodatage qualifié. Pour signer vous-même un PDF et le renvoyer, Cachety le fait sans compte, sans publicité, et sans rien envoyer.",
     table: [
       {
         criterion: "Où le document est traité",
@@ -550,9 +550,9 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
         edge: "other",
       },
       {
-        criterion: "Piste d’audit",
+        criterion: "Journal d’audit",
         cachety: CACHETY.audit,
-        other: "Une piste d’audit est générée à la fin de la signature, archivée 10 ans avec iLoveSign.",
+        other: "Un journal d’audit est généré à la fin de la signature, archivé 10 ans avec iLoveSign.",
         edge: "other",
       },
       {
@@ -582,7 +582,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       { type: "h2", text: "Signer soi-même, ou faire signer" },
       {
         type: "p",
-        text: "L’outil de signature d’iLovePDF commence par un choix : signer seul, ou faire signer plusieurs personnes. Pour vous-même, vous dessinez, tapez ou importez votre signature et vos initiales, puis ajoutez une date ou du texte. Pour inviter d’autres personnes, il faut un compte, et vous pouvez fixer un ordre de signature, une date d’expiration et des relances. Une piste d’audit est générée à la fin. Avec la validation par SMS, iLovePDF indique que la signature devient une signature avancée au sens d’eIDAS, et propose aussi un scan de pièce d’identité.",
+        text: "L’outil de signature d’iLovePDF commence par un choix : signer seul, ou faire signer plusieurs personnes. Pour vous-même, vous dessinez, tapez ou importez votre signature et vos initiales, puis ajoutez une date ou du texte. Pour inviter d’autres personnes, il faut un compte, et vous pouvez fixer un ordre de signature, une date d’expiration et des relances. Un journal d’audit est généré à la fin. Avec la validation par SMS, iLovePDF indique que la signature devient une signature avancée au sens d’eIDAS, et propose aussi un scan de pièce d’identité.",
       },
       {
         type: "p",
@@ -600,7 +600,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
         type: "list",
         items: [
           "Envoyer un document à plusieurs personnes, avec ordre, date d’expiration et relances.",
-          "Une piste d’audit, archivée 10 ans avec iLoveSign.",
+          "Un journal d’audit, archivé 10 ans avec iLoveSign.",
           "Une signature avancée avec validation par SMS, et une signature numérique avec horodatage qualifié.",
           "Des applis iOS et Android.",
         ],
@@ -618,7 +618,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       ...HOW_TO,
     ],
     chooseOther: [
-      "D’autres personnes doivent signer le même document, avec relances et piste d’audit.",
+      "D’autres personnes doivent signer le même document, avec relances et journal d’audit.",
       "Il vous faut une signature avancée, ou une signature numérique avec horodatage qualifié.",
       "Vous utilisez déjà iLovePDF pour d’autres tâches et l’envoi du fichier ne vous gêne pas.",
     ],
@@ -635,7 +635,7 @@ export const SIGN_COMPARISONS_FR: Comparison[] = [
       },
       {
         q: "Puis-je envoyer le document à quelqu’un d’autre pour qu’il le signe ?",
-        a: "Pas avec Cachety. Il n’y a qu’un signataire : vous. Vous téléchargez le PDF signé et vous l’envoyez vous-même. iLovePDF peut inviter plusieurs signataires et produire une piste d’audit.",
+        a: "Pas avec Cachety. Il n’y a qu’un signataire : vous. Vous téléchargez le PDF signé et vous l’envoyez vous-même. iLovePDF peut inviter plusieurs signataires et produire un journal d’audit.",
       },
       {
         q: "iLovePDF envoie-t-il mon document sur ses serveurs ?",

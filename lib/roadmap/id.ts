@@ -35,7 +35,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign": {
     title: "Tanda tangani dokumen",
-    body: "Gambar, ketik, atau unggah tanda tangan Anda, tempatkan di PDF atau foto, lalu unduh PDF yang sudah ditandatangani. Seperti alat watermark, tidak ada yang diunggah.",
+    body: "Gambar, ketik, atau impor tanda tangan Anda, tempatkan di PDF atau foto, lalu unduh PDF yang sudah ditandatangani. Seperti alat watermark, tidak ada yang di-upload.",
   },
   "simpler-tool": {
     title: "Alat yang lebih sederhana",

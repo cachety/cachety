@@ -3,7 +3,7 @@ import type { Comparison } from "../types";
 // Comparatifs de l'outil de signature (de). Même règle éditoriale que les
 // comparatifs du filigrane (lib/compare/types.ts) ; chaque entrée porte tool: "sign".
 //
-// Vergleiche des Unterschrift-Tools auf Deutsch. Jede Aussage über ein anderes
+// Vergleiche des Unterschriften-Tools auf Deutsch. Jede Aussage über ein anderes
 // Tool stammt von dessen eigenen öffentlichen Seiten (Feld `sources`), geprüft
 // am 2026-10-17. Keine Preise. Nichts über die Ausgabe der anderen Tools
 // (abgeflacht oder nicht), weil es dort nicht dokumentiert ist. Französische
@@ -213,7 +213,7 @@ export const SIGN_COMPARISONS_DE: Comparison[] = [
     description:
       "Youtrust, ehemals Yousign, bietet einfache, fortgeschrittene und qualifizierte Signaturen. Cachety unterschreibt dein PDF ohne Konto auf deinem Gerät.",
     intro:
-      "Seit Juli 2026 heißt Yousign Youtrust; in der App kann der alte Name während der Umstellung noch auftauchen. Youtrust ist eine französische Plattform für elektronische Signaturen mit Hosting in Frankreich. Cachety ist ein kleines Browser-Tool, mit dem du ein Dokument selbst unterschreibst, ohne Konto und ohne Upload.",
+      "Seit Juli 2026 löst der Name Youtrust den Namen Yousign ab; in der App kann der alte Name während der Umstellung noch auftauchen. Youtrust ist eine französische Plattform für elektronische Signaturen mit Hosting in Frankreich. Cachety ist ein kleines Browser-Tool, mit dem du ein Dokument selbst unterschreibst, ohne Konto und ohne Upload.",
     verdict:
       "Sollen andere unterschreiben, brauchst du einen Nachweis mit Zeitstempel oder ist eine fortgeschrittene oder qualifizierte Signatur verlangt, ist Youtrust die bessere Wahl, und schon der kostenlose Tarif enthält zwei Signaturanfragen im Monat. Cachety passt, wenn du nur selbst unterschreiben willst, ohne Konto und ohne das Dokument hochzuladen. Das Ergebnis ist eine einfache elektronische Signatur, ein Bild auf einem abgeflachten PDF.",
     table: [
@@ -264,7 +264,7 @@ export const SIGN_COMPARISONS_DE: Comparison[] = [
       { type: "h2", text: "Was Youtrust macht" },
       {
         type: "p",
-        text: "Youtrust, bis Juli 2026 Yousign, ist eine Plattform für elektronische Signaturen von der Youtrust SAS aus Caen. Du unterschreibst selbst oder schickst Dokumente zur Unterschrift, legst die Reihenfolge fest, und Youtrust erinnert die Unterzeichnenden automatisch. Jede Signatur bekommt eine Nachweisdatei mit Zeitstempel, die zehn Jahre archiviert wird. Es gibt drei Niveaus, bis zur qualifizierten Signatur mit Video-Identifizierung, die Youtrust als rechtliches Gegenstück zur handschriftlichen Unterschrift beschreibt.",
+        text: "Youtrust, das im Juli 2026 begonnen hat, den Namen Yousign abzulösen, ist eine Plattform für elektronische Signaturen von der Youtrust SAS aus Caen. Du unterschreibst selbst oder schickst Dokumente zur Unterschrift, legst die Reihenfolge fest, und Youtrust erinnert die Unterzeichnenden automatisch. Jede Signatur bekommt eine Nachweisdatei mit Zeitstempel, die zehn Jahre archiviert wird. Es gibt drei Niveaus, bis zur qualifizierten Signatur mit Video-Identifizierung, die Youtrust als rechtliches Gegenstück zur handschriftlichen Unterschrift beschreibt.",
       },
       {
         type: "p",

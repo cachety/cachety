@@ -493,7 +493,7 @@ export const GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com/en/sign in your browser, on a computer or a phone. There is nothing to install and no account to create.",
           "Your documents: drop the PDF onto the page, or tap to choose it. You can add several files at once, such as the agreement and the inventory. A photo of a paper document works too: it becomes a one-page PDF.",
-          "Your signature: draw it with your finger, a stylus or the mouse, type your name, or upload a photo of your signature on white paper. Under ‘Under the signature (optional)’, keep today's date and, if you wish, add the place and a short note such as ‘Read and approved’.",
+          "Your signature: draw it with your finger, a stylus or the mouse, type your name, or upload a photo of your signature on white paper. In ‘Under the signature (optional)’, keep today's date and, if you wish, add the place and a short note such as ‘Read and approved’.",
           "Place, check, download: your signature appears at the bottom right of the last page. Drag it onto the signature line and use the corner to resize it. Tick ‘Also initial every page’ if the agent asks for initials on each page.",
           "Check the preview, then download. The signed copy keeps the original name with -signed at the end. Send that copy back to the agent.",
         ],
@@ -504,13 +504,13 @@ export const GUIDES_EN: Guide[] = [
       },
       {
         type: "tip",
-        text: "After the download, Cachety shows a fingerprint of each file: a short code worked out from the exact file you sent. Copy it and keep it with your records. If a different version of the agreement ever turns up, you can show it is not the one you signed.",
+        text: "After the download, Cachety shows a fingerprint of each file: a 64-character code worked out from the exact file you download. Copy it, keep it with your records, and send it with the document (in the same email, for example). If a different version of the agreement ever turns up, its fingerprint will not match: you can tell it is not the file you sent.",
       },
       { type: "h2", text: "Options worth knowing" },
       {
         type: "list",
         items: [
-          "‘Also initial every page’ puts a small copy of your signature at the bottom right of every other page, so a swapped page is easier to spot.",
+          "‘Also initial every page’ puts a small copy of your signature on each of the other pages, so a swapped page is easier to spot.",
           "‘Lock with a password’ is off by default, because the agent must be able to open the file. Turn it on only if you give them the password another way, for example by phone.",
           "‘Make it smaller’ helps when the agent's email or portal limits the file size.",
           "‘Also add a watermark’ writes the purpose, the recipient and the date across the signed copy.",
@@ -528,7 +528,7 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "Is this signature valid for a tenancy?" },
       {
         type: "p",
-        text: "A signature you draw or type and place on a document is what is commonly called a simple electronic signature. In the UK, electronic signatures are generally accepted, and in the EU a court cannot reject one as evidence solely because it is electronic (eIDAS Regulation, article 25). For everyday rental paperwork, such as a tenancy agreement, an inventory or a holding deposit form, this is usually accepted.",
+        text: "A signature you draw, type or upload and place on a document is what is commonly called a simple electronic signature. In the UK, electronic signatures are generally accepted, and in the EU a court cannot reject one as evidence solely because it is electronic (eIDAS Regulation, article 25). For everyday rental paperwork, such as a tenancy agreement, an inventory or a holding deposit form, this is usually accepted.",
       },
       {
         type: "p",
@@ -618,7 +618,7 @@ export const GUIDES_EN: Guide[] = [
           "‘Also initial every page’ adds a small copy of your signature to the other pages.",
           "‘Make it smaller’ keeps the file under the size an email or a website allows.",
           "‘Lock with a password’ is off by default, so the recipient can open the file straight away.",
-          "After the download, a fingerprint of the file is shown. Keep it: if a different version ever turns up, you can show it is not the one you signed.",
+          "After the download, a fingerprint of the file is shown. Keep it and send it with the document: if a different version ever turns up, its fingerprint will not match, so you can tell it is not the file you sent.",
         ],
       },
       { type: "h2", text: "What this signature is worth" },

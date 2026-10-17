@@ -37,7 +37,7 @@ const LEGAL = {
 
 const WHEN_NOT = {
   type: "warning" as const,
-  text: "No uses Cachety cuando se exija una firma avanzada o cualificada, cuando tengan que firmar varias personas o haga falta un registro de auditoría, cuando la ley pida una mención escrita de tu puño y letra (fianza, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte imponga una plataforma concreta.",
+  text: "No uses Cachety cuando se exija una firma avanzada o cualificada, cuando tengan que firmar varias personas o haga falta un registro de auditoría, cuando la ley pida una mención escrita de tu puño y letra (aval personal, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte imponga una plataforma concreta.",
 };
 
 const HOW_TO: { type: "steps"; items: string[] } = {
@@ -215,7 +215,7 @@ export const SIGN_COMPARISONS_ES: Comparison[] = [
     description:
       "Youtrust, antes Yousign, ofrece firma simple, avanzada y cualificada. Cachety firma tu PDF sin cuenta y sin que salga de tu dispositivo. Comparativa.",
     intro:
-      "Desde julio de 2026, Yousign se llama Youtrust; durante la transición, el nombre antiguo puede seguir apareciendo en la aplicación. Youtrust es una plataforma francesa de firma electrónica, alojada en Francia. Cachety es una pequeña herramienta del navegador para firmar tú mismo un documento, sin cuenta y sin subirlo.",
+      "Desde julio de 2026, el nombre Youtrust sustituye al de Yousign; durante la transición, el nombre antiguo puede seguir apareciendo en la aplicación. Youtrust es una plataforma francesa de firma electrónica, alojada en Francia. Cachety es una pequeña herramienta del navegador para firmar tú mismo un documento, sin cuenta y sin subirlo.",
     verdict:
       "Si tienen que firmar otras personas, necesitas un expediente de pruebas con sello de tiempo o te piden una firma avanzada o cualificada, Youtrust es mejor opción, y su plan gratuito ya incluye dos solicitudes de firma al mes. Cachety encaja cuando solo quieres firmar tú, sin cuenta y sin subir el documento. El resultado es una firma electrónica simple, una imagen sobre un PDF aplanado.",
     table: [
@@ -266,7 +266,7 @@ export const SIGN_COMPARISONS_ES: Comparison[] = [
       { type: "h2", text: "Qué hace Youtrust" },
       {
         type: "p",
-        text: "Youtrust, que hasta julio de 2026 se llamaba Yousign, es una plataforma de firma electrónica de Youtrust SAS, con sede en Caen (Francia). Firmas tú o envías documentos a firmar, fijas el orden, y Youtrust manda recordatorios automáticos a los firmantes. Cada firma lleva un expediente de pruebas con sello de tiempo que se archiva diez años. Hay tres niveles, hasta la firma cualificada con identificación por vídeo, que Youtrust presenta como el equivalente legal de una firma manuscrita.",
+        text: "Youtrust, que en julio de 2026 empezó a sustituir el nombre Yousign, es una plataforma de firma electrónica de Youtrust SAS, con sede en Caen (Francia). Firmas tú o envías documentos a firmar, fijas el orden, y Youtrust manda recordatorios automáticos a los firmantes. Cada firma lleva un expediente de pruebas con sello de tiempo que se archiva diez años. Hay tres niveles, hasta la firma cualificada con identificación por vídeo, que Youtrust presenta como el equivalente legal de una firma manuscrita.",
       },
       {
         type: "p",
@@ -632,11 +632,11 @@ export const SIGN_COMPARISONS_ES: Comparison[] = [
     title: "Cachety o Smallpdf: firmar un PDF sin cuenta, pero ¿dónde?",
     metaTitle: "Smallpdf o Cachety: firmar un PDF online",
     description:
-      "Smallpdf firma PDF sin cuenta en servidores de la UE y los borra a la hora. Cachety firma en tu dispositivo, sin subir nada. Comparativa clara.",
+      "Smallpdf firma PDF sin cuenta en servidores de la UE y los borra al cabo de una hora. Cachety firma en tu dispositivo, sin subir nada. Comparativa clara.",
     intro:
       "Smallpdf, con sede en Zúrich, es una de las webs de PDF más conocidas. Su herramienta «Firmar PDF» funciona sin cuenta y sin instalar nada; las solicitudes a otras personas pasan por Sign.com. Para firmar, el archivo se sube a los servidores de Smallpdf. Cachety firma en el navegador, sin subir nada.",
     verdict:
-      "Las dos funcionan sin cuenta cuando firmas tú. La diferencia: Smallpdf procesa el archivo en sus servidores y lo borra a la hora, Cachety ni siquiera lo sube. Si tienen que firmar otras personas, con seguimiento, sello digital y certificado de finalización, Smallpdf con Sign.com es mejor opción; Cachety solo crea una firma electrónica simple, una imagen sobre un PDF aplanado.",
+      "Las dos funcionan sin cuenta cuando firmas tú. La diferencia: Smallpdf procesa el archivo en sus servidores y lo borra al cabo de una hora, Cachety ni siquiera lo sube. Si tienen que firmar otras personas, con seguimiento, sello digital y certificado de finalización, Smallpdf con Sign.com es mejor opción; Cachety solo crea una firma electrónica simple, una imagen sobre un PDF aplanado.",
     table: [
       {
         criterion: "Dónde se procesa el documento",

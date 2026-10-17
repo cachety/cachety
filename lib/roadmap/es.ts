@@ -35,7 +35,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign": {
     title: "Firmar un documento",
-    body: "Dibuja, escribe o sube tu firma, colócala en un PDF o una foto y descarga un PDF firmado. Como con la marca de agua, no se sube nada.",
+    body: "Dibuja, escribe o importa tu firma, colócala en un PDF o una foto y descarga un PDF firmado. Como con la marca de agua, no se sube nada.",
   },
   "simpler-tool": {
     title: "Una herramienta más sencilla",

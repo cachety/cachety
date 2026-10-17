@@ -411,7 +411,7 @@ const BASE_STRINGS = {
       another: "Signer un autre document",
       fingerprint: {
         title: "Empreinte du fichier",
-        body: "Gardez cette empreinte. Si une autre version du document réapparaît un jour, vous pourrez montrer que ce n'est pas celle que vous avez signée.",
+        body: "Gardez cette empreinte, et envoyez-la avec le document (dans le même e-mail, par exemple). Si une autre version réapparaît un jour, son empreinte sera différente : vous pourrez voir que ce n'est pas le fichier que vous avez envoyé.",
         copy: "Copier",
         copied: "Copié",
         copyAria: (name: string) => `Copier l'empreinte de ${name}`,
@@ -825,7 +825,7 @@ const BASE_STRINGS = {
       another: "Sign another document",
       fingerprint: {
         title: "File fingerprint",
-        body: "Keep this fingerprint. If a different version of the document ever turns up, you can show it is not the one you signed.",
+        body: "Keep this fingerprint, and send it with the document (in the same email, for example). If a different version ever turns up, its fingerprint will not match: you can tell it is not the file you sent.",
         copy: "Copy",
         copied: "Copied",
         copyAria: (name: string) => `Copy the fingerprint of ${name}`,
@@ -1239,7 +1239,7 @@ const BASE_STRINGS = {
       another: "別の書類に署名する",
       fingerprint: {
         title: "ファイルの指紋（ハッシュ値）",
-        body: "この指紋を保管してください。後で別の版の書類が出てきても、それがあなたの署名したものではないと示せます。",
+        body: "この指紋を保管し、書類と一緒に送ってください（たとえば同じメールで）。後で別の版が出てきても、指紋が一致しないので、あなたが送ったファイルではないと分かります。",
         copy: "コピー",
         copied: "コピーしました",
         copyAria: (name: string) => `${name} の指紋をコピー`,
@@ -1594,7 +1594,7 @@ const BASE_STRINGS = {
         type: "输入",
         upload: "导入图片",
         drawHint: "用手指、触控笔或鼠标在这里签名。",
-        canvasLabel: "签名区：用手指、触控笔或鼠标书写。使用键盘时，请改用“输入”标签页。",
+        canvasLabel: "签名区：用手指、触控笔或鼠标书写。使用键盘时，请改用「输入」标签页。",
         clear: "清除",
         undo: "撤销上一笔",
         typeLabel: "您的姓名，按希望显示的样子填写",
@@ -1649,7 +1649,7 @@ const BASE_STRINGS = {
       another: "签署另一份文件",
       fingerprint: {
         title: "文件指纹",
-        body: "请保存好这个指纹。如果日后出现另一个版本的文件，您可以证明那不是您签署的版本。",
+        body: "请保存好这个指纹，并和文件一起发送（例如放在同一封邮件里）。如果日后出现另一个版本，它的指纹会对不上：您可以看出那不是您发出的文件。",
         copy: "复制",
         copied: "已复制",
         copyAria: (name: string) => `复制 ${name} 的指纹`,

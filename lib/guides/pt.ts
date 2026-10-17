@@ -603,8 +603,8 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com/pt/sign no navegador, no computador ou no celular. Não precisa instalar nada nem criar conta.",
           "Seus documentos: solte o PDF na página ou toque para escolher. Você pode adicionar vários arquivos de uma vez, como o contrato e o laudo de vistoria. A foto de um documento em papel também funciona: ela vira um PDF de uma página.",
-          "Sua assinatura: desenhe com o dedo, uma caneta touch ou o mouse, digite seu nome ou envie uma foto da sua assinatura em papel branco. Embaixo da assinatura, se quiser, mantenha a data de hoje e acrescente o local e uma frase curta, como “Li e concordo”.",
-          "Posicione, confira e baixe: a assinatura aparece no canto inferior direito da última página. Arraste até a linha de assinatura e use o canto para mudar o tamanho. Se a imobiliária pedir rubrica em todas as páginas, ative a opção de rubricar cada página.",
+          "Sua assinatura: desenhe com o dedo, uma caneta touch ou o mouse, digite seu nome ou importe uma foto da sua assinatura em papel branco. Embaixo da assinatura, se quiser, mantenha a data de hoje e acrescente o local e uma observação curta, como “Ciente e de acordo”.",
+          "Posicione, confira e baixe: a assinatura aparece no canto inferior direito da última página. Arraste até a linha de assinatura e use o canto para mudar o tamanho. Se a imobiliária pedir rubrica em todas as páginas, ative “Rubricar também cada página”.",
           "Confira a prévia e baixe. A cópia assinada mantém o nome original, com -signed no final. É essa cópia que você devolve para a imobiliária.",
         ],
       },
@@ -614,13 +614,13 @@ export const GUIDES_PT: Guide[] = [
       },
       {
         type: "tip",
-        text: "Depois do download, o Cachety mostra a impressão digital de cada arquivo: um código curto calculado a partir do arquivo exato que você enviou. Copie e guarde junto com seus papéis. Se um dia aparecer outra versão do contrato, você pode mostrar que não é a que você assinou.",
+        text: "Depois do download, o Cachety mostra a impressão digital de cada arquivo: um código de 64 caracteres calculado a partir do arquivo exato que você baixou. Copie, guarde junto com seus papéis e envie junto com o documento (no mesmo e-mail, por exemplo). Se um dia aparecer outra versão do contrato, a impressão digital dela não vai coincidir: você vai saber que não é o arquivo que você enviou.",
       },
       { type: "h2", text: "Opções que valem a pena conhecer" },
       {
         type: "list",
         items: [
-          "Rubricar cada página coloca uma cópia pequena da sua assinatura no canto inferior direito de todas as outras páginas, e assim uma página trocada fica mais fácil de notar.",
+          "“Rubricar também cada página” coloca uma cópia pequena da sua assinatura no canto inferior direito de todas as outras páginas, e assim uma página trocada fica mais fácil de notar.",
           "“Proteger com senha” vem desligado, porque a imobiliária precisa conseguir abrir o arquivo. Só ligue se você for passar a senha por outro meio, por exemplo por telefone.",
           "“Diminuir o tamanho” ajuda quando o e-mail ou o sistema da imobiliária limita o tamanho do arquivo.",
           "Adicionar também uma marca d'água escreve a finalidade, o destinatário e a data sobre a cópia assinada.",
@@ -638,7 +638,7 @@ export const GUIDES_PT: Guide[] = [
       { type: "h2", text: "Essa assinatura vale para um contrato de aluguel?" },
       {
         type: "p",
-        text: "Uma assinatura desenhada ou digitada e colocada no documento é o que se costuma chamar de assinatura eletrônica simples. As regras mudam de um país para outro e de um documento para outro, mas a assinatura eletrônica é aceita em muitos lugares, e para a papelada do dia a dia, como contrato de locação residencial, laudo de vistoria ou ficha cadastral, isso costuma ser aceito.",
+        text: "Uma assinatura desenhada ou digitada e colocada no documento é o que se costuma chamar de assinatura eletrônica simples. As regras mudam de um país para outro e de um documento para outro, mas a assinatura eletrônica é reconhecida em muitos lugares, e para a papelada do dia a dia, como contrato de locação residencial, laudo de vistoria ou ficha cadastral, isso costuma ser aceito.",
       },
       {
         type: "p",
@@ -701,8 +701,8 @@ export const GUIDES_PT: Guide[] = [
         items: [
           "Salve no celular o PDF que você recebeu. Na maioria dos apps de e-mail, toque no anexo e salve em Arquivos, no iPhone, ou em Downloads, no Android.",
           "Abra cachety.com/pt/sign no navegador, toque na área de arquivos e escolha o PDF. A foto de um documento em papel também funciona.",
-          "Desenhe sua assinatura no quadro com o dedo. Não gostou? Desfaça o último traço ou limpe tudo e tente de novo. Você também pode digitar seu nome ou enviar uma foto da sua assinatura.",
-          "Escolha o que vai embaixo da assinatura, se quiser. A data de hoje já vem marcada, e você pode acrescentar o local e uma frase como “Li e concordo”.",
+          "Desenhe sua assinatura no quadro com o dedo. Não gostou? Desfaça o último traço ou limpe tudo e tente de novo. Você também pode digitar seu nome ou importar uma foto da sua assinatura.",
+          "Escolha o que vai embaixo da assinatura, se quiser. A data de hoje já vem marcada, e você pode acrescentar o local e uma observação como “Ciente e de acordo”.",
           "Passe para a etapa de posicionar, conferir e baixar. A assinatura aparece no canto inferior direito da última página. Arraste com o dedo e use o canto para mudar o tamanho.",
           "Confira a prévia, baixe o PDF assinado e devolva por e-mail ou pelo WhatsApp.",
         ],
@@ -714,7 +714,7 @@ export const GUIDES_PT: Guide[] = [
       { type: "h2", text: "Prefere usar uma foto da sua assinatura?" },
       {
         type: "p",
-        text: "Se assinar com o dedo ficar estranho, assine numa folha branca com caneta escura, tire uma foto com luz do dia e escolha a opção de enviar uma imagem. O fundo branco é removido para você. Se ainda aparecer um pouco do papel, ajuste o controle de sensibilidade. Fotos de iPhone em HEIC também funcionam.",
+        text: "Se assinar com o dedo ficar estranho, assine numa folha branca com caneta escura, tire uma foto com luz do dia e escolha “Importar”. O fundo branco é removido para você. Se ainda aparecer um pouco do papel, ajuste o controle “Sensibilidade”. Fotos de iPhone em HEIC também funcionam.",
       },
       { type: "h2", text: "Confira que tudo fica no celular" },
       {
@@ -725,10 +725,10 @@ export const GUIDES_PT: Guide[] = [
       {
         type: "list",
         items: [
-          "Rubricar cada página coloca uma cópia pequena da sua assinatura nas outras páginas.",
+          "“Rubricar também cada página” coloca uma cópia pequena da sua assinatura nas outras páginas.",
           "“Diminuir o tamanho” deixa o arquivo abaixo do limite de um e-mail ou de um site.",
           "“Proteger com senha” vem desligado, para que quem recebe consiga abrir o arquivo na hora.",
-          "Depois do download, aparece a impressão digital do arquivo. Guarde: se um dia surgir outra versão, você pode mostrar que não é a que você assinou.",
+          "Depois do download, aparece a impressão digital do arquivo. Guarde e envie junto com o documento: se um dia surgir outra versão, a impressão digital dela não vai coincidir, e você vai saber que não é o arquivo que você enviou.",
         ],
       },
       { type: "h2", text: "Quanto vale essa assinatura" },

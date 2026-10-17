@@ -17,7 +17,7 @@ const C = {
   where: "Di perangkat Anda sendiri, di dalam browser. Dokumen tidak di-upload ke server mana pun.",
   account: "Tanpa akun, tanpa daftar. Gratis, tanpa paket berbayar.",
   create:
-    "Gambar dengan jari atau mouse, ketik nama, atau unggah foto tanda tangan (latarnya dihapus). Tanggal, tempat, dan catatan singkat di bawahnya bersifat opsional.",
+    "Gambar dengan jari atau mouse, ketik nama, atau impor foto tanda tangan (latarnya dihapus). Tanggal, tempat, dan catatan singkat di bawahnya bersifat opsional.",
   signers: "Tidak: satu orang menandatangani dokumennya sendiri. Tidak ada pengiriman ke orang lain maupun urutan penandatangan.",
   audit:
     "Tidak ada jejak audit atau stempel waktu. Setelah mengunduh, sidik jari SHA-256 file ditampilkan untuk Anda simpan.",
@@ -47,7 +47,7 @@ const HOW_TO: GuideBlock[] = [
     items: [
       "Buka cachety.com/id/sign di browser HP atau komputer. Tidak perlu instal apa pun, tidak perlu akun.",
       "Masukkan PDF atau foto dokumen Anda. Beberapa dokumen bisa ditambahkan sekaligus.",
-      "Gambar, ketik, atau unggah tanda tangan Anda. Jika mau, biarkan tanggal hari ini dan tambahkan tempat serta catatan seperti \"Telah dibaca dan disetujui\".",
+      "Gambar, ketik, atau impor tanda tangan Anda. Jika mau, biarkan tanggal hari ini dan tambahkan tempat serta catatan seperti \"Telah dibaca dan disetujui\".",
       "Geser tanda tangan ke garis yang tepat dan atur ukurannya. Jika diminta paraf di setiap halaman, aktifkan pilihan itu.",
       "Periksa pratinjau, lalu unduh PDF yang sudah ditandatangani. Simpan sidik jari file yang muncul setelah unduhan.",
     ],
@@ -140,7 +140,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       { type: "h2", text: "Dua alat untuk pekerjaan yang berbeda" },
       {
         type: "p",
-        text: "DocuSign dibuat untuk pihak yang perlu mengumpulkan tanda tangan: perusahaan yang mengirim kontrak ke klien, bagian HR yang mengirim dokumen ke karyawan, atau agen properti yang mengatur tanda tangan beberapa pihak. Dokumen diunggah ke platform, setiap orang menerima tautan dan menandatangani sesuai urutan. Di akhir, ada sertifikat penyelesaian yang mencatat siapa melakukan apa.",
+        text: "DocuSign dibuat untuk pihak yang perlu mengumpulkan tanda tangan: perusahaan yang mengirim kontrak ke klien, bagian HR yang mengirim dokumen ke karyawan, atau agen properti yang mengatur tanda tangan beberapa pihak. Dokumen di-upload ke platform, setiap orang menerima tautan dan menandatangani sesuai urutan. Di akhir, ada sertifikat penyelesaian yang mencatat siapa melakukan apa.",
       },
       {
         type: "p",
@@ -235,7 +235,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
     description:
       "Youtrust (sebelumnya Yousign) adalah platform tanda tangan elektronik Prancis, dengan akun dan arsip bukti. Bandingkan dengan Cachety di perangkat Anda.",
     intro:
-      "Yousign, platform tanda tangan elektronik asal Prancis, berganti nama menjadi Youtrust sejak Juli 2026. Layanan ini menyimpan bukti setiap tanda tangan dan menawarkan tingkat lanjutan dan terkualifikasi. Cachety adalah alat sederhana untuk menandatangani sendiri sebuah PDF di browser, tanpa akun.",
+      "Yousign, platform tanda tangan elektronik asal Prancis, mulai Juli 2026 mengganti namanya menjadi Youtrust. Layanan ini menyimpan bukti setiap tanda tangan dan menawarkan tingkat lanjutan dan terkualifikasi. Cachety adalah alat sederhana untuk menandatangani sendiri sebuah PDF di browser, tanpa akun.",
     verdict:
       "Jika Anda perlu mengirim kontrak untuk ditandatangani orang lain, dengan arsip bukti bertanda waktu, atau butuh tanda tangan lanjutan atau terkualifikasi, Youtrust adalah pilihan yang lebih tepat. Jika Anda hanya perlu menandatangani dan mengirim kembali dokumen sehari-hari, Cachety melakukannya tanpa akun dan tanpa file keluar dari perangkat. Namun tanda tangan dari Cachety hanyalah gambar, sehingga lebih mudah dibantah.",
     table: [
@@ -283,7 +283,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Cara membuat tanda tangan",
         cachety: C.create,
-        other: "Digambar, diketik, atau diunggah, tanpa perlu instal aplikasi.",
+        other: "Digambar, diketik, atau di-upload, tanpa perlu instal aplikasi.",
       },
       {
         criterion: "Apa yang disimpan",
@@ -295,12 +295,12 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       { type: "h2", text: "Yousign kini bernama Youtrust" },
       {
         type: "p",
-        text: "Sejak Juli 2026, Yousign memakai nama Youtrust. Perusahaan pengelolanya, Youtrust SAS, berkedudukan di Caen, Prancis. Selama masa transisi, aplikasinya mungkin masih tampil dengan nama Yousign, dan perpindahannya ditargetkan selesai paling lambat 2027. Jika Anda mengenal Yousign, ini layanan yang sama.",
+        text: "Sejak Juli 2026, Yousign mulai memakai nama Youtrust. Perusahaan pengelolanya, Youtrust SAS, berkedudukan di Caen, Prancis. Selama masa transisi, aplikasinya mungkin masih tampil dengan nama Yousign, dan perpindahannya ditargetkan selesai paling lambat 2027. Jika Anda mengenal Yousign, ini layanan yang sama.",
       },
       { type: "h2", text: "Dua alat untuk pekerjaan yang berbeda" },
       {
         type: "p",
-        text: "Youtrust adalah platform tanda tangan elektronik: Anda mengirim dokumen, mengundang para penanda tangan, memantau siapa yang sudah menandatangani, dan di akhir mendapat berkas bukti bertanda waktu. Perusahaan ini menyatakan tanda tangannya sesuai regulasi Eropa eIDAS dan berlaku di Uni Eropa dan Inggris, tidak seperti tanda tangan yang hanya berupa gambar atau hasil pindaian. Untuk dokumen yang dipakai di Indonesia, tanyakan kepada penerima jenis tanda tangan apa yang mereka terima.",
+        text: "Youtrust adalah platform tanda tangan elektronik: Anda mengirim dokumen, mengundang para penanda tangan, memantau siapa yang sudah menandatangani, dan di akhir mendapat berkas bukti bertanda waktu. Perusahaan ini menyatakan tanda tangannya sesuai regulasi Eropa eIDAS dan dapat ditegakkan secara hukum di Uni Eropa dan Inggris, berbeda dengan tanda tangan yang hanya berupa gambar atau hasil pindaian (menurut Youtrust). Untuk dokumen yang dipakai di Indonesia, tanyakan kepada penerima jenis tanda tangan apa yang mereka terima.",
       },
       {
         type: "p",
@@ -415,7 +415,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Cara membuat tanda tangan",
         cachety: C.create,
-        other: "Diketik, digambar, atau unggah gambar tanda tangan.",
+        other: "Diketik, digambar, atau upload gambar tanda tangan.",
       },
       {
         criterion: "Kolom di dokumen",
@@ -581,7 +581,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Cara membuat tanda tangan",
         cachety: C.create,
-        other: "Digambar, diketik, atau diunggah (PNG, JPG, atau SVG), dengan paraf, tanggal, dan kolom teks.",
+        other: "Digambar, diketik, atau di-upload (PNG, JPG, atau SVG), dengan paraf, tanggal, dan kolom teks.",
       },
       {
         criterion: "Iklan dan batas paket gratis",
@@ -599,7 +599,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       { type: "h2", text: "Tanda tangan sederhana atau digital" },
       {
         type: "p",
-        text: "iLovePDF menawarkan dua jenis. Tanda tangan sederhana mirip dengan Cachety: Anda menggambar, mengetik, atau mengunggah tanda tangan lalu menaruhnya di halaman. Tanda tangan digital, di Premium, lebih jauh lagi: iLovePDF menanamkan hash bersertifikat dan stempel waktu terkualifikasi di PDF, yang berguna untuk menunjukkan bahwa dokumen tidak diubah sesudahnya. Dengan validasi SMS, tanda tangan itu menjadi tanda tangan lanjutan menurut standar Eropa eIDAS.",
+        text: "iLovePDF menawarkan dua jenis. Tanda tangan sederhana mirip dengan Cachety: Anda menggambar, mengetik, atau meng-upload tanda tangan lalu menaruhnya di halaman. Tanda tangan digital, di Premium, lebih jauh lagi: iLovePDF menanamkan hash bersertifikat dan stempel waktu terkualifikasi di PDF, yang berguna untuk menunjukkan bahwa dokumen tidak diubah sesudahnya. Dengan validasi SMS, tanda tangan itu menjadi tanda tangan lanjutan menurut standar Eropa eIDAS.",
       },
       {
         type: "p",
@@ -657,7 +657,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       },
       {
         q: "Apakah tanda tangan dari Cachety punya jejak audit?",
-        a: "Tidak. Cachety tidak mencatat siapa yang menandatangani atau kapan. Cachety menampilkan sidik jari SHA-256 file setelah diunduh, yang membantu mengenali versi yang Anda tanda tangani, tetapi itu tidak menggantikan jejak audit. Jika Anda membutuhkannya, pakai platform seperti iLovePDF.",
+        a: "Tidak. Cachety tidak mencatat siapa yang menandatangani atau kapan. Cachety menampilkan sidik jari SHA-256 file setelah diunduh, yang membantu Anda mengenali versi yang Anda kirim, tetapi itu tidak menggantikan jejak audit. Jika Anda membutuhkannya, pakai platform seperti iLovePDF.",
       },
     ],
     sources: [
@@ -689,7 +689,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
     intro:
       "Smallpdf, dari perusahaan di Zurich, punya alat tanda tangan PDF yang tidak meminta pendaftaran atau instalasi. Untuk meminta tanda tangan dari orang lain, Smallpdf memakai layanan Sign.com. Cachety juga tanpa pendaftaran, tetapi dokumen tidak keluar dari perangkat Anda.",
     verdict:
-      "Untuk menandatangani sendiri, cara pakai keduanya mirip: gambar, ketik, atau unggah tanda tangan, tanpa membuat akun. Bedanya ada di tempat file berada: Smallpdf memprosesnya di server dan menghapusnya setelah satu jam, sementara Cachety tidak mengirim apa pun. Jika Anda perlu meminta tanda tangan orang lain, dengan pemantauan dan sertifikat penyelesaian, Smallpdf dengan Sign.com adalah pilihan yang lebih tepat.",
+      "Untuk menandatangani sendiri, cara pakai keduanya mirip: gambar, ketik, atau impor tanda tangan, tanpa membuat akun. Bedanya ada di tempat file berada: Smallpdf memprosesnya di server dan menghapusnya setelah satu jam, sementara Cachety tidak mengirim apa pun. Jika Anda perlu meminta tanda tangan orang lain, dengan pemantauan dan sertifikat penyelesaian, Smallpdf dengan Sign.com adalah pilihan yang lebih tepat.",
     table: [
       {
         criterion: "Akun",
@@ -711,7 +711,7 @@ export const SIGN_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Cara membuat tanda tangan",
         cachety: C.create,
-        other: "Digambar, diketik, atau diunggah; bisa menambahkan paraf, teks, dan tanggal.",
+        other: "Digambar, diketik, atau di-upload; bisa menambahkan paraf, teks, dan tanggal.",
       },
       {
         criterion: "Meminta tanda tangan orang lain",

@@ -35,7 +35,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign": {
     title: "Sign a document",
-    body: "Draw, type or upload your signature, place it on a PDF or a photo, and download a signed PDF. Like the watermark tool, nothing is uploaded.",
+    body: "Draw, type or upload your signature, place it on a PDF or a photo, and download a signed PDF. Like the watermark tool, nothing leaves your device.",
   },
   "simpler-tool": {
     title: "A simpler tool",

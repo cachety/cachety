@@ -31,11 +31,11 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Assinatura em sites parceiros",
-    body: "Sites aprovados podem mostrar a ferramenta de assinatura nas próprias páginas, sozinha ou ao lado da marca d'água, com o local e a frase já preenchidos. Os documentos continuam no aparelho do visitante.",
+    body: "Sites aprovados podem mostrar a ferramenta de assinatura nas próprias páginas, sozinha ou ao lado da marca d'água, com o local e a observação já preenchidos. Os documentos continuam no aparelho do visitante.",
   },
   "sign": {
     title: "Assinar um documento",
-    body: "Desenhe, digite ou envie a imagem da sua assinatura, coloque num PDF ou numa foto e baixe um PDF assinado. Como na marca d'água, nada é enviado.",
+    body: "Desenhe, digite ou importe a imagem da sua assinatura, coloque num PDF ou numa foto e baixe um PDF assinado. Como na marca d'água, nada é enviado.",
   },
   "simpler-tool": {
     title: "Uma ferramenta mais simples",

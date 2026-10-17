@@ -46,9 +46,9 @@ Cachety 可以给 PDF 和照片（身份证、护照、工资条、税单、银�
 - **手机也能用**，可以作为 App 安装，加载一次后**离线**也能用。
 - **11 种语言**，阿拉伯语和波斯语采用从右到左的排版，每种文字都配有专用字体。
 - **引导帮助教程**，在首次访问者似乎不知从何下手时出现。
-- **给文件签字：** 在浏览器里给 PDF 或照片签字，可以手写、输入或上传签名，什么都不会上传。这是简单的电子签名，不是带证书的可靠电子签名。打开 [cachety.com/zh/sign](https://cachety.com/zh/sign) 即可使用。
+- **给文件签字：** 在浏览器里给 PDF 或照片签字，可以手写、输入或导入签名图片，什么都不会上传。这是简单的电子签名，不是带证书的可靠电子签名。打开 [cachety.com/zh/sign](https://cachety.com/zh/sign) 即可使用。
 - **92 篇实用指南**，覆盖法国、英国、德国、荷兰、西班牙和拉丁美洲、巴西、印度尼西亚、阿拉伯世界、伊朗、日本和中国的日常场景。
-- **82 篇经过事实核查的对比文章**，对比其他水印工具（FiligraneFacile、iLovePDF、Proton、Smallpdf、PDF24、Adobe Acrobat 等），附有资料来源，也会写明什么时候其他工具更合适。
+- **82 篇经过事实核查的对比文章**，对比其他水印工具（FiligraneFacile、iLovePDF、Proton、Smallpdf、PDF24、Adobe Acrobat 等），另有 **55 篇**对比签名工具（DocuSign、Youtrust、Adobe Acrobat、iLovePDF、Smallpdf，每种语言 5 篇），附有资料来源，也会写明什么时候其他工具更合适。
 - **在合作网站上：** 经批准的网站可以在自己的页面中显示这个工具（由 cachety.com 提供的 iframe，宿主网站看不到文件）。详见 [docs/embed.md](docs/embed.md) 和 [cachety.com/zh/partners](https://cachety.com/zh/partners)。
 
 ## 从设计上保护隐私，而且可以验证

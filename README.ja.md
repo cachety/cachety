@@ -48,7 +48,7 @@ Cachety は、PDF や写真（運転免許証、パスポート、給与明細�
 - **ヘルプツアー：** はじめての方が迷っていそうなときに、ご案内を表示します。
 - **書類に署名：** 署名を手書き、入力、または画像で用意して、PDFや写真にブラウザの中で署名できます。何もアップロードされません。簡易な電子署名で、電子証明書付きの署名ではありません。[cachety.com/ja/sign](https://cachety.com/ja/sign) から使えます。
 - **92 本の実用ガイド：** フランス、イギリス、ドイツ、オランダ、スペインと中南米、ブラジル、インドネシア、アラブ諸国、イラン、日本、中国の身近な場面に対応しています。
-- **82 本の比較記事：** 他の透かしツール（FiligraneFacile、iLovePDF、Proton、Smallpdf、PDF24、Adobe Acrobat など）との比較を、事実を確認し出典つきでまとめています。他のツールの方が向いている場面もはっきり書いています。
+- **82 本の比較記事：** 他の透かしツール（FiligraneFacile、iLovePDF、Proton、Smallpdf、PDF24、Adobe Acrobat など）との比較を、事実を確認し出典つきでまとめています。署名ツール（DocuSign、Youtrust、Adobe Acrobat、iLovePDF、Smallpdf）との比較も 55 本（各言語 5 本）あります。他のツールの方が向いている場面もはっきり書いています。
 - **パートナーサイトでも：** 承認されたサイトは自分のページにツールを表示できます（cachety.com が配信する iframe なので、掲載サイトからは書類が見えません）。[docs/embed.md](docs/embed.md) と [cachety.com/ja/partners](https://cachety.com/ja/partners) を参照。
 
 ## 設計からプライバシーを守り、しかも検証できる

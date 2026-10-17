@@ -31,11 +31,11 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign-embed": {
     title: "Ondertekenen op partnerwebsites",
-    body: "Goedgekeurde websites kunnen het ondertekenen in hun eigen pagina's tonen, alleen of naast het watermerk, met plaats en opmerking al ingevuld. De documenten blijven op het apparaat van de bezoeker.",
+    body: "Goedgekeurde websites kunnen het ondertekenen in hun eigen pagina's tonen, alleen of naast het watermerk, met plaats en vermelding al ingevuld. De documenten blijven op het apparaat van de bezoeker.",
   },
   "sign": {
     title: "Een document ondertekenen",
-    body: "Teken, typ of upload je handtekening, zet hem op een pdf of foto en download een ondertekende pdf. Net als bij het watermerk wordt er niets geüpload.",
+    body: "Teken, typ of importeer je handtekening, zet hem op een pdf of foto en download een ondertekende pdf. Net als bij het watermerk wordt er niets geüpload.",
   },
   "simpler-tool": {
     title: "Een eenvoudigere tool",

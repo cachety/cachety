@@ -47,8 +47,8 @@ Self-hosting tetap bisa dan didukung penuh (lihat di bawah), untuk organisasi ya
 - **11 bahasa**, dengan tata letak kanan ke kiri untuk bahasa Arab dan Persia, serta font khusus untuk setiap aksara.
 - **Tur bantuan terpandu** untuk pengunjung baru, ditawarkan saat seseorang tampak bingung harus mulai dari mana.
 - **92 panduan praktis** untuk situasi sehari-hari di Indonesia, Prancis, Inggris, Jerman, Belanda, Spanyol dan Amerika Latin, Brasil, dunia Arab, Iran, Jepang, dan Tiongkok.
-- **Tanda tangani dokumen:** tanda tangani PDF atau foto di browser dengan menggambar, mengetik, atau mengunggah tanda tangan Anda, tanpa mengunggah apa pun: [cachety.com/id/sign](https://cachety.com/id/sign). Ini tanda tangan elektronik tidak tersertifikasi, bukan tanda tangan tersertifikasi.
-- **82 perbandingan yang sudah dicek faktanya** dengan alat watermark lain (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, dan lainnya), lengkap dengan sumber, termasuk kapan alat lain justru lebih cocok.
+- **Tanda tangani dokumen:** tanda tangani PDF atau foto di browser dengan menggambar, mengetik, atau mengimpor foto tanda tangan Anda, tanpa meng-upload apa pun: [cachety.com/id/sign](https://cachety.com/id/sign). Ini tanda tangan elektronik tidak tersertifikasi, bukan tanda tangan tersertifikasi.
+- **82 perbandingan yang sudah dicek faktanya** dengan alat watermark lain (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, dan lainnya) dan 55 dengan alat tanda tangan (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), lengkap dengan sumber, termasuk kapan alat lain justru lebih cocok.
 - **Di situs mitra:** situs yang disetujui bisa menampilkan alat ini di halamannya sendiri (iframe dari cachety.com, jadi situs tersebut tidak bisa melihat dokumen). Lihat [docs/embed.md](docs/embed.md) dan [cachety.com/id/partners](https://cachety.com/id/partners).
 
 ## Privasi sejak rancangan, dan bisa diperiksa

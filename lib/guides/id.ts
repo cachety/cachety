@@ -534,7 +534,7 @@ export const GUIDES_ID: Guide[] = [
       { type: "h2", text: "Dokumen yang mungkin perlu Anda tanda tangani" },
       {
         type: "p",
-        text: "Menyewa tempat tinggal biasanya disertai beberapa dokumen: perjanjian sewa itu sendiri, berita acara serah terima atau daftar inventaris, kadang surat pernyataan untuk pemilik. Sebagian besar dikirim sebagai PDF dengan kolom bertuliskan \"Tanda tangan\". Pilihan yang biasa adalah situs tanda tangan yang meminta Anda mengunggah file dan membuat akun, atau mencetak, menandatangani, memindai, lalu mengirim ulang. Cachety melakukannya langsung di browser.",
+        text: "Menyewa tempat tinggal biasanya disertai beberapa dokumen: perjanjian sewa itu sendiri, berita acara serah terima atau daftar inventaris, kadang surat pernyataan untuk pemilik. Sebagian besar dikirim sebagai PDF dengan kolom bertuliskan \"Tanda tangan\". Pilihan yang biasa adalah situs tanda tangan yang meminta Anda meng-upload file dan membuat akun, atau mencetak, menandatangani, memindai, lalu mengirim ulang. Cachety melakukannya langsung di browser.",
       },
       { type: "h2", text: "Cara menandatangani dokumen sewa dengan Cachety" },
       {
@@ -542,8 +542,8 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com/id/sign di browser, di komputer atau HP. Tidak perlu instal apa pun, tidak perlu daftar.",
           "Dokumen Anda: letakkan PDF di halaman, atau ketuk untuk memilihnya. Anda bisa menambahkan beberapa file sekaligus, misalnya perjanjian sewa dan berita acara serah terima. Foto dokumen kertas juga bisa: hasilnya menjadi PDF satu halaman.",
-          "Tanda tangan Anda: gambar dengan jari, stylus, atau mouse, ketik nama Anda, atau unggah foto tanda tangan Anda di atas kertas putih. Di bawah tanda tangan, jika mau, biarkan tanggal hari ini dan tambahkan tempat serta catatan singkat seperti \"Telah dibaca dan disetujui\".",
-          "Tempatkan, periksa, unduh: tanda tangan muncul di kanan bawah halaman terakhir. Geser ke garis tanda tangan dan pakai sudutnya untuk mengubah ukuran. Jika pemilik meminta paraf di setiap halaman, aktifkan pilihan untuk memaraf setiap halaman.",
+          "Tanda tangan Anda: gambar dengan jari, stylus, atau mouse, ketik nama Anda, atau impor foto tanda tangan Anda di atas kertas putih. Di bawah tanda tangan, jika mau, biarkan tanggal hari ini dan tambahkan tempat serta catatan singkat seperti \"Telah dibaca dan disetujui\".",
+          "Tempatkan, periksa, unduh: tanda tangan muncul di kanan bawah halaman terakhir. Geser ke garis tanda tangan dan pakai sudutnya untuk mengubah ukuran. Jika pemilik meminta paraf di setiap halaman, aktifkan pilihan \"Paraf juga setiap halaman\".",
           "Periksa pratinjau, lalu unduh. Salinan yang sudah ditandatangani memakai nama file asli dengan tambahan -signed di akhir. Salinan inilah yang Anda kirim kembali.",
         ],
       },
@@ -553,13 +553,13 @@ export const GUIDES_ID: Guide[] = [
       },
       {
         type: "tip",
-        text: "Setelah mengunduh, Cachety menampilkan sidik jari setiap file: kode pendek yang dihitung dari file persis yang Anda kirim. Salin dan simpan bersama arsip Anda. Jika suatu hari muncul versi lain dari perjanjian itu, Anda bisa menunjukkan bahwa itu bukan versi yang Anda tanda tangani.",
+        text: "Setelah mengunduh, Cachety menampilkan sidik jari setiap file: kode 64 karakter yang dihitung dari file persis yang Anda unduh. Salin, simpan bersama arsip Anda, dan kirimkan bersama dokumennya (misalnya dalam email yang sama). Jika suatu hari muncul versi lain dari perjanjian itu, sidik jarinya tidak akan cocok: Anda bisa tahu bahwa itu bukan file yang Anda kirim.",
       },
       { type: "h2", text: "Pilihan yang perlu Anda ketahui" },
       {
         type: "list",
         items: [
-          "Paraf di setiap halaman menempatkan salinan kecil tanda tangan Anda di kanan bawah semua halaman lain, sehingga halaman yang ditukar lebih mudah ketahuan.",
+          "Pilihan \"Paraf juga setiap halaman\" menempatkan salinan kecil tanda tangan Anda di kanan bawah semua halaman lain, sehingga halaman yang ditukar lebih mudah ketahuan.",
           "\"Kunci dengan kata sandi\" mati secara bawaan, karena penerima harus bisa membuka file. Nyalakan hanya jika Anda memberikan kata sandinya lewat jalur lain, misalnya lewat telepon.",
           "\"Perkecil ukuran\" membantu jika email atau formulir penerima membatasi ukuran file.",
           "Menambahkan watermark sekaligus akan menuliskan keperluan, penerima, dan tanggal di atas salinan yang ditandatangani.",
@@ -627,7 +627,7 @@ export const GUIDES_ID: Guide[] = [
     title: "Cara tanda tangan PDF langsung dari HP Android atau iPhone",
     metaTitle: "Cara Tanda Tangan PDF di HP Android dan iPhone, Gratis",
     description:
-      "Tanda tangani PDF dengan jari di HP Android atau iPhone. Tanpa instal aplikasi, tanpa akun, dan dokumen tidak pernah diunggah. Gratis dan open source.",
+      "Tanda tangani PDF dengan jari di HP Android atau iPhone. Tanpa instal aplikasi, tanpa akun, dan dokumen tidak pernah di-upload. Gratis dan open source.",
     intro:
       "Ada yang mengirim PDF untuk ditandatangani dan dikirim kembali, sementara Anda jauh dari komputer. Anda bisa menandatanganinya dengan jari di HP, langsung di browser, dalam sekitar satu menit.",
     example: "Surat izin sudah ditandatangani, hanya untuk SD Tunas Harapan, 17/10/2026",
@@ -635,7 +635,7 @@ export const GUIDES_ID: Guide[] = [
       { type: "h2", text: "Tanpa aplikasi, tanpa akun, tanpa upload" },
       {
         type: "p",
-        text: "Cachety berjalan di browser HP, seperti Chrome atau Safari. Tidak ada yang perlu diunduh dari toko aplikasi dan tidak perlu membuat akun. Dokumen diproses di HP itu sendiri dan tidak pernah diunggah: halaman ini secara teknis dilarang menghubungi situs lain.",
+        text: "Cachety berjalan di browser HP, seperti Chrome atau Safari. Tidak ada yang perlu diunduh dari toko aplikasi dan tidak perlu membuat akun. Dokumen diproses di HP itu sendiri dan tidak pernah di-upload: halaman ini secara teknis dilarang menghubungi situs lain.",
       },
       { type: "h2", text: "Langkah-langkah di HP" },
       {
@@ -643,7 +643,7 @@ export const GUIDES_ID: Guide[] = [
         items: [
           "Simpan PDF yang Anda terima ke HP. Di sebagian besar aplikasi email atau WhatsApp, ketuk lampirannya, lalu simpan ke folder Download di Android atau ke aplikasi File di iPhone.",
           "Buka cachety.com/id/sign di browser, ketuk area dokumen, lalu pilih PDF tersebut. Foto dokumen kertas juga bisa.",
-          "Gambar tanda tangan Anda di kotak dengan jari. Kurang pas? Batalkan goresan terakhir atau hapus semuanya, lalu coba lagi. Anda juga bisa mengetik nama, atau mengunggah foto tanda tangan Anda.",
+          "Gambar tanda tangan Anda di kotak dengan jari. Kurang pas? Batalkan goresan terakhir atau hapus semuanya, lalu coba lagi. Anda juga bisa mengetik nama, atau mengimpor foto tanda tangan Anda.",
           "Pilih apa yang muncul di bawah tanda tangan, jika perlu. Tanggal hari ini sudah aktif secara bawaan, dan Anda bisa menambahkan tempat serta catatan seperti \"Telah dibaca dan disetujui\".",
           "Lanjut ke langkah tempatkan, periksa, unduh. Tanda tangan muncul di kanan bawah halaman terakhir. Geser dengan jari dan pakai sudutnya untuk mengubah ukuran.",
           "Periksa pratinjau, unduh PDF yang sudah ditandatangani, lalu kirim kembali lewat email atau WhatsApp.",
@@ -656,7 +656,7 @@ export const GUIDES_ID: Guide[] = [
       { type: "h2", text: "Lebih suka memakai foto tanda tangan?" },
       {
         type: "p",
-        text: "Jika tanda tangan dengan jari terasa canggung, tanda tangani selembar kertas putih dengan pulpen gelap, foto di bawah cahaya siang, lalu pilih untuk mengunggah gambar. Latar putihnya dihapus otomatis. Jika masih ada bagian kertas yang terlihat, geser pengatur kepekaan. Foto iPhone (HEIC) juga bisa.",
+        text: "Jika tanda tangan dengan jari terasa canggung, tanda tangani selembar kertas putih dengan pulpen gelap, foto di bawah cahaya siang, lalu pilih tab \"Impor\". Latar putihnya dihapus otomatis. Jika masih ada bagian kertas yang terlihat, geser pengatur \"Sensitivitas\". Foto iPhone (HEIC) juga bisa.",
       },
       { type: "h2", text: "Pastikan semuanya tetap di HP" },
       {
@@ -667,13 +667,13 @@ export const GUIDES_ID: Guide[] = [
       {
         type: "list",
         items: [
-          "Paraf di setiap halaman menambahkan salinan kecil tanda tangan Anda di halaman-halaman lain.",
+          "Pilihan \"Paraf juga setiap halaman\" menambahkan salinan kecil tanda tangan Anda di halaman-halaman lain.",
           "\"Perkecil ukuran\" menjaga file tetap di bawah batas ukuran email atau formulir online.",
           "\"Kunci dengan kata sandi\" mati secara bawaan, supaya penerima bisa langsung membuka file.",
-          "Setelah mengunduh, sidik jari file ditampilkan. Simpan: jika suatu hari muncul versi lain, Anda bisa menunjukkan bahwa itu bukan versi yang Anda tanda tangani.",
+          "Setelah mengunduh, sidik jari file ditampilkan. Simpan, dan kirimkan bersama dokumennya: jika suatu hari muncul versi lain, sidik jarinya tidak akan cocok, dan Anda bisa tahu bahwa itu bukan file yang Anda kirim.",
         ],
       },
-      { type: "h2", text: "Seberapa kuat tanda tangan ini" },
+      { type: "h2", text: "Seberapa kuat tanda tangan ini?" },
       {
         type: "p",
         text: "Tanda tangan yang digambar di HP lalu ditempatkan di dokumen adalah tanda tangan elektronik tidak tersertifikasi. Umumnya ini diterima untuk dokumen sehari-hari, seperti surat izin sekolah, formulir organisasi, penawaran harga, dan dokumen sewa. Aturannya berbeda di setiap negara. Jika terjadi sengketa, pihak yang mengandalkan dokumen itulah yang harus membuktikan siapa yang menandatanganinya; simpan email atau pesan yang dipakai untuk mengirimnya.",
@@ -693,7 +693,7 @@ export const GUIDES_ID: Guide[] = [
         a: "Bisa. Kotak tanda tangan bisa dipakai dengan jari, stylus, atau mouse di komputer.",
       },
       {
-        q: "Apakah PDF-nya diunggah ke suatu tempat?",
+        q: "Apakah PDF-nya di-upload ke suatu tempat?",
         a: "Tidak. Semuanya terjadi di HP Anda. Nyalakan mode pesawat setelah halaman terbuka, dan semuanya tetap berjalan.",
       },
       {

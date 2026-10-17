@@ -240,7 +240,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "Ouvrez cette page, puis coupez Internet (mode avion). Déposez un document et signez-le : Cachety fonctionne toujours. La preuve que rien ne passe par Internet.",
       legal: {
         title: "Quelle valeur a cette signature ?",
-        p1: "Une signature dessinée ou tapée puis posée sur le document est ce qu'on appelle couramment une signature électronique « simple ». En Europe, un juge ne peut pas l'écarter comme preuve au seul motif qu'elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu'il consent à l'acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l'est (Cour de cassation, 2022 et 2024).",
+        p1: "Une signature dessinée, tapée ou importée puis posée sur le document est ce qu'on appelle couramment une signature électronique « simple ». Dans l'Union européenne, un juge ne peut pas l'écarter comme preuve au seul motif qu'elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu'il consent à l'acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l'est (Cour de cassation, 2022 et 2024).",
         p2: "Pour les documents de tous les jours, c'est en général accepté : dossier de location, attestation, devis, formulaire d'école ou d'association. En cas de litige, celui qui s'appuie sur le document doit prouver qui l'a signé ; gardez l'e-mail ou le message avec lequel il a été envoyé. Seule une signature « qualifiée » (avec un certificat délivré par un prestataire qualifié) est présumée fiable et équivaut à une signature manuscrite.",
         p3: "Ce n'est pas le bon outil quand une signature qualifiée est exigée, quand la loi demande une mention écrite de votre main (caution, reconnaissance de dette), pour un testament ou un acte devant notaire, ou quand l'autre partie impose une plateforme précise (certains contrats de prêt ou d'assurance, certaines démarches administratives). Dans ce cas, utilisez l'outil demandé.",
         note: "Ceci n'est pas un conseil juridique.",
@@ -479,7 +479,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       ],
       signLink: {
         title: "Got a document to sign?",
-        body: "Lease, attestation, quote: draw, type or upload your signature and place it on the PDF. Here too, nothing is uploaded.",
+        body: "Lease, certificate, quote: draw, type or upload your signature and place it on the PDF. Here too, nothing leaves your device.",
         cta: "Sign a document",
       },
       guidesTitle: "Practical guides",
@@ -490,7 +490,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     sign: {
       hero: {
         title: "Sign a document without sending it anywhere",
-        lead: "Lease, attestation, quote, consent form: sign in seconds. The document stays on your device from start to finish.",
+        lead: "Lease, certificate, quote, consent form: sign in seconds. The document stays on your device from start to finish.",
         pills: ["Free", "No account", "Nothing uploaded", "Made in France"],
       },
       howTitle: "How it works",
@@ -504,7 +504,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "Open this page, then switch off the internet (aeroplane mode). Drop in a document and sign it: Cachety still works. Proof that nothing goes over the internet.",
       legal: {
         title: "What is this signature worth?",
-        p1: "A signature drawn or typed and placed on the document is what is commonly called a 'simple' electronic signature. In the EU, a court cannot reject it as evidence solely because it is electronic (eIDAS Regulation, article 25). In France, a signature identifies its author and shows their consent; in electronic form, it must rely on a reliable process linking it to the document (Civil Code, article 1367). A signature image, like a scanned signature, does not meet that test on its own: it counts if nobody disputes it, but carries little weight if someone does (Cour de cassation, 2022 and 2024).",
+        p1: "A signature drawn, typed or uploaded and placed on the document is what is commonly called a 'simple' electronic signature. In the EU, a court cannot reject it as evidence solely because it is electronic (eIDAS Regulation, article 25). In France, a signature identifies its author and shows their consent; in electronic form, it must rely on a reliable process linking it to the document (Civil Code, article 1367). A signature image, like a scanned signature, does not meet that test on its own: it counts if nobody disputes it, but carries little weight if someone does (Cour de cassation, 2022 and 2024).",
         p2: "For everyday documents, this is usually accepted: rental applications, certificates, quotes, school or club forms. In a dispute, whoever relies on the document must prove who signed it; keep the email or message it was sent with. Only a 'qualified' signature (with a certificate from a qualified provider) is presumed reliable and equivalent to a handwritten one.",
         p3: "This is not the right tool when a qualified signature is required, when the law requires a statement in your own handwriting (guarantees, IOUs), for a will or a notarial deed, or when the other party requires a specific platform (some loan or insurance contracts, some administrative procedures). In that case, use the tool you are asked to use.",
         note: "This is not legal advice.",
@@ -769,8 +769,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "このページを開いてから、インターネットを切ってください（機内モード）。書類をドロップして署名しても、Cachety はそのまま動きます。何もネットに送られていない証拠です。",
       legal: {
         title: "この署名にはどんな効力がありますか？",
-        p1: "手書きまたは入力した署名を書類に配置したものは、一般に「シンプルな」電子署名と呼ばれるものです。EU では、電子的であるという理由だけで、裁判所がそれを証拠として退けることはできません（eIDAS 規則第 25 条）。フランスでは、署名は作成者を特定し、その人の同意を示すものです。電子的な署名は、書類との結びつきを保証する信頼できる方法によるものでなければなりません（民法典第 1367 条）。スキャンした署名のような署名の画像は、それだけではこの条件を満たしません。誰も争わなければ署名として扱われますが、争われた場合はあまり重みを持ちません（破毀院、2022 年と 2024 年の判決）。",
-        p2: "日常の書類なら、ふつうは受け入れられます：賃貸の申込書類、証明書、見積書、学校や団体の書類など。争いになった場合、誰が署名したかを証明しなければならないのは、その書類を根拠にする側です。書類を送ったときのメールやメッセージは残しておいてください。信頼性が推定され、手書きの署名と同等とされるのは、「適格」電子署名（適格事業者が発行する証明書付き）だけです。",
+        p1: "手書き、入力、または画像で用意した署名を書類に配置したものは、一般に「簡易な」電子署名と呼ばれるものです。EU では、電子的であるという理由だけで、裁判所がそれを証拠として退けることはできません（eIDAS 規則第 25 条）。フランスでは、署名は作成者を特定し、その人の同意を示すものです。電子的な署名は、書類との結びつきを保証する信頼できる方法によるものでなければなりません（民法典第 1367 条）。スキャンした署名のような署名の画像は、それだけではこの条件を満たしません。誰も争わなければ署名として扱われますが、争われた場合はあまり重みを持ちません（破毀院、2022 年と 2024 年の判決）。",
+        p2: "日常の書類なら、ふつうは受け入れられます：賃貸の申込書類、証明書、見積書、学校や団体の書類など。争いになった場合、誰が署名したかを証明しなければならないのは、その書類を根拠にする側です。書類を送ったときのメールやメッセージは残しておいてください。信頼性が推定され、手書きの署名と同等とされるのは、「適格」電子署名（適格トラストサービス事業者が発行する証明書付き）だけです。",
         p3: "適格署名が求められる場合、法律が本人の手書きによる記載を求めている場合（保証、借用証書）、遺言や公証人の前で作成する証書、相手が特定のサービスを指定している場合（一部のローン契約や保険契約、一部の行政手続き）には向いていません。その場合は、指定されたツールを使ってください。",
         note: "これは法的助言ではありません。書類によっては、国ごとにルールが異なります。この訳はネイティブスピーカーによる確認待ちです。",
       },
@@ -1034,8 +1034,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         "先打开本页，然后断网（开启飞行模式）。再拖入一个文件并签名：Cachety 照常工作。这就证明没有任何东西经过互联网。",
       legal: {
         title: "这种签名有什么效力？",
-        p1: "手写或输入后放到文件上的签名，就是通常所说的“简单”电子签名。在欧盟，法院不能仅因签名是电子形式就拒绝将其作为证据（eIDAS 条例第 25 条）。在法国，签名用于识别签署人并表明其同意；电子形式的签名还必须采用可靠的方法，确保它与文件相关联（《民法典》第 1367 条）。签名图片（例如扫描的签名）本身并不满足这一条件：如果没有人提出异议，它可以算作签名；但一旦有人提出异议，它的证明力就很弱（法国最高法院，2022 年和 2024 年）。",
-        p2: "对于日常文件，这通常是被接受的：租房申请材料、证明、报价单、学校或社团表格。如有争议，依据该文件主张权利的一方必须证明是谁签的字；请保留发送文件时所用的电子邮件或消息。只有“合格”电子签名（使用合格服务机构颁发的证书）才被推定为可靠，并等同于手写签名。",
+        p1: "手写、输入或导入后放到文件上的签名，就是通常所说的「简单」电子签名。在欧盟，法院不能仅因签名是电子形式就拒绝将其作为证据（eIDAS 条例第 25 条）。在法国，签名用于识别签署人并表明其同意；电子形式的签名还必须采用可靠的方法，确保它与文件相关联（《民法典》第 1367 条）。签名图片（例如扫描的签名）本身并不满足这一条件：如果没有人提出异议，它可以算作签名；但一旦有人提出异议，它的证明力就很弱（法国最高法院，2022 年和 2024 年）。",
+        p2: "对于日常文件，这通常是被接受的：租房申请材料、证明、报价单、学校或社团表格。如有争议，依据该文件主张权利的一方必须证明是谁签的字；请保留发送文件时所用的电子邮件或消息。只有「合格」电子签名（使用合格信任服务提供商颁发的证书）才被推定为可靠，并等同于手写签名。",
         p3: "以下情况不适合使用本工具：要求使用合格签名时；法律要求由您亲笔书写某段文字时（保证、借据）；订立遗嘱或办理公证文书时；对方指定了某个平台时（例如某些贷款或保险合同、某些政务手续）。这种情况下，请使用对方要求的工具。",
         note: "以上内容不构成法律意见。某些文件的规定因国家而异。本译文尚待母语人士审校。",
       },

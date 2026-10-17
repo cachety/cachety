@@ -398,7 +398,7 @@ export const STRINGS_ES: Strings = {
     another: "Firmar otro documento",
     fingerprint: {
       title: "Huella del archivo",
-      body: "Guarda esta huella. Si algún día aparece otra versión del documento, podrás demostrar que no es la que firmaste.",
+      body: "Guarda esta huella y envíala junto con el documento (en el mismo correo, por ejemplo). Si algún día aparece otra versión, su huella no coincidirá: sabrás que no es el archivo que enviaste.",
       copy: "Copiar",
       copied: "Copiada",
       copyAria: (name: string) => `Copiar la huella de ${name}`,

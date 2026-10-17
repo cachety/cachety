@@ -471,8 +471,8 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com/es/sign en tu navegador, en el ordenador o en el móvil. No hay nada que instalar ni cuenta que crear.",
           "Tus documentos: suelta el PDF en la página o tócala para elegirlo. Puedes añadir varios a la vez, por ejemplo el contrato y el inventario. También vale una foto de un documento en papel: se convierte en un PDF de una página.",
-          "Tu firma: dibújala con el dedo, un lápiz táctil o el ratón, escribe tu nombre o sube una foto de tu firma sobre papel blanco. Debajo puedes dejar la fecha de hoy y, si quieres, añadir el lugar y una nota breve como «Leído y conforme».",
-          "Coloca, revisa y descarga: tu firma aparece abajo a la derecha de la última página. Arrástrala hasta la línea de firma y cambia su tamaño desde la esquina. Si la inmobiliaria pide rubricar cada página, activa la opción de rubricar todas las páginas.",
+          "Tu firma: dibújala con el dedo, un lápiz táctil o el ratón, escribe tu nombre o importa una foto de tu firma sobre papel blanco. Debajo puedes dejar la fecha de hoy y, si quieres, añadir el lugar y una nota breve como «Leído y conforme».",
+          "Coloca, revisa y descarga: tu firma aparece abajo a la derecha de la última página. Arrástrala hasta la línea de firma y cambia su tamaño desde la esquina. Si la inmobiliaria pide rubricar cada página, activa «Rubricar también cada página».",
           "Revisa la vista previa y descarga. La copia firmada conserva el nombre original con -signed al final. Esa es la copia que devuelves.",
         ],
       },
@@ -482,13 +482,13 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         type: "tip",
-        text: "Después de la descarga, Cachety muestra la huella de cada archivo: un código corto calculado a partir del archivo exacto que enviaste. Cópiala y guárdala con tus papeles. Si algún día aparece otra versión del contrato, podrás demostrar que no es la que firmaste.",
+        text: "Después de la descarga, Cachety muestra la huella de cada archivo: un código de 64 caracteres calculado a partir del archivo exacto que descargaste. Cópiala, guárdala con tus papeles y envíala junto con el documento (en el mismo correo, por ejemplo). Si algún día aparece otra versión del contrato, su huella no coincidirá: sabrás que no es el archivo que enviaste.",
       },
       { type: "h2", text: "Opciones que conviene conocer" },
       {
         type: "list",
         items: [
-          "Rubricar todas las páginas pone una copia pequeña de tu firma abajo a la derecha de cada una de las demás páginas, así una página cambiada se nota más.",
+          "«Rubricar también cada página» pone una copia pequeña de tu firma abajo a la derecha de cada una de las demás páginas, así una página cambiada se nota más.",
           "«Proteger con contraseña» está desactivada por defecto, porque la inmobiliaria tiene que poder abrir el archivo. Actívala solo si le das la contraseña por otra vía, por ejemplo por teléfono.",
           "«Reducir el tamaño» ayuda cuando el correo o el portal de la inmobiliaria limita el peso del archivo.",
           "Añadir también una marca de agua escribe el motivo, el destinatario y la fecha sobre la copia firmada.",
@@ -501,7 +501,7 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         type: "p",
-        text: "Cada página de la copia firmada se reconstruye a partir de sus píxeles. Así se elimina el texto oculto y los metadatos, y el texto ya no se puede seleccionar en la copia firmada. Tu original se queda contigo, intacto.",
+        text: "Cada página de la copia firmada se reconstruye a partir de sus píxeles. Así se eliminan el texto oculto y los metadatos, y el texto ya no se puede seleccionar en la copia firmada. Tu original se queda contigo, intacto.",
       },
       { type: "h2", text: "¿Vale esta firma para un contrato de alquiler?" },
       {
@@ -514,7 +514,7 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         type: "warning",
-        text: "No es la herramienta adecuada cuando se exige una firma cualificada, cuando la ley pide una mención escrita de tu puño y letra (fianza, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone una plataforma concreta (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). En esos casos, usa lo que te pidan. Esto no es asesoramiento jurídico.",
+        text: "No es la herramienta adecuada cuando se exige una firma cualificada, cuando la ley pide una mención escrita de tu puño y letra (aval personal, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone una plataforma concreta (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). En esos casos, usa lo que te pidan. Esto no es asesoramiento jurídico.",
       },
       { type: "h2", text: "¿Alguien puede reutilizar mi firma?" },
       {
@@ -569,7 +569,7 @@ export const GUIDES_ES: Guide[] = [
         items: [
           "Guarda en el móvil el PDF que te enviaron. En la mayoría de las apps de correo, toca el adjunto y guárdalo en Archivos en el iPhone o en Descargas en Android.",
           "Abre cachety.com/es/sign en tu navegador, toca la zona para elegir archivos y escoge el PDF. También vale una foto de un documento en papel.",
-          "Dibuja tu firma en el recuadro con el dedo. ¿No te convence? Deshaz el último trazo o bórrala entera y vuelve a intentarlo. También puedes escribir tu nombre o subir una foto de tu firma.",
+          "Dibuja tu firma en el recuadro con el dedo. ¿No te convence? Deshaz el último trazo o bórrala entera y vuelve a intentarlo. También puedes escribir tu nombre o importar una foto de tu firma.",
           "Elige qué va debajo de la firma, si quieres algo. La fecha de hoy viene activada, y puedes añadir el lugar y una nota como «Leído y conforme».",
           "Pasa al paso de colocar, revisar y descargar. Tu firma aparece abajo a la derecha de la última página. Arrástrala con el dedo y cambia su tamaño desde la esquina.",
           "Revisa la vista previa, descarga el PDF firmado y devuélvelo por correo o por una app de mensajería.",
@@ -582,7 +582,7 @@ export const GUIDES_ES: Guide[] = [
       { type: "h2", text: "¿Prefieres una foto de tu firma?" },
       {
         type: "p",
-        text: "Si firmar con el dedo te resulta incómodo, firma en una hoja blanca con un bolígrafo oscuro, hazle una foto con luz de día y elige subir una imagen. El fondo blanco se quita automáticamente. Si todavía se ve algo de papel, mueve el control de sensibilidad. Las fotos del iPhone (HEIC) también funcionan.",
+        text: "Si firmar con el dedo te resulta incómodo, firma en una hoja blanca con un bolígrafo oscuro, hazle una foto con luz de día y elige «Importar». El fondo blanco se quita automáticamente. Si todavía se ve algo de papel, mueve el control «Sensibilidad». Las fotos del iPhone (HEIC) también funcionan.",
       },
       { type: "h2", text: "Comprueba que todo se queda en tu móvil" },
       {
@@ -593,10 +593,10 @@ export const GUIDES_ES: Guide[] = [
       {
         type: "list",
         items: [
-          "Rubricar todas las páginas añade una copia pequeña de tu firma en las demás páginas.",
+          "«Rubricar también cada página» añade una copia pequeña de tu firma en las demás páginas.",
           "«Reducir el tamaño» deja el archivo por debajo del peso que admite un correo o una web.",
           "«Proteger con contraseña» está desactivada por defecto, para que el destinatario pueda abrir el archivo enseguida.",
-          "Tras la descarga se muestra la huella del archivo. Guárdala: si algún día aparece otra versión, podrás demostrar que no es la que firmaste.",
+          "Tras la descarga se muestra la huella del archivo. Guárdala y envíala junto con el documento: si algún día aparece otra versión, su huella no coincidirá y sabrás que no es el archivo que enviaste.",
         ],
       },
       { type: "h2", text: "Qué valor tiene esta firma" },
@@ -606,7 +606,7 @@ export const GUIDES_ES: Guide[] = [
       },
       {
         type: "warning",
-        text: "No es la herramienta adecuada cuando se exige una firma cualificada con certificado, cuando la ley pide una mención escrita de tu puño y letra (fianza, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone su propia plataforma (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). Y, como con una firma en papel escaneada, alguien podría recortar tu firma de la copia y reutilizarla. Una marca de agua con el motivo y el destinatario, y una rúbrica en cada página, reducen ese riesgo. Esto no es asesoramiento jurídico.",
+        text: "No es la herramienta adecuada cuando se exige una firma cualificada con certificado, cuando la ley pide una mención escrita de tu puño y letra (aval personal, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone su propia plataforma (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). Y, como con una firma en papel escaneada, alguien podría recortar tu firma de la copia y reutilizarla. Una marca de agua con el motivo y el destinatario, y una rúbrica en cada página, reducen ese riesgo. Esto no es asesoramiento jurídico.",
       },
     ],
     faq: [

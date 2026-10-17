@@ -47,19 +47,19 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **11 languages**, with right-to-left layout for Arabic and Persian and dedicated fonts for each script.
 - **Guided help tour** for first-time visitors, offered when someone seems unsure where to start.
 - **92 practical guides** for everyday situations in France, the UK, Germany, the Netherlands, Spain and Latin America, Brazil, Indonesia, the Arab world, Iran, Japan and China.
-- **82 fact-checked comparisons** with other watermark tools (iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), with sources, including when another tool is the better choice.
+- **82 fact-checked comparisons** with other watermark tools (iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), and **55** with signing tools (DocuSign, Youtrust, Adobe Acrobat, iLovePDF and Smallpdf, 5 in each language), with sources, including when another tool is the better choice.
 - **On partner websites:** approved sites can show the watermark tool, the sign tool or both in their own pages (an iframe served by cachety.com, so the host site can't see the documents). See [docs/embed.md](docs/embed.md) and [cachety.com/en/partners](https://cachety.com/en/partners).
 
 ## Sign a document
 
 Cachety can also sign a PDF, at **[cachety.com/en/sign](https://cachety.com/en/sign)**. Draw your signature with a finger, a stylus or the mouse, type your name, or upload a photo of it. Add the date, the place and a note such as "Read and approved" if you wish, place it on the page, and download a signed PDF.
 
-- **Same promise:** nothing is uploaded. The sign page has the same network lock as the watermark tool, and the airplane-mode test works there too. Your signature only exists in the tab's memory and is never saved.
+- **Same promise:** nothing leaves your device. The sign page has the same network lock as the watermark tool, and the airplane-mode test works there too. Your signature only exists in the tab's memory and is never saved.
 - **Flattened output:** each page is rebuilt from pixels, so the signature can't be moved or deleted by editing the PDF, and hidden text, metadata and photo GPS location are removed. The text is no longer selectable in the signed copy; your original stays untouched.
-- **Options:** initial every page, add a watermark (purpose, recipient, date), make the file smaller, lock it with a password (off by default, so the recipient can open it), and keep a SHA-256 fingerprint of each file you send.
+- **Options:** initial every page, add a watermark (purpose, recipient, date), make the file smaller, lock it with a password (off by default, so the recipient can open it), and keep the SHA-256 fingerprint of each file you download.
 - **PDFs and photos**, several documents at once, on computers and phones, in all 11 languages.
 
-**What it's worth:** a signature placed this way is what is commonly called a *simple electronic signature*. It is usually accepted for everyday documents (rental paperwork, attestations, quotes, school and association forms). It is not a qualified signature: there is no certificate, no timestamp, and nothing that proves who signed. When a qualified signature, a statement in your own handwriting, a will or a notarial deed is required, or the other party imposes a specific platform, use that instead. This is not legal advice.
+**What it's worth:** a signature placed this way is what is commonly called a *simple electronic signature*. It is usually accepted for everyday documents (rental paperwork, certificates, quotes, school and association forms). It is not a qualified signature: there is no certificate, no timestamp, and nothing that proves who signed. When a qualified signature, a statement in your own handwriting, a will or a notarial deed is required, or the other party imposes a specific platform, use that instead. This is not legal advice.
 
 ## Privacy by design, and verifiable
 

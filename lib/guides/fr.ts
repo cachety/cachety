@@ -517,7 +517,7 @@ export const GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com/fr/sign dans votre navigateur, sur ordinateur ou sur téléphone. Rien à installer, aucun compte à créer.",
           "Vos documents : déposez le PDF sur la page, ou touchez la zone pour le choisir. Vous pouvez en mettre plusieurs à la fois, par exemple le bail et l’état des lieux. Une photo d’un document papier marche aussi : elle devient un PDF d’une page.",
-          "Votre signature : dessinez-la avec le doigt, un stylet ou la souris, tapez votre nom, ou importez une photo de votre signature sur papier blanc. Sous « Sous la signature (facultatif) », gardez la date du jour et ajoutez si besoin le lieu et une mention comme « Lu et approuvé ».",
+          "Votre signature : dessinez-la avec le doigt, un stylet ou la souris, tapez votre nom, ou importez une photo de votre signature sur papier blanc. Dans la partie « Sous la signature (facultatif) », gardez la date du jour et ajoutez si besoin le lieu et une mention comme « Lu et approuvé ».",
           "Placez, vérifiez, téléchargez : votre signature apparaît en bas à droite de la dernière page. Faites-la glisser sur la ligne prévue et utilisez le coin pour la redimensionner. Cochez « Parapher aussi chaque page » si l’agence demande un paraphe sur chaque page.",
           "Vérifiez l’aperçu, puis téléchargez. La copie signée garde le nom d’origine, suivi de -signed. C’est cette copie que vous renvoyez à l’agence.",
         ],
@@ -528,7 +528,7 @@ export const GUIDES_FR: Guide[] = [
       },
       {
         type: "tip",
-        text: "Après le téléchargement, Cachety affiche l’empreinte de chaque fichier : un code court calculé à partir du fichier exact que vous avez envoyé. Copiez-la et gardez-la avec vos papiers. Si une autre version du bail réapparaît un jour, vous pourrez montrer que ce n’est pas celle que vous avez signée.",
+        text: "Après le téléchargement, Cachety affiche l’empreinte de chaque fichier : un code de 64 caractères calculé à partir du fichier exact que vous téléchargez. Copiez-la, gardez-la avec vos papiers, et envoyez-la avec le document (dans le même e-mail, par exemple). Si une autre version du bail réapparaît un jour, son empreinte sera différente : vous pourrez voir que ce n’est pas le fichier que vous avez envoyé.",
       },
       { type: "h2", text: "Les options utiles" },
       {
@@ -552,7 +552,7 @@ export const GUIDES_FR: Guide[] = [
       { type: "h2", text: "Quelle valeur a cette signature pour un bail ?" },
       {
         type: "p",
-        text: "Une signature dessinée ou tapée puis posée sur le document est ce qu’on appelle couramment une signature électronique « simple ». En Europe, un juge ne peut pas l’écarter comme preuve au seul motif qu’elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu’il consent à l’acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l’est (Cour de cassation, 2022 et 2024). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, c’est en général accepté.",
+        text: "Une signature dessinée, tapée ou importée puis posée sur le document est ce qu’on appelle couramment une signature électronique « simple ». Dans l’Union européenne, un juge ne peut pas l’écarter comme preuve au seul motif qu’elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu’il consent à l’acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l’est (Cour de cassation, 2022 et 2024). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, c’est en général accepté.",
       },
       {
         type: "p",
@@ -644,7 +644,7 @@ export const GUIDES_FR: Guide[] = [
           "« Parapher aussi chaque page » ajoute une petite copie de votre signature sur les autres pages.",
           "« Réduire la taille » garde le fichier sous le poids accepté par une messagerie ou un site.",
           "« Verrouiller avec un mot de passe » est désactivé par défaut, pour que le destinataire puisse ouvrir le fichier tout de suite.",
-          "Après le téléchargement, l’empreinte du fichier s’affiche. Gardez-la : si une autre version réapparaît un jour, vous pourrez montrer que ce n’est pas celle que vous avez signée.",
+          "Après le téléchargement, l’empreinte du fichier s’affiche. Gardez-la et envoyez-la avec le document : si une autre version réapparaît un jour, son empreinte sera différente, et vous pourrez voir que ce n’est pas le fichier que vous avez envoyé.",
         ],
       },
       { type: "h2", text: "Quelle valeur a cette signature ?" },

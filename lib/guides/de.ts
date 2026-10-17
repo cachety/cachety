@@ -555,8 +555,8 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com/de/sign im Browser, am Computer oder auf dem Handy. Nichts installieren, kein Konto.",
           "Deine Dokumente: Leg das PDF auf der Seite ab oder tippe, um es auszuwählen. Mehrere Dateien auf einmal gehen auch, zum Beispiel Mietvertrag und Übergabeprotokoll. Ein Foto eines Papierdokuments funktioniert ebenfalls: Es wird zu einem einseitigen PDF.",
-          "Deine Unterschrift: Zeichne sie mit dem Finger, einem Eingabestift oder der Maus, tippe deinen Namen oder lade ein Foto deiner Unterschrift auf weißem Papier hoch. Darunter kannst du das heutige Datum stehen lassen und, wenn du willst, den Ort und einen kurzen Vermerk wie „Gelesen und genehmigt“ ergänzen.",
-          "Platzieren, prüfen, herunterladen: Deine Unterschrift erscheint unten rechts auf der letzten Seite. Zieh sie auf die Unterschriftszeile und vergrößere oder verkleinere sie über die Ecke. Wenn der Vermieter auf jeder Seite ein Kürzel möchte, schalte das Paraphieren aller Seiten ein.",
+          "Deine Unterschrift: Zeichne sie mit dem Finger, einem Eingabestift oder der Maus, tippe deinen Namen oder importiere ein Foto deiner Unterschrift auf weißem Papier. Darunter kannst du das heutige Datum stehen lassen und, wenn du willst, den Ort und einen kurzen Vermerk wie „Gelesen und genehmigt“ ergänzen.",
+          "Platzieren, prüfen, herunterladen: Deine Unterschrift erscheint unten rechts auf der letzten Seite. Zieh sie auf die Unterschriftszeile und vergrößere oder verkleinere sie über die Ecke. Wenn der Vermieter auf jeder Seite ein Kürzel möchte, schalte „Auch jede Seite abzeichnen“ ein.",
           "Prüf die Vorschau und lade die Datei herunter. Die unterschriebene Kopie behält den ursprünglichen Namen mit -signed am Ende. Diese Kopie schickst du zurück.",
         ],
       },
@@ -566,13 +566,13 @@ export const GUIDES_DE: Guide[] = [
       },
       {
         type: "tip",
-        text: "Nach dem Herunterladen zeigt Cachety einen Fingerabdruck jeder Datei: einen kurzen Code, berechnet aus genau der Datei, die du verschickt hast. Kopier ihn und heb ihn bei deinen Unterlagen auf. Taucht irgendwann eine andere Fassung des Vertrags auf, kannst du zeigen, dass es nicht die ist, die du unterschrieben hast.",
+        text: "Nach dem Herunterladen zeigt Cachety einen Fingerabdruck jeder Datei: einen Code aus 64 Zeichen, berechnet aus genau der Datei, die du heruntergeladen hast. Kopier ihn, heb ihn bei deinen Unterlagen auf und schick ihn mit dem Dokument mit (zum Beispiel in derselben E-Mail). Taucht irgendwann eine andere Fassung des Vertrags auf, stimmt ihr Fingerabdruck nicht überein: Du erkennst, dass es nicht die Datei ist, die du verschickt hast.",
       },
       { type: "h2", text: "Optionen, die du kennen solltest" },
       {
         type: "list",
         items: [
-          "Alle Seiten paraphieren setzt eine kleine Kopie deiner Unterschrift unten rechts auf jede andere Seite. So fällt eine ausgetauschte Seite leichter auf.",
+          "„Auch jede Seite abzeichnen“ setzt eine kleine Kopie deiner Unterschrift unten rechts auf jede andere Seite. So fällt eine ausgetauschte Seite leichter auf.",
           "„Mit Passwort schützen“ ist standardmäßig aus, denn der Vermieter muss die Datei öffnen können. Schalte es nur ein, wenn du ihm das Passwort auf anderem Weg gibst, zum Beispiel am Telefon.",
           "„Verkleinern“ hilft, wenn das E-Mail-Postfach oder das Portal die Dateigröße begrenzt.",
           "Zusätzlich ein Wasserzeichen schreibt Zweck, Empfänger und Datum quer über die unterschriebene Kopie.",
@@ -653,7 +653,7 @@ export const GUIDES_DE: Guide[] = [
         items: [
           "Speichere das erhaltene PDF auf deinem Handy. In den meisten Mail-Apps tippst du auf den Anhang und sicherst ihn in Dateien auf dem iPhone oder in Downloads auf Android.",
           "Öffne cachety.com/de/sign im Browser, tippe auf das Ablagefeld und wähle das PDF. Ein Foto eines Papierdokuments geht auch.",
-          "Zeichne deine Unterschrift mit dem Finger in das Feld. Nicht zufrieden? Mach den letzten Strich rückgängig oder lösch alles und versuch es noch mal. Du kannst auch deinen Namen tippen oder ein Foto deiner Unterschrift hochladen.",
+          "Zeichne deine Unterschrift mit dem Finger in das Feld. Nicht zufrieden? Mach den letzten Strich rückgängig oder lösch alles und versuch es noch mal. Du kannst auch deinen Namen tippen oder ein Foto deiner Unterschrift importieren.",
           "Wähle, was unter der Unterschrift stehen soll, wenn überhaupt. Das heutige Datum ist voreingestellt, und du kannst den Ort und einen Vermerk wie „Gelesen und genehmigt“ hinzufügen.",
           "Geh zum Schritt Platzieren, prüfen, herunterladen. Deine Unterschrift erscheint unten rechts auf der letzten Seite. Zieh sie mit dem Finger an ihren Platz und ändere die Größe über die Ecke.",
           "Prüf die Vorschau, lade das unterschriebene PDF herunter und schick es per E-Mail oder Messenger zurück.",
@@ -666,7 +666,7 @@ export const GUIDES_DE: Guide[] = [
       { type: "h2", text: "Lieber ein Foto deiner Unterschrift?" },
       {
         type: "p",
-        text: "Wenn dir das Unterschreiben mit dem Finger schwerfällt, unterschreib auf einem weißen Blatt mit einem dunklen Stift, fotografiere es bei Tageslicht und wähle das Hochladen. Der weiße Hintergrund wird für dich entfernt. Ist noch etwas Papier zu sehen, verschieb den Regler für die Empfindlichkeit. iPhone-Fotos (HEIC) funktionieren auch.",
+        text: "Wenn dir das Unterschreiben mit dem Finger schwerfällt, unterschreib auf einem weißen Blatt mit einem dunklen Stift, fotografiere es bei Tageslicht und wähle „Importieren“. Der weiße Hintergrund wird für dich entfernt. Ist noch etwas Papier zu sehen, verschieb den Regler „Empfindlichkeit“. iPhone-Fotos (HEIC) funktionieren auch.",
       },
       { type: "h2", text: "Prüf, dass alles auf deinem Handy bleibt" },
       {
@@ -677,10 +677,10 @@ export const GUIDES_DE: Guide[] = [
       {
         type: "list",
         items: [
-          "Alle Seiten paraphieren setzt eine kleine Kopie deiner Unterschrift auf die übrigen Seiten.",
+          "„Auch jede Seite abzeichnen“ setzt eine kleine Kopie deiner Unterschrift auf die übrigen Seiten.",
           "„Verkleinern“ hält die Datei unter der Größe, die eine E-Mail oder eine Website erlaubt.",
           "„Mit Passwort schützen“ ist standardmäßig aus, damit der Empfänger die Datei sofort öffnen kann.",
-          "Nach dem Herunterladen wird ein Fingerabdruck der Datei angezeigt. Heb ihn auf: Taucht je eine andere Fassung auf, kannst du zeigen, dass es nicht die ist, die du unterschrieben hast.",
+          "Nach dem Herunterladen wird ein Fingerabdruck der Datei angezeigt. Heb ihn auf und schick ihn mit dem Dokument mit: Taucht je eine andere Fassung auf, stimmt ihr Fingerabdruck nicht überein, und du erkennst, dass es nicht die Datei ist, die du verschickt hast.",
         ],
       },
       { type: "h2", text: "Was diese Unterschrift wert ist" },

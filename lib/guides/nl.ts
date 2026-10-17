@@ -509,8 +509,8 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Open cachety.com/nl/sign in je browser, op de computer of op je telefoon. Niets te installeren, geen account nodig.",
           "Je documenten: sleep de pdf naar de pagina, of tik om hem te kiezen. Meerdere bestanden tegelijk kan ook, bijvoorbeeld de huurovereenkomst en het opleveringsrapport. Een foto van een papieren document werkt ook: die wordt een pdf van één pagina.",
-          "Je handtekening: teken hem met je vinger, een stylus of de muis, typ je naam, of upload een foto van je handtekening op wit papier. Eronder kun je de datum van vandaag laten staan en als je wilt de plaats en een korte opmerking toevoegen, zoals Gelezen en goedgekeurd.",
-          "Plaatsen, controleren, downloaden: je handtekening verschijnt rechtsonder op de laatste pagina. Sleep hem naar de handtekeningregel en pas de grootte aan met de hoek. Vraagt de makelaar om een paraaf op elke pagina, zet dan het paraferen van alle pagina's aan.",
+          "Je handtekening: teken hem met je vinger, een stylus of de muis, typ je naam, of importeer een foto van je handtekening op wit papier. Eronder kun je de datum van vandaag laten staan en als je wilt de plaats en een korte vermelding toevoegen, zoals Gelezen en goedgekeurd.",
+          "Plaatsen, controleren, downloaden: je handtekening verschijnt rechtsonder op de laatste pagina. Sleep hem naar de handtekeningregel en pas de grootte aan met de hoek. Vraagt de makelaar om een paraaf op elke pagina, zet dan Ook elke pagina paraferen aan.",
           "Controleer het voorbeeld en download. De ondertekende kopie houdt de oorspronkelijke naam, met -signed erachter. Die kopie stuur je terug.",
         ],
       },
@@ -520,13 +520,13 @@ export const GUIDES_NL: Guide[] = [
       },
       {
         type: "tip",
-        text: "Na het downloaden toont Cachety een vingerafdruk van elk bestand: een korte code, berekend uit precies het bestand dat je hebt verstuurd. Kopieer hem en bewaar hem bij je papieren. Duikt er ooit een andere versie van het contract op, dan kun je laten zien dat het niet de versie is die jij hebt ondertekend.",
+        text: "Na het downloaden toont Cachety een vingerafdruk van elk bestand: een code van 64 tekens, berekend uit precies het bestand dat je hebt gedownload. Kopieer hem, bewaar hem bij je papieren en stuur hem mee met het document (bijvoorbeeld in dezelfde e-mail). Duikt er ooit een andere versie van het contract op, dan klopt de vingerafdruk niet: je ziet dat het niet het bestand is dat jij hebt verstuurd.",
       },
       { type: "h2", text: "Handige opties" },
       {
         type: "list",
         items: [
-          "Alle pagina's paraferen zet een kleine kopie van je handtekening rechtsonder op elke andere pagina. Een verwisselde pagina valt zo sneller op.",
+          "Ook elke pagina paraferen zet een kleine kopie van je handtekening rechtsonder op elke andere pagina. Een verwisselde pagina valt zo sneller op.",
           "Beveiligen met een wachtwoord staat standaard uit, want de makelaar moet het bestand kunnen openen. Zet het alleen aan als je het wachtwoord op een andere manier doorgeeft, bijvoorbeeld telefonisch.",
           "Kleiner maken helpt als de mail of het portaal van de makelaar de bestandsgrootte beperkt.",
           "Een watermerk toevoegen zet het doel, de ontvanger en de datum over de ondertekende kopie.",
@@ -557,7 +557,7 @@ export const GUIDES_NL: Guide[] = [
       { type: "h2", text: "Kan iemand mijn handtekening hergebruiken?" },
       {
         type: "p",
-        text: "Je handtekening is deel van het beeld van elke pagina. Je kunt hem dus niet als onderdeel van de pdf verplaatsen of verwijderen. Maar net als bij een gescande handtekening op papier zou iemand hem uit het beeld kunnen knippen en ergens anders kunnen plakken. Geen enkele afbeelding van een handtekening kan dat voorkomen, en het bestand bewijst niet wie hem heeft geplaatst of dat het document daarna niet is gewijzigd. Bewaar je kopie. Beperk het risico met een watermerk dat de kopie aan het doel en de ontvanger koppelt, en paraaf elke pagina.",
+        text: "Je handtekening is deel van het beeld van elke pagina. Je kunt hem dus niet als onderdeel van de pdf verplaatsen of verwijderen. Maar net als bij een gescande handtekening op papier zou iemand hem uit het beeld kunnen knippen en ergens anders kunnen plakken. Geen enkele afbeelding van een handtekening kan dat voorkomen, en het bestand bewijst niet wie hem heeft geplaatst of dat het document daarna niet is gewijzigd. Bewaar je kopie. Beperk het risico met een watermerk dat de kopie aan het doel en de ontvanger koppelt, en parafeer elke pagina.",
       },
     ],
     faq: [
@@ -607,8 +607,8 @@ export const GUIDES_NL: Guide[] = [
         items: [
           "Bewaar de pdf die je kreeg op je telefoon. In de meeste mailapps tik je op de bijlage en bewaar je hem in Bestanden op een iPhone of in Downloads op Android.",
           "Open cachety.com/nl/sign in je browser, tik op het vak en kies de pdf. Een foto van een papieren document werkt ook.",
-          "Teken je handtekening met je vinger in het vak. Niet tevreden? Maak de laatste lijn ongedaan of wis alles en probeer het opnieuw. Je kunt ook je naam typen of een foto van je handtekening uploaden.",
-          "Kies wat er onder de handtekening komt, als je dat wilt. De datum van vandaag staat standaard aan, en je kunt de plaats en een opmerking zoals Gelezen en goedgekeurd toevoegen.",
+          "Teken je handtekening met je vinger in het vak. Niet tevreden? Maak de laatste lijn ongedaan of wis alles en probeer het opnieuw. Je kunt ook je naam typen of een foto van je handtekening importeren.",
+          "Kies wat er onder de handtekening komt, als je dat wilt. De datum van vandaag staat standaard aan, en je kunt de plaats en een vermelding zoals Gelezen en goedgekeurd toevoegen.",
           "Ga naar de stap plaatsen, controleren, downloaden. Je handtekening verschijnt rechtsonder op de laatste pagina. Sleep hem met je vinger op zijn plek en pas de grootte aan met de hoek.",
           "Controleer het voorbeeld, download de ondertekende pdf en stuur hem terug via mail of een berichtenapp.",
         ],
@@ -620,7 +620,7 @@ export const GUIDES_NL: Guide[] = [
       { type: "h2", text: "Liever een foto van je handtekening?" },
       {
         type: "p",
-        text: "Vind je tekenen met je vinger lastig, zet dan je handtekening op een wit vel met een donkere pen, maak er bij daglicht een foto van en kies uploaden. De witte achtergrond wordt voor je weggehaald. Is er nog wat papier te zien, schuif dan met de regelaar voor de gevoeligheid. Foto's van je iPhone (HEIC) werken ook.",
+        text: "Vind je tekenen met je vinger lastig, zet dan je handtekening op een wit vel met een donkere pen, maak er bij daglicht een foto van en kies Importeren. De witte achtergrond wordt voor je weggehaald. Is er nog wat papier te zien, schuif dan met de regelaar Gevoeligheid. Foto's van je iPhone (HEIC) werken ook.",
       },
       { type: "h2", text: "Controleer dat alles op je telefoon blijft" },
       {
@@ -631,10 +631,10 @@ export const GUIDES_NL: Guide[] = [
       {
         type: "list",
         items: [
-          "Alle pagina's paraferen zet een kleine kopie van je handtekening op de andere pagina's.",
+          "Ook elke pagina paraferen zet een kleine kopie van je handtekening op de andere pagina's.",
           "Kleiner maken houdt het bestand onder de grootte die een mail of website toestaat.",
           "Beveiligen met een wachtwoord staat standaard uit, zodat de ontvanger het bestand meteen kan openen.",
-          "Na het downloaden zie je een vingerafdruk van het bestand. Bewaar hem: duikt er ooit een andere versie op, dan kun je laten zien dat het niet de versie is die jij hebt ondertekend.",
+          "Na het downloaden zie je een vingerafdruk van het bestand. Bewaar hem en stuur hem mee met het document: duikt er ooit een andere versie op, dan klopt de vingerafdruk niet en zie je dat het niet het bestand is dat jij hebt verstuurd.",
         ],
       },
       { type: "h2", text: "Wat deze handtekening waard is" },

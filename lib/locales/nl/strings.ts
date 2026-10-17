@@ -337,7 +337,7 @@ export const STRINGS_NL: Strings = {
     step2: "Je handtekening",
     step3: "Plaatsen, controleren, downloaden",
     stepShort: ["Documenten", "Handtekening", "Download"],
-    next: { signature: "Volgende: uw handtekening", place: "Volgende: plaatsen en downloaden" },
+    next: { signature: "Volgende: je handtekening", place: "Volgende: plaatsen en downloaden" },
     pad: {
       tabsLabel: "Hoe wil je ondertekenen?",
       draw: "Tekenen",
@@ -400,7 +400,7 @@ export const STRINGS_NL: Strings = {
     another: "Nog een document ondertekenen",
     fingerprint: {
       title: "Vingerafdruk van het bestand",
-      body: "Bewaar deze vingerafdruk. Duikt er ooit een andere versie van het document op, dan kun je laten zien dat het niet de versie is die jij hebt ondertekend.",
+      body: "Bewaar deze vingerafdruk en stuur hem mee met het document (bijvoorbeeld in dezelfde e-mail). Duikt er ooit een andere versie op, dan klopt de vingerafdruk niet: je ziet dat het niet het bestand is dat jij hebt verstuurd.",
       copy: "Kopiëren",
       copied: "Gekopieerd",
       copyAria: (name: string) => `Vingerafdruk van ${name} kopiëren`,

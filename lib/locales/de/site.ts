@@ -131,7 +131,7 @@ export const SITE_DE: SiteCopy = {
       },
     ],
     signLink: {
-      title: "Ein Dokument zu unterschreiben?",
+      title: "Musst du ein Dokument unterschreiben?",
       body: "Mietvertrag, Bescheinigung, Angebot: Zeichne, tippe oder importiere deine Unterschrift und setz sie aufs PDF. Auch hier wird nichts hochgeladen.",
       cta: "Dokument unterschreiben",
     },
@@ -161,7 +161,7 @@ export const SITE_DE: SiteCopy = {
       "Öffne diese Seite und schalte dann das Internet ab (Flugmodus). Leg ein Dokument ab und unterschreib es: Cachety funktioniert weiter. Der Beweis, dass nichts übers Internet geht.",
     legal: {
       title: "Was ist diese Unterschrift wert?",
-      p1: "Eine gezeichnete oder getippte Unterschrift, die auf das Dokument gesetzt wird, nennt man üblicherweise eine „einfache“ elektronische Signatur. In der EU darf ein Gericht sie nicht allein deshalb als Beweismittel zurückweisen, weil sie elektronisch ist (eIDAS-Verordnung, Artikel 25). In Frankreich lässt eine Unterschrift ihren Urheber erkennen und zeigt seine Zustimmung; in elektronischer Form muss sie auf einem zuverlässigen Verfahren beruhen, das sie mit dem Dokument verknüpft (Code civil, Artikel 1367). Ein Bild einer Unterschrift, etwa eine eingescannte Unterschrift, erfüllt diese Bedingung allein nicht: Es zählt als Unterschrift, wenn niemand es bestreitet, hat aber wenig Gewicht, wenn es bestritten wird (Cour de cassation, 2022 und 2024).",
+      p1: "Eine gezeichnete, getippte oder importierte Unterschrift, die auf das Dokument gesetzt wird, nennt man üblicherweise eine „einfache“ elektronische Signatur. In der EU darf ein Gericht sie nicht allein deshalb als Beweismittel zurückweisen, weil sie elektronisch ist (eIDAS-Verordnung, Artikel 25). In Frankreich lässt eine Unterschrift ihren Urheber erkennen und zeigt seine Zustimmung; in elektronischer Form muss sie auf einem zuverlässigen Verfahren beruhen, das sie mit dem Dokument verknüpft (Code civil, Artikel 1367). Ein Bild einer Unterschrift, etwa eine eingescannte Unterschrift, erfüllt diese Bedingung allein nicht: Es zählt als Unterschrift, wenn niemand es bestreitet, hat aber wenig Gewicht, wenn es bestritten wird (Cour de cassation, 2022 und 2024).",
       p2: "Für Alltagsdokumente wird das in der Regel akzeptiert: Mietunterlagen, Bescheinigungen, Angebote, Formulare von Schule oder Verein. Im Streitfall muss derjenige, der sich auf das Dokument beruft, beweisen, wer es unterschrieben hat; bewahre die E-Mail oder Nachricht auf, mit der es verschickt wurde. Nur bei einer „qualifizierten“ Signatur (mit einem Zertifikat eines qualifizierten Anbieters) wird die Zuverlässigkeit vermutet, und nur sie steht einer handschriftlichen Unterschrift gleich.",
       p3: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur vorgeschrieben ist, wenn das Gesetz einen eigenhändig geschriebenen Vermerk verlangt (Bürgschaft, Schuldschein), für ein Testament oder eine notarielle Urkunde, oder wenn die andere Seite eine bestimmte Plattform vorgibt (manche Kredit- oder Versicherungsverträge, bestimmte Behördenverfahren). Nutze dann das Werkzeug, das verlangt wird.",
       note: "Das ist keine Rechtsberatung. Für manche Dokumente gelten je nach Land andere Regeln, zum Beispiel wo das Gesetz eine Unterschrift auf Papier verlangt. Diese Übersetzung wartet noch auf die Prüfung durch Muttersprachler.",
@@ -282,7 +282,7 @@ export const SITE_DE: SiteCopy = {
     allGuides: "Alle Ratgeber",
   },
   compareUi: {
-    title: "Cachety im Vergleich mit anderen Wasserzeichen- und Unterschrift-Tools",
+    title: "Cachety im Vergleich mit anderen Wasserzeichen- und Unterschriften-Tools",
     lead: "Verständliche, geprüfte Vergleiche mit den meistgenutzten Tools: wohin deine Dateien gehen, was es kostet und wann ein anderes Tool die bessere Wahl ist.",
     groups: { watermark: "Wasserzeichen", sign: "Unterschreiben" },
     read: "Vergleich lesen",

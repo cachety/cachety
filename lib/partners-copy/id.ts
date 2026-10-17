@@ -11,7 +11,7 @@ const COPY: PartnersCopy = {
   privacyTitle: "Mengapa tetap privat",
   privacy: [
     "Alat ini berjalan di dalam bingkai yang disajikan oleh cachety.com. Halaman Anda, dan skrip apa pun di dalamnya, tidak bisa membaca isinya.",
-    "Dokumen diproses di perangkat pengunjung. Tidak ada yang diunggah, baik ke Anda maupun ke kami.",
+    "Dokumen diproses di perangkat pengunjung. Tidak ada yang di-upload, baik ke Anda maupun ke kami.",
     "Hanya situs yang disetujui yang bisa menampilkan alat ini, jadi tidak ada yang bisa membungkusnya dalam halaman yang menyesatkan.",
   ],
   codeTitle: "Ambil kodenya",

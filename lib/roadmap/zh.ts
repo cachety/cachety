@@ -35,7 +35,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign": {
     title: "给文件签字",
-    body: "手写、输入或上传您的签名，放到 PDF 或照片上，下载签好的 PDF。和水印工具一样，什么都不会上传。",
+    body: "手写、输入或导入您的签名，放到 PDF 或照片上，下载签好的 PDF。和水印工具一样，什么都不会上传。",
   },
   "simpler-tool": {
     title: "更简单的工具",

@@ -399,7 +399,7 @@ export const STRINGS_PT: Strings = {
     another: "Assinar outro documento",
     fingerprint: {
       title: "Impressão digital do arquivo",
-      body: "Guarde esta impressão digital. Se algum dia aparecer outra versão do documento, você poderá mostrar que não é a que você assinou.",
+      body: "Guarde esta impressão digital e envie-a junto com o documento (no mesmo e-mail, por exemplo). Se algum dia aparecer outra versão, a impressão digital dela não vai coincidir: você vai saber que não é o arquivo que você enviou.",
       copy: "Copiar",
       copied: "Copiada",
       copyAria: (name: string) => `Copiar a impressão digital de ${name}`,

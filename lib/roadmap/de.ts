@@ -35,7 +35,7 @@ const ITEMS: Record<RoadmapId, Text> = {
   },
   "sign": {
     title: "Dokumente unterschreiben",
-    body: "Zeichne, tippe oder lade deine Unterschrift hoch, setze sie auf ein PDF oder Foto und lade ein unterschriebenes PDF herunter. Wie beim Wasserzeichen wird nichts hochgeladen.",
+    body: "Zeichne, tippe oder importiere deine Unterschrift, setze sie auf ein PDF oder Foto und lade ein unterschriebenes PDF herunter. Wie beim Wasserzeichen wird nichts hochgeladen.",
   },
   "simpler-tool": {
     title: "Ein einfacheres Tool",

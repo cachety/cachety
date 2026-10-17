@@ -17,7 +17,7 @@ const C = {
   where: "No seu próprio aparelho, dentro do navegador. O documento não é enviado para nenhum servidor.",
   account: "Não precisa de conta nem cadastro. Grátis, sem plano pago.",
   create:
-    "Desenhe com o dedo ou o mouse, digite seu nome ou importe uma foto da assinatura (o fundo é removido). Data, local e uma frase curta opcionais embaixo.",
+    "Desenhe com o dedo ou o mouse, digite seu nome ou importe uma foto da assinatura (o fundo é removido). Data, local e uma observação curta opcionais embaixo.",
   signers: "Não: uma pessoa assina o próprio documento. Não há envio para outras pessoas nem ordem de assinatura.",
   audit:
     "Não há trilha de auditoria nem carimbo de tempo. Depois do download aparece a impressão digital SHA-256 do arquivo, para você guardar.",
@@ -47,7 +47,7 @@ const HOW_TO: GuideBlock[] = [
     items: [
       "Abra cachety.com/pt/sign no navegador do celular ou do computador. Não precisa instalar nada nem criar conta.",
       "Solte o PDF ou a foto do documento na página. Você pode adicionar vários documentos de uma vez.",
-      "Desenhe, digite ou importe sua assinatura. Se quiser, mantenha a data de hoje e acrescente o local e uma frase como “Li e concordo”.",
+      "Desenhe, digite ou importe sua assinatura. Se quiser, mantenha a data de hoje e acrescente o local e uma observação como “Ciente e de acordo”.",
       "Arraste a assinatura até a linha certa e ajuste o tamanho. Se pedirem rubrica em todas as páginas, ative essa opção.",
       "Confira a prévia e baixe o PDF assinado. Guarde a impressão digital que aparece depois do download.",
     ],
@@ -126,7 +126,7 @@ export const SIGN_COMPARISONS_PT: Comparison[] = [
       },
       {
         criterion: "Campos no documento",
-        cachety: "Assinatura, data, local, uma frase curta e rubrica em todas as páginas.",
+        cachety: "Assinatura, data, local, uma observação curta e rubrica em todas as páginas.",
         other: "Rubricas, texto, caixas de seleção, botões de opção, listas suspensas e outros campos.",
         edge: "other",
       },
@@ -235,7 +235,7 @@ export const SIGN_COMPARISONS_PT: Comparison[] = [
     description:
       "Youtrust (ex-Yousign) é uma plataforma francesa de assinatura eletrônica, com conta e provas guardadas. Compare com o Cachety, que assina no seu aparelho.",
     intro:
-      "A Yousign, plataforma francesa de assinatura eletrônica, passou a se chamar Youtrust em julho de 2026. O serviço guarda as provas de cada assinatura e oferece os níveis avançado e qualificado. O Cachety é uma ferramenta simples para assinar você mesmo um PDF no navegador, sem conta.",
+      "A Yousign, plataforma francesa de assinatura eletrônica, começou em julho de 2026 a trocar seu nome por Youtrust. O serviço guarda as provas de cada assinatura e oferece os níveis avançado e qualificado. O Cachety é uma ferramenta simples para assinar você mesmo um PDF no navegador, sem conta.",
     verdict:
       "Se você precisa mandar um contrato para outras pessoas assinarem, com um arquivo de provas com data e hora, ou de uma assinatura avançada ou qualificada, o Youtrust é a melhor escolha. Se só precisa assinar e devolver um documento do dia a dia, o Cachety faz isso sem conta e sem que o arquivo saia do seu aparelho. A assinatura do Cachety, porém, é uma imagem simples, mais fácil de contestar.",
     table: [
@@ -296,7 +296,7 @@ export const SIGN_COMPARISONS_PT: Comparison[] = [
       { type: "h2", text: "Yousign agora é Youtrust" },
       {
         type: "p",
-        text: "Em julho de 2026, a Yousign passou a usar o nome Youtrust. A empresa responsável, Youtrust SAS, fica em Caen, na França. Durante a transição, o aplicativo ainda pode aparecer como Yousign, e a migração deve terminar até 2027. Se você conhecia a Yousign, é o mesmo serviço.",
+        text: "Em julho de 2026, a Yousign começou a adotar o nome Youtrust. A empresa responsável, Youtrust SAS, fica em Caen, na França. Durante a transição, o aplicativo ainda pode aparecer como Yousign, e a migração deve terminar até 2027. Se você conhecia a Yousign, é o mesmo serviço.",
       },
       { type: "h2", text: "Duas ferramentas para trabalhos diferentes" },
       {
@@ -421,7 +421,7 @@ export const SIGN_COMPARISONS_PT: Comparison[] = [
       },
       {
         criterion: "Campos no documento",
-        cachety: "Assinatura, data, local, uma frase curta e rubrica em todas as páginas.",
+        cachety: "Assinatura, data, local, uma observação curta e rubrica em todas as páginas.",
         other: "Assinatura, rubricas, texto, marcas de seleção e linhas.",
       },
       {
@@ -661,7 +661,7 @@ export const SIGN_COMPARISONS_PT: Comparison[] = [
       },
       {
         q: "A assinatura do Cachety tem trilha de auditoria?",
-        a: "Não. O Cachety não registra quem assinou nem quando. Ele mostra a impressão digital SHA-256 do arquivo depois do download, que ajuda a reconhecer a versão que você assinou, mas isso não substitui uma trilha de auditoria. Se você precisa de uma, use uma plataforma como o iLovePDF.",
+        a: "Não. O Cachety não registra quem assinou nem quando. Ele mostra a impressão digital SHA-256 do arquivo depois do download, que ajuda você a reconhecer a versão que enviou, mas isso não substitui uma trilha de auditoria. Se você precisa de uma, use uma plataforma como o iLovePDF.",
       },
     ],
     sources: [

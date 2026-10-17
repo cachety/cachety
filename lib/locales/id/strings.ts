@@ -392,7 +392,7 @@ export const STRINGS_ID: Strings = {
     another: "Tanda tangani dokumen lain",
     fingerprint: {
       title: "Sidik jari file",
-      body: "Simpan sidik jari ini. Jika suatu hari muncul versi lain dari dokumen ini, Anda bisa menunjukkan bahwa itu bukan versi yang Anda tanda tangani.",
+      body: "Simpan sidik jari ini, dan kirimkan bersama dokumennya (misalnya dalam email yang sama). Jika suatu hari muncul versi lain, sidik jarinya tidak akan cocok: Anda bisa tahu bahwa itu bukan file yang Anda kirim.",
       copy: "Salin",
       copied: "Disalin",
       copyAria: (name: string) => `Salin sidik jari ${name}`,

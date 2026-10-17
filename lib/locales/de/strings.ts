@@ -337,7 +337,7 @@ export const STRINGS_DE: Strings = {
     step2: "Deine Unterschrift",
     step3: "Platzieren, prüfen, herunterladen",
     stepShort: ["Dokumente", "Unterschrift", "Download"],
-    next: { signature: "Weiter: Ihre Unterschrift", place: "Weiter: platzieren und herunterladen" },
+    next: { signature: "Weiter: deine Unterschrift", place: "Weiter: platzieren und herunterladen" },
     pad: {
       tabsLabel: "Wie möchtest du unterschreiben?",
       draw: "Zeichnen",
@@ -400,7 +400,7 @@ export const STRINGS_DE: Strings = {
     another: "Noch ein Dokument unterschreiben",
     fingerprint: {
       title: "Fingerabdruck der Datei",
-      body: "Bewahre diesen Fingerabdruck auf. Taucht eines Tages eine andere Fassung des Dokuments auf, kannst du zeigen, dass es nicht die ist, die du unterschrieben hast.",
+      body: "Bewahre diesen Fingerabdruck auf und schick ihn mit dem Dokument mit (zum Beispiel in derselben E-Mail). Taucht eines Tages eine andere Fassung auf, stimmt ihr Fingerabdruck nicht überein: Du erkennst, dass es nicht die Datei ist, die du verschickt hast.",
       copy: "Kopieren",
       copied: "Kopiert",
       copyAria: (name: string) => `Fingerabdruck von ${name} kopieren`,

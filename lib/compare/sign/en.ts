@@ -68,7 +68,7 @@ export const SIGN_COMPARISONS_EN: Comparison[] = [
     description:
       "DocuSign sends contracts for signature, with an audit trail. Cachety lets you sign a PDF yourself, in your browser, free and with no account.",
     intro:
-      "DocuSign is the best-known e-signature platform. It is built to send a document to other people for signature and to keep a record of who signed and when. Cachety does a smaller job: it lets you sign a document yourself, in your browser, without uploading it or creating an account.",
+      "DocuSign is one of the best-known e-signature platforms. It is built to send a document to other people for signature and to keep a record of who signed and when. Cachety does a smaller job: it lets you sign a document yourself, in your browser, without uploading it or creating an account.",
     verdict:
       "These tools do different jobs. For a contract with several signers, an audit trail, identity checks or an advanced or qualified signature, DocuSign is the better choice, and Cachety cannot do any of that. If you only need to put your own signature on a PDF and send it back, Cachety does it for free, with no account, and the document never leaves your device.",
     table: [
@@ -232,7 +232,7 @@ export const SIGN_COMPARISONS_EN: Comparison[] = [
     description:
       "Youtrust, formerly Yousign, sends documents for signature with an evidence file. Cachety lets you sign a PDF yourself, in your browser, with no account.",
     intro:
-      "Youtrust, called Yousign until July 2026, is a French e-signature platform. It sends documents for signature and keeps a time-stamped evidence file. Cachety is a simpler tool: it lets you sign a PDF yourself, in your browser, with no account and no upload.",
+      "Youtrust, which began replacing the name Yousign in July 2026, is a French e-signature platform. It sends documents for signature and keeps a time-stamped evidence file. Cachety is a simpler tool: it lets you sign a PDF yourself, in your browser, with no account and no upload.",
     verdict:
       "For a contract that needs several signers, an evidence file, an identity check or an advanced or qualified signature, Youtrust is the better choice. Its free plan includes unlimited signing of your own documents, once you have an account, and every plan comes with a time-stamped evidence file. If you just want to put your signature on a PDF without creating an account or uploading the file, Cachety does that.",
     table: [
@@ -284,10 +284,10 @@ export const SIGN_COMPARISONS_EN: Comparison[] = [
       },
     ],
     body: [
-      { type: "h2", text: "Yousign is now Youtrust" },
+      { type: "h2", text: "Yousign is becoming Youtrust" },
       {
         type: "p",
-        text: "In its own announcement, the publisher says that Yousign is becoming Youtrust from July 2026. During the move, you may still see the name Yousign, or ‘Yousign (soon to be Youtrust)’, in the app, which is due to switch over by 2027. The company is Youtrust SAS, based in Caen, France.",
+        text: "In its own announcement, the company says that Yousign is becoming Youtrust from July 2026. During the move, you may still see the name Yousign, or ‘Yousign (soon to be Youtrust)’, in the app, which is due to switch over by 2027. The company is Youtrust SAS, based in Caen, France.",
       },
       { type: "h2", text: "Two tools for two different jobs" },
       {
@@ -340,7 +340,7 @@ export const SIGN_COMPARISONS_EN: Comparison[] = [
     faq: [
       {
         q: "Are Yousign and Youtrust the same thing?",
-        a: "Yes. The publisher announced that Yousign is becoming Youtrust from July 2026. The app may still show the name Yousign for a while, as the move is due to finish by 2027.",
+        a: "Yes. The company announced that Yousign is becoming Youtrust from July 2026. The app may still show the name Yousign for a while, as the move is due to finish by 2027.",
       },
       FAQ_VALID("Youtrust"),
       {
@@ -372,16 +372,16 @@ export const SIGN_COMPARISONS_EN: Comparison[] = [
     tool: "sign",
     slug: "cachety-vs-adobe-fill-sign",
     competitor: "adobe-fill-sign",
-    competitorName: "Adobe Acrobat Sign",
+    competitorName: "Adobe Acrobat",
     competitorUrl: "https://www.adobe.com/acrobat/online/sign-pdf.html",
-    title: "Cachety vs Adobe Acrobat Sign: which should you use to sign a PDF?",
+    title: "Cachety vs Adobe Acrobat: which should you use to sign a PDF?",
     metaTitle: "Adobe Fill & Sign Alternative: Sign a PDF Privately",
     description:
       "Adobe signs your PDF on its servers. Cachety signs it in your browser, free, with no account and nothing uploaded. An honest comparison.",
     intro:
-      "Adobe offers two ways to sign a PDF: a free online Sign PDF tool, also known as Fill & Sign, and Acrobat Sign, its e-signature service for businesses. Cachety is closer to the first: it lets you sign a document yourself. The difference is that Cachety does it in your browser, without uploading the file.",
+      "Adobe offers two ways to sign a PDF: a free online Sign PDF tool (and, on the iPhone, the Adobe Fill & Sign app), and Acrobat Sign, its e-signature service for businesses. Cachety is closer to the first: it lets you sign a document yourself. The difference is that Cachety does it in your browser, without uploading the file.",
     verdict:
-      "To send a document to several signers, keep an audit trail or use advanced or qualified signatures, Adobe Acrobat Sign is the better choice, and Cachety does none of that. To sign a PDF yourself, both work. Adobe's online tool handles the file on its servers, and its page says you must be signed in to complete the form. Cachety needs no account and never uploads the document.",
+      "To send a document to several signers, keep an audit trail or use advanced or qualified signatures, Adobe Acrobat Sign is the better choice, and Cachety does none of that. To sign a PDF yourself, both work. Adobe's online tool handles the file on its servers, and its page says you must be signed in to complete a fillable form. Cachety needs no account and never uploads the document.",
     table: [
       {
         criterion: "Where the document is processed",
@@ -430,7 +430,7 @@ export const SIGN_COMPARISONS_EN: Comparison[] = [
       },
     ],
     body: [
-      { type: "h2", text: "Fill & Sign and Acrobat Sign are not the same thing" },
+      { type: "h2", text: "The online tool and Acrobat Sign are not the same thing" },
       {
         type: "p",
         text: "Adobe's free online Sign PDF tool is for signing a document yourself. You open the page, add your PDF, then type, draw or upload an image of your signature, and add initials, text or checkmarks. Adobe says the file is handled by its servers and deleted unless you sign in to save it. On the iPhone, the Adobe Fill & Sign app can also sign a photo of a paper form.",
