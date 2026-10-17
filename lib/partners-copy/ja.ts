@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "サイト運営者の方へ",
   meta: {
     title: "Cachety をウェブサイトに埋め込む",
-    description: "Cachety の透かしツールを無料でウェブサイトに設置できます。訪問者の書類は端末から出ないため、あなたのサイトも Cachety も中身を見ることはできません。",
+    description: "Cachety の透かしツールと署名ツールを無料でウェブサイトに設置できます。訪問者の書類は端末から出ないため、あなたのサイトも Cachety も中身を見ることはできません。",
   },
   title: "Cachety をウェブサイトに埋め込む",
-  lead: "不動産会社、人事プラットフォーム、各種団体の方へ。身分証や給与明細を送ってくる方が、あなたのページ上でそのまま透かしを入れられるようにしましょう。無料で、書類が端末の外に出ることはありません。",
+  lead: "不動産会社、人事プラットフォーム、各種団体の方へ。身分証や給与明細を送ってくる方が、あなたのページ上でそのまま透かしを入れられるようにしましょう。無料で、書類が端末の外に出ることはありません。同じ約束のもと、書類への署名もできます。",
   privacyTitle: "プライバシーが守られる理由",
   privacy: [
     "ツールは cachety.com から配信されるフレームの中で動きます。あなたのページやそこで動くスクリプトから、中身を読み取ることはできません。",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "例：あなたの会社名",
     accent: "ボタンの色",
     accentHint: "明るすぎる色は無視され、ボタンの読みやすさが保たれます。",
+    tools: "提供するツール",
+    toolChoices: { watermark: "透かしのみ", sign: "署名のみ", both: "両方（訪問者が選択）" },
+    signHint: "署名では、用途や提出先を入力済みにすると、署名済みのコピーに透かしも入ります。訪問者は外すことができます。",
   },
   embedCode: "1. フレーム",
   resizeCode: "2. 高さの自動調整",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Cachety の埋め込みは、サイトのほかの機能と同じく無料です。あなたや訪問者のお役に立てたなら、寄付が継続の支えになります。",
   donateCta: "Cachety を支援する",
   usedBy: "導入サイト",
-  embed: { runsOn: "cachety.com 上で動作", private: "ファイルは端末から出ません" },
+  embed: {
+    runsOn: "cachety.com 上で動作",
+    private: "ファイルは端末から出ません",
+    switchLabel: "ツール",
+    switchWarn: "ツールを切り替えると、ここに追加した書類は削除されます。",
+    switchConfirm: "切り替える",
+    switchCancel: "キャンセル",
+  },
 };
 
 export default COPY;

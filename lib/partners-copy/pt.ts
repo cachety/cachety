@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "Para sites",
   meta: {
     title: "Coloque o Cachety no seu site",
-    description: "Adicione de graça a ferramenta de marca d'água do Cachety ao seu site. Os documentos dos visitantes ficam no aparelho deles: nem seu site nem o Cachety os veem.",
+    description: "Adicione de graça a marca d'água e a assinatura do Cachety ao seu site. Os documentos dos visitantes ficam no aparelho deles: nem você nem o Cachety os veem.",
   },
   title: "Coloque o Cachety no seu site",
-  lead: "Imobiliárias, plataformas de RH, associações: deixe quem envia RG ou holerites para você colocar a marca d'água neles direto na sua página. De graça, e os documentos nunca saem do aparelho da pessoa.",
+  lead: "Imobiliárias, plataformas de RH, associações: deixe quem envia RG ou holerites para você colocar a marca d'água neles direto na sua página. De graça, e os documentos nunca saem do aparelho da pessoa. Eles também podem assinar documentos ali, com a mesma promessa.",
   privacyTitle: "Por que continua privado",
   privacy: [
     "A ferramenta roda em um quadro servido por cachety.com. Sua página, e qualquer script nela, não consegue ler o que tem dentro.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "ex.: o nome da sua empresa",
     accent: "Cor dos botões",
     accentHint: "Uma cor clara demais é ignorada, para que os botões continuem legíveis.",
+    tools: "Ferramentas oferecidas",
+    toolChoices: { watermark: "Só marca d'água", sign: "Só assinatura", both: "As duas, à escolha do visitante" },
+    signHint: "Na assinatura, um motivo ou destinatário preenchido também adiciona uma marca d'água à cópia assinada. O visitante pode removê-la.",
   },
   embedCode: "1. O quadro",
   resizeCode: "2. Altura automática",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Incorporar o Cachety é grátis, como o resto do site. Se ele for útil para você e seus visitantes, uma doação ajuda a mantê-lo.",
   donateCta: "Apoiar o Cachety",
   usedBy: "Quem usa",
-  embed: { runsOn: "Funciona em cachety.com", private: "Seus arquivos ficam no seu aparelho" },
+  embed: {
+    runsOn: "Funciona em cachety.com",
+    private: "Seus arquivos ficam no seu aparelho",
+    switchLabel: "Ferramenta",
+    switchWarn: "Trocar de ferramenta remove os documentos adicionados aqui.",
+    switchConfirm: "Trocar de ferramenta",
+    switchCancel: "Cancelar",
+  },
 };
 
 export default COPY;

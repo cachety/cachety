@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "Voor websites",
   meta: {
     title: "Zet Cachety op je website",
-    description: "Voeg de watermerktool van Cachety gratis toe aan je website. De documenten van je bezoekers blijven op hun apparaat: je site en Cachety kunnen ze niet zien.",
+    description: "Voeg het watermerken en ondertekenen van Cachety gratis toe aan je site. Documenten van bezoekers blijven op hun apparaat: jij en Cachety zien ze niet.",
   },
   title: "Zet Cachety op je website",
-  lead: "Makelaars, hr-platforms, verenigingen: laat wie je een identiteitsbewijs of loonstroken stuurt, die direct op je pagina van een watermerk voorzien. Gratis, en hun documenten verlaten nooit hun apparaat.",
+  lead: "Makelaars, hr-platforms, verenigingen: laat wie je een identiteitsbewijs of loonstroken stuurt, die direct op je pagina van een watermerk voorzien. Gratis, en hun documenten verlaten nooit hun apparaat. Ze kunnen er ook documenten ondertekenen, met dezelfde belofte.",
   privacyTitle: "Waarom het privé blijft",
   privacy: [
     "De tool draait in een kader dat cachety.com aanlevert. Je pagina, en elk script erop, kan niet lezen wat erin staat.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "bijv. de naam van je bedrijf",
     accent: "Kleur van de knoppen",
     accentHint: "Een te lichte kleur wordt genegeerd, zodat de knoppen leesbaar blijven.",
+    tools: "Aangeboden tools",
+    toolChoices: { watermark: "Alleen watermerk", sign: "Alleen ondertekenen", both: "Allebei, de bezoeker kiest" },
+    signHint: "Bij ondertekenen voegt een vooraf ingevuld doel of ontvanger ook een watermerk toe aan de ondertekende kopie. De bezoeker kan het weghalen.",
   },
   embedCode: "1. Het kader",
   resizeCode: "2. Automatische hoogte",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Cachety inbouwen is gratis, net als de rest van de site. Heb jij of hebben je bezoekers er iets aan, dan helpt een donatie om het draaiende te houden.",
   donateCta: "Steun Cachety",
   usedBy: "Gebruikt door",
-  embed: { runsOn: "Draait op cachety.com", private: "Je bestanden blijven op je apparaat" },
+  embed: {
+    runsOn: "Draait op cachety.com",
+    private: "Je bestanden blijven op je apparaat",
+    switchLabel: "Tool",
+    switchWarn: "Van tool wisselen verwijdert de documenten die hier zijn toegevoegd.",
+    switchConfirm: "Wissel van tool",
+    switchCancel: "Annuleren",
+  },
 };
 
 export default COPY;

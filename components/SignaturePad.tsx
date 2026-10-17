@@ -15,6 +15,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useT, type ErrorKey } from "@/lib/i18n";
+import { readPrefill } from "@/lib/partners";
 import { readPref, writePref } from "@/lib/storage";
 import {
   BACKGROUND_THRESHOLD,
@@ -338,6 +339,12 @@ export function SignaturePad({ onChange }: { onChange: (sig: SignatureImage | nu
   // --- Lignes sous la signature ---
   const [place, setPlace] = useState("");
   const [mention, setMention] = useState("");
+  // Lien pré-rempli (partenaires) : lieu et mention, modifiables par le visiteur.
+  useEffect(() => {
+    const prefill = readPrefill(window.location.hash);
+    if (prefill.place) setPlace(prefill.place);
+    if (prefill.note) setMention(prefill.note);
+  }, []);
   const date = dateOn ? signDate(t.locale) : "";
   const placeLine = place.trim() && date ? t.onDate(place.trim(), date) : place.trim() || date;
   const lines = composeSignBlock({ mention, place: placeLine });

@@ -95,7 +95,16 @@ function triggerDownload(url: string, name: string) {
 /** Signature prête pour le moteur : empreinte courte (clé du tampon) et image décodée. */
 type SigReady = { sig: SignatureImage; key: string; bitmap: ImageBitmap };
 
-export default function CoreProduct({ embed = false, mode = "watermark" }: { embed?: boolean; mode?: "watermark" | "sign" } = {}) {
+export default function CoreProduct({
+  embed = false,
+  mode = "watermark",
+  onHasDocs,
+}: {
+  embed?: boolean;
+  mode?: "watermark" | "sign";
+  /** Page intégrée : prévenir avant de changer d'outil, ce qui retirerait les documents. */
+  onHasDocs?: (has: boolean) => void;
+} = {}) {
   const t = useT();
   const sign = mode === "sign";
   const ts = t.sign;
@@ -166,6 +175,11 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
     const prefill = readPrefill(window.location.hash);
     if (prefill.purpose) setPurpose(prefill.purpose);
     if (prefill.recipient) setFields([prefill.recipient]);
+    // Signer : un motif ou un destinataire fourni par le lien n'a de sens
+    // qu'avec le filigrane, qui part donc coché (le visiteur peut le retirer).
+    if (sign && (prefill.purpose || prefill.recipient)) setWithWatermark(true);
+    // Une fois, au chargement.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -631,6 +645,7 @@ export default function CoreProduct({ embed = false, mode = "watermark" }: { emb
   // Des documents chargés seraient perdus par un rechargement accidentel :
   // rien n'est persisté, par conception (confidentialité).
   const hasDocs = docs.length > 0;
+  useEffect(() => onHasDocs?.(hasDocs), [hasDocs, onHasDocs]);
   useEffect(() => {
     if (!hasDocs) return;
     const warn = (e: BeforeUnloadEvent) => e.preventDefault();

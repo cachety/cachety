@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "Für Websites",
   meta: {
     title: "Cachety auf deiner Website einbinden",
-    description: "Binde das Wasserzeichen-Tool von Cachety kostenlos ein. Die Dokumente deiner Besucher bleiben auf ihrem Gerät: Weder deine Website noch Cachety sieht sie.",
+    description: "Binde Wasserzeichen und Unterschrift von Cachety kostenlos ein. Die Dokumente deiner Besucher bleiben auf ihrem Gerät: Weder du noch Cachety sieht sie.",
   },
   title: "Cachety auf deiner Website einbinden",
-  lead: "Hausverwaltungen, HR-Plattformen, Vereine: Lass alle, die dir ihren Ausweis oder ihre Gehaltsabrechnungen schicken, diese direkt auf deiner Seite mit einem Wasserzeichen versehen. Kostenlos, und ihre Dokumente verlassen nie ihr Gerät.",
+  lead: "Hausverwaltungen, HR-Plattformen, Vereine: Lass alle, die dir ihren Ausweis oder ihre Gehaltsabrechnungen schicken, diese direkt auf deiner Seite mit einem Wasserzeichen versehen. Kostenlos, und ihre Dokumente verlassen nie ihr Gerät. Unterschreiben können sie dort auch, mit demselben Versprechen.",
   privacyTitle: "Warum alles privat bleibt",
   privacy: [
     "Das Tool läuft in einem Rahmen, den cachety.com ausliefert. Deine Seite und alle Skripte darauf können nicht lesen, was darin ist.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "z. B. der Name deiner Firma",
     accent: "Farbe der Schaltflächen",
     accentHint: "Eine zu helle Farbe wird ignoriert, damit die Schaltflächen lesbar bleiben.",
+    tools: "Angebotene Tools",
+    toolChoices: { watermark: "Nur Wasserzeichen", sign: "Nur Unterschreiben", both: "Beides, nach Wahl der Besucher" },
+    signHint: "Beim Unterschreiben fügt ein vorausgefüllter Zweck oder Empfänger der unterschriebenen Kopie auch ein Wasserzeichen hinzu. Besucher können es entfernen.",
   },
   embedCode: "1. Der Rahmen",
   resizeCode: "2. Automatische Höhe",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Cachety einzubinden ist kostenlos, wie der Rest der Website. Wenn es dir und deinen Besuchern hilft, hält eine Spende das Projekt am Laufen.",
   donateCta: "Cachety unterstützen",
   usedBy: "Im Einsatz bei",
-  embed: { runsOn: "Läuft auf cachety.com", private: "Deine Dateien bleiben auf deinem Gerät" },
+  embed: {
+    runsOn: "Läuft auf cachety.com",
+    private: "Deine Dateien bleiben auf deinem Gerät",
+    switchLabel: "Tool",
+    switchWarn: "Ein Toolwechsel entfernt die hier hinzugefügten Dokumente.",
+    switchConfirm: "Tool wechseln",
+    switchCancel: "Abbrechen",
+  },
 };
 
 export default COPY;

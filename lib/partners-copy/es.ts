@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "Para sitios web",
   meta: {
     title: "Pon Cachety en tu sitio web",
-    description: "Añade gratis la herramienta de marca de agua de Cachety a tu web. Los documentos de tus visitantes no salen de su dispositivo: ni tu web ni Cachety los ven.",
+    description: "Añade gratis la marca de agua y la firma de Cachety a tu web. Los documentos de tus visitantes no salen de su dispositivo: ni tu web ni Cachety los ven.",
   },
   title: "Pon Cachety en tu sitio web",
-  lead: "Inmobiliarias, plataformas de RR. HH., asociaciones: deja que quienes te envían su documento de identidad o sus nóminas les pongan una marca de agua directamente en tu página. Gratis, y sus documentos nunca salen de su dispositivo.",
+  lead: "Inmobiliarias, plataformas de RR. HH., asociaciones: deja que quienes te envían su documento de identidad o sus nóminas les pongan una marca de agua directamente en tu página. Gratis, y sus documentos nunca salen de su dispositivo. También pueden firmar documentos ahí, con la misma promesa.",
   privacyTitle: "Por qué sigue siendo privado",
   privacy: [
     "La herramienta funciona en un marco servido por cachety.com. Tu página, y cualquier script que contenga, no puede leer lo que hay dentro.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "p. ej. el nombre de tu empresa",
     accent: "Color de los botones",
     accentHint: "Si el color es demasiado claro, se ignora, para que los botones sigan siendo legibles.",
+    tools: "Herramientas ofrecidas",
+    toolChoices: { watermark: "Solo marca de agua", sign: "Solo firma", both: "Ambas, a elección del visitante" },
+    signHint: "Al firmar, un motivo o un destinatario rellenado añade también una marca de agua a la copia firmada. El visitante puede quitarla.",
   },
   embedCode: "1. El marco",
   resizeCode: "2. Altura automática",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Integrar Cachety es gratis, como el resto del sitio. Si te resulta útil a ti y a tus visitantes, una donación ayuda a mantenerlo.",
   donateCta: "Apoyar a Cachety",
   usedBy: "Lo usan",
-  embed: { runsOn: "Funciona en cachety.com", private: "Tus archivos se quedan en tu dispositivo" },
+  embed: {
+    runsOn: "Funciona en cachety.com",
+    private: "Tus archivos se quedan en tu dispositivo",
+    switchLabel: "Herramienta",
+    switchWarn: "Cambiar de herramienta quita los documentos añadidos aquí.",
+    switchConfirm: "Cambiar de herramienta",
+    switchCancel: "Cancelar",
+  },
 };
 
 export default COPY;

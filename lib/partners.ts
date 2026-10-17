@@ -43,21 +43,43 @@ export const EMBED_PARENTS = (self: string) => [self, ...PARTNERS.map((p) => p.d
 /** Message envoyé au parent : la hauteur, et rien d'autre (aucune donnée du document). */
 export const heightMessage = (height: number) => ({ type: "cachety:height" as const, height: Math.ceil(height) });
 
+/** Outils que la page intégrée peut proposer, dans l'ordre choisi par le partenaire. */
+export const EMBED_TOOLS = ["watermark", "sign"] as const;
+export type EmbedTool = (typeof EMBED_TOOLS)[number];
+
+export type Prefill = {
+  purpose?: string;
+  recipient?: string;
+  accent?: string;
+  /** Jamais vide : le filigrane seul si le partenaire n'a rien choisi (anciens codes). */
+  tools: EmbedTool[];
+  /** Mode « signer » : lieu et mention sous la signature. */
+  place?: string;
+  note?: string;
+};
+
 /**
  * Pré-remplissage depuis le fragment de l'URL (après « # », jamais envoyé à
  * un serveur) : « #for=Dossier%20location&to=Agence%20Martin&accent=%23005a9c ».
+ * Signature : « #tools=sign&place=Lyon&note=Lu%20et%20approuv%C3%A9 » ;
+ * les deux outils au choix du visiteur : « #tools=watermark,sign ».
  */
-export function readPrefill(hash: string): { purpose?: string; recipient?: string; accent?: string } {
+export function readPrefill(hash: string): Prefill {
   const params = new URLSearchParams(hash.replace(/^#/, ""));
   const text = (key: string, max: number) => {
     const v = params.get(key)?.replace(/\s+/g, " ").trim();
     return v ? v.slice(0, max) : undefined;
   };
   const accent = params.get("accent")?.trim().toLowerCase();
+  const asked = (params.get("tools") ?? "").split(",").map((v) => v.trim().toLowerCase());
+  const tools = EMBED_TOOLS.filter((tool) => asked.includes(tool)).sort((a, b) => asked.indexOf(a) - asked.indexOf(b));
   return {
     purpose: text("for", 80),
     recipient: text("to", 60),
     accent: accent && /^#[0-9a-f]{6}$/.test(accent) && contrastWithWhite(accent) >= 4.5 ? accent : undefined,
+    tools: tools.length ? tools : ["watermark"],
+    place: text("place", 80),
+    note: text("note", 80),
   };
 }
 

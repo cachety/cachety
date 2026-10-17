@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "For websites",
   meta: {
     title: "Put Cachety on your website",
-    description: "Add Cachety's watermark tool to your website, free. Your visitors' documents stay on their device: neither your site nor Cachety can see them.",
+    description: "Add Cachety's watermark and signing tools to your website, free. Your visitors' documents stay on their device: neither your site nor Cachety can see them.",
   },
   title: "Put Cachety on your website",
-  lead: "Letting agencies, HR platforms, associations: let the people who send you their ID or payslips watermark them right on your page. Free, and their documents never leave their device.",
+  lead: "Letting agencies, HR platforms, associations: let the people who send you their ID or payslips watermark them right on your page. Free, and their documents never leave their device. They can sign documents there too, with the same promise.",
   privacyTitle: "Why it stays private",
   privacy: [
     "The tool runs in a frame served by cachety.com. Your page, and any script on it, can't read what's inside.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "e.g. your company name",
     accent: "Button colour",
     accentHint: "Too light a colour is ignored, so the buttons stay readable.",
+    tools: "Tools offered",
+    toolChoices: { watermark: "Watermark only", sign: "Sign only", both: "Both, the visitor chooses" },
+    signHint: "When signing, a pre-filled purpose or recipient also adds a watermark to the signed copy. Visitors can remove it.",
   },
   embedCode: "1. The frame",
   resizeCode: "2. Automatic height",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Embedding Cachety is free, like the rest of the site. If it's useful to you and your visitors, a donation helps keep it going.",
   donateCta: "Support Cachety",
   usedBy: "Used by",
-  embed: { runsOn: "Runs on cachety.com", private: "Your files stay on your device" },
+  embed: {
+    runsOn: "Runs on cachety.com",
+    private: "Your files stay on your device",
+    switchLabel: "Tool",
+    switchWarn: "Switching tools removes the documents added here.",
+    switchConfirm: "Switch tool",
+    switchCancel: "Cancel",
+  },
 };
 
 export default COPY;

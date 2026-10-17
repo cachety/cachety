@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "Pour les sites web",
   meta: {
     title: "Intégrer Cachety à votre site",
-    description: "Ajoutez gratuitement l'outil de filigrane Cachety à votre site. Les documents de vos visiteurs restent sur leur appareil : ni vous ni Cachety ne les voyez.",
+    description: "Ajoutez gratuitement le filigrane et la signature Cachety à votre site. Les documents des visiteurs restent sur leur appareil : ni vous ni Cachety ne les voyez.",
   },
   title: "Intégrer Cachety à votre site",
-  lead: "Agences immobilières, plateformes RH, associations : laissez ceux qui vous envoient leur pièce d'identité ou leurs fiches de paie les filigraner directement sur votre page. Gratuit, et leurs documents ne quittent jamais leur appareil.",
+  lead: "Agences immobilières, plateformes RH, associations : laissez ceux qui vous envoient leur pièce d'identité ou leurs fiches de paie les filigraner directement sur votre page. Gratuit, et leurs documents ne quittent jamais leur appareil. Ils peuvent aussi y signer un document, avec la même promesse.",
   privacyTitle: "Pourquoi cela reste privé",
   privacy: [
     "L'outil tourne dans un cadre servi par cachety.com. Votre page, et tout script qu'elle contient, ne peut pas lire ce qu'il y a dedans.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "Ex. : le nom de votre société",
     accent: "Couleur des boutons",
     accentHint: "Une couleur trop claire est ignorée, pour que les boutons restent lisibles.",
+    tools: "Outils proposés",
+    toolChoices: { watermark: "Filigrane seul", sign: "Signature seule", both: "Les deux, au choix du visiteur" },
+    signHint: "Pour la signature, un motif ou un destinataire pré-rempli ajoute aussi un filigrane à la copie signée. Le visiteur peut le retirer.",
   },
   embedCode: "1. Le cadre",
   resizeCode: "2. Hauteur automatique",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Intégrer Cachety est gratuit, comme le reste du site. S'il vous rend service, à vous et à vos visiteurs, un don aide à le faire vivre.",
   donateCta: "Soutenir Cachety",
   usedBy: "Ils l'utilisent",
-  embed: { runsOn: "Fonctionne sur cachety.com", private: "Vos fichiers restent sur votre appareil" },
+  embed: {
+    runsOn: "Fonctionne sur cachety.com",
+    private: "Vos fichiers restent sur votre appareil",
+    switchLabel: "Outil",
+    switchWarn: "Changer d'outil retire les documents ajoutés ici.",
+    switchConfirm: "Changer d'outil",
+    switchCancel: "Annuler",
+  },
 };
 
 export default COPY;

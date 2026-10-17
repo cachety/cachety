@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "Untuk situs web",
   meta: {
     title: "Pasang Cachety di situs web Anda",
-    description: "Tambahkan alat watermark Cachety ke situs web Anda, gratis. Dokumen pengunjung tetap di perangkat mereka: baik situs Anda maupun Cachety tidak bisa melihatnya.",
+    description: "Pasang watermark dan tanda tangan Cachety di situs Anda, gratis. Dokumen pengunjung tetap di perangkat mereka: Anda maupun Cachety tidak bisa melihatnya.",
   },
   title: "Pasang Cachety di situs web Anda",
-  lead: "Agen properti, platform HR, komunitas: biarkan orang yang mengirimkan KTP atau slip gaji kepada Anda memberi watermark langsung di halaman Anda. Gratis, dan dokumen mereka tidak pernah keluar dari perangkatnya.",
+  lead: "Agen properti, platform HR, komunitas: biarkan orang yang mengirimkan KTP atau slip gaji kepada Anda memberi watermark langsung di halaman Anda. Gratis, dan dokumen mereka tidak pernah keluar dari perangkatnya. Mereka juga bisa menandatangani dokumen di sana, dengan janji yang sama.",
   privacyTitle: "Mengapa tetap privat",
   privacy: [
     "Alat ini berjalan di dalam bingkai yang disajikan oleh cachety.com. Halaman Anda, dan skrip apa pun di dalamnya, tidak bisa membaca isinya.",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "mis. nama perusahaan Anda",
     accent: "Warna tombol",
     accentHint: "Warna yang terlalu terang diabaikan, agar tombol tetap mudah dibaca.",
+    tools: "Alat yang ditawarkan",
+    toolChoices: { watermark: "Watermark saja", sign: "Tanda tangan saja", both: "Keduanya, pengunjung memilih" },
+    signHint: "Saat menandatangani, tujuan atau penerima yang sudah diisi juga menambahkan watermark pada salinan yang ditandatangani. Pengunjung bisa menghapusnya.",
   },
   embedCode: "1. Bingkai",
   resizeCode: "2. Tinggi otomatis",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "Memasang Cachety gratis, sama seperti bagian lain situs ini. Jika bermanfaat bagi Anda dan pengunjung Anda, donasi membantu Cachety tetap berjalan.",
   donateCta: "Dukung Cachety",
   usedBy: "Digunakan oleh",
-  embed: { runsOn: "Berjalan di cachety.com", private: "File Anda tetap di perangkat Anda" },
+  embed: {
+    runsOn: "Berjalan di cachety.com",
+    private: "File Anda tetap di perangkat Anda",
+    switchLabel: "Alat",
+    switchWarn: "Berganti alat akan menghapus dokumen yang ditambahkan di sini.",
+    switchConfirm: "Ganti alat",
+    switchCancel: "Batal",
+  },
 };
 
 export default COPY;
