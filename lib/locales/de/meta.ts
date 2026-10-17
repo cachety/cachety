@@ -30,4 +30,9 @@ export const META_DE: LocaleMeta = {
     description:
       "Cachety im Vergleich mit PDF24, iLovePDF, Smallpdf und Co.: wohin deine Dateien gehen, Preis, Grenzen und Datenschutz. Vergleiche mit Quellen.",
   },
+  sign: {
+    title: `PDF kostenlos unterschreiben, ohne Upload | ${BRAND}`,
+    description:
+      "Zeichne, tippe oder importiere deine Unterschrift und setz sie auf ein PDF oder Foto. Alles passiert im Browser, nichts wird hochgeladen. Kostenlos, ohne Konto.",
+  },
 };

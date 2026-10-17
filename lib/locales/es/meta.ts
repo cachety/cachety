@@ -30,4 +30,9 @@ export const META_ES: LocaleMeta = {
     description:
       "Cachety frente a las herramientas de marca de agua más usadas: adónde van tus archivos, precio, límites y privacidad. Comparativas con fuentes.",
   },
+  sign: {
+    title: `Firmar un PDF gratis, sin subirlo | ${BRAND}`,
+    description:
+      "Dibuja, escribe o importa tu firma y colócala en un PDF o una foto. Todo pasa en tu navegador: ningún archivo se sube. Gratis, sin cuenta, código abierto.",
+  },
 };

@@ -47,6 +47,47 @@ describe("i18n (parité entre toutes les langues)", () => {
     for (const t of ALL) {
       expect(t.suffix).toMatch(/^[a-z-]+$/);
       expect(t.trace.listFile).toMatch(/^[a-z-]+$/);
+      // outputName() ajoute lui-même le tiret : « bail-signed.pdf ».
+      expect(t.sign.suffix).toBe("signed");
+      expect(t.sign.zipName).toMatch(/^[a-z][a-z-]*[a-z]$/);
+    }
+  });
+
+  test("mode signature : même arborescence de clés dans toutes les langues", () => {
+    // Structure profonde (clés, longueurs de listes, fonctions), sans les valeurs.
+    const shape = (v: unknown): unknown =>
+      Array.isArray(v)
+        ? v.map(shape)
+        : typeof v === "function"
+          ? "fn"
+          : v && typeof v === "object"
+            ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, shape((v as Record<string, unknown>)[k])]))
+            : typeof v;
+    for (const t of ALL) expect(shape(t.sign)).toEqual(shape(STRINGS.fr.sign));
+  });
+
+  test("mode signature : textes non vides, listes et fonctions complètes", () => {
+    const walk = (v: unknown): void => {
+      if (typeof v === "string") expect(v.trim().length).toBeGreaterThan(0);
+      else if (Array.isArray(v)) v.forEach(walk);
+      else if (v && typeof v === "object") Object.values(v).forEach(walk);
+    };
+    for (const t of ALL) {
+      const s = t.sign;
+      walk(s);
+      expect(s.stepShort).toHaveLength(3);
+      expect(s.tour.steps).toHaveLength(3);
+      expect(s.tour.stepOf(2, 3)).toContain("3");
+      // Mentions toutes prêtes sous la signature (« Lu et approuvé »…).
+      expect(s.block.mentions).toHaveLength(3);
+      expect(new Set(s.block.mentions).size).toBe(3);
+      for (const m of s.block.mentions) expect(m.length).toBeLessThanOrEqual(60);
+      for (const part of ["12", "39"]) expect(s.place.gap(12, 39)).toContain(part);
+      expect(s.place.boxLabel(7)).toContain("7");
+      expect(s.processingDoc("a.pdf")).toContain("a.pdf");
+      for (const part of ["a.pdf", "2", "5"]) expect(s.processingDoc("a.pdf", [2, 5])).toContain(part);
+      expect(s.previewAlt("a.pdf", 4)).toContain("4");
+      expect(s.fingerprint.copyAria("a.pdf")).toContain("a.pdf");
     }
   });
 

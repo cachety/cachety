@@ -62,6 +62,9 @@ export type SiteMeta = {
 // /fr/about /en/about /ja/about /zh/about l'imposent (métadonnées et lang corrects).
 export const ABOUT_ALTERNATES: Record<string, string> = pageAlternates("/about", true);
 
+// Outil de signature : /sign détecte la langue (x-default), /<lang>/sign l'impose.
+export const SIGN_ALTERNATES: Record<string, string> = pageAlternates("/sign", true);
+
 export type PageMeta = { title: string; description: string };
 
 /** Métadonnées d'une langue ajoutée dans lib/locales/<lang>/meta.ts. */
@@ -71,6 +74,7 @@ export type LocaleMeta = {
   privacy: PageMeta;
   guides: PageMeta;
   compare: PageMeta;
+  sign: PageMeta;
 };
 
 export const ABOUT_META: Record<Lang, PageMeta> = {
@@ -190,6 +194,38 @@ export const COMPARE_META: Record<Lang, PageMeta> = {
   pt: META_PT.compare,
   id: META_ID.compare,
   nl: META_NL.compare,
+};
+
+// Page « Signer » (docs/prd-sign.md §10.1). Titre ≤ 60 caractères : le FR
+// s'en passe de « | Cachety », qui le ferait déborder (même règle que pageTitle).
+export const SIGN_META: Record<Lang, PageMeta> = {
+  fr: {
+    title: "Signer un PDF gratuitement, sans l'envoyer nulle part",
+    description:
+      "Dessinez, tapez ou importez votre signature et posez-la sur un PDF ou une photo. Tout se passe dans votre navigateur : rien n'est envoyé. Gratuit, sans compte.",
+  },
+  en: {
+    title: `Sign a PDF for free, without uploading it | ${BRAND}`,
+    description:
+      "Draw, type or upload your signature and place it on a PDF or a photo. Everything happens in your browser: no file is uploaded. Free, no account, open source.",
+  },
+  ja: {
+    title: `PDF に無料で署名、アップロード不要 | ${BRAND}`,
+    description:
+      "署名を手書き・入力・画像で用意して、PDF や写真に配置できます。処理はすべてブラウザの中で行われ、ファイルは一切送信されません。無料、登録不要、オープンソース。",
+  },
+  zh: {
+    title: `免费签署 PDF，文件不上传 | ${BRAND}`,
+    description:
+      "手写、输入或导入您的签名，放到 PDF 或照片上。全程在浏览器内完成，文件绝不上传。免费，无需注册，开源。",
+  },
+  es: META_ES.sign,
+  ar: META_AR.sign,
+  fa: META_FA.sign,
+  de: META_DE.sign,
+  pt: META_PT.sign,
+  id: META_ID.sign,
+  nl: META_NL.sign,
 };
 
 export const SITE_META: Record<Lang, SiteMeta> = {

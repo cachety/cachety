@@ -30,4 +30,9 @@ export const META_NL: LocaleMeta = {
     description:
       "Cachety naast KopieID, iLovePDF, Smallpdf, PDF24 en meer: waar je bestanden heen gaan, wat het kost en wat het kan. Eerlijke vergelijkingen met bronnen.",
   },
+  sign: {
+    title: `Een pdf gratis ondertekenen, zonder upload | ${BRAND}`,
+    description:
+      "Teken, typ of importeer je handtekening en plaats hem op een pdf of foto. Alles gebeurt in je browser: er wordt niets geüpload. Gratis, zonder account.",
+  },
 };

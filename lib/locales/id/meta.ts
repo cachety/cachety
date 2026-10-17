@@ -30,4 +30,9 @@ export const META_ID: LocaleMeta = {
     description:
       "Cachety dibandingkan dengan alat watermark populer: ke mana file Anda dikirim, harga, batasan, dan privasi. Perbandingan jujur dengan sumber.",
   },
+  sign: {
+    title: `Tanda tangani PDF gratis, tanpa upload | ${BRAND}`,
+    description:
+      "Gambar, ketik, atau impor tanda tangan Anda dan tempatkan di PDF atau foto. Semua terjadi di browser Anda: tidak ada file yang di-upload. Gratis, tanpa akun.",
+  },
 };

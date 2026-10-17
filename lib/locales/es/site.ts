@@ -6,6 +6,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 export const SITE_ES: SiteCopy = {
   nav: {
     tool: "La herramienta",
+    sign: "Firmar",
     about: "¿Por qué una marca de agua?",
     guides: "Guías",
     privacy: "Privacidad",
@@ -128,10 +129,68 @@ export const SITE_ES: SiteCopy = {
         a: "Sí, en iPhone y Android. Abre cachety.com en tu navegador, toca la zona para soltar archivos y elige una foto o un PDF. También puedes añadir Cachety a tu pantalla de inicio.",
       },
     ],
+    signLink: {
+      title: "¿Tienes un documento que firmar?",
+      body: "Contrato de alquiler, certificado, presupuesto: dibuja, escribe o importa tu firma y colócala en el PDF. Aquí tampoco se sube nada.",
+      cta: "Firmar un documento",
+    },
     guidesTitle: "Guías prácticas",
     guidesLead: "Ayuda paso a paso para situaciones del día a día.",
     guidesAll: "Todas las guías",
     backToTop: "Poner una marca de agua",
+  },
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  sign: {
+    hero: {
+      title: "Firma un documento sin enviarlo a ninguna parte",
+      lead: "Contrato de alquiler, certificado, presupuesto, autorización: firma en segundos. El documento se queda en tu dispositivo de principio a fin.",
+      pills: ["Gratis", "Sin cuenta", "Nada se sube", "Hecho en Francia"],
+    },
+    howTitle: "Cómo funciona",
+    how: [
+      { title: "Suelta tu documento", body: "Un PDF o una foto del documento, aunque sea hecha con el móvil. Varios a la vez si hace falta." },
+      { title: "Crea tu firma", body: "Dibújala con el dedo o el ratón, escribe tu nombre o importa una foto de tu firma." },
+      { title: "Colócala y descarga", body: "Arrástrala al lugar correcto. La vista previa muestra exactamente el PDF firmado, que se guarda en tu dispositivo." },
+    ],
+    airplaneTitle: "Compruébalo tú mismo: la prueba del modo avión",
+    airplaneBody:
+      "Abre esta página y luego desconecta internet (modo avión). Suelta un documento y fírmalo: Cachety sigue funcionando. Es la prueba de que nada pasa por internet.",
+    legal: {
+      title: "¿Qué valor tiene esta firma?",
+      p1: "Una firma dibujada o escrita y colocada en el documento es lo que la ley llama una firma electrónica «simple». En la UE, no se puede rechazar una firma solo por ser electrónica (Reglamento eIDAS, artículo 25). En Francia, una firma es válida si identifica a su autor y muestra su consentimiento (Código Civil, artículo 1367).",
+      p2: "Para los documentos del día a día suele bastar: papeles del alquiler, certificados, presupuestos, formularios del colegio o de asociaciones. Si alguien la impugna, te toca demostrar que eres el autor; una firma «cualificada» (con un certificado de un proveedor acreditado) goza de una presunción de fiabilidad que la firma simple no tiene.",
+      p3: "No es la herramienta adecuada cuando se exige una firma cualificada, o cuando la otra parte impone una plataforma concreta: algunos contratos de préstamo o de seguro, las escrituras notariales, ciertos trámites oficiales. En ese caso, usa la herramienta que te pidan.",
+      note: "Esto no es asesoramiento jurídico. Las normas para algunos documentos cambian de un país a otro. Esta traducción está pendiente de revisión por un hablante nativo.",
+    },
+    faqTitle: "Preguntas frecuentes",
+    faq: [
+      {
+        q: "¿Se sube mi documento a un servidor?",
+        a: "No, nunca. El sitio ni siquiera tiene un servidor que pueda recibir un archivo. Tu navegador hace todo el trabajo, y la página le impide técnicamente conectarse a cualquier otra web. La prueba del modo avión lo demuestra en diez segundos.",
+      },
+      {
+        q: "¿Se guarda mi firma?",
+        a: "No. Solo existe en la memoria de la pestaña. Cierra la pestaña y desaparece.",
+      },
+      {
+        q: "¿Pueden quitar o reutilizar mi firma?",
+        a: "Forma parte de la imagen de cada página: no se puede mover ni borrar editando el PDF. Como con una firma en papel escaneada, alguien podría recortarla y pegarla en otro sitio. Para limitar ese riesgo, añade una marca de agua que vincule la copia a su uso y rubrica cada página.",
+      },
+      {
+        q: "¿Se puede seleccionar el texto del PDF firmado?",
+        a: "No. Cada página se reconstruye a partir de sus píxeles, lo que también elimina el texto oculto, los metadatos y la ubicación GPS de las fotos. Tu original se queda contigo, intacto.",
+      },
+      {
+        q: "¿Funciona en mi móvil?",
+        a: "Sí, en iPhone y Android. Firma con el dedo, o importa una foto si lo prefieres.",
+      },
+    ],
+    watermarkLink: {
+      title: "¿También envías una copia de tu DNI?",
+      body: "DNI, declaración de la renta, nómina: ponle una marca de agua que limite la copia a un solo uso. Mismo sitio, misma promesa: nada se sube.",
+      cta: "Poner una marca de agua",
+    },
+    backToTop: "Firmar un documento",
   },
   privacy: {
     title: "Privacidad y seguridad",
@@ -213,6 +272,7 @@ export const SITE_ES: SiteCopy = {
     faqTitle: "Preguntas frecuentes",
     related: "Sigue leyendo",
     cta: "Poner la marca de agua a mi documento",
+    ctaSign: "Firmar mi documento",
     ctaNote: "Gratis, sin cuenta. El documento nunca sale de tu dispositivo.",
     updated: (d) => `Actualizado el ${d}`,
     allGuides: "Todas las guías",
