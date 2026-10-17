@@ -30,4 +30,9 @@ export const META_PT: LocaleMeta = {
     description:
       "Cachety e as ferramentas de marca d'água mais usadas: para onde vão seus arquivos, preço, limites e privacidade. Comparativos com fontes.",
   },
+  sign: {
+    title: `Assinar PDF grátis, sem enviar o arquivo | ${BRAND}`,
+    description:
+      "Desenhe, digite ou importe sua assinatura e coloque em um PDF ou foto. Tudo acontece no seu navegador: nenhum arquivo é enviado. Grátis, sem cadastro.",
+  },
 };

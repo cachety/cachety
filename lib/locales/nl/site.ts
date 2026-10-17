@@ -6,6 +6,7 @@ import type { SiteCopy } from "@/lib/site-copy";
 export const SITE_NL: SiteCopy = {
   nav: {
     tool: "De tool",
+    sign: "Ondertekenen",
     about: "Waarom een watermerk?",
     guides: "Uitleg",
     privacy: "Privacy",
@@ -128,10 +129,74 @@ export const SITE_NL: SiteCopy = {
         a: "Ja, op iPhone en Android. Open cachety.com in je browser, tik op het vak en kies een foto of een pdf. Je kunt Cachety ook op je beginscherm zetten.",
       },
     ],
+    signLink: {
+      title: "Een document om te ondertekenen?",
+      body: "Huurcontract, verklaring, offerte: teken, typ of importeer je handtekening en plaats hem op de pdf. Ook hier wordt niets geüpload.",
+      cta: "Een document ondertekenen",
+    },
     guidesTitle: "Praktische uitleg",
     guidesLead: "Stap voor stap hulp bij alledaagse situaties.",
     guidesAll: "Alle uitleg",
     backToTop: "Een document watermerken",
+  },
+  // "legal": vertaald uit het Engels, wacht op controle door een moedertaalspreker (ROADMAP, Native review).
+  sign: {
+    hero: {
+      title: "Onderteken een document zonder het ergens heen te sturen",
+      lead: "Huurcontract, verklaring, offerte, toestemmingsformulier: in een paar seconden ondertekend. Het document blijft van begin tot eind op je apparaat.",
+      pills: ["Gratis", "Geen account", "Niets wordt geüpload", "Gemaakt in Frankrijk"],
+    },
+    howTitle: "Zo werkt het",
+    how: [
+      {
+        title: "Sleep je document erin",
+        body: "Een pdf of een foto van het document, ook als je die met je telefoon hebt gemaakt. Meerdere tegelijk kan ook.",
+      },
+      { title: "Maak je handtekening", body: "Teken hem met je vinger of de muis, typ je naam of importeer een foto van je handtekening." },
+      {
+        title: "Plaatsen en downloaden",
+        body: "Sleep hem naar de juiste plek. Het voorbeeld toont precies de ondertekende pdf, die op je apparaat wordt opgeslagen.",
+      },
+    ],
+    airplaneTitle: "Controleer het zelf: de vliegtuigmodustest",
+    airplaneBody:
+      "Open deze pagina en zet daarna je internet uit (vliegtuigmodus). Sleep een document erin en onderteken het: Cachety blijft werken. Het bewijs dat er niets over internet gaat.",
+    legal: {
+      title: "Wat is deze handtekening waard?",
+      p1: "Een getekende of getypte handtekening die op het document wordt geplaatst, is wat de wet een 'gewone' elektronische handtekening noemt. In de EU mag een handtekening niet worden geweigerd alleen omdat ze elektronisch is (eIDAS-verordening, artikel 25). In Frankrijk is een handtekening geldig als ze de ondertekenaar identificeert en zijn instemming laat zien (Code civil, artikel 1367).",
+      p2: "Voor alledaagse documenten is dat meestal genoeg: huurpapieren, verklaringen, offertes, formulieren van school of vereniging. Bij een geschil moet jij laten zien dat jij de ondertekenaar bent; een 'gekwalificeerde' handtekening (met een certificaat van een erkende aanbieder) geniet een vermoeden van betrouwbaarheid dat een gewone handtekening niet heeft.",
+      p3: "Het is niet de juiste tool als een gekwalificeerde handtekening verplicht is, of als de andere partij een bepaald platform eist: sommige leen- of verzekeringscontracten, notariële akten, bepaalde officiële procedures. Gebruik in dat geval de tool die zij vragen.",
+      note: "Dit is geen juridisch advies. De regels voor sommige documenten verschillen per land. Deze vertaling wacht nog op controle door een moedertaalspreker.",
+    },
+    faqTitle: "Veelgestelde vragen",
+    faq: [
+      {
+        q: "Wordt mijn document naar een server geüpload?",
+        a: "Nee, nooit. De site heeft niet eens een server die een bestand zou kunnen ontvangen. Je browser doet al het werk, en de pagina verbiedt hem technisch om contact te maken met een andere website. De vliegtuigmodustest bewijst het in tien seconden.",
+      },
+      {
+        q: "Wordt mijn handtekening opgeslagen?",
+        a: "Nee. Hij bestaat alleen in het geheugen van het tabblad. Sluit het tabblad en hij is weg.",
+      },
+      {
+        q: "Kan mijn handtekening worden verwijderd of hergebruikt?",
+        a: "Hij maakt deel uit van het beeld van elke pagina: je kunt hem niet verplaatsen of wissen door de pdf te bewerken. Net als bij een ingescande handtekening op papier zou iemand hem kunnen uitknippen en ergens anders plakken. Om dat risico te beperken, voeg je een watermerk toe dat de kopie aan het doel koppelt, en parafeer je elke pagina.",
+      },
+      {
+        q: "Is de tekst van de ondertekende pdf nog te selecteren?",
+        a: "Nee. Elke pagina wordt opnieuw opgebouwd uit haar pixels. Daarbij verdwijnen ook verborgen tekst, metadata en de gps-locatie van foto's. Je origineel blijft onaangeroerd bij jou.",
+      },
+      {
+        q: "Werkt het op mijn telefoon?",
+        a: "Ja, op iPhone en Android. Onderteken met je vinger, of importeer een foto als je dat liever doet.",
+      },
+    ],
+    watermarkLink: {
+      title: "Stuur je ook een kopie van je identiteitsbewijs mee?",
+      body: "Identiteitsbewijs, belastingaanslag, loonstrook: voeg een watermerk toe dat de kopie tot één doel beperkt. Dezelfde site, dezelfde belofte: niets wordt geüpload.",
+      cta: "Een document watermerken",
+    },
+    backToTop: "Een document ondertekenen",
   },
   privacy: {
     title: "Privacy en beveiliging",
@@ -213,6 +278,7 @@ export const SITE_NL: SiteCopy = {
     faqTitle: "Veelgestelde vragen",
     related: "Lees ook",
     cta: "Mijn document watermerken",
+    ctaSign: "Mijn document ondertekenen",
     ctaNote: "Gratis, geen account. Het document verlaat nooit je apparaat.",
     updated: (d) => `Bijgewerkt op ${d}`,
     allGuides: "Alle uitleg",
