@@ -10,11 +10,13 @@ import {
   comparePath,
   comparisonAlternates,
   COMPARISONS,
+  compareTool,
   findComparison,
   relatedComparisons,
   type CompareRow,
 } from "@/lib/compare";
 import { SITE_COPY } from "@/lib/site-copy";
+import { displayTitle } from "@/lib/typography";
 import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage, pageTitle } from "@/lib/site-meta";
 
 // Export statique : seuls les comparatifs déclarés dans lib/compare existent.
@@ -87,6 +89,7 @@ export default async function ComparePage({ params }: Props) {
   const ui = copy.compareUi;
   const g = copy.guidesUi;
   const related = relatedComparisons(lang, c);
+  const sign = compareTool(c) === "sign";
   const links = Object.fromEntries(
     LANG_CODES.map((l) => [l, comparisonAlternates(lang, c)[l] ?? compareIndexPath(l)])
   ) as Record<Lang, string>;
@@ -101,7 +104,7 @@ export default async function ComparePage({ params }: Props) {
       </nav>
 
       <article className="mt-4">
-        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{c.title}</h1>
+        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{displayTitle(lang, c.title)}</h1>
         <p className="mt-2 text-sm text-encre-2">{g.updated(day(c.updated, lang))}</p>
         <p className="mt-5 text-pretty text-xl text-encre-2">
           <Prose text={c.intro} />
@@ -181,10 +184,10 @@ export default async function ComparePage({ params }: Props) {
         <aside className="mt-12 flex flex-col items-start gap-3 rounded-2xl bg-encre p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <p className="text-pretty text-white/85">{g.ctaNote}</p>
           <Link
-            href={`/${lang}`}
+            href={sign ? `/${lang}/sign` : `/${lang}`}
             className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            {g.cta}
+            {sign ? g.ctaSign : g.cta}
             <ChevronIcon direction="right" className="h-4 w-4" />
           </Link>
         </aside>

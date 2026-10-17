@@ -26,9 +26,9 @@ export const META_DE: LocaleMeta = {
       "Schritt für Schritt: Wasserzeichen auf Personalausweis, Gehaltsabrechnung und Mietbewerbung, PDF schwärzen, Video-Ident und Handy. Kostenlos.",
   },
   compare: {
-    title: `Wasserzeichen-Tools im Vergleich | ${BRAND}`,
+    title: `Wasserzeichen- und Signatur-Tools im Vergleich | ${BRAND}`,
     description:
-      "Cachety im Vergleich mit PDF24, iLovePDF, Smallpdf und Co.: wohin deine Dateien gehen, Preis, Grenzen und Datenschutz. Vergleiche mit Quellen.",
+      "Cachety im Vergleich mit PDF24, iLovePDF, DocuSign und Co.: wohin deine Dateien gehen, Preis, Grenzen und Datenschutz. Vergleiche mit Quellen.",
   },
   sign: {
     title: `PDF kostenlos unterschreiben, ohne Upload | ${BRAND}`,

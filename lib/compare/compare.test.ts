@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { LANG_CODES } from "@/lib/site-meta";
-import { comparisonAlternates, COMPARISONS } from "./index";
+import { comparisonAlternates, COMPARISONS, compareTool, relatedComparisons } from "./index";
 import type { Comparison } from "./types";
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -68,6 +68,18 @@ describe("comparatifs (pages « Cachety ou X ? »)", () => {
       });
     });
   }
+
+  test("signature : les mêmes cinq outils comparés dans chaque langue, liés entre eux seulement", () => {
+    const SIGN_TOOLS = ["adobe-fill-sign", "docusign", "ilovepdf-sign", "smallpdf-sign", "yousign"];
+    for (const lang of LANG_CODES) {
+      const sign = COMPARISONS[lang].filter((c) => compareTool(c) === "sign");
+      expect(sign.map((c) => c.competitor).sort(), lang).toEqual(SIGN_TOOLS);
+      for (const c of sign) {
+        expect(c.slug, lang).toBe(`cachety-vs-${c.competitor}`);
+        for (const r of relatedComparisons(lang, c)) expect(compareTool(r), c.slug).toBe("sign");
+      }
+    }
+  });
 
   test("hreflang : les comparatifs d'un même outil se citent mutuellement", () => {
     for (const lang of LANG_CODES) {

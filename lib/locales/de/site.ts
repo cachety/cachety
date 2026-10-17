@@ -282,8 +282,9 @@ export const SITE_DE: SiteCopy = {
     allGuides: "Alle Ratgeber",
   },
   compareUi: {
-    title: "Cachety im Vergleich mit anderen Wasserzeichen-Tools",
+    title: "Cachety im Vergleich mit anderen Wasserzeichen- und Unterschrift-Tools",
     lead: "Verständliche, geprüfte Vergleiche mit den meistgenutzten Tools: wohin deine Dateien gehen, was es kostet und wann ein anderes Tool die bessere Wahl ist.",
+    groups: { watermark: "Wasserzeichen", sign: "Unterschreiben" },
     read: "Vergleich lesen",
     verdictTitle: "Kurz gesagt",
     tableTitle: "Im direkten Vergleich",

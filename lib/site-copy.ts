@@ -98,6 +98,8 @@ export type SiteCopy = {
   compareUi: {
     title: string;
     lead: string;
+    /** Intertitres de la page d'index : comparatifs du filigrane, puis de la signature. */
+    groups: { watermark: string; sign: string };
     read: string;
     verdictTitle: string;
     tableTitle: string;
@@ -359,8 +361,9 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       allGuides: "Tous les guides",
     },
     compareUi: {
-      title: "Cachety face aux autres outils de filigrane",
+      title: "Cachety face aux autres outils de filigrane et de signature",
       lead: "Des comparatifs clairs et vérifiés avec les outils les plus utilisés : où vont vos fichiers, ce que ça coûte, et quand un autre outil est le meilleur choix.",
+      groups: { watermark: "Filigrane", sign: "Signature" },
       read: "Lire le comparatif",
       verdictTitle: "En bref",
       tableTitle: "Côte à côte",
@@ -622,8 +625,9 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       allGuides: "All guides",
     },
     compareUi: {
-      title: "Cachety compared with other watermark tools",
+      title: "Cachety compared with other watermark and signing tools",
       lead: "Plain-language, fact-checked comparisons with the tools people use most: where your files go, what it costs, and when another tool is the better choice.",
+      groups: { watermark: "Watermark", sign: "Sign" },
       read: "Read the comparison",
       verdictTitle: "In short",
       tableTitle: "Side by side",
@@ -886,8 +890,9 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       allGuides: "ガイド一覧",
     },
     compareUi: {
-      title: "Cachety と他の透かしツールの比較",
+      title: "Cachety と他の透かし・署名ツールの比較",
       lead: "よく使われるツールとの比較を、事実に基づいてわかりやすくまとめました。ファイルの行き先、費用、そして他のツールの方が向いている場面まで。",
+      groups: { watermark: "透かし", sign: "署名" },
       read: "比較を読む",
       verdictTitle: "まとめ",
       tableTitle: "比較表",
@@ -1150,8 +1155,9 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       allGuides: "全部指南",
     },
     compareUi: {
-      title: "Cachety 与其他水印工具对比",
+      title: "Cachety 与其他水印和签名工具对比",
       lead: "与常用工具的对比，基于事实、通俗易懂：文件去了哪里、要花多少钱，以及什么时候其他工具更合适。",
+      groups: { watermark: "水印", sign: "签名" },
       read: "阅读对比",
       verdictTitle: "简要结论",
       tableTitle: "逐项对比",

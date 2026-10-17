@@ -284,8 +284,9 @@ export const SITE_NL: SiteCopy = {
     allGuides: "Alle uitleg",
   },
   compareUi: {
-    title: "Cachety vergeleken met andere watermerktools",
+    title: "Cachety vergeleken met andere watermerk- en ondertekentools",
     lead: "Heldere, gecontroleerde vergelijkingen met de tools die het meest worden gebruikt: waar je bestanden heen gaan, wat het kost, en wanneer een andere tool de betere keuze is.",
+    groups: { watermark: "Watermerk", sign: "Ondertekenen" },
     read: "Lees de vergelijking",
     verdictTitle: "In het kort",
     tableTitle: "Naast elkaar",

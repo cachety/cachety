@@ -26,9 +26,9 @@ export const META_NL: LocaleMeta = {
       "Stap voor stap: een veilige kopie van je ID maken, je BSN zwartlakken, documenten voor een huurwoning of hypotheek beschermen. Gratis, zonder uploaden.",
   },
   compare: {
-    title: `Watermerktools vergeleken: KopieID, iLovePDF… | ${BRAND}`,
+    title: `Watermerk- en ondertekentools vergeleken | ${BRAND}`,
     description:
-      "Cachety naast KopieID, iLovePDF, Smallpdf, PDF24 en meer: waar je bestanden heen gaan, wat het kost en wat het kan. Eerlijke vergelijkingen met bronnen.",
+      "Cachety naast KopieID, iLovePDF, DocuSign en meer: waar je bestanden heen gaan, wat het kost en wat het kan. Eerlijke vergelijkingen met bronnen.",
   },
   sign: {
     title: `Een pdf gratis ondertekenen, zonder upload | ${BRAND}`,

@@ -284,8 +284,9 @@ export const SITE_PT: SiteCopy = {
     allGuides: "Todos os guias",
   },
   compareUi: {
-    title: "Cachety e outras ferramentas de marca d'água",
+    title: "Cachety e outras ferramentas de marca d'água e de assinatura",
     lead: "Comparativos claros e verificados com as ferramentas mais usadas: para onde vão seus arquivos, quanto custa e quando outra ferramenta é a melhor escolha.",
+    groups: { watermark: "Marca d'água", sign: "Assinatura" },
     read: "Ler o comparativo",
     verdictTitle: "Resumindo",
     tableTitle: "Lado a lado",

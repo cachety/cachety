@@ -100,6 +100,13 @@ export default function SignLanding({ teasers }: { teasers: Record<Lang, GuideTe
 
       <GuideTeasers lang={lang} guides={teasers[lang]} />
 
+      <p className="-mt-6 flex justify-center">
+        <a href={`/${lang}/compare#group-sign`} className="inline-flex items-center gap-1 font-medium text-bleu hover:underline">
+          {SITE_COPY[lang].nav.compare}
+          <ChevronIcon direction="right" className="h-4 w-4" />
+        </a>
+      </p>
+
       <ToolLink id="watermark-link" href={`/${lang}`} copy={s.watermarkLink} Icon={ShieldIcon} />
 
       <div className="flex justify-center">

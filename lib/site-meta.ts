@@ -169,23 +169,23 @@ export const GUIDES_META: Record<Lang, PageMeta> = {
 
 export const COMPARE_META: Record<Lang, PageMeta> = {
   fr: {
-    title: `Comparatifs d'outils de filigrane | ${BRAND}`,
+    title: `Comparatifs : filigrane et signature | ${BRAND}`,
     description:
-      "Cachety comparé aux outils de filigrane les plus utilisés : où vont vos fichiers, prix, limites, confidentialité. Des comparatifs factuels et sourcés.",
+      "Cachety comparé aux outils de filigrane et de signature les plus utilisés : où vont vos fichiers, prix, limites, confidentialité. Factuel et sourcé.",
   },
   en: {
-    title: `Watermark tool comparisons | ${BRAND}`,
+    title: `Watermark and signing tool comparisons | ${BRAND}`,
     description:
-      "Cachety compared with the most popular watermark tools: where your files go, price, limits and privacy. Factual comparisons, with sources.",
+      "Cachety compared with the most popular watermark and e-signature tools: where your files go, price, limits and privacy. Factual, with sources.",
   },
   ja: {
-    title: `透かしツール比較 | ${BRAND}`,
+    title: `透かし・署名ツール比較 | ${BRAND}`,
     description:
-      "よく使われる透かしツールと Cachety を比較。ファイルの送信先、料金、制限、プライバシーを、出典つきで事実に基づいて解説します。",
+      "よく使われる透かしツールや電子署名ツールと Cachety を比較。ファイルの送信先、料金、制限、プライバシーを、出典つきで事実に基づいて解説します。",
   },
   zh: {
-    title: `水印工具对比 | ${BRAND}`,
-    description: "将 Cachety 与常用水印工具逐项对比：文件去向、价格、限制和隐私。基于事实，附资料来源。",
+    title: `水印和签名工具对比 | ${BRAND}`,
+    description: "将 Cachety 与常用水印和电子签名工具逐项对比：文件去向、价格、限制和隐私。基于事实，附资料来源。",
   },
   es: META_ES.compare,
   ar: META_AR.compare,

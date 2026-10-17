@@ -284,8 +284,9 @@ export const SITE_ID: SiteCopy = {
     allGuides: "Semua panduan",
   },
   compareUi: {
-    title: "Cachety dibandingkan alat watermark lain",
+    title: "Cachety dibandingkan alat watermark dan tanda tangan lain",
     lead: "Perbandingan yang jelas dan sudah dicek dengan alat-alat yang paling banyak dipakai: ke mana file Anda dikirim, berapa biayanya, dan kapan alat lain justru lebih cocok.",
+    groups: { watermark: "Watermark", sign: "Tanda tangan" },
     read: "Baca perbandingan",
     verdictTitle: "Ringkasnya",
     tableTitle: "Berdampingan",
