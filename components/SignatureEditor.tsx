@@ -91,7 +91,15 @@ export function SignatureEditor({
   // Dimensions réelles du rendu : rapport de la page, et largeur en pixels
   // (pour l'avertissement « trop petite »).
   const [natural, setNatural] = useState<{ w: number; h: number } | null>(null);
-  const pageAspect = natural ? natural.w / natural.h : 1 / Math.SQRT2;
+  // Rapport inconnu tant que l'image n'est pas chargée : on ne pose rien
+  // avant (un A4 supposé donnerait une boîte à la mauvaise hauteur ailleurs).
+  const pageAspect = natural ? natural.w / natural.h : null;
+  const imgRef = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    const img = imgRef.current;
+    // Autre page (format peut-être différent) : rapport relu au chargement.
+    setNatural(img?.complete && img.naturalWidth ? { w: img.naturalWidth, h: img.naturalHeight } : null);
+  }, [src]);
   const shown = draft ?? rect;
 
   // La signature dans la boîte : elle suit le geste avant que le moteur ait
@@ -122,7 +130,7 @@ export function SignatureEditor({
   };
 
   const placeAt = (cx: number, cy: number) =>
-    onPlace(centeredAt(cx, cy, rect?.w ?? lastWidth.current, pageAspect, sigAspect));
+    pageAspect && onPlace(centeredAt(cx, cy, rect?.w ?? lastWidth.current, pageAspect, sigAspect));
   // Largeur de la signature quand elle était ailleurs : on la garde en la déplaçant.
   const lastWidth = useRef(DEFAULT_SIGNATURE_WIDTH);
   if (rect) lastWidth.current = rect.w;
@@ -133,6 +141,7 @@ export function SignatureEditor({
     <div className="mt-3">
       <div className="relative mx-auto w-fit">
         <img
+          ref={imgRef}
           src={src}
           alt={alt}
           draggable={false}
@@ -176,6 +185,10 @@ export function SignatureEditor({
           }}
         >
           {shown && (
+            // Cadre sans rôle : la boîte (role="button") et × sont frères, pas
+            // un bouton dans un bouton (les touches pressées sur × ne déplacent
+            // ni ne retirent la boîte par bouillonnement).
+            <div className="absolute" style={pct(shown)}>
             <div
               ref={boxRef}
               role="button"
@@ -185,7 +198,7 @@ export function SignatureEditor({
               data-testid="signature-box"
               onPointerDown={(e) => begin(e, "move")}
               onKeyDown={(e) => {
-                if (!rect) return;
+                if (!rect || e.target !== e.currentTarget) return;
                 const step = e.shiftKey ? KEY_STEP * 5 : KEY_STEP;
                 const moves: Record<string, [number, number]> = {
                   ArrowLeft: [-step, 0],
@@ -207,24 +220,9 @@ export function SignatureEditor({
                   requestAnimationFrame(() => hereRef.current?.focus());
                 }
               }}
-              className="absolute cursor-move touch-none rounded-sm border-2 border-dashed border-bleu bg-bleu/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu focus-visible:ring-offset-1"
-              style={pct(shown)}
+              className="absolute inset-0 cursor-move touch-none rounded-sm border-2 border-dashed border-bleu bg-bleu/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu focus-visible:ring-offset-1"
             >
               <canvas ref={inkRef} aria-hidden className="pointer-events-none block h-full w-full" />
-              {/* Côté physique (right) voulu : coordonnées de la page, pas du texte. */}
-              <button
-                type="button"
-                aria-label={p.remove}
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onPlace(null);
-                  requestAnimationFrame(() => hereRef.current?.focus());
-                }}
-                className="absolute -top-3.5 -right-3.5 flex h-7 w-7 items-center justify-center rounded-full border border-white bg-sceau text-white shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
-              >
-                <CloseIcon className="h-3.5 w-3.5" />
-              </button>
               {/* Poignée : zone de prise de 32 px autour d'un carré visible de 16 px. */}
               <span
                 aria-hidden
@@ -234,6 +232,21 @@ export function SignatureEditor({
               >
                 <span className="h-4 w-4 rounded-sm border-2 border-white bg-bleu shadow" />
               </span>
+            </div>
+            {/* Côté physique (right) voulu : coordonnées de la page, pas du texte. */}
+            <button
+              type="button"
+              aria-label={p.remove}
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPlace(null);
+                requestAnimationFrame(() => hereRef.current?.focus());
+              }}
+              className="absolute -top-3.5 -right-3.5 flex h-7 w-7 items-center justify-center rounded-full border border-white bg-sceau text-white shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-bleu"
+            >
+              <CloseIcon className="h-3.5 w-3.5" />
+            </button>
             </div>
           )}
         </div>
@@ -261,8 +274,9 @@ export function SignatureEditor({
             <button
               ref={hereRef}
               type="button"
-              onClick={() => onPlace(defaultPlacement(pageAspect, sigAspect, lastWidth.current))}
-              className="rounded-xl bg-bleu px-4 py-2 font-semibold text-white transition-colors hover:bg-bleu/90"
+              disabled={!pageAspect}
+              onClick={() => pageAspect && onPlace(defaultPlacement(pageAspect, sigAspect, lastWidth.current))}
+              className="rounded-xl bg-bleu px-4 py-2 font-semibold text-white transition-colors hover:bg-bleu/90 disabled:opacity-50"
             >
               {p.here}
             </button>

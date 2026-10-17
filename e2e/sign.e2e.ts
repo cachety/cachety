@@ -453,6 +453,45 @@ describe("signer : retirer puis replacer", () => {
   );
 });
 
+describe("signer : clavier", () => {
+  test(
+    "× n'est pas dans la boîte : ses touches ne la déplacent pas ; encres : flèches entre les choix",
+    async () => {
+      const page = await openPage("/en/sign");
+      await addFile(page, "lease.pdf", await makePdf([[595, 842]]));
+      await typeName(page, "Jane Doe");
+
+      // Encre : un seul arrêt de Tab (le choix coché), flèche droite → bleu.
+      const inks = page.getByRole("radiogroup", { name: en.sign.pad.ink });
+      const black = inks.getByRole("radio", { name: en.sign.pad.inkBlack });
+      const blue = inks.getByRole("radio", { name: en.sign.pad.inkBlue });
+      expect(await black.getAttribute("aria-checked")).toBe("true");
+      expect(await blue.getAttribute("tabindex")).toBe("-1");
+      await black.focus();
+      await page.keyboard.press("ArrowRight");
+      expect(await blue.getAttribute("aria-checked")).toBe("true");
+      expect(await blue.evaluate((el) => el === document.activeElement)).toBe(true);
+      await page.keyboard.press("ArrowRight");
+      expect(await black.getAttribute("aria-checked")).toBe("true");
+
+      const box = signatureBox(page, 1);
+      await box.waitFor({ timeout: 60_000 });
+      expect(await box.locator("button").count()).toBe(0);
+      const remove = page.getByRole("button", { name: en.sign.place.remove });
+      const before = (await boxFraction(page))!;
+      await remove.focus();
+      await page.keyboard.press("ArrowLeft");
+      await page.keyboard.press("Backspace");
+      await page.waitForTimeout(300);
+      expect((await boxFraction(page))!.x).toBeCloseTo(before.x, 4);
+      // Entrée sur × : la signature est retirée.
+      await page.keyboard.press("Enter");
+      await page.getByText(en.sign.place.missing).waitFor();
+    },
+    120_000
+  );
+});
+
 describe("signer : nouvelle signature", () => {
   /** Rapport largeur / hauteur de la boîte posée, et de l'image dessinée dedans. */
   const ratios = (page: Page) =>
