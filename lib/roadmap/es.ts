@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Contraseñas fáciles de leer en tu idioma",
     body: "Palabras de la contraseña en tu propio idioma, solo con letras sin acentos para que se escriban igual en cualquier teclado.",
   },
+  "remember-signature": {
+    title: "Recordar mi firma en este dispositivo",
+    body: "Una opción voluntaria para guardar tu firma en este dispositivo, con una frase clara sobre lo que se guarda y un botón para borrarla. Hoy nunca se guarda.",
+  },
+  "keep-vector-pages": {
+    title: "Conservar el texto de los PDF firmados",
+    body: "Una opción para firmar sin reconstruir las páginas a partir de píxeles, para que el texto se pueda seguir buscando. Tendría su propia limpieza de los datos ocultos.",
+  },
+  "sign-embed": {
+    title: "Firmar en webs asociadas",
+    body: "Las webs aprobadas podrían mostrar la herramienta de firma en sus propias páginas, con el lugar y la nota ya rellenados. Los documentos seguirían en el dispositivo del visitante.",
+  },
+  "sign": {
+    title: "Firmar un documento",
+    body: "Dibuja, escribe o sube tu firma, colócala en un PDF o una foto y descarga un PDF firmado. Como con la marca de agua, no se sube nada.",
+  },
   "simpler-tool": {
     title: "Una herramienta más sencilla",
     body: "Tres pasos con palabras claras: tu documento, para qué es y quién lo recibe, y luego la vista previa y la descarga. Las opciones avanzadas siguen a un toque.",

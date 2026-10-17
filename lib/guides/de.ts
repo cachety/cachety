@@ -529,4 +529,188 @@ export const GUIDES_DE: Guide[] = [
     ],
     updated: "2026-10-12",
   },
+
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  // Ratgeber zum Unterschreiben (Werkzeug Unterschreiben, /de/sign).
+  {
+    slug: "mietvertrag-online-unterschreiben",
+    topic: "sign",
+    tool: "sign",
+    title: "Mietvertrag und Mietunterlagen online unterschreiben, ohne sie hochzuladen",
+    metaTitle: "Mietvertrag online unterschreiben: kostenlos, ohne Upload",
+    description:
+      "Unterschreibe Mietvertrag, Übergabeprotokoll oder Selbstauskunft im Browser: Unterschrift zeichnen oder tippen, platzieren, fertig. Kein Upload.",
+    intro:
+      "Makler und Vermieter schicken den Mietvertrag oft als PDF und wollen ihn unterschrieben per E-Mail zurück. Du musst dafür nichts ausdrucken, scannen oder ein Konto anlegen: Du unterschreibst in etwa einer Minute im Browser, und das Dokument verlässt nie dein Gerät.",
+    example: "Unterschriebener Mietvertrag – nur für Hausverwaltung Berger – 17.10.2026",
+    body: [
+      { type: "h2", text: "Was du bei einer Wohnung unterschreiben sollst" },
+      {
+        type: "p",
+        text: "Eine Wohnung zu mieten heißt Papierkram: der Mietvertrag selbst, das Übergabeprotokoll beim Einzug, oft eine Mieterselbstauskunft. Meist kommt alles als PDF mit einer Zeile für die Unterschrift. Üblich ist entweder eine Signatur-Website, auf die du die Datei hochlädst und für die du ein Konto brauchst, oder Ausdrucken, Unterschreiben, Einscannen und Zurückschicken. Cachety erledigt das stattdessen in deinem Browser.",
+      },
+      { type: "h2", text: "So unterschreibst du deine Mietunterlagen mit Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Öffne cachety.com/de/sign im Browser, am Computer oder auf dem Handy. Nichts installieren, kein Konto.",
+          "Deine Dokumente: Leg das PDF auf der Seite ab oder tippe, um es auszuwählen. Mehrere Dateien auf einmal gehen auch, zum Beispiel Mietvertrag und Übergabeprotokoll. Ein Foto eines Papierdokuments funktioniert ebenfalls: Es wird zu einem einseitigen PDF.",
+          "Deine Unterschrift: Zeichne sie mit dem Finger, einem Eingabestift oder der Maus, tippe deinen Namen oder lade ein Foto deiner Unterschrift auf weißem Papier hoch. Darunter kannst du das heutige Datum stehen lassen und, wenn du willst, den Ort und einen kurzen Vermerk wie „Gelesen und genehmigt“ ergänzen.",
+          "Platzieren, prüfen, herunterladen: Deine Unterschrift erscheint unten rechts auf der letzten Seite. Zieh sie auf die Unterschriftszeile und vergrößere oder verkleinere sie über die Ecke. Wenn der Vermieter auf jeder Seite ein Kürzel möchte, schalte das Paraphieren aller Seiten ein.",
+          "Prüf die Vorschau und lade die Datei herunter. Die unterschriebene Kopie behält den ursprünglichen Namen mit -signed am Ende. Diese Kopie schickst du zurück.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Bei mehreren Dokumenten bekommt jedes seine eigene Platzierung. Ein Dokument ist erst fertig, wenn deine Unterschrift darauf ist: Die Liste zeigt dir, welche noch warten.",
+      },
+      {
+        type: "tip",
+        text: "Nach dem Herunterladen zeigt Cachety einen Fingerabdruck jeder Datei: einen kurzen Code, berechnet aus genau der Datei, die du verschickt hast. Kopier ihn und heb ihn bei deinen Unterlagen auf. Taucht irgendwann eine andere Fassung des Vertrags auf, kannst du zeigen, dass es nicht die ist, die du unterschrieben hast.",
+      },
+      { type: "h2", text: "Optionen, die du kennen solltest" },
+      {
+        type: "list",
+        items: [
+          "Alle Seiten paraphieren setzt eine kleine Kopie deiner Unterschrift unten rechts auf jede andere Seite. So fällt eine ausgetauschte Seite leichter auf.",
+          "„Mit Passwort schützen“ ist standardmäßig aus, denn der Vermieter muss die Datei öffnen können. Schalte es nur ein, wenn du ihm das Passwort auf anderem Weg gibst, zum Beispiel am Telefon.",
+          "„Verkleinern“ hilft, wenn das E-Mail-Postfach oder das Portal die Dateigröße begrenzt.",
+          "Zusätzlich ein Wasserzeichen schreibt Zweck, Empfänger und Datum quer über die unterschriebene Kopie.",
+        ],
+      },
+      { type: "h2", text: "Deine Unterlagen verlassen nie dein Gerät" },
+      {
+        type: "p",
+        text: "Cachety arbeitet in deinem Browser. Es gibt keinen Server, der deine Dokumente empfängt, und der Seite ist technisch verboten, eine andere Website zu kontaktieren. Prüf es selbst: Wenn die Seite geladen ist, schalte den Flugmodus ein und unterschreib dann dein Dokument. Alles funktioniert weiter. Auch deine Unterschrift wird nicht gespeichert: Sie existiert nur im Speicher des Tabs und ist weg, sobald du ihn schließt.",
+      },
+      {
+        type: "p",
+        text: "Jede Seite der unterschriebenen Kopie wird aus ihren Pixeln neu aufgebaut. Das entfernt versteckten Text und Metadaten, und der Text lässt sich in der unterschriebenen Kopie nicht mehr markieren. Dein Original bleibt unverändert bei dir.",
+      },
+      { type: "h2", text: "Ist diese Unterschrift für einen Mietvertrag gültig?" },
+      {
+        type: "p",
+        text: "Eine Unterschrift, die du zeichnest oder tippst und auf das Dokument setzt, ist rechtlich eine einfache elektronische Signatur. In der EU darf einer Signatur die Rechtswirkung nicht allein deshalb abgesprochen werden, weil sie elektronisch ist (eIDAS-Verordnung, Artikel 25). Für alltägliche Mietunterlagen reicht das in der Regel. Die Regeln unterscheiden sich aber je nach Land und Dokument.",
+      },
+      {
+        type: "p",
+        text: "Wird die Unterschrift einmal angezweifelt, musst du unter Umständen selbst zeigen, dass du unterschrieben hast. Eine qualifizierte Signatur, erstellt mit einem Zertifikat eines zugelassenen Anbieters, genießt eine Vermutung der Zuverlässigkeit, die eine einfache Signatur nicht hat.",
+      },
+      {
+        type: "warning",
+        text: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur verlangt wird oder die andere Seite auf einer bestimmten Plattform besteht: manche Kredit- und Versicherungsverträge, notarielle Urkunden, bestimmte Behördenverfahren. Nutze dann, was verlangt wird. Das ist keine Rechtsberatung.",
+      },
+      { type: "h2", text: "Kann jemand meine Unterschrift wiederverwenden?" },
+      {
+        type: "p",
+        text: "Deine Unterschrift ist Teil des Bildes jeder Seite. Man kann sie also nicht verschieben oder löschen, indem man das PDF bearbeitet. Aber wie bei einer eingescannten Unterschrift auf Papier könnte jemand sie aus dem Bild ausschneiden und woanders einfügen. Das kann kein Bild einer Unterschrift verhindern. Um das Risiko zu senken, füge ein Wasserzeichen hinzu, das die Kopie an Zweck und Empfänger bindet, und paraphiere jede Seite.",
+      },
+    ],
+    faq: [
+      {
+        q: "Akzeptiert ein Vermieter einen so unterschriebenen Vertrag?",
+        a: "In den meisten Fällen ja: Ein unterschriebenes PDF per E-Mail zurückzuschicken ist bei Mietunterlagen üblich. Wenn die Hausverwaltung eine eigene Signaturplattform nutzt und darauf besteht, nimm ihre.",
+      },
+      {
+        q: "Muss ich etwas ausdrucken?",
+        a: "Nein. Du unterschreibst am Bildschirm und schickst das unterschriebene PDF zurück. Hast du nur ein Exemplar auf Papier, fotografiere es gut beleuchtet und unterschreib auf dem Foto.",
+      },
+      {
+        q: "Wird meine Unterschrift gespeichert?",
+        a: "Nein. Sie existiert nur im Speicher des Tabs. Schließ ihn, und sie ist weg. Beim nächsten Mal zeichnest oder tippst du sie neu.",
+      },
+      {
+        q: "Kann ich im unterschriebenen PDF noch Text kopieren?",
+        a: "Nein. Jede Seite wird aus ihren Pixeln neu aufgebaut, dabei werden auch versteckter Text und Metadaten entfernt. Behalte dein Original, wenn du den Text brauchst.",
+      },
+      {
+        q: "Ist Cachety wirklich kostenlos?",
+        a: "Ja. Kostenlos, ohne Konto und ohne Tracking. Es ist Open-Source-Software, entwickelt in Frankreich von Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
+  {
+    slug: "pdf-am-handy-unterschreiben",
+    topic: "sign-phone",
+    tool: "sign",
+    title: "Ein PDF auf dem iPhone oder Android-Handy unterschreiben",
+    metaTitle: "PDF am Handy unterschreiben: iPhone und Android, kostenlos",
+    description:
+      "Unterschreibe ein PDF mit dem Finger auf deinem iPhone oder Android-Handy. Keine App, kein Konto, und das Dokument wird nie hochgeladen. Kostenlos.",
+    intro:
+      "Jemand hat dir ein PDF zum Unterschreiben geschickt, und kein Computer ist in der Nähe. Du kannst es mit dem Finger auf dem Handy unterschreiben, direkt im Browser, in etwa einer Minute.",
+    example: "Einverständniserklärung – nur für Grundschule am Lindenpark – 17.10.2026",
+    body: [
+      { type: "h2", text: "Keine App, kein Konto, kein Upload" },
+      {
+        type: "p",
+        text: "Cachety läuft im Browser deines Handys, etwa Safari oder Chrome. Du lädst nichts aus einem App Store und legst kein Konto an. Das Dokument wird auf dem Handy selbst verarbeitet und nie hochgeladen: Der Seite ist technisch verboten, eine andere Website zu kontaktieren.",
+      },
+      { type: "h2", text: "Schritt für Schritt" },
+      {
+        type: "steps",
+        items: [
+          "Speichere das erhaltene PDF auf deinem Handy. In den meisten Mail-Apps tippst du auf den Anhang und sicherst ihn in Dateien auf dem iPhone oder in Downloads auf Android.",
+          "Öffne cachety.com/de/sign im Browser, tippe auf das Ablagefeld und wähle das PDF. Ein Foto eines Papierdokuments geht auch.",
+          "Zeichne deine Unterschrift mit dem Finger in das Feld. Nicht zufrieden? Mach den letzten Strich rückgängig oder lösch alles und versuch es noch mal. Du kannst auch deinen Namen tippen oder ein Foto deiner Unterschrift hochladen.",
+          "Wähle, was unter der Unterschrift stehen soll, wenn überhaupt. Das heutige Datum ist voreingestellt, und du kannst den Ort und einen Vermerk wie „Gelesen und genehmigt“ hinzufügen.",
+          "Geh zum Schritt Platzieren, prüfen, herunterladen. Deine Unterschrift erscheint unten rechts auf der letzten Seite. Zieh sie mit dem Finger an ihren Platz und ändere die Größe über die Ecke.",
+          "Prüf die Vorschau, lade das unterschriebene PDF herunter und schick es per E-Mail oder Messenger zurück.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Schreib etwas größer als auf Papier und lass dir Zeit. Der leere Rand um die Unterschrift wird automatisch entfernt, damit sie auf der Seite scharf bleibt.",
+      },
+      { type: "h2", text: "Lieber ein Foto deiner Unterschrift?" },
+      {
+        type: "p",
+        text: "Wenn dir das Unterschreiben mit dem Finger schwerfällt, unterschreib auf einem weißen Blatt mit einem dunklen Stift, fotografiere es bei Tageslicht und wähle das Hochladen. Der weiße Hintergrund wird für dich entfernt. Ist noch etwas Papier zu sehen, verschieb den Regler für die Empfindlichkeit. iPhone-Fotos (HEIC) funktionieren auch.",
+      },
+      { type: "h2", text: "Prüf, dass alles auf deinem Handy bleibt" },
+      {
+        type: "p",
+        text: "Wenn die Seite geladen ist, schalte den Flugmodus ein, wähle dann dein PDF und unterschreib es. Alles funktioniert weiter, also wird nichts irgendwohin geschickt. Deine Unterschrift wird nicht gespeichert: Schließ den Tab, und sie ist weg.",
+      },
+      { type: "h2", text: "Optionen vor dem Herunterladen" },
+      {
+        type: "list",
+        items: [
+          "Alle Seiten paraphieren setzt eine kleine Kopie deiner Unterschrift auf die übrigen Seiten.",
+          "„Verkleinern“ hält die Datei unter der Größe, die eine E-Mail oder eine Website erlaubt.",
+          "„Mit Passwort schützen“ ist standardmäßig aus, damit der Empfänger die Datei sofort öffnen kann.",
+          "Nach dem Herunterladen wird ein Fingerabdruck der Datei angezeigt. Heb ihn auf: Taucht je eine andere Fassung auf, kannst du zeigen, dass es nicht die ist, die du unterschrieben hast.",
+        ],
+      },
+      { type: "h2", text: "Was diese Unterschrift wert ist" },
+      {
+        type: "p",
+        text: "Eine Unterschrift, die du auf dem Handy zeichnest und auf das Dokument setzt, ist eine einfache elektronische Signatur. Für alltägliche Dokumente reicht sie in der Regel, etwa für Schul- und Vereinsformulare, Einverständniserklärungen, Angebote und Mietunterlagen. Wird sie angezweifelt, musst du unter Umständen selbst zeigen, dass du unterschrieben hast.",
+      },
+      {
+        type: "warning",
+        text: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur mit Zertifikat verlangt wird oder die andere Seite auf ihrer eigenen Plattform besteht: manche Kredit- und Versicherungsverträge, notarielle Urkunden, bestimmte Behördenverfahren. Und wie bei einer eingescannten Unterschrift auf Papier könnte jemand deine Unterschrift aus der Kopie ausschneiden und wiederverwenden. Ein Wasserzeichen mit Zweck und Empfänger und ein Kürzel auf jeder Seite senken dieses Risiko. Das ist keine Rechtsberatung.",
+      },
+    ],
+    faq: [
+      {
+        q: "Muss ich eine App herunterladen?",
+        a: "Nein. Cachety funktioniert im Browser deines Handys. Du kannst es für schnellen Zugriff auf den Startbildschirm legen, musst aber nicht.",
+      },
+      {
+        q: "Kann ich mit einem Eingabestift unterschreiben?",
+        a: "Ja. Das Unterschriftsfeld funktioniert mit dem Finger, einem Eingabestift oder am Computer mit der Maus.",
+      },
+      {
+        q: "Wird das PDF irgendwo hochgeladen?",
+        a: "Nein. Alles passiert auf deinem Handy. Schalte nach dem Laden der Seite den Flugmodus ein: Es funktioniert weiter.",
+      },
+      {
+        q: "Warum kann ich den Text im unterschriebenen PDF nicht mehr markieren?",
+        a: "Jede Seite wird aus ihren Pixeln neu aufgebaut. So lässt sich die Unterschrift nicht ablösen, und versteckte Daten werden entfernt. Dein Original bleibt unverändert auf deinem Handy.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
 ];

@@ -46,7 +46,8 @@ Zelf hosten kan nog steeds en wordt volledig ondersteund (zie hieronder), voor o
 - **Werkt op telefoons**, is als app te installeren en werkt **offline** zodra het geladen is.
 - **11 talen**, met een opmaak van rechts naar links voor Arabisch en Perzisch en eigen lettertypen voor elk schrift.
 - **Rondleiding met uitleg** voor nieuwe bezoekers, aangeboden als iemand niet goed weet waar te beginnen.
-- **70 praktische uitleggen** voor alledaagse situaties in Nederland, Frankrijk, het Verenigd Koninkrijk, Duitsland, Spanje en Latijns-Amerika, Brazilië, Indonesië, de Arabische wereld, Iran, Japan en China.
+- **92 praktische uitleggen** voor alledaagse situaties in Nederland, Frankrijk, het Verenigd Koninkrijk, Duitsland, Spanje en Latijns-Amerika, Brazilië, Indonesië, de Arabische wereld, Iran, Japan en China.
+- **Documenten ondertekenen:** onderteken een pdf of foto in je browser (teken, typ of upload je handtekening), zonder dat er iets wordt geüpload. Het is een gewone elektronische handtekening, geen gekwalificeerde: [cachety.com/nl/sign](https://cachety.com/nl/sign).
 - **82 gecontroleerde vergelijkingen** met andere watermerktools (KopieID, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat en meer), met bronnen, inclusief wanneer een andere tool de betere keuze is.
 - **Op partnersites:** goedgekeurde sites kunnen de tool op hun eigen pagina's tonen (een iframe van cachety.com, dus de site zelf ziet de documenten niet). Zie [docs/embed.md](docs/embed.md) en [cachety.com/nl/partners](https://cachety.com/nl/partners).
 

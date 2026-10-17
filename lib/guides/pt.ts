@@ -577,4 +577,188 @@ export const GUIDES_PT: Guide[] = [
     ],
     updated: "2026-10-12",
   },
+
+  // ───────────────────────────── Assinatura ─────────────────────────────
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  {
+    slug: "assinar-contrato-de-aluguel-online",
+    topic: "sign",
+    tool: "sign",
+    title: "Como assinar um contrato de aluguel ou documento da locação online, sem enviar o arquivo",
+    metaTitle: "Assinar contrato de aluguel online, grátis e sem upload",
+    description:
+      "Assine contrato de locação, laudo de vistoria ou ficha cadastral no navegador: desenhe ou digite sua assinatura e baixe o PDF. Grátis e sem upload.",
+    intro:
+      "A imobiliária ou o proprietário manda o contrato de aluguel em PDF e pede que você devolva assinado por e-mail. Você não precisa imprimir, escanear nem criar conta: dá para assinar no navegador em cerca de um minuto, e o documento nunca sai do seu aparelho.",
+    example: "Contrato de locação assinado, só para a Imobiliária Ipê, 17/10/2026",
+    body: [
+      { type: "h2", text: "O que você pode precisar assinar" },
+      {
+        type: "p",
+        text: "Alugar um imóvel vem com papelada: o contrato de locação, o laudo de vistoria de entrada, a ficha cadastral, às vezes uma declaração para a análise de crédito. Quase tudo chega em PDF, com uma linha escrita “Assinatura”. As opções de sempre são um site de assinatura que pede para você enviar o arquivo e criar uma conta, ou imprimir, assinar, escanear e mandar de volta. O Cachety faz isso dentro do navegador.",
+      },
+      { type: "h2", text: "Como assinar os documentos da locação com o Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Abra cachety.com/pt/sign no navegador, no computador ou no celular. Não precisa instalar nada nem criar conta.",
+          "Seus documentos: solte o PDF na página ou toque para escolher. Você pode adicionar vários arquivos de uma vez, como o contrato e o laudo de vistoria. A foto de um documento em papel também funciona: ela vira um PDF de uma página.",
+          "Sua assinatura: desenhe com o dedo, uma caneta touch ou o mouse, digite seu nome ou envie uma foto da sua assinatura em papel branco. Embaixo da assinatura, se quiser, mantenha a data de hoje e acrescente o local e uma frase curta, como “Li e concordo”.",
+          "Posicione, confira e baixe: a assinatura aparece no canto inferior direito da última página. Arraste até a linha de assinatura e use o canto para mudar o tamanho. Se a imobiliária pedir rubrica em todas as páginas, ative a opção de rubricar cada página.",
+          "Confira a prévia e baixe. A cópia assinada mantém o nome original, com -signed no final. É essa cópia que você devolve para a imobiliária.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Com vários documentos, cada um tem a sua própria posição. Um documento só fica pronto depois que a assinatura é colocada nele: a lista mostra quais ainda estão esperando.",
+      },
+      {
+        type: "tip",
+        text: "Depois do download, o Cachety mostra a impressão digital de cada arquivo: um código curto calculado a partir do arquivo exato que você enviou. Copie e guarde junto com seus papéis. Se um dia aparecer outra versão do contrato, você pode mostrar que não é a que você assinou.",
+      },
+      { type: "h2", text: "Opções que valem a pena conhecer" },
+      {
+        type: "list",
+        items: [
+          "Rubricar cada página coloca uma cópia pequena da sua assinatura no canto inferior direito de todas as outras páginas, e assim uma página trocada fica mais fácil de notar.",
+          "“Proteger com senha” vem desligado, porque a imobiliária precisa conseguir abrir o arquivo. Só ligue se você for passar a senha por outro meio, por exemplo por telefone.",
+          "“Diminuir o tamanho” ajuda quando o e-mail ou o sistema da imobiliária limita o tamanho do arquivo.",
+          "Adicionar também uma marca d'água escreve a finalidade, o destinatário e a data sobre a cópia assinada.",
+        ],
+      },
+      { type: "h2", text: "Seus documentos não saem do seu aparelho" },
+      {
+        type: "p",
+        text: "O Cachety funciona dentro do navegador. Não existe servidor que receba seus documentos, e a página é tecnicamente proibida de se conectar a qualquer outro site. Faça o teste: depois que a página carregar, ative o modo avião e assine o documento. Tudo continua funcionando. Sua assinatura também não fica salva: ela existe só na memória da aba e some quando você fecha a aba.",
+      },
+      {
+        type: "p",
+        text: "Cada página da cópia assinada é refeita a partir dos seus pixels. Isso remove o texto oculto e os metadados, e por isso o texto não pode mais ser selecionado na cópia assinada. O seu original fica com você, intacto.",
+      },
+      { type: "h2", text: "Essa assinatura vale para um contrato de aluguel?" },
+      {
+        type: "p",
+        text: "Uma assinatura desenhada ou digitada e colocada no documento é o que se chama de assinatura eletrônica simples. As regras mudam de um país para outro e de um documento para outro, mas a assinatura eletrônica é aceita em muitos lugares, e para a papelada do dia a dia, como contrato de locação residencial, laudo de vistoria ou ficha cadastral, isso costuma bastar.",
+      },
+      {
+        type: "p",
+        text: "Se a assinatura for contestada, pode caber a você mostrar que foi você quem assinou. Uma assinatura qualificada, feita com um certificado digital emitido por uma autoridade credenciada, tem uma presunção de autenticidade que a assinatura simples não tem.",
+      },
+      {
+        type: "warning",
+        text: "Esta não é a ferramenta certa quando se exige assinatura qualificada, quando a outra parte insiste numa plataforma de assinatura específica ou quando o contrato precisa passar por uma plataforma oficial. Alguns contratos de financiamento e de seguro, as escrituras em cartório e certos procedimentos oficiais também pedem mais. Nesses casos, use o que for pedido. Isto não é aconselhamento jurídico.",
+      },
+      { type: "h2", text: "Alguém pode reaproveitar minha assinatura?" },
+      {
+        type: "p",
+        text: "Sua assinatura faz parte da imagem de cada página, então não dá para movê-la ou apagá-la editando o PDF. Mas, como acontece com uma assinatura em papel escaneada, alguém poderia recortá-la da imagem e colar em outro lugar. Nenhuma imagem de assinatura impede isso. Para reduzir o risco, adicione uma marca d'água que ligue a cópia à finalidade e ao destinatário, e rubrique todas as páginas.",
+      },
+    ],
+    faq: [
+      {
+        q: "A imobiliária aceita um documento assinado assim?",
+        a: "Na maioria dos casos, sim: devolver um PDF assinado por e-mail é comum na papelada de aluguel. Se a imobiliária usa a própria plataforma de assinatura e faz questão dela, use a plataforma dela.",
+      },
+      {
+        q: "Preciso imprimir alguma coisa?",
+        a: "Não. Você assina na tela e devolve o PDF assinado. Se você só tem a via em papel, tire uma foto nítida, com boa luz, e assine a foto.",
+      },
+      {
+        q: "Minha assinatura fica salva?",
+        a: "Não. Ela existe só na memória da aba. Fechou a aba, ela some. Na próxima vez, você desenha ou digita de novo.",
+      },
+      {
+        q: "Ainda dá para copiar o texto do PDF assinado?",
+        a: "Não. Cada página é refeita a partir dos pixels, o que também remove o texto oculto e os metadados. Guarde o original se precisar do texto.",
+      },
+      {
+        q: "O Cachety é gratuito mesmo?",
+        a: "Sim. É gratuito, sem conta e sem rastreamento. É um software de código aberto feito na França por Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
+  {
+    slug: "assinar-pdf-pelo-celular",
+    topic: "sign-phone",
+    tool: "sign",
+    title: "Como assinar um PDF pelo celular, no iPhone ou Android",
+    metaTitle: "Assinar PDF pelo celular, no iPhone ou Android, grátis",
+    description:
+      "Assine um PDF com o dedo no iPhone ou Android. Sem app para instalar, sem conta, e o documento nunca é enviado para nenhum servidor. Grátis.",
+    intro:
+      "Mandaram um PDF para você assinar e devolver, e não tem computador por perto. Dá para assinar no celular com o dedo, direto no navegador, em cerca de um minuto.",
+    example: "Autorização assinada, só para o Colégio Sabiá, 17/10/2026",
+    body: [
+      { type: "h2", text: "Sem app, sem conta, sem upload" },
+      {
+        type: "p",
+        text: "O Cachety funciona no navegador do celular, como Safari ou Chrome. Não precisa baixar nada da loja de aplicativos nem criar conta. O documento é processado no próprio celular e nunca é enviado: a página é tecnicamente proibida de se conectar a qualquer outro site.",
+      },
+      { type: "h2", text: "Passo a passo" },
+      {
+        type: "steps",
+        items: [
+          "Salve no celular o PDF que você recebeu. Na maioria dos apps de e-mail, toque no anexo e salve em Arquivos, no iPhone, ou em Downloads, no Android.",
+          "Abra cachety.com/pt/sign no navegador, toque na área de arquivos e escolha o PDF. A foto de um documento em papel também funciona.",
+          "Desenhe sua assinatura no quadro com o dedo. Não gostou? Desfaça o último traço ou limpe tudo e tente de novo. Você também pode digitar seu nome ou enviar uma foto da sua assinatura.",
+          "Escolha o que vai embaixo da assinatura, se quiser. A data de hoje já vem marcada, e você pode acrescentar o local e uma frase como “Li e concordo”.",
+          "Passe para a etapa de posicionar, conferir e baixar. A assinatura aparece no canto inferior direito da última página. Arraste com o dedo e use o canto para mudar o tamanho.",
+          "Confira a prévia, baixe o PDF assinado e devolva por e-mail ou pelo WhatsApp.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Assine um pouco maior do que no papel e sem pressa. O espaço vazio em volta da assinatura é cortado automaticamente, então ela continua nítida depois de colocada na página.",
+      },
+      { type: "h2", text: "Prefere usar uma foto da sua assinatura?" },
+      {
+        type: "p",
+        text: "Se assinar com o dedo ficar estranho, assine numa folha branca com caneta escura, tire uma foto com luz do dia e escolha a opção de enviar uma imagem. O fundo branco é removido para você. Se ainda aparecer um pouco do papel, ajuste o controle de sensibilidade. Fotos de iPhone em HEIC também funcionam.",
+      },
+      { type: "h2", text: "Confira que tudo fica no celular" },
+      {
+        type: "p",
+        text: "Depois que a página carregar, ative o modo avião, escolha o PDF e assine. Tudo continua funcionando, o que mostra que nada é enviado para lugar nenhum. Sua assinatura não fica salva: fechou a aba, ela some.",
+      },
+      { type: "h2", text: "Opções antes de baixar" },
+      {
+        type: "list",
+        items: [
+          "Rubricar cada página coloca uma cópia pequena da sua assinatura nas outras páginas.",
+          "“Diminuir o tamanho” deixa o arquivo abaixo do limite de um e-mail ou de um site.",
+          "“Proteger com senha” vem desligado, para que quem recebe consiga abrir o arquivo na hora.",
+          "Depois do download, aparece a impressão digital do arquivo. Guarde: se um dia surgir outra versão, você pode mostrar que não é a que você assinou.",
+        ],
+      },
+      { type: "h2", text: "Quanto vale essa assinatura" },
+      {
+        type: "p",
+        text: "Uma assinatura desenhada no celular e colocada no documento é uma assinatura eletrônica simples. Em geral, ela serve para documentos do dia a dia, como autorizações e fichas de escola ou de clube, orçamentos e papelada de aluguel. As regras mudam de país para país. Se a assinatura for contestada, pode caber a você mostrar que foi você quem assinou.",
+      },
+      {
+        type: "warning",
+        text: "Esta não é a ferramenta certa quando se exige uma assinatura qualificada, com certificado digital, ou quando a outra parte insiste na própria plataforma de assinatura: alguns contratos de financiamento e de seguro, escrituras em cartório e certos procedimentos oficiais. E, como acontece com uma assinatura em papel escaneada, alguém poderia recortar sua assinatura da cópia e reaproveitar. Uma marca d'água com a finalidade e o destinatário, e uma rubrica em cada página, reduzem esse risco. Isto não é aconselhamento jurídico.",
+      },
+    ],
+    faq: [
+      {
+        q: "Preciso baixar algum aplicativo?",
+        a: "Não. O Cachety funciona no navegador do celular. Se quiser, adicione à tela inicial para abrir mais rápido, mas não é obrigatório.",
+      },
+      {
+        q: "Dá para assinar com caneta touch?",
+        a: "Sim. O quadro de assinatura funciona com o dedo, com uma caneta touch ou, no computador, com o mouse.",
+      },
+      {
+        q: "O PDF é enviado para algum lugar?",
+        a: "Não. Tudo acontece no seu celular. Ative o modo avião depois que a página carregar e tudo continua funcionando.",
+      },
+      {
+        q: "Por que não consigo mais selecionar o texto do PDF assinado?",
+        a: "Cada página é refeita a partir dos pixels, então a assinatura não pode ser destacada e os dados ocultos são removidos. O original continua no seu celular, intacto.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
 ];
