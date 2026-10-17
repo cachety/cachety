@@ -87,6 +87,9 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   "Cachety vs Yousign / DocuSign / Adobe Fill & Sign / iLovePDF Sign /
   Smallpdf eSign" pages (`sign-comparisons`), and per-country mention presets
   reviewed by native speakers (`more-mentions`). See `docs/prd-sign.md` §14.
+- **Sign social image:** decided for v1 (`docs/prd-sign.md` §13.5): the sign
+  pages reuse each language's social image (`public/og/<lang>.png`); a
+  dedicated `sign-<lang>.png` from `scripts/og.ts` is for later.
 - **User tests:** watch 3 to 5 non-technical people do "send your ID to a
   letting agency with the bank details hidden".
 

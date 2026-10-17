@@ -21,6 +21,7 @@ critical documents. The assets to protect are therefore:
 | Hidden content of the files (text layer, metadata, EXIF/GPS, attachments) | **Non-disclosure**: absent from the output file. |
 | Output file | **Integrity** of the watermark: it cannot be removed by simply editing the PDF. |
 | Passwords (opening a locked PDF, encrypting the output) | **Confidentiality**: in memory only, never persisted or transmitted. |
+| Signature image (drawn, typed or uploaded), and the name, place and note typed with it | **Confidentiality**: in memory only, never persisted or transmitted (§4.4 quater, §4.10). |
 | Served code | **Integrity**: no third-party script, no unapproved inline script. |
 
 ## 2. Architecture and attack surface
@@ -34,9 +35,21 @@ browser:
 file ──► pdf.js (Web Worker) ──► canvas ──► watermark ──► JPEG/PNG ──► pdf-lib ──► [AES-256] ──► download (blob:)
 ```
 
+The sign tool (`/<lang>/sign`) is a second mode of the same component and
+the same engine: the signature is painted into the page pixels between the
+masks and the watermark, and the output is always a PDF (§4.4 quater):
+
+```
+file ──► pdf.js (Web Worker) ──► canvas ──► [masks] ──► signature ──► [watermark] ──► JPEG/PNG ──► pdf-lib ──► [AES-256] ──► download (blob:)
+```
+
 The remaining attack surface is therefore:
 
 1. **Hostile files** parsed by pdf.js, libheif and the browser's image decoders.
+   Sign mode adds one decoder path and no library: the uploaded signature
+   image, which goes through the same header pre-check, the same
+   `createImageBitmap`/libheif decoding and the same pixel cap as document
+   images (§4.3).
 2. **Script injection** (XSS) that could read the files and exfiltrate them.
 3. **The supply chain**: npm dependencies, CI actions, host.
 4. **Leakage through the output file**: original data that would survive processing.
@@ -46,16 +59,17 @@ The remaining attack surface is therefore:
 
 | # | Threat | Attacker | Controls | Verification |
 | --- | --- | --- | --- | --- |
-| T1 | Exfiltration of the files to a third-party server | Injected script, compromised dependency | CSP `connect-src 'self'`, `default-src 'self'` (§4.1) | `ui.smoke.e2e.ts` (exfiltration blocked, zero off-origin requests), `security-headers.test.ts` |
+| T1 | Exfiltration of the files (or of the signature) to a third-party server | Injected script, compromised dependency | CSP `connect-src 'self'`, `default-src 'self'` (§4.1), on the sign pages too | `ui.smoke.e2e.ts` (watermark and sign modes: exfiltration blocked, zero off-origin requests), `security-headers.test.ts`, `security.static.test.ts` |
 | T2 | XSS via file name, watermark text, `localStorage` | Booby-trapped file or link | React escaping, no `dangerouslySetInnerHTML`/`eval`, hash-based CSP (§4.2) | `security.static.test.ts` |
 | T3 | Code execution via a booby-trapped PDF (PDF JavaScript, XFA, malicious font) | Sender of the document | pdf.js 6 without an `eval` path, XFA disabled, rendering in a Worker, CSP without `unsafe-eval` (§4.3) | `watermark.seam.e2e.ts` (adversarial corpus) |
-| T4 | Leakage of hidden data in the output (text, author, GPS, attachment, JS, links) | Recipient of the watermarked document | Full rasterisation, re-encoding of images (§4.4) | `watermark.seam.e2e.ts` (sanitisation) |
-| T5 | Removal of the watermark by editing the PDF | Recipient | The watermark is blended into the pixels, not a layer (§4.4) | same |
+| T4 | Leakage of hidden data in the output (text, author, GPS, attachment, JS, links) | Recipient of the watermarked or signed document | Full rasterisation, re-encoding of images (§4.4); a signed page is rebuilt the same way (§4.4 quater) | `watermark.seam.e2e.ts` (sanitisation, also on a signed hostile PDF), `sign.e2e.ts` |
+| T5 | Removal of the watermark, or moving or deleting the signature, by editing the PDF | Recipient | The watermark and the signature are blended into the pixels, not layers (§4.4, §4.4 quater) | same |
 | T6 | Cryptographic attack on the protected PDF | Recipient, thief of the file | AES-256 (PDF 2.0, /V 5 /R 6), never RC4, generated secret of 132 bits (12 words) or 256 bits (§4.5) | `file-password.test.ts` |
 | T7 | Zip-Slip when extracting the downloaded archive | Forged file name | Only the basename is kept, names de-duplicated (§4.6) | `files.test.ts` |
 | T8 | Clickjacking, tab-nabbing, Referer leakage | Third-party site | `frame-ancestors 'none'`, `X-Frame-Options`, COOP, `noopener noreferrer`, `Referrer-Policy` (§4.7); only `/embed/*` can be framed, and only by cachety.com and the sites in `partners.json` ([embed.md](embed.md)) | `security-headers.test.ts`, `security.static.test.ts`, `embed.e2e.ts` |
 | T9 | Vulnerable or compromised dependency | Supply chain | Frozen lockfile, `bun audit` in CI + weekly, Dependabot, actions pinned by SHA (§4.8) | CI |
 | T10 | Poisoned or stale service worker | Network, old deployment | Same origin, GET only, revalidation of `sw.js` (§4.9) | `security-headers.test.ts` |
+| T11 | Reuse of the signature by a recipient (cut out of the signed copy and pasted elsewhere) | Recipient | **Not prevented technically**, as with a scanned paper signature: the legal section and the FAQ of the sign page say so; the "Also add a watermark" option ties the copy to a purpose and a recipient; initials on every page make page substitution visible (§4.4 quater, §6) | `site-copy.test.ts` (the FAQ says it in all 11 languages); no technical verification, since nothing technical is claimed |
 
 ## 4. Controls in place
 
@@ -89,8 +103,8 @@ policies. The build ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)) therefore:
 
 - removes the CSP from the `/*` block (which keeps every other header);
 - adds one exact-path rule for each page outside a language folder (`/`,
-  `/about`, and each home page `/fr`, `/ja`…), whose `script-src` lists only
-  that page's hashes;
+  `/about`, `/sign`, and each home page `/fr`, `/ja`…), whose `script-src`
+  lists only that page's hashes;
 - groups the pages of each language into one rule (`/fr/*`), listing the
   hashes of that language's pages only. If that line would exceed the
   limit, the language falls back to one rule per guide or comparison section
@@ -109,6 +123,23 @@ policies. The build ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)) therefore:
 `404.html` is served for unknown URLs, so no path rule matches it. It is
 covered by its `<meta>` policy (below).
 
+**Sign pages.** `/<lang>/sign` and `/sign` are ordinary pages of the export,
+with the same policy: `/fr/sign` falls under its language rule (`/fr/*`),
+`/sign` (English, `x-default`) has its own exact rule. Like `/`, `/sign`
+carries one inline script of its own: the redirect to the visitor's language
+(`lib/lang-redirect.ts`), built at build time from the language list only,
+and allowed **by its sha256 hash** like Next's bootstrap scripts, never by
+`'unsafe-inline'`. Verified by `e2e/security.static.test.ts` ("page Signer":
+the page exists in the 11 languages plus `/sign`; one `<meta>` CSP with
+`connect-src 'self' blob: data:`, `form-action 'none'` and a hash-only
+`script-src` listing exactly the page's inline scripts; one header CSP with
+only scripts of the page's language and `frame-ancestors 'none'`; the `/sign`
+redirect is an inline script allowed by its hash) and by `e2e/ui.smoke.e2e.ts`
+("mode « signer » (/en/sign, /fr/sign)": the header and `<meta>` policies on
+both pages, a complete signing run with no off-origin request and no CSP
+violation, an exfiltration attempt via `fetch` blocked). The general static
+tests above cover these pages like every other one.
+
 **Self-hosting.** `_headers` is only read by Cloudflare Pages. The build
 therefore copies each page's policy into a `<meta http-equiv>` tag placed
 before any script on that page ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)).
@@ -118,10 +149,14 @@ the server (see §6).
 
 ### 4.2 Script injection (XSS)
 
-- All untrusted data (file names, watermark text, `localStorage` values)
-  goes through React rendering, which escapes HTML. The code uses neither
-  `dangerouslySetInnerHTML`, nor `innerHTML`, nor `eval`, nor
-  `new Function`.
+- All untrusted data (file names, watermark text, the typed signature name,
+  place and note, `localStorage` values) goes through React rendering, which
+  escapes HTML, or is drawn on a canvas as text. The code uses neither
+  `innerHTML`, nor `eval`, nor `new Function`, and
+  `dangerouslySetInnerHTML` for one script only: the language-redirect script of `/`
+  and `/sign` (`app/page.tsx`, `app/sign/page.tsx`), a constant built from
+  `lib/lang-redirect.ts` and the language list, with no user input, allowed
+  by its hash (§4.1).
 - `script-src` allows **no** arbitrary inline script: at build time,
   `'unsafe-inline'` is replaced, page by page, with the sha256 hashes of the
   bootstrap scripts Next actually emitted on that page. The build fails if a `<script>` escapes
@@ -140,7 +175,9 @@ the server (see §6).
   data, never executed, so the CSP doesn't apply to it.
 - Preferences read from `localStorage` (language, style) are validated
   against an allowlist and bounded (`normalizeStyle`, `detectLang`); a
-  forged value falls back to the defaults.
+  forged value falls back to the defaults. The sign tool's display
+  preferences (last tab, ink, date on/off) are compared with their few
+  allowed values (`components/SignaturePad.tsx`), with the same fallback.
 
 ### 4.3 Parsing hostile files
 
@@ -169,6 +206,22 @@ the server (see §6).
   legacy aliases, and the extension only if the type is empty or generic
   (`application/octet-stream`). An explicit type of another format (an SVG
   renamed to `.png`) is still refused.
+- **Uploaded signature image** (sign mode, `fromFile` in `lib/signature.ts`):
+  the only new decoder path, with no new library. 50 MB per file
+  (`SIGNATURE_MAX_FILE_BYTES`), checked before the file is read. Same
+  decompression-bomb guard as document images: the dimensions are read from
+  the first 512 KB with `imageSize`, and `tooManyPixels` (250 Mpx) refuses
+  the file **before** `createImageBitmap`. HEIC follows the same path as a
+  dropped HEIC: `createImageBitmap` first, then libheif (`decodeHeic`, same
+  cap before the pixels are decoded). The decoded image is then reduced to
+  3,000 px on its longest side (`UPLOAD_MAX_SIDE`) before any pixel
+  processing (background removal, recolouring, trimming). The file picker
+  offers PNG, JPEG, WebP and HEIC/HEIF (`components/SignaturePad.tsx`);
+  `fromFile` refuses any type that is neither `image/*` nor HEIC
+  (`unsupported`), but does not apply the `fileKind` allowlist: another
+  `image/*` type is left to the browser's decoder (see §6). Errors are
+  neutral codes (`unsupported`, `file_too_large`, `image_too_large`,
+  `image_unreadable`).
 - Read errors are converted to neutral codes (`pdf_unreadable`,
   `image_unreadable`…): no internal message is displayed.
 
@@ -228,6 +281,41 @@ identifies the copy.
 - Each recipient receives a separately rendered version (different text in
   the pixels). File and folder names derived from recipients are reduced to
   letters, digits and hyphens (`recipientSlug`): no path separator, no `..`.
+
+### 4.4 quater Signing (`/<lang>/sign`)
+
+- **The signature is pixels.** It is painted into the rendered page
+  (`paintOverlays`, `lib/overlays.ts`, called from `lib/watermark.ts`)
+  **after** the masks, so a mask cannot hide it, and **before** the
+  watermark, so a watermark, if added, covers it too. The page is then
+  re-encoded like any other (§4.4): the signature cannot be moved or deleted
+  by editing the PDF, and the signed copy carries no text layer, metadata,
+  attachment, JavaScript or link from the original. The output is always a
+  PDF: an image is wrapped into a one-page PDF (`forcePdf`).
+- **Memory only.** The signature is a transparent PNG (`SignatureImage`,
+  bytes in memory) plus one `ImageBitmap` for the engine, decoded straight
+  from those bytes (`signatureBitmap`): no `blob:` URL. When the signature
+  is replaced, the old bitmap is closed (`.close()`) as soon as no render or
+  download in progress can still paint it, and all of them are closed when
+  the tool unmounts (`components/CoreProduct.tsx`). The signature, the typed
+  name, the place and the note are never written to `localStorage`, the URL,
+  logs or the service worker, and never leave the page (§4.1).
+- **Initials** (option): the same signature image, scaled down, on every
+  page except the one carrying the signature, so that a substituted page
+  shows. **"Also add a watermark"** (option, off by default): a purpose and
+  one recipient, drawn over the whole page, signature included, which ties
+  the copy to its use (T11).
+- **Fingerprint**: after the download, the SHA-256 of each file produced is
+  computed in memory and shown once, never stored
+  (`components/Fingerprint.tsx`). It lets the signer recognise the version
+  they sent; it does not prove who signed (§6).
+- Verified by `e2e/watermark.seam.e2e.ts` ("signature (mode « signer »)":
+  placement on the right page, order masks → signature → watermark,
+  sanitisation of a signed hostile PDF, image wrapped into a PDF, initials,
+  adversarial corpus with a signature), `e2e/sign.e2e.ts` (full runs: draw,
+  keyboard-only type, upload, phone, right-to-left, initials, watermark, the
+  fingerprint equals the SHA-256 of the downloaded bytes) and
+  `e2e/signature.seam.e2e.ts` (upload guards, §4.3).
 
 ### 4.5 Encryption of the output file
 
@@ -345,12 +433,19 @@ sharing test: after loading, the cache no longer exists.
 The HEIC decoder (~2 MB) is not precached: it is only downloaded (from the
 origin) for the first HEIC file.
 
+The sign pages (`/sign`, `/<lang>/sign`) are precached like the home and
+"about" pages ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)), so the
+airplane-mode test works there too. The signature never goes through the
+service worker: it is neither a request nor a `blob:` URL.
+
 ### 4.10 Local storage
 
 `localStorage` only holds preferences: language, watermark appearance,
-automatic application, target size. **No file, no watermark text, no
-password.** Previews are `blob:` URLs revoked as soon as they are no longer
-needed.
+automatic application, target size, and for the sign tool the ink colour,
+the last tab used and whether the date is added (`signInk`, `signTab`,
+`signDate`). **No file, no watermark text, no password, no signature, no
+typed name, place or note.** Previews are `blob:` URLs revoked as soon as
+they are no longer needed.
 
 ## 5. Security tests
 
@@ -375,6 +470,12 @@ replays `out/_headers` ([e2e/helpers/server.ts](../e2e/helpers/server.ts)).
 | `e2e/features.e2e.ts` | One file per recipient, distinct references; mask drawn in the UI; share received, then inbox emptied |
 | `e2e/removal.e2e.ts` | Removal bench: colour selection, levels, 5×5 median, multi-copy estimation; survival thresholds in CI |
 | `lib/image-size.test.ts` | Dimensions read without decoding; 40,000 × 40,000 bomb refused, 200 Mpx photo accepted |
+| `e2e/security.static.test.ts` (page Signer) | `/sign` and `/<lang>/sign` in 11 languages: one `<meta>` CSP, hash-only `script-src` listing exactly the page's scripts, header CSP limited to the page's language, `frame-ancestors 'none'`; the `/sign` language redirect allowed by its hash |
+| `e2e/ui.smoke.e2e.ts` (sign mode) | `/en/sign` and `/fr/sign` carry the header and `<meta>` CSP; a complete signing run only contacts the origin, with no CSP violation; an exfiltration attempt via `fetch` is blocked |
+| `e2e/watermark.seam.e2e.ts` (signature) | Signature painted at its rectangle on the right page; masks under it, watermark over it; a signed hostile PDF leaves nothing; adversarial corpus with a signature |
+| `e2e/signature.seam.e2e.ts` (`fromFile`) | Header announcing 40,000 × 40,000 px → `image_too_large` without decoding; junk bytes → `image_unreadable`; a PDF → `unsupported`; real HEIC decoded locally by libheif |
+| `e2e/sign.e2e.ts` | Full signing runs (draw, keyboard-only type, upload, phone, right-to-left, initials, watermark); fingerprint equal to the SHA-256 of the downloaded bytes |
+| `lib/site-copy.test.ts` (T11) | The sign page's FAQ says, in all 11 languages, that a signature can be cut out and pasted elsewhere; the legal section cites eIDAS art. 25 and Civil Code art. 1367 everywhere |
 | `bun audit` (CI) | No known CVE in the dependency tree |
 
 Run everything:
@@ -409,6 +510,22 @@ What the application **does not guarantee**, stated plainly:
   encryption is strong; a short password can be guessed offline. Prefer
   the "Generate" button and send the password through a different channel
   than the file.
+- **A simple electronic signature, nothing more.** The sign tool places an
+  image of a signature on the pages. The PDF carries no cryptographic
+  signature, no certificate and no trusted timestamp, and the tool **does
+  not prove who signed**: anyone can type any name or upload any image.
+  Under eIDAS this is a *simple* electronic signature, without the
+  presumption of reliability of a qualified one; the sign page says so, with
+  the cases where it is not the right tool. The SHA-256 fingerprint shown
+  after the download proves nothing to a third party on its own.
+- **The signature can be reused** (T11): a recipient can cut it out of the
+  signed copy and paste it elsewhere, as with a scanned paper signature. A
+  watermark and initials limit the damage; nothing prevents it.
+- **Signed copies are flattened.** Each page is rebuilt from its pixels
+  (§4.4 quater): the text of the signed copy can no longer be selected,
+  searched or copied, and the file is usually larger than the original text
+  PDF. This is the
+  price of the sanitisation; the original stays with the user, unchanged.
 - **Trust in the host.** The code is served by Cloudflare Pages; a
   compromised deployment could serve different code. The repository is
   public and the site can be self-hosted with one command (see README) for
@@ -421,8 +538,11 @@ What the application **does not guarantee**, stated plainly:
   AVIF image has no header reading: its dimensions are left to the
   browser's decoder. The same applies to a HEIC file when the browser
   decodes it natively (Safari): `createImageBitmap` is tried first, and the
-  250 Mpx check only runs in the libheif fallback. The impact of a failure
-  stays local to the tab.
+  250 Mpx check only runs in the libheif fallback. The same applies to an
+  uploaded signature image (§4.3) in AVIF, in HEIC decoded natively, or in
+  another `image/*` format `imageSize` does not read: it is capped at 50 MB,
+  then its dimensions are left to the browser's decoder. The impact of a
+  failure stays local to the tab.
 - **Compromised device**: browser extensions, spyware and software reading
   the clipboard are out of scope. The copied password is cleared from the
   clipboard after one minute (§4.5), but spyware can read it before then.
@@ -438,11 +558,12 @@ What the application **does not guarantee**, stated plainly:
 Before merging a PR:
 
 - [ ] No request, font, image or script to an external domain.
-- [ ] No `dangerouslySetInnerHTML`, `innerHTML`, `eval`, `new Function`.
+- [ ] No `dangerouslySetInnerHTML` (beyond the language redirect, §4.2),
+      `innerHTML`, `eval`, `new Function`.
 - [ ] `public/_headers` not weakened (otherwise: justification + update of
       this document).
-- [ ] No user data (file, text, password) in `localStorage`, the URL, logs
-      or the service worker.
+- [ ] No user data (file, text, password, signature) in `localStorage`, the
+      URL, logs or the service worker.
 - [ ] A new dependency is justified, maintained and reviewed; an update of
       `pdf-lib-encrypt` is reviewed line by line.
 - [ ] A new input format goes through the allowlist and the rasterisation
