@@ -87,9 +87,7 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.
 - **Sign, later (v1.1+):** several placements per page (`multi-placement`), a
-  self-hosted handwriting font for the Type tab (`script-font`), fact-checked
-  "Cachety vs Yousign / DocuSign / Adobe Fill & Sign / iLovePDF Sign /
-  Smallpdf eSign" pages (`sign-comparisons`), and per-country mention presets
+  self-hosted handwriting font for the Type tab (`script-font`), and per-country mention presets
   reviewed by native speakers (`more-mentions`). See `docs/prd-sign.md` §14.
 - **Sign social image:** decided for v1 (`docs/prd-sign.md` §13.5): the sign
   pages reuse each language's social image (`public/og/<lang>.png`); a
@@ -116,6 +114,14 @@ initial every page, add a watermark, make smaller, password lock (off by
 default), SHA-256 fingerprint after download. It is a simple electronic
 signature: no certificate, no timestamp, no proof of identity, and the page
 says so. Two guides in all 11 languages. Spec: [docs/prd-sign.md](docs/prd-sign.md).
+
+Comparison pages for the sign tool (2026-10-17): DocuSign, Youtrust (formerly
+Yousign), Adobe Acrobat, iLovePDF and Smallpdf, in all 11 languages, in their
+own "Sign" section of `/<lang>/compare` (data in `lib/compare/sign/`). Facts
+checked on the publishers' pages and dated; each page says when the other tool
+is the better choice (several signers, audit trail, advanced or qualified
+signatures).
+
 
 ### `simpler-tool`: a simpler tool (2026-10)
 Three steps in plain words, guided form for the watermark text with an

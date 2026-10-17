@@ -67,7 +67,7 @@ The response should show a CSP with sha256 hashes, HSTS and `X-Frame-Options: DE
 
 ### Limits to keep in mind
 
-`_headers` allows at most **100 rules** and **2,000 characters per line**. The build groups the CSP rules by language: one rule per language for every page under `/fr/`, `/ja/`… plus one exact rule for each home page (32 rules for 267 pages in 11 languages, including the shared `/embed/*` rule of the partner embed). If a language's rule would exceed the line limit, that language automatically falls back to one rule per guide or comparison section and one per other page. The build **fails** if either limit is still exceeded, so you will know before deploying. A new language adds 2 rules; new pages add none until their language falls back to the finer grouping.
+`_headers` allows at most **100 rules** and **2,000 characters per line**. The build groups the CSP rules by language: one rule per language for every page under `/fr/`, `/ja/`… plus one exact rule for each home page (66 rules for 333 pages in 11 languages on 2026-10-17, including the shared `/embed/*` rule of the partner embed; de, es, id and pt already use the finer grouping below, 9 rules each). If a language's rule would exceed the line limit, that language automatically falls back to one rule per guide or comparison section and one per other page. The build **fails** if either limit is still exceeded, so you will know before deploying. A new language adds 2 rules; new pages add none until their language falls back to the finer grouping (about 7 more rules per language). With 7 languages still grouped, that leaves room for every language to fall back only if the finer grouping gets coarser first: watch the count the build prints.
 
 ---
 

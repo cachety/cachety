@@ -573,5 +573,5 @@ faq.phone.a           FR "Oui, sur iPhone et Android. Signez avec le doigt, impo
 - `sign-embed`: `/embed/<lang>/sign` for partners, with pre-filled mention and place, same `partners.json` allow-list.
 - `multi-placement`: several signatures and free-form initials per page.
 - `script-font`: self-hosted handwriting font for the Type tab.
-- `sign-comparisons`: "Cachety vs Yousign / DocuSign / Adobe Fill & Sign / iLovePDF Sign / Smallpdf eSign" pages, fact-checked and dated, each stating when the other tool is the better choice.
+- `sign-comparisons`: "Cachety vs Yousign / DocuSign / Adobe Fill & Sign / iLovePDF Sign / Smallpdf eSign" pages, fact-checked and dated, each stating when the other tool is the better choice. **Done 2026-10-17** (`lib/compare/sign/`; Yousign is now Youtrust).
 - `more-mentions`: per-country mention presets reviewed by native speakers.
