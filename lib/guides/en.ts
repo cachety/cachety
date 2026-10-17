@@ -528,20 +528,20 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "Is this signature valid for a tenancy?" },
       {
         type: "p",
-        text: "A signature you draw or type and place on a document is what the law calls a simple electronic signature. In the UK, electronic signatures are generally accepted, and in the EU a signature cannot be refused solely because it is electronic (eIDAS Regulation, article 25). For everyday rental paperwork, such as a tenancy agreement, an inventory or a holding deposit form, this is generally enough.",
+        text: "A signature you draw or type and place on a document is what is commonly called a simple electronic signature. In the UK, electronic signatures are generally accepted, and in the EU a court cannot reject one as evidence solely because it is electronic (eIDAS Regulation, article 25). For everyday rental paperwork, such as a tenancy agreement, an inventory or a holding deposit form, this is usually accepted.",
       },
       {
         type: "p",
-        text: "If the signature is ever challenged, it may be up to you to show that you signed. A qualified signature, made with a certificate from an approved provider, carries a presumption of reliability that a simple signature does not.",
+        text: "If the signature is ever disputed, whoever relies on the document must prove who signed it: keep the email or message it was sent with. A qualified signature, made with a certificate from a qualified provider, is the strongest kind and the hardest to dispute.",
       },
       {
         type: "warning",
-        text: "This is not the right tool when a qualified signature is required, when the other party insists on a specific signing platform, or for a document that must be signed as a deed in front of a witness, as some longer leases must. Some loan and insurance contracts and certain official procedures also need more. In those cases, use what they ask for. This is not legal advice.",
+        text: "This is not the right tool when a qualified signature is required, for a will, for a document that must be signed as a deed in front of a witness, as some longer leases must, or when the other party insists on a specific signing platform (some loan or insurance contracts, some official procedures). In those cases, use what they ask for. This is not legal advice.",
       },
       { type: "h2", text: "Can someone reuse my signature?" },
       {
         type: "p",
-        text: "Your signature is part of the image of each page, so it cannot be moved or deleted by editing the PDF. But, as with a scanned paper signature, someone could cut it out of the image and paste it elsewhere. No image of a signature can prevent that. To limit the risk, add a watermark that ties the copy to its purpose and recipient, and initial every page.",
+        text: "Your signature is part of the image of each page, so it cannot be moved or deleted as a PDF element. But, as with a scanned paper signature, someone could cut it out of the image and paste it elsewhere: no image of a signature can prevent that. Nor does the file prove who placed it, or that the document was not changed afterwards. Keep your copy. To limit the risk, add a watermark that ties the copy to its purpose and recipient, and initial every page.",
       },
     ],
     faq: [
@@ -624,11 +624,11 @@ export const GUIDES_EN: Guide[] = [
       { type: "h2", text: "What this signature is worth" },
       {
         type: "p",
-        text: "A signature drawn on your phone and placed on the document is a simple electronic signature. It is generally fine for everyday documents, such as school and club forms, consent forms, quotes and rental paperwork. If it is ever challenged, it may be up to you to show that you signed.",
+        text: "A signature drawn on your phone and placed on the document is what is commonly called a simple electronic signature. It is usually accepted for everyday documents, such as school and club forms, consent forms, quotes and rental paperwork. If it is ever disputed, whoever relies on the document must prove who signed it: keep the email or message it was sent with.",
       },
       {
         type: "warning",
-        text: "It is not the right tool when a qualified signature with a certificate is required, or when the other party insists on its own signing platform: some loan and insurance contracts, deeds and certain official procedures. And as with a scanned paper signature, someone could cut your signature out of the copy and reuse it. Adding a watermark with the purpose and the recipient, and initialling every page, limits that risk. This is not legal advice.",
+        text: "It is not the right tool when a qualified signature with a certificate is required, for a will or a deed, or when the other party insists on its own signing platform (some loan or insurance contracts, some official procedures). And as with a scanned paper signature, someone could cut your signature out of the copy and reuse it. Adding a watermark with the purpose and the recipient, and initialling every page, limits that risk. This is not legal advice.",
       },
     ],
     faq: [

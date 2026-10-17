@@ -506,20 +506,20 @@ export const GUIDES_ES: Guide[] = [
       { type: "h2", text: "¿Vale esta firma para un contrato de alquiler?" },
       {
         type: "p",
-        text: "Una firma que dibujas o escribes y colocas en el documento es lo que la ley llama una firma electrónica simple. En la UE, a una firma no se le pueden negar efectos jurídicos solo por ser electrónica (Reglamento eIDAS, artículo 25). Para los papeles habituales de un alquiler, suele bastar. Aun así, las normas cambian según el país y el documento.",
+        text: "Una firma que dibujas o escribes y colocas en el documento es lo que se suele llamar una firma electrónica simple. En la UE, a una firma no se le pueden negar efectos jurídicos solo por ser electrónica (Reglamento eIDAS, artículo 25). Para los papeles habituales de un alquiler, suele bastar. Aun así, las normas cambian según el país y el documento.",
       },
       {
         type: "p",
-        text: "Si alguna vez se discute la firma, puede que tengas que demostrar tú que firmaste. Una firma cualificada, hecha con un certificado de un proveedor reconocido, goza de una presunción de fiabilidad que la firma simple no tiene.",
+        text: "Si alguna vez se discute la firma, quien se apoya en el documento debe demostrar quién lo firmó. Por eso, guarda el correo o el mensaje con el que se envió. Solo una firma cualificada, hecha con un certificado de un prestador cualificado, se presume fiable y equivale a una firma manuscrita.",
       },
       {
         type: "warning",
-        text: "No es la herramienta adecuada cuando se exige una firma cualificada o cuando la otra parte insiste en una plataforma concreta: algunos contratos de préstamo o de seguro, las escrituras ante notario, ciertos trámites con la Administración. En esos casos, usa lo que te pidan. Esto no es asesoramiento jurídico.",
+        text: "No es la herramienta adecuada cuando se exige una firma cualificada, cuando la ley pide una mención escrita de tu puño y letra (fianza, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone una plataforma concreta (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). En esos casos, usa lo que te pidan. Esto no es asesoramiento jurídico.",
       },
       { type: "h2", text: "¿Alguien puede reutilizar mi firma?" },
       {
         type: "p",
-        text: "Tu firma forma parte de la imagen de cada página, así que no se puede mover ni borrar editando el PDF. Pero, como con una firma en papel escaneada, alguien podría recortarla de la imagen y pegarla en otro sitio. Ninguna imagen de una firma puede impedirlo. Para reducir el riesgo, añade una marca de agua que ate la copia a su motivo y su destinatario, y rubrica cada página.",
+        text: "Tu firma forma parte de la imagen de cada página, así que no se puede mover ni borrar como un elemento del PDF. Pero, como con una firma en papel escaneada, alguien podría recortarla de la imagen y pegarla en otro sitio. Ninguna imagen de una firma puede impedirlo, y el archivo no demuestra quién la puso ni que el documento no se modificó después. Guarda tu copia. Para reducir el riesgo, añade una marca de agua que ate la copia a su motivo y su destinatario, y rubrica cada página.",
       },
     ],
     faq: [
@@ -602,11 +602,11 @@ export const GUIDES_ES: Guide[] = [
       { type: "h2", text: "Qué valor tiene esta firma" },
       {
         type: "p",
-        text: "Una firma dibujada en el móvil y colocada en el documento es una firma electrónica simple. Suele bastar para documentos del día a día, como autorizaciones del colegio, formularios de un club o una asociación, presupuestos y papeles del alquiler. Si alguna vez se discute, puede que tengas que demostrar tú que firmaste.",
+        text: "Una firma dibujada en el móvil y colocada en el documento es lo que se suele llamar una firma electrónica simple. Suele aceptarse para documentos del día a día, como autorizaciones del colegio, formularios de un club o una asociación, presupuestos y papeles del alquiler. Si alguna vez se discute, quien se apoya en el documento debe demostrar quién lo firmó; guarda el correo o el mensaje con el que se envió.",
       },
       {
         type: "warning",
-        text: "No es la herramienta adecuada cuando se exige una firma cualificada con certificado, o cuando la otra parte insiste en su propia plataforma: algunos contratos de préstamo o de seguro, las escrituras ante notario, ciertos trámites con la Administración. Y, como con una firma en papel escaneada, alguien podría recortar tu firma de la copia y reutilizarla. Una marca de agua con el motivo y el destinatario, y una rúbrica en cada página, reducen ese riesgo. Esto no es asesoramiento jurídico.",
+        text: "No es la herramienta adecuada cuando se exige una firma cualificada con certificado, cuando la ley pide una mención escrita de tu puño y letra (fianza, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone su propia plataforma (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). Y, como con una firma en papel escaneada, alguien podría recortar tu firma de la copia y reutilizarla. Una marca de agua con el motivo y el destinatario, y una rúbrica en cada página, reducen ese riesgo. Esto no es asesoramiento jurídico.",
       },
     ],
     faq: [

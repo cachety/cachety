@@ -552,20 +552,20 @@ export const GUIDES_FR: Guide[] = [
       { type: "h2", text: "Quelle valeur a cette signature pour un bail ?" },
       {
         type: "p",
-        text: "Une signature dessinée ou tapée puis posée sur le document est une signature électronique dite « simple ». En Europe, une signature ne peut pas être refusée seulement parce qu’elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu’il consent à l’acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, cela suffit en général.",
+        text: "Une signature dessinée ou tapée puis posée sur le document est ce qu’on appelle couramment une signature électronique « simple ». En Europe, un juge ne peut pas l’écarter comme preuve au seul motif qu’elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu’il consent à l’acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l’est (Cour de cassation, 2022 et 2024). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, c’est en général accepté.",
       },
       {
         type: "p",
-        text: "En cas de litige, c’est à vous de montrer que vous êtes bien l’auteur de la signature. Une signature « qualifiée », avec un certificat délivré par un prestataire agréé, bénéficie d’une présomption de fiabilité que la signature simple n’a pas.",
+        text: "En cas de litige, celui qui s’appuie sur le document doit prouver qui l’a signé : gardez l’e-mail ou le message avec lequel il a été envoyé. Seule une signature « qualifiée », avec un certificat délivré par un prestataire qualifié, est présumée fiable et équivaut à une signature manuscrite.",
       },
       {
         type: "warning",
-        text: "Ce n’est pas le bon outil quand une signature qualifiée est exigée, ou quand l’autre partie impose une plateforme précise : certains contrats de prêt ou d’assurance, les actes notariés, certaines démarches administratives. Dans ce cas, utilisez l’outil demandé. Ceci n’est pas un conseil juridique.",
+        text: "Ce n’est pas le bon outil quand une signature qualifiée est exigée, quand la loi demande une mention écrite de votre main (caution, reconnaissance de dette), pour un testament ou un acte devant notaire, ou quand l’autre partie impose une plateforme précise (certains contrats de prêt ou d’assurance, certaines démarches administratives). Dans ce cas, utilisez l’outil demandé. Ceci n’est pas un conseil juridique.",
       },
       { type: "h2", text: "Peut-on réutiliser ma signature ?" },
       {
         type: "p",
-        text: "Votre signature fait partie de l’image de chaque page : on ne peut pas la déplacer ou la supprimer en modifiant le PDF. Mais, comme pour une signature sur papier scanné, quelqu’un pourrait la découper et la coller ailleurs. Aucune image de signature ne peut l’empêcher. Pour limiter ce risque, ajoutez un filigrane qui lie la copie à son usage et à son destinataire, et paraphez chaque page.",
+        text: "Votre signature fait partie de l’image de chaque page : on ne peut pas la déplacer ou la supprimer comme un élément du PDF. Mais, comme pour une signature sur papier scanné, quelqu’un pourrait la découper et la coller ailleurs : aucune image de signature ne peut l’empêcher. Le fichier ne prouve pas non plus qui l’a posée, ni que le document n’a pas été modifié ensuite. Gardez votre copie. Pour limiter ce risque, ajoutez un filigrane qui lie la copie à son usage et à son destinataire, et paraphez chaque page.",
       },
     ],
     faq: [
@@ -650,11 +650,11 @@ export const GUIDES_FR: Guide[] = [
       { type: "h2", text: "Quelle valeur a cette signature ?" },
       {
         type: "p",
-        text: "Une signature dessinée sur votre téléphone puis posée sur le document est une signature électronique dite « simple ». Elle suffit en général pour les documents de tous les jours : autorisation parentale, formulaire d’école ou d’association, attestation, devis, dossier de location. En cas de litige, c’est à vous de montrer que vous êtes bien l’auteur.",
+        text: "Une signature dessinée sur votre téléphone puis posée sur le document est ce qu’on appelle couramment une signature électronique « simple ». Elle est en général acceptée pour les documents de tous les jours : autorisation parentale, formulaire d’école ou d’association, attestation, devis, dossier de location. En cas de litige, celui qui s’appuie sur le document doit prouver qui l’a signé : gardez l’e-mail ou le message avec lequel il a été envoyé.",
       },
       {
         type: "warning",
-        text: "Ce n’est pas le bon outil quand une signature qualifiée, avec certificat, est exigée, ou quand l’autre partie impose sa propre plateforme : certains contrats de prêt ou d’assurance, les actes notariés, certaines démarches administratives. Et comme pour une signature sur papier scanné, quelqu’un pourrait découper votre signature sur la copie et la réutiliser. Un filigrane avec l’usage et le destinataire, et un paraphe sur chaque page, limitent ce risque. Ceci n’est pas un conseil juridique.",
+        text: "Ce n’est pas le bon outil quand une signature qualifiée, avec certificat, est exigée, quand la loi demande une mention écrite de votre main (caution, reconnaissance de dette), pour un testament ou un acte devant notaire, ou quand l’autre partie impose sa propre plateforme (certains contrats de prêt ou d’assurance, certaines démarches administratives). Et comme pour une signature sur papier scanné, quelqu’un pourrait découper votre signature sur la copie et la réutiliser. Un filigrane avec l’usage et le destinataire, et un paraphe sur chaque page, limitent ce risque. Ceci n’est pas un conseil juridique.",
       },
     ],
     faq: [

@@ -577,20 +577,20 @@ export const GUIDES_ID: Guide[] = [
       { type: "h2", text: "Apakah tanda tangan ini sah untuk perjanjian sewa?" },
       {
         type: "p",
-        text: "Tanda tangan yang digambar atau diketik lalu ditempatkan di dokumen adalah tanda tangan elektronik tidak tersertifikasi. Aturannya berbeda di setiap negara dan untuk setiap jenis dokumen, tetapi tanda tangan elektronik diakui di banyak tempat. Untuk dokumen sewa sehari-hari, seperti perjanjian sewa kos atau kontrakan dan berita acara serah terima, biasanya ini sudah cukup.",
+        text: "Tanda tangan yang digambar atau diketik lalu ditempatkan di dokumen adalah tanda tangan elektronik tidak tersertifikasi. Aturannya berbeda di setiap negara dan untuk setiap jenis dokumen, tetapi tanda tangan elektronik diakui di banyak tempat. Untuk dokumen sewa sehari-hari, seperti perjanjian sewa kos atau kontrakan dan berita acara serah terima, biasanya ini diterima.",
       },
       {
         type: "p",
-        text: "Jika tanda tangan itu dipersoalkan, Anda mungkin harus membuktikan bahwa memang Anda yang menandatangani. Tanda tangan elektronik tersertifikasi, yang dibuat dengan sertifikat dari penyelenggara resmi, punya kekuatan pembuktian yang lebih kuat daripada tanda tangan tidak tersertifikasi.",
+        text: "Jika terjadi sengketa, pihak yang mengandalkan dokumen itulah yang harus membuktikan siapa yang menandatanganinya; simpan email atau pesan yang dipakai untuk mengirimnya. Tanda tangan elektronik tersertifikasi, yang dibuat dengan sertifikat dari penyelenggara resmi, punya kekuatan pembuktian yang lebih kuat daripada tanda tangan tidak tersertifikasi.",
       },
       {
         type: "warning",
-        text: "Ini bukan alat yang tepat jika diwajibkan tanda tangan elektronik tersertifikasi, jika pihak lain meminta platform tanda tangan tertentu, atau jika perjanjian harus melalui platform resmi. Sebagian perjanjian kredit dan asuransi, akta notaris, dan beberapa urusan resmi juga memerlukan lebih dari ini. Dalam hal itu, gunakan yang diminta. Ini bukan nasihat hukum.",
+        text: "Ini bukan alat yang tepat jika diwajibkan tanda tangan elektronik tersertifikasi, jika hukum mewajibkan bentuk khusus, seperti surat wasiat atau akta notaris, jika pihak lain meminta platform tanda tangan tertentu, atau jika dokumen harus melalui platform resmi (sebagian perjanjian kredit dan asuransi, beberapa urusan resmi). Dalam hal itu, gunakan yang diminta. Ini bukan nasihat hukum.",
       },
       { type: "h2", text: "Bisakah tanda tangan saya dipakai ulang orang lain?" },
       {
         type: "p",
-        text: "Tanda tangan Anda menjadi bagian dari gambar setiap halaman, jadi tidak bisa dipindahkan atau dihapus dengan mengedit PDF. Namun, seperti tanda tangan di kertas yang dipindai, seseorang bisa memotongnya dari gambar dan menempelkannya di tempat lain. Tidak ada gambar tanda tangan yang bisa mencegah hal itu. Untuk mengurangi risikonya, tambahkan watermark yang mengikat salinan itu pada keperluan dan penerimanya, lalu paraf setiap halaman.",
+        text: "Tanda tangan Anda menjadi bagian dari gambar setiap halaman, jadi tidak bisa dipindahkan atau dihapus sebagai elemen PDF. Namun, seperti tanda tangan di kertas yang dipindai, seseorang bisa memotongnya dari gambar dan menempelkannya di tempat lain. Tidak ada gambar tanda tangan yang bisa mencegah hal itu, dan file ini tidak membuktikan siapa yang menempatkannya atau bahwa dokumen tidak diubah sesudahnya: simpan salinan Anda. Untuk mengurangi risikonya, tambahkan watermark yang mengikat salinan itu pada keperluan dan penerimanya, lalu paraf setiap halaman.",
       },
     ],
     faq: [
@@ -676,11 +676,11 @@ export const GUIDES_ID: Guide[] = [
       { type: "h2", text: "Seberapa kuat tanda tangan ini" },
       {
         type: "p",
-        text: "Tanda tangan yang digambar di HP lalu ditempatkan di dokumen adalah tanda tangan elektronik tidak tersertifikasi. Umumnya ini cukup untuk dokumen sehari-hari, seperti surat izin sekolah, formulir organisasi, penawaran harga, dan dokumen sewa. Aturannya berbeda di setiap negara. Jika tanda tangan itu dipersoalkan, Anda mungkin harus membuktikan bahwa memang Anda yang menandatangani.",
+        text: "Tanda tangan yang digambar di HP lalu ditempatkan di dokumen adalah tanda tangan elektronik tidak tersertifikasi. Umumnya ini diterima untuk dokumen sehari-hari, seperti surat izin sekolah, formulir organisasi, penawaran harga, dan dokumen sewa. Aturannya berbeda di setiap negara. Jika terjadi sengketa, pihak yang mengandalkan dokumen itulah yang harus membuktikan siapa yang menandatanganinya; simpan email atau pesan yang dipakai untuk mengirimnya.",
       },
       {
         type: "warning",
-        text: "Ini bukan alat yang tepat jika diwajibkan tanda tangan elektronik tersertifikasi, atau jika pihak lain meminta platform tanda tangan mereka sendiri: sebagian perjanjian kredit dan asuransi, akta notaris, dan beberapa urusan resmi. Seperti tanda tangan di kertas yang dipindai, seseorang juga bisa memotong tanda tangan Anda dari salinan dan memakainya lagi. Watermark yang berisi keperluan dan penerima, ditambah paraf di setiap halaman, mengurangi risiko itu. Ini bukan nasihat hukum.",
+        text: "Ini bukan alat yang tepat jika diwajibkan tanda tangan elektronik tersertifikasi, jika hukum mewajibkan bentuk khusus, seperti surat wasiat atau akta notaris, atau jika pihak lain meminta platform tanda tangan mereka sendiri (sebagian perjanjian kredit dan asuransi, beberapa urusan resmi). Seperti tanda tangan di kertas yang dipindai, seseorang juga bisa memotong tanda tangan Anda dari salinan dan memakainya lagi. Watermark yang berisi keperluan dan penerima, ditambah paraf di setiap halaman, mengurangi risiko itu. Ini bukan nasihat hukum.",
       },
     ],
     faq: [
