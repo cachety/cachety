@@ -21,6 +21,8 @@ import {
   HREFLANG,
   LANG_CODES,
   PRIVACY_META,
+  SIGN_ALTERNATES,
+  SIGN_META,
   SITE_META,
   type Lang,
   type PageMeta,
@@ -120,6 +122,57 @@ function home(lang: Lang, url: string) {
 // Accueil : la racine (x-default) est en anglais, chaque /<lang> dans sa langue.
 await inject("index.html", home("en", SITE_URL));
 for (const lang of LANG_CODES) await inject(`${lang}.html`, home(lang, homeUrl(lang)));
+
+/**
+ * Page Signer (/sign, /<lang>/sign) : comme l'accueil, l'application (ici en
+ * mode signature) et sa FAQ, plus la page et son fil d'Ariane.
+ */
+function signPage(lang: Lang, url: string) {
+  const m = SIGN_META[lang];
+  const copy = SITE_COPY[lang];
+  const webApp = {
+    "@type": "WebApplication",
+    "@id": `${SITE_URL}/sign#app`,
+    name: `${BRAND} · ${copy.nav.sign}`,
+    url,
+    description: m.description,
+    image: ogImageUrl(lang),
+    screenshot: ogImageUrl(lang),
+    featureList: copy.sign.how.map((f) => `${f.title}: ${f.body}`),
+    sameAs: [REPO_URL],
+    inLanguage: HREFLANG[lang],
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Any (web browser)",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    license: "https://www.gnu.org/licenses/agpl-3.0.html",
+    codeRepository: REPO_URL,
+    countryOfOrigin: "FR",
+    author,
+    publisher,
+  };
+  const page = {
+    "@type": "WebPage",
+    name: m.title,
+    description: m.description,
+    url,
+    inLanguage: HREFLANG[lang],
+    dateModified: SITE_DATE,
+    image: ogImageUrl(lang),
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    mainEntity: { "@id": `${SITE_URL}/sign#app` },
+    author,
+    publisher,
+  };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [webApp, page, breadcrumb(lang, { name: copy.nav.sign, item: url }), faqPage(copy.sign.faq)],
+  };
+}
+
+// Signer : /sign (x-default) en anglais, chaque /<lang>/sign dans sa langue.
+await inject("sign.html", signPage("en", `${SITE_URL}${SIGN_ALTERNATES["x-default"]}`));
+for (const lang of LANG_CODES) await inject(`${lang}/sign.html`, signPage(lang, `${SITE_URL}${SIGN_ALTERNATES[lang]}`));
 
 /** Page simple (pourquoi filigraner, confidentialité) : WebPage + fil d'Ariane. */
 function webPage(lang: Lang, type: string, meta: PageMeta, url: string, dateModified: string) {
@@ -248,7 +301,7 @@ for (const lang of LANG_CODES) {
     });
   }
 }
-console.log("seo: JSON-LD injecté (accueil, à propos, confidentialité, index, guides, comparatifs)");
+console.log("seo: JSON-LD injecté (accueil, signer, à propos, confidentialité, index, guides, comparatifs)");
 
 // La page 404 (servie pour toute URL inconnue) hérite du layout racine : ni
 // canonique ni alternatives hreflang, qui la feraient passer pour l'accueil.
@@ -276,6 +329,7 @@ const homeAlt = allLangs("", "/");
 entries.push({ path: "/", alternates: homeAlt, lastmod: SITE_DATE });
 for (const l of LANG_CODES) entries.push({ path: `/${l}`, alternates: homeAlt, lastmod: SITE_DATE });
 const indexDate: Record<string, string> = {
+  "/sign": SITE_DATE,
   "/about": SITE_DATE,
   "/privacy": SITE_DATE,
   "/roadmap": ROADMAP_DATE,
@@ -283,9 +337,12 @@ const indexDate: Record<string, string> = {
   "/guides": gitDate("lib/guides", "lib/site-meta.ts", "lib/locales"),
   "/compare": gitDate("lib/compare", "lib/site-meta.ts", "lib/locales"),
 };
-for (const suffix of ["/about", "/guides", "/compare", "/privacy", "/roadmap", "/partners"]) {
-  const alt = allLangs(suffix, suffix === "/about" ? "/about" : undefined);
-  if (suffix === "/about") entries.push({ path: "/about", alternates: alt, lastmod: SITE_DATE });
+// Pages qui existent aussi sans langue (x-default, anglaises) : /sign, /about.
+const WITH_DEFAULT = new Set(["/sign", "/about"]);
+for (const suffix of ["/sign", "/about", "/guides", "/compare", "/privacy", "/roadmap", "/partners"]) {
+  const xDefault = WITH_DEFAULT.has(suffix) ? suffix : undefined;
+  const alt = allLangs(suffix, xDefault);
+  if (xDefault) entries.push({ path: xDefault, alternates: alt, lastmod: indexDate[suffix] });
   for (const l of LANG_CODES) entries.push({ path: `/${l}${suffix}`, alternates: alt, lastmod: indexDate[suffix] });
 }
 for (const lang of LANG_CODES) {
@@ -328,7 +385,7 @@ const llms = [
   "",
   `> ${SITE_META.en.description}`,
   "",
-  `${BRAND} (${SITE_URL}) is a free, open-source (AGPL-3.0) web app that adds a watermark to ID cards, passports, payslips, bank statements and other personal documents. The PDF or image is processed entirely in the visitor's browser and is never uploaded: there is no server that receives files. Source code: ${REPO_URL}. Author: ${AUTHOR.name} (${AUTHOR.url}).`,
+  `${BRAND} (${SITE_URL}) is a free, open-source (AGPL-3.0) web app that adds a watermark to ID cards, passports, payslips, bank statements and other personal documents. The PDF or image is processed entirely in the visitor's browser and is never uploaded: there is no server that receives files. It also signs a PDF the same way (${SITE_URL}/en/sign): the signature is drawn, typed or uploaded, then placed on the page, and the document never leaves the browser. Source code: ${REPO_URL}. Author: ${AUTHOR.name} (${AUTHOR.url}).`,
   "",
   "## Features",
   "",
@@ -340,6 +397,7 @@ const llms = [
   "## Pages",
   "",
   line(SITE_META.en.title, "/en", SITE_META.en.description),
+  line(SIGN_META.en.title, "/en/sign", SIGN_META.en.description),
   line(ABOUT_META.en.title, "/en/about", ABOUT_META.en.description),
   line(PRIVACY_META.en.title, "/en/privacy", PRIVACY_META.en.description),
   line(ROADMAP_COPY.en.meta.title, "/en/roadmap", ROADMAP_COPY.en.meta.description),
@@ -357,6 +415,7 @@ const llms = [
   "",
   ...LANG_CODES.filter((l) => l !== "en").flatMap((l) => [
     line(`${SITE_META[l].title} (${HREFLANG[l]})`, SITE_META[l].path, SITE_META[l].description),
+    `  ${line(SIGN_META[l].title, SIGN_ALTERNATES[l])}`,
     ...GUIDES[l].map((g) => `  ${line(g.title, guidePath(l, g.slug))}`),
     ...COMPARISONS[l].map((c) => `  ${line(c.title, comparePath(l, c.slug))}`),
   ]),

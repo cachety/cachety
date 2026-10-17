@@ -9,14 +9,15 @@ import { CheckIcon, ShieldIcon } from "@/components/icons";
 /**
  * En-tête de l'accueil : navigation, promesse, et rien de plus. Sur mobile
  * le bloc reste court : l'outil doit apparaître sans avoir à défiler.
+ * `tool="sign"` : même en-tête pour la page /sign, avec sa propre promesse.
  */
-export default function Header() {
+export default function Header({ tool = "watermark" }: { tool?: "watermark" | "sign" }) {
   const { lang } = useLang();
   const c = SITE_COPY[lang];
-  const h = c.hero;
+  const h = tool === "sign" ? c.sign.hero : c.hero;
   return (
     <>
-      <SiteNav current="tool" />
+      <SiteNav current={tool === "sign" ? "sign" : "tool"} />
       <div data-tool-aside className="mx-auto w-full max-w-3xl pb-6 pt-2 text-center sm:pb-10 sm:pt-6">
         {/* Sous 1280 px, la barre n'a pas la place pour l'étymologie du nom. */}
         <p className="mb-2 text-xs text-encre-2 sm:text-sm xl:hidden">

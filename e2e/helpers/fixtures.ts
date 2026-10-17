@@ -246,6 +246,36 @@ export async function makeNoisePdf(): Promise<Uint8Array> {
   return doc.save();
 }
 
+/**
+ * Document à signer : `pages` pages A4 blanches portant du texte (couche
+ * texte) et des métadonnées marquées SECRET, pour vérifier que la copie
+ * signée n'en garde rien.
+ */
+export async function makeSignablePdf(pages: number): Promise<Uint8Array> {
+  const doc = await PDFDocument.create();
+  doc.setAuthor(SECRET);
+  doc.setTitle(SECRET);
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  for (let i = 0; i < pages; i++) {
+    const page = doc.addPage([595, 842]);
+    page.drawText(`Contrat — page ${i + 1} — ${SECRET}`, { x: 50, y: 790, size: 11, font, color: rgb(0.1, 0.1, 0.1) });
+  }
+  return doc.save();
+}
+
+/** Octets JPEG de l'image qui couvre la page `index` d'une sortie Cachety (une image par page). */
+export async function pageJpeg(bytes: Uint8Array, index: number): Promise<Uint8Array> {
+  const doc = await PDFDocument.load(bytes);
+  const page = doc.getPage(index);
+  const resources = page.node.Resources();
+  const xobjects = resources?.lookup(PDFName.of("XObject"), PDFDict);
+  for (const [, ref] of xobjects?.entries() ?? []) {
+    const stream = doc.context.lookup(ref);
+    if (stream instanceof PDFRawStream) return stream.contents;
+  }
+  throw new Error(`page ${index} : aucune image`);
+}
+
 /** PDF d'une page entièrement bleue (#2040c0) : repère pour vérifier un masque. */
 export async function makeBluePdf(): Promise<Uint8Array> {
   const doc = await PDFDocument.create();

@@ -46,8 +46,9 @@ Selbst hosten ist weiterhin möglich und vollständig unterstützt (siehe unten)
 - **Funktioniert auf dem Handy**, lässt sich als App installieren und läuft nach dem Laden **offline**.
 - **Mehrere Sprachen**, mit Rechts-nach-links-Layout für Arabisch und Persisch und eigenen Schriften für jede Schrift.
 - **Geführte Hilfe-Tour** für neue Besucher, angeboten, wenn jemand unsicher wirkt, wo er anfangen soll.
-- **Praktische Ratgeber** für Alltagssituationen in Deutschland, Frankreich, Großbritannien, den Niederlanden, Spanien und Lateinamerika, Brasilien, Indonesien, der arabischen Welt, Iran, Japan und China.
-- **Geprüfte Vergleiche** mit anderen Wasserzeichen-Tools (PDF24, iLovePDF, Proton, Smallpdf, Adobe Acrobat und weitere), mit Quellen, auch dazu, wann ein anderes Tool die bessere Wahl ist.
+- **92 praktische Ratgeber** für Alltagssituationen in Deutschland, Frankreich, Großbritannien, den Niederlanden, Spanien und Lateinamerika, Brasilien, Indonesien, der arabischen Welt, Iran, Japan und China.
+- **Dokumente unterschreiben:** ein PDF oder Foto im Browser unterschreiben (Unterschrift zeichnen, tippen oder als Bild importieren), ohne dass etwas hochgeladen wird. Das ist eine einfache elektronische Signatur, keine qualifizierte: [cachety.com/de/sign](https://cachety.com/de/sign).
+- **Geprüfte Vergleiche** mit anderen Wasserzeichen-Tools (PDF24, iLovePDF, Proton, Smallpdf, Adobe Acrobat und weitere) und mit Unterschriften-Tools (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), mit Quellen, auch dazu, wann ein anderes Tool die bessere Wahl ist.
 - **Auf Partner-Websites:** freigegebene Websites können das Tool in ihren Seiten zeigen (ein iframe von cachety.com, die einbindende Website sieht die Dokumente nicht). Siehe [docs/embed.md](docs/embed.md) und [cachety.com/de/partners](https://cachety.com/de/partners).
 
 ## Datenschutz von Grund auf, und überprüfbar

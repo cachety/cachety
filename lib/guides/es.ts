@@ -445,4 +445,188 @@ export const GUIDES_ES: Guide[] = [
     ],
     updated: "2026-10-12",
   },
+
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  // Guías de firma (herramienta Firmar, /es/sign).
+  {
+    slug: "firmar-contrato-alquiler-online",
+    topic: "sign",
+    tool: "sign",
+    title: "Cómo firmar un contrato de alquiler o un documento del piso online, sin subirlo",
+    metaTitle: "Firmar un contrato de alquiler online, gratis y sin subirlo",
+    description:
+      "Firma el contrato de alquiler, el inventario o cualquier papel del piso en tu navegador: dibuja o escribe tu firma, colócala y descarga. No se sube nada.",
+    intro:
+      "Las inmobiliarias y los caseros suelen mandar el contrato de alquiler en PDF y pedir que se lo devuelvas firmado por correo. No hace falta imprimir, escanear ni crear una cuenta: puedes firmarlo en tu navegador en un minuto, y el documento nunca sale de tu dispositivo.",
+    example: "Contrato de alquiler firmado – solo para Inmobiliaria Sol – 17/10/2026",
+    body: [
+      { type: "h2", text: "Lo que te pueden pedir firmar" },
+      {
+        type: "p",
+        text: "Alquilar un piso trae papeles: el contrato de alquiler, el inventario del mobiliario o el acta de entrega de llaves, a veces una declaración para el estudio de solvencia. Casi todo llega en PDF, con una línea para la firma. Lo habitual es una web de firma que te pide subir el archivo y abrir una cuenta, o imprimir, firmar, escanear y reenviar. Cachety lo hace en tu navegador.",
+      },
+      { type: "h2", text: "Cómo firmar los papeles del alquiler con Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Abre cachety.com/es/sign en tu navegador, en el ordenador o en el móvil. No hay nada que instalar ni cuenta que crear.",
+          "Tus documentos: suelta el PDF en la página o tócala para elegirlo. Puedes añadir varios a la vez, por ejemplo el contrato y el inventario. También vale una foto de un documento en papel: se convierte en un PDF de una página.",
+          "Tu firma: dibújala con el dedo, un lápiz táctil o el ratón, escribe tu nombre o importa una foto de tu firma sobre papel blanco. Debajo puedes dejar la fecha de hoy y, si quieres, añadir el lugar y una nota breve como «Leído y conforme».",
+          "Coloca, revisa y descarga: tu firma aparece abajo a la derecha de la última página. Arrástrala hasta la línea de firma y cambia su tamaño desde la esquina. Si la inmobiliaria pide rubricar cada página, activa «Rubricar también cada página».",
+          "Revisa la vista previa y descarga. La copia firmada conserva el nombre original con -signed al final. Esa es la copia que devuelves.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Con varios documentos, cada uno tiene su propia colocación. Un documento no está listo hasta que tu firma está en él: la lista te indica cuáles siguen esperando.",
+      },
+      {
+        type: "tip",
+        text: "Después de la descarga, Cachety muestra la huella de cada archivo: un código de 64 caracteres calculado a partir del archivo exacto que descargaste. Cópiala, guárdala con tus papeles y envíala junto con el documento (en el mismo correo, por ejemplo). Si algún día aparece otra versión del contrato, su huella no coincidirá: sabrás que no es el archivo que enviaste.",
+      },
+      { type: "h2", text: "Opciones que conviene conocer" },
+      {
+        type: "list",
+        items: [
+          "«Rubricar también cada página» pone una copia pequeña de tu firma abajo a la derecha de cada una de las demás páginas, así una página cambiada se nota más.",
+          "«Proteger con contraseña» está desactivada por defecto, porque la inmobiliaria tiene que poder abrir el archivo. Actívala solo si le das la contraseña por otra vía, por ejemplo por teléfono.",
+          "«Reducir el tamaño» ayuda cuando el correo o el portal de la inmobiliaria limita el peso del archivo.",
+          "Añadir también una marca de agua escribe el motivo, el destinatario y la fecha sobre la copia firmada.",
+        ],
+      },
+      { type: "h2", text: "Tus documentos nunca salen de tu dispositivo" },
+      {
+        type: "p",
+        text: "Cachety funciona dentro de tu navegador. No hay ningún servidor que reciba tus documentos, y la página tiene técnicamente prohibido contactar con cualquier otra web. Compruébalo tú mismo: cuando la página haya cargado, activa el modo avión y firma tu documento. Todo sigue funcionando. Tu firma tampoco se guarda: solo existe en la memoria de la pestaña y desaparece al cerrarla.",
+      },
+      {
+        type: "p",
+        text: "Cada página de la copia firmada se reconstruye a partir de sus píxeles. Así se eliminan el texto oculto y los metadatos, y el texto ya no se puede seleccionar en la copia firmada. Tu original se queda contigo, intacto.",
+      },
+      { type: "h2", text: "¿Vale esta firma para un contrato de alquiler?" },
+      {
+        type: "p",
+        text: "Una firma que dibujas o escribes y colocas en el documento es lo que se suele llamar una firma electrónica simple. En la UE, a una firma no se le pueden negar efectos jurídicos solo por ser electrónica (Reglamento eIDAS, artículo 25). Para los papeles habituales de un alquiler, suele bastar. Aun así, las normas cambian según el país y el documento.",
+      },
+      {
+        type: "p",
+        text: "Si alguna vez se discute la firma, quien se apoya en el documento debe demostrar quién lo firmó. Por eso, guarda el correo o el mensaje con el que se envió. Solo una firma cualificada, hecha con un certificado de un prestador cualificado, se presume fiable y equivale a una firma manuscrita.",
+      },
+      {
+        type: "warning",
+        text: "No es la herramienta adecuada cuando se exige una firma cualificada, cuando la ley pide una mención escrita de tu puño y letra (aval personal, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone una plataforma concreta (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). En esos casos, usa lo que te pidan. Esto no es asesoramiento jurídico.",
+      },
+      { type: "h2", text: "¿Alguien puede reutilizar mi firma?" },
+      {
+        type: "p",
+        text: "Tu firma forma parte de la imagen de cada página, así que no se puede mover ni borrar como un elemento del PDF. Pero, como con una firma en papel escaneada, alguien podría recortarla de la imagen y pegarla en otro sitio. Ninguna imagen de una firma puede impedirlo, y el archivo no demuestra quién la puso ni que el documento no se modificó después. Guarda tu copia. Para reducir el riesgo, añade una marca de agua que ate la copia a su motivo y su destinatario, y rubrica cada página.",
+      },
+    ],
+    faq: [
+      {
+        q: "¿La inmobiliaria acepta un documento firmado así?",
+        a: "En la mayoría de los casos, sí: devolver un PDF firmado por correo es habitual en los papeles de alquiler. Si la inmobiliaria usa su propia plataforma de firma y la exige, usa la suya.",
+      },
+      {
+        q: "¿Tengo que imprimir algo?",
+        a: "No. Firmas en la pantalla y devuelves el PDF firmado. Si solo tienes el documento en papel, hazle una foto nítida con buena luz y firma sobre la foto.",
+      },
+      {
+        q: "¿Se guarda mi firma?",
+        a: "No. Solo existe en la memoria de la pestaña. Ciérrala y desaparece. La próxima vez la vuelves a dibujar o escribir.",
+      },
+      {
+        q: "¿Puedo copiar todavía el texto del PDF firmado?",
+        a: "No. Cada página se reconstruye a partir de sus píxeles, lo que también elimina el texto oculto y los metadatos. Guarda tu original si necesitas el texto.",
+      },
+      {
+        q: "¿Cachety es gratis de verdad?",
+        a: "Sí. Es gratis, sin cuenta y sin rastreo. Es software libre hecho en Francia por Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
+  {
+    slug: "firmar-pdf-desde-el-movil",
+    topic: "sign-phone",
+    tool: "sign",
+    title: "Cómo firmar un PDF desde el móvil, en iPhone o Android",
+    metaTitle: "Firmar un PDF desde el móvil: iPhone y Android, gratis",
+    description:
+      "Firma un PDF con el dedo en tu iPhone o tu móvil Android. Sin instalar ninguna app, sin cuenta, y el documento nunca se sube a internet. Gratis.",
+    intro:
+      "Te han mandado un PDF para firmar y devolver, y no tienes un ordenador a mano. Puedes firmarlo con el dedo en el móvil, en el propio navegador, en un minuto.",
+    example: "Autorización firmada – solo para el colegio Los Almendros – 17/10/2026",
+    body: [
+      { type: "h2", text: "Sin app, sin cuenta, sin subir nada" },
+      {
+        type: "p",
+        text: "Cachety funciona en el navegador de tu móvil, como Safari o Chrome. No hay nada que descargar de una tienda de aplicaciones ni cuenta que crear. El documento se procesa en el propio móvil y nunca se sube: la página tiene técnicamente prohibido contactar con cualquier otra web.",
+      },
+      { type: "h2", text: "Paso a paso" },
+      {
+        type: "steps",
+        items: [
+          "Guarda en el móvil el PDF que te enviaron. En la mayoría de las apps de correo, toca el adjunto y guárdalo en Archivos en el iPhone o en Descargas en Android.",
+          "Abre cachety.com/es/sign en tu navegador, toca la zona para elegir archivos y escoge el PDF. También vale una foto de un documento en papel.",
+          "Dibuja tu firma en el recuadro con el dedo. ¿No te convence? Deshaz el último trazo o bórrala entera y vuelve a intentarlo. También puedes escribir tu nombre o importar una foto de tu firma.",
+          "Elige qué va debajo de la firma, si quieres algo. La fecha de hoy viene activada, y puedes añadir el lugar y una nota como «Leído y conforme».",
+          "Pasa al paso de colocar, revisar y descargar. Tu firma aparece abajo a la derecha de la última página. Arrástrala con el dedo y cambia su tamaño desde la esquina.",
+          "Revisa la vista previa, descarga el PDF firmado y devuélvelo por correo o por una app de mensajería.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Firma un poco más grande que en papel y sin prisa. El espacio vacío alrededor de la firma se recorta solo, para que quede nítida en la página.",
+      },
+      { type: "h2", text: "¿Prefieres una foto de tu firma?" },
+      {
+        type: "p",
+        text: "Si firmar con el dedo te resulta incómodo, firma en una hoja blanca con un bolígrafo oscuro, hazle una foto con luz de día y elige «Importar». El fondo blanco se quita automáticamente. Si todavía se ve algo de papel, mueve el control «Sensibilidad». Las fotos del iPhone (HEIC) también funcionan.",
+      },
+      { type: "h2", text: "Comprueba que todo se queda en tu móvil" },
+      {
+        type: "p",
+        text: "Cuando la página haya cargado, activa el modo avión, elige tu PDF y fírmalo. Todo sigue funcionando, lo que demuestra que no se envía nada a ninguna parte. Tu firma no se guarda: cierra la pestaña y desaparece.",
+      },
+      { type: "h2", text: "Opciones antes de descargar" },
+      {
+        type: "list",
+        items: [
+          "«Rubricar también cada página» añade una copia pequeña de tu firma en las demás páginas.",
+          "«Reducir el tamaño» deja el archivo por debajo del peso que admite un correo o una web.",
+          "«Proteger con contraseña» está desactivada por defecto, para que el destinatario pueda abrir el archivo enseguida.",
+          "Tras la descarga se muestra la huella del archivo. Guárdala y envíala junto con el documento: si algún día aparece otra versión, su huella no coincidirá y sabrás que no es el archivo que enviaste.",
+        ],
+      },
+      { type: "h2", text: "Qué valor tiene esta firma" },
+      {
+        type: "p",
+        text: "Una firma dibujada en el móvil y colocada en el documento es lo que se suele llamar una firma electrónica simple. Suele aceptarse para documentos del día a día, como autorizaciones del colegio, formularios de un club o una asociación, presupuestos y papeles del alquiler. Si alguna vez se discute, quien se apoya en el documento debe demostrar quién lo firmó; guarda el correo o el mensaje con el que se envió.",
+      },
+      {
+        type: "warning",
+        text: "No es la herramienta adecuada cuando se exige una firma cualificada con certificado, cuando la ley pide una mención escrita de tu puño y letra (aval personal, reconocimiento de deuda), para un testamento o una escritura ante notario, o cuando la otra parte impone su propia plataforma (algunos contratos de préstamo o de seguro, ciertos trámites con la Administración). Y, como con una firma en papel escaneada, alguien podría recortar tu firma de la copia y reutilizarla. Una marca de agua con el motivo y el destinatario, y una rúbrica en cada página, reducen ese riesgo. Esto no es asesoramiento jurídico.",
+      },
+    ],
+    faq: [
+      {
+        q: "¿Tengo que descargar una app?",
+        a: "No. Cachety funciona en el navegador del móvil. Puedes añadirlo a la pantalla de inicio para tenerlo a mano, pero no es obligatorio.",
+      },
+      {
+        q: "¿Puedo firmar con un lápiz táctil?",
+        a: "Sí. El recuadro de firma funciona con el dedo, con un lápiz táctil o, en el ordenador, con el ratón.",
+      },
+      {
+        q: "¿Se sube el PDF a algún sitio?",
+        a: "No. Todo ocurre en tu móvil. Activa el modo avión cuando la página haya cargado y verás que sigue funcionando.",
+      },
+      {
+        q: "¿Por qué ya no puedo seleccionar el texto del PDF firmado?",
+        a: "Cada página se reconstruye a partir de sus píxeles: así la firma no se puede despegar y se eliminan los datos ocultos. Tu original sigue en tu móvil, intacto.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
 ];

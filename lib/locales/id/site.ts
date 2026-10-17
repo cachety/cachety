@@ -5,7 +5,8 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_ID: SiteCopy = {
   nav: {
-    tool: "Alat watermark",
+    tool: "Watermark",
+    sign: "Tanda tangan",
     about: "Mengapa perlu watermark?",
     guides: "Panduan",
     privacy: "Privasi",
@@ -131,10 +132,71 @@ export const SITE_ID: SiteCopy = {
         a: "Bisa, di Android dan iPhone. Buka cachety.com di browser, ketuk area untuk memasukkan file, lalu pilih foto atau PDF. Anda juga bisa menambahkan Cachety ke layar utama.",
       },
     ],
+    signLink: {
+      title: "Ada dokumen yang perlu ditandatangani?",
+      body: "Kontrak sewa, surat keterangan, penawaran harga: gambar, ketik, atau impor tanda tangan Anda dan tempatkan di PDF. Di sini pun tidak ada yang di-upload.",
+      cta: "Tanda tangani dokumen",
+    },
     guidesTitle: "Panduan praktis",
     guidesLead: "Bantuan langkah demi langkah untuk situasi sehari-hari.",
     guidesAll: "Semua panduan",
     backToTop: "Beri watermark pada dokumen",
+  },
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  sign: {
+    hero: {
+      title: "Tanda tangani dokumen tanpa mengirimnya ke mana pun",
+      lead: "Kontrak sewa, surat keterangan, penawaran harga, surat izin: tanda tangani dalam hitungan detik. Dokumen tetap ada di perangkat Anda dari awal sampai akhir.",
+      pills: ["Gratis", "Tanpa akun", "Tidak ada yang di-upload", "Buatan Prancis"],
+    },
+    howTitle: "Cara kerjanya",
+    how: [
+      { title: "Masukkan dokumen Anda", body: "PDF atau foto dokumen, termasuk yang difoto dengan ponsel. Bisa beberapa sekaligus." },
+      { title: "Buat tanda tangan", body: "Gambar dengan jari atau mouse, ketik nama Anda, atau impor foto tanda tangan Anda." },
+      {
+        title: "Tempatkan, lalu unduh",
+        body: "Geser ke tempat yang tepat. Pratinjau menunjukkan persis PDF yang sudah ditandatangani, yang disimpan di perangkat Anda.",
+      },
+    ],
+    airplaneTitle: "Buktikan sendiri: tes mode pesawat",
+    airplaneBody:
+      "Buka halaman ini, lalu matikan internet (mode pesawat). Masukkan dokumen dan tanda tangani: Cachety tetap berjalan. Itu bukti bahwa tidak ada yang lewat internet.",
+    legal: {
+      title: "Seberapa kuat tanda tangan ini?",
+      p1: "Tanda tangan yang digambar, diketik, atau diimpor lalu ditempatkan di dokumen biasa disebut tanda tangan elektronik “sederhana”. Di Uni Eropa, pengadilan tidak boleh menolaknya sebagai alat bukti hanya karena berbentuk elektronik (Regulasi eIDAS, pasal 25). Di Prancis, tanda tangan mengidentifikasi penandatangannya dan menunjukkan persetujuannya; dalam bentuk elektronik, tanda tangan harus menggunakan cara yang andal yang mengaitkannya dengan dokumen (Kitab Undang-Undang Hukum Perdata Prancis, pasal 1367). Gambar tanda tangan, seperti tanda tangan yang dipindai, tidak memenuhi syarat itu dengan sendirinya: gambar itu dianggap tanda tangan jika tidak ada yang membantahnya, tetapi bobotnya kecil jika dibantah (Mahkamah Kasasi Prancis, 2022 dan 2024).",
+      p2: "Untuk dokumen sehari-hari, ini biasanya diterima: berkas sewa, surat keterangan, penawaran harga, formulir sekolah atau perkumpulan. Jika terjadi sengketa, pihak yang mengandalkan dokumen itulah yang harus membuktikan siapa yang menandatanganinya; simpan email atau pesan yang dipakai untuk mengirimnya. Hanya tanda tangan “terkualifikasi” (dengan sertifikat dari penyedia terkualifikasi) yang dianggap andal dan setara dengan tanda tangan tulisan tangan.",
+      p3: "Alat ini tidak tepat jika tanda tangan terkualifikasi diwajibkan, jika hukum mewajibkan pernyataan yang ditulis dengan tangan Anda sendiri (penjaminan utang, surat pengakuan utang), untuk surat wasiat atau akta notaris, atau jika pihak lain mengharuskan platform tertentu (sebagian kontrak pinjaman atau asuransi, prosedur resmi tertentu). Dalam hal ini, gunakan alat yang mereka minta.",
+      note: "Ini bukan nasihat hukum. Aturan untuk sebagian dokumen berbeda di tiap negara. Terjemahan ini masih menunggu ditinjau oleh penutur asli.",
+    },
+    faqTitle: "Pertanyaan umum",
+    faq: [
+      {
+        q: "Apakah dokumen saya di-upload ke server?",
+        a: "Tidak, tidak pernah. Situs ini bahkan tidak punya server yang bisa menerima file. Browser Anda yang mengerjakan semuanya, dan halaman ini secara teknis mencegahnya terhubung ke situs lain. Tes mode pesawat membuktikannya dalam sepuluh detik.",
+      },
+      {
+        q: "Apakah tanda tangan saya disimpan?",
+        a: "Tidak. Tanda tangan hanya ada di memori tab. Tutup tab, dan tanda tangan itu hilang.",
+      },
+      {
+        q: "Bisakah tanda tangan saya dihapus atau dipakai ulang?",
+        a: "Tanda tangan menjadi bagian dari gambar setiap halaman: tidak bisa dipindahkan atau dihapus sebagai elemen PDF. Sama seperti tanda tangan di kertas yang dipindai, seseorang bisa memotongnya dan menempelkannya di tempat lain, dan file ini tidak membuktikan siapa yang menempatkannya atau bahwa dokumen tidak diubah sesudahnya. Simpan salinan Anda. Untuk mengurangi risiko itu, tambahkan watermark yang mengikat salinan pada keperluannya, dan paraf setiap halaman.",
+      },
+      {
+        q: "Apakah teks di PDF yang sudah ditandatangani masih bisa dipilih?",
+        a: "Tidak. Setiap halaman dibuat ulang dari pikselnya, sehingga teks tersembunyi, metadata, dan lokasi GPS foto juga ikut terhapus. Dokumen asli Anda tetap utuh di tangan Anda.",
+      },
+      {
+        q: "Apakah bisa dipakai di ponsel?",
+        a: "Ya, di iPhone dan Android. Tanda tangani dengan jari, atau impor foto jika lebih suka.",
+      },
+    ],
+    watermarkLink: {
+      title: "Mengirim fotokopi KTP juga?",
+      body: "KTP, bukti pajak, slip gaji: beri watermark yang membatasi salinan untuk satu keperluan saja. Situs yang sama, janji yang sama: tidak ada yang di-upload.",
+      cta: "Beri watermark pada dokumen",
+    },
+    backToTop: "Tanda tangani dokumen",
   },
   privacy: {
     title: "Privasi dan keamanan",
@@ -216,13 +278,15 @@ export const SITE_ID: SiteCopy = {
     faqTitle: "Pertanyaan umum",
     related: "Baca juga",
     cta: "Beri watermark pada dokumen saya",
+    ctaSign: "Tanda tangani dokumen saya",
     ctaNote: "Gratis, tanpa akun. Dokumen tidak pernah keluar dari perangkat Anda.",
     updated: (d) => `Diperbarui ${d}`,
     allGuides: "Semua panduan",
   },
   compareUi: {
-    title: "Cachety dibandingkan alat watermark lain",
+    title: "Cachety dibandingkan alat watermark dan tanda tangan lain",
     lead: "Perbandingan yang jelas dan sudah dicek dengan alat-alat yang paling banyak dipakai: ke mana file Anda dikirim, berapa biayanya, dan kapan alat lain justru lebih cocok.",
+    groups: { watermark: "Watermark", sign: "Tanda tangan" },
     read: "Baca perbandingan",
     verdictTitle: "Ringkasnya",
     tableTitle: "Berdampingan",

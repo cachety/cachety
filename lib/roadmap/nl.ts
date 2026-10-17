@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Goed leesbare wachtwoorden in je eigen taal",
     body: "Wachtwoordwoorden in je eigen taal, met alleen gewone letters, zodat je ze op elk toetsenbord hetzelfde typt.",
   },
+  "remember-signature": {
+    title: "Mijn handtekening onthouden op dit apparaat",
+    body: "Een keuze die je zelf aanzet om je handtekening op dit apparaat te bewaren, met een duidelijke zin over wat er wordt bewaard en verwijderen met één tik. Nu wordt hij nooit bewaard.",
+  },
+  "keep-vector-pages": {
+    title: "De tekst van ondertekende pdf's behouden",
+    body: "Een optie om te ondertekenen zonder de pagina's opnieuw uit pixels op te bouwen, zodat de tekst doorzoekbaar blijft. Die krijgt een eigen opschoning van verborgen gegevens.",
+  },
+  "sign-embed": {
+    title: "Ondertekenen op partnerwebsites",
+    body: "Goedgekeurde websites kunnen het ondertekenen in hun eigen pagina's tonen, alleen of naast het watermerk, met plaats en vermelding al ingevuld. De documenten blijven op het apparaat van de bezoeker.",
+  },
+  "sign": {
+    title: "Een document ondertekenen",
+    body: "Teken, typ of importeer je handtekening, zet hem op een pdf of foto en download een ondertekende pdf. Net als bij het watermerk wordt er niets geüpload.",
+  },
   "simpler-tool": {
     title: "Een eenvoudigere tool",
     body: "Drie stappen in gewone taal: je document, waarvoor en voor wie, dan voorbeeld en download. Alle extra opties blijven één tik verwijderd.",
@@ -46,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Mis je iets? Open een issue op GitHub. Ideeën zijn welkom in elke taal.",
   meta: {
     title: "Roadmap: wat er aankomt voor Cachety",
-    description: "Geplande functies van Cachety, de gratis watermerktool waarbij je documenten op je apparaat blijven: wat eraan komt, ideeën en wat nieuw is.",
+    description: "Geplande functies van Cachety, de gratis tool om te watermerken en te ondertekenen terwijl je documenten op je apparaat blijven: wat eraan komt en wat nieuw is.",
   },
 };
 

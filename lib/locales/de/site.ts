@@ -6,7 +6,8 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_DE: SiteCopy = {
   nav: {
-    tool: "Zum Tool",
+    tool: "Wasserzeichen",
+    sign: "Unterschreiben",
     about: "Warum ein Wasserzeichen?",
     guides: "Ratgeber",
     privacy: "Datenschutz",
@@ -129,10 +130,71 @@ export const SITE_DE: SiteCopy = {
         a: "Ja, auf iPhone und Android. Öffne cachety.com im Browser, tippe auf die Ablagefläche und wähle ein Foto oder ein PDF. Du kannst Cachety auch auf deinen Startbildschirm legen.",
       },
     ],
+    signLink: {
+      title: "Musst du ein Dokument unterschreiben?",
+      body: "Mietvertrag, Bescheinigung, Angebot: Zeichne, tippe oder importiere deine Unterschrift und setz sie aufs PDF. Auch hier wird nichts hochgeladen.",
+      cta: "Dokument unterschreiben",
+    },
     guidesTitle: "Ratgeber",
     guidesLead: "Schritt-für-Schritt-Hilfe für Alltagssituationen.",
     guidesAll: "Alle Ratgeber",
     backToTop: "Wasserzeichen setzen",
+  },
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  sign: {
+    hero: {
+      title: "Dokumente unterschreiben, ohne sie irgendwohin zu schicken",
+      lead: "Mietvertrag, Bescheinigung, Angebot, Einverständniserklärung: in Sekunden unterschrieben. Das Dokument bleibt von Anfang bis Ende auf deinem Gerät.",
+      pills: ["Kostenlos", "Ohne Konto", "Kein Upload", "Made in France"],
+    },
+    howTitle: "So funktioniert’s",
+    how: [
+      { title: "Dokument ablegen", body: "Ein PDF oder ein Foto des Dokuments, auch vom Handy. Bei Bedarf mehrere auf einmal." },
+      { title: "Unterschrift erstellen", body: "Zeichne sie mit dem Finger oder der Maus, tippe deinen Namen oder importiere ein Foto deiner Unterschrift." },
+      {
+        title: "Platzieren und herunterladen",
+        body: "Zieh sie an die richtige Stelle. Die Vorschau zeigt genau das unterschriebene PDF, das auf deinem Gerät gespeichert wird.",
+      },
+    ],
+    airplaneTitle: "Prüf es selbst: der Flugmodus-Test",
+    airplaneBody:
+      "Öffne diese Seite und schalte dann das Internet ab (Flugmodus). Leg ein Dokument ab und unterschreib es: Cachety funktioniert weiter. Der Beweis, dass nichts übers Internet geht.",
+    legal: {
+      title: "Was ist diese Unterschrift wert?",
+      p1: "Eine gezeichnete, getippte oder importierte Unterschrift, die auf das Dokument gesetzt wird, nennt man üblicherweise eine „einfache“ elektronische Signatur. In der EU darf ein Gericht sie nicht allein deshalb als Beweismittel zurückweisen, weil sie elektronisch ist (eIDAS-Verordnung, Artikel 25). In Frankreich lässt eine Unterschrift ihren Urheber erkennen und zeigt seine Zustimmung; in elektronischer Form muss sie auf einem zuverlässigen Verfahren beruhen, das sie mit dem Dokument verknüpft (Code civil, Artikel 1367). Ein Bild einer Unterschrift, etwa eine eingescannte Unterschrift, erfüllt diese Bedingung allein nicht: Es zählt als Unterschrift, wenn niemand es bestreitet, hat aber wenig Gewicht, wenn es bestritten wird (Cour de cassation, 2022 und 2024).",
+      p2: "Für Alltagsdokumente wird das in der Regel akzeptiert: Mietunterlagen, Bescheinigungen, Angebote, Formulare von Schule oder Verein. Im Streitfall muss derjenige, der sich auf das Dokument beruft, beweisen, wer es unterschrieben hat; bewahre die E-Mail oder Nachricht auf, mit der es verschickt wurde. Nur bei einer „qualifizierten“ Signatur (mit einem Zertifikat eines qualifizierten Anbieters) wird die Zuverlässigkeit vermutet, und nur sie steht einer handschriftlichen Unterschrift gleich.",
+      p3: "Das ist nicht das richtige Werkzeug, wenn eine qualifizierte Signatur vorgeschrieben ist, wenn das Gesetz einen eigenhändig geschriebenen Vermerk verlangt (Bürgschaft, Schuldschein), für ein Testament oder eine notarielle Urkunde, oder wenn die andere Seite eine bestimmte Plattform vorgibt (manche Kredit- oder Versicherungsverträge, bestimmte Behördenverfahren). Nutze dann das Werkzeug, das verlangt wird.",
+      note: "Das ist keine Rechtsberatung. Für manche Dokumente gelten je nach Land andere Regeln, zum Beispiel wo das Gesetz eine Unterschrift auf Papier verlangt. Diese Übersetzung wartet noch auf die Prüfung durch Muttersprachler.",
+    },
+    faqTitle: "Häufige Fragen",
+    faq: [
+      {
+        q: "Wird mein Dokument auf einen Server hochgeladen?",
+        a: "Nein, niemals. Die Website hat nicht einmal einen Server, der eine Datei empfangen könnte. Dein Browser erledigt alles, und die Seite verbietet ihm technisch, Kontakt zu anderen Websites aufzunehmen. Der Flugmodus-Test beweist es in zehn Sekunden.",
+      },
+      {
+        q: "Wird meine Unterschrift gespeichert?",
+        a: "Nein. Sie existiert nur im Speicher des Tabs. Schließ den Tab, und sie ist weg.",
+      },
+      {
+        q: "Kann meine Unterschrift entfernt oder wiederverwendet werden?",
+        a: "Sie ist Teil des Bildes jeder Seite: Man kann sie nicht als Element des PDF verschieben oder löschen. Wie bei einer eingescannten Unterschrift auf Papier könnte aber jemand sie ausschneiden und woanders einfügen, und die Datei beweist weder, wer sie gesetzt hat, noch, dass das Dokument danach nicht verändert wurde. Bewahre deine Kopie auf. Um dieses Risiko zu verringern, setz ein Wasserzeichen, das die Kopie an ihren Zweck bindet, und zeichne jede Seite ab.",
+      },
+      {
+        q: "Lässt sich der Text im unterschriebenen PDF noch markieren?",
+        a: "Nein. Jede Seite wird aus ihren Pixeln neu aufgebaut. Dabei verschwinden auch versteckter Text, Metadaten und der GPS-Standort von Fotos. Dein Original bleibt unverändert bei dir.",
+      },
+      {
+        q: "Funktioniert das auf meinem Handy?",
+        a: "Ja, auf iPhone und Android. Unterschreib mit dem Finger oder importiere ein Foto, wenn dir das lieber ist.",
+      },
+    ],
+    watermarkLink: {
+      title: "Schickst du auch eine Ausweiskopie mit?",
+      body: "Ausweis, Steuerbescheid, Gehaltsabrechnung: Setz ein Wasserzeichen, das die Kopie auf einen einzigen Zweck beschränkt. Dieselbe Website, dasselbe Versprechen: Nichts wird hochgeladen.",
+      cta: "Wasserzeichen setzen",
+    },
+    backToTop: "Dokument unterschreiben",
   },
   privacy: {
     title: "Datenschutz und Sicherheit",
@@ -214,13 +276,15 @@ export const SITE_DE: SiteCopy = {
     faqTitle: "Häufige Fragen",
     related: "Weiterlesen",
     cta: "Wasserzeichen auf mein Dokument",
+    ctaSign: "Mein Dokument unterschreiben",
     ctaNote: "Kostenlos, ohne Konto. Das Dokument verlässt nie dein Gerät.",
     updated: (d) => `Aktualisiert am ${d}`,
     allGuides: "Alle Ratgeber",
   },
   compareUi: {
-    title: "Cachety im Vergleich mit anderen Wasserzeichen-Tools",
+    title: "Cachety im Vergleich mit anderen Wasserzeichen- und Unterschriften-Tools",
     lead: "Verständliche, geprüfte Vergleiche mit den meistgenutzten Tools: wohin deine Dateien gehen, was es kostet und wann ein anderes Tool die bessere Wahl ist.",
+    groups: { watermark: "Wasserzeichen", sign: "Unterschreiben" },
     read: "Vergleich lesen",
     verdictTitle: "Kurz gesagt",
     tableTitle: "Im direkten Vergleich",

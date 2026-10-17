@@ -15,10 +15,33 @@ import { SITE_NL } from "@/lib/locales/nl/site";
 
 type Item = { title: string; body: string };
 type Section = { title: string; paras?: string[]; items?: string[] };
+/** Encart qui renvoie vers l'autre outil (filigrane ↔ signature). */
+type CrossLink = { title: string; body: string; cta: string };
+
+/**
+ * Page /sign (docs/prd-sign.md §10) : sous l'outil, la promesse, la valeur
+ * juridique et la FAQ. Le paragraphe « legal » est la seule page qui parle de
+ * droit : prudent, factuel, jamais de signature avancée/qualifiée promise.
+ */
+export type SignCopy = {
+  hero: { title: string; lead: string; pills: string[] };
+  howTitle: string;
+  how: Item[];
+  airplaneTitle: string;
+  airplaneBody: string;
+  legal: { title: string; p1: string; p2: string; p3: string; note: string };
+  faqTitle: string;
+  faq: { q: string; a: string }[];
+  /** Renvoi vers l'outil de filigrane. */
+  watermarkLink: CrossLink;
+  backToTop: string;
+};
 
 export type SiteCopy = {
   nav: {
     tool: string;
+    /** Outil de signature (/sign). */
+    sign: string;
     about: string;
     guides: string;
     privacy: string;
@@ -49,11 +72,14 @@ export type SiteCopy = {
     supportNote: string;
     faqTitle: string;
     faq: { q: string; a: string }[];
+    /** Renvoi vers l'outil de signature. */
+    signLink: CrossLink;
     guidesTitle: string;
     guidesLead: string;
     guidesAll: string;
     backToTop: string;
   };
+  sign: SignCopy;
   privacy: { title: string; lead: string; sections: Section[]; updated: string };
   guidesUi: {
     title: string;
@@ -63,6 +89,8 @@ export type SiteCopy = {
     faqTitle: string;
     related: string;
     cta: string;
+    /** Bouton des guides de signature (tool: "sign"), vers /<lang>/sign. */
+    ctaSign: string;
     ctaNote: string;
     updated: (date: string) => string;
     allGuides: string;
@@ -70,6 +98,8 @@ export type SiteCopy = {
   compareUi: {
     title: string;
     lead: string;
+    /** Intertitres de la page d'index : comparatifs du filigrane, puis de la signature. */
+    groups: { watermark: string; sign: string };
     read: string;
     verdictTitle: string;
     tableTitle: string;
@@ -104,7 +134,8 @@ export type SiteCopy = {
 const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
   fr: {
     nav: {
-      tool: "L'outil",
+      tool: "Filigraner",
+      sign: "Signer",
       about: "Pourquoi filigraner ?",
       guides: "Guides",
       privacy: "Confidentialité",
@@ -181,10 +212,68 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
           a: "Oui, sur iPhone comme sur Android. Ouvrez cachety.com dans votre navigateur, touchez la zone de dépôt et choisissez une photo ou un PDF. Vous pouvez aussi ajouter Cachety à votre écran d'accueil.",
         },
       ],
+      signLink: {
+        title: "Un document à signer ?",
+        body: "Bail, attestation, devis : dessinez, tapez ou importez votre signature et posez-la sur le PDF. Là aussi, rien n'est envoyé.",
+        cta: "Signer un document",
+      },
       guidesTitle: "Guides pratiques",
       guidesLead: "Des explications pas à pas pour les situations de tous les jours.",
       guidesAll: "Tous les guides",
       backToTop: "Filigraner un document",
+    },
+    // Page /sign (docs/prd-sign.md §10). La partie « legal » est relue avant publication.
+    sign: {
+      hero: {
+        title: "Signez un document sans l'envoyer nulle part",
+        lead: "Bail, attestation, devis, autorisation : signez en quelques secondes. Le document reste sur votre appareil du début à la fin.",
+        pills: ["Gratuit", "Sans compte", "Rien n'est envoyé", "Fabriqué en France"],
+      },
+      howTitle: "Comment ça marche",
+      how: [
+        { title: "Déposez votre document", body: "Un PDF ou une photo du document, même prise avec un téléphone. Plusieurs à la fois si besoin." },
+        { title: "Faites votre signature", body: "Dessinez-la avec le doigt ou la souris, tapez votre nom, ou importez une photo de votre signature." },
+        { title: "Placez-la, puis téléchargez", body: "Faites-la glisser au bon endroit. L'aperçu montre exactement le PDF signé, enregistré sur votre appareil." },
+      ],
+      airplaneTitle: "Vérifiez-le vous-même : le test du mode avion",
+      airplaneBody:
+        "Ouvrez cette page, puis coupez Internet (mode avion). Déposez un document et signez-le : Cachety fonctionne toujours. La preuve que rien ne passe par Internet.",
+      legal: {
+        title: "Quelle valeur a cette signature ?",
+        p1: "Une signature dessinée, tapée ou importée puis posée sur le document est ce qu'on appelle couramment une signature électronique « simple ». Dans l'Union européenne, un juge ne peut pas l'écarter comme preuve au seul motif qu'elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu'il consent à l'acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l'est (Cour de cassation, 2022 et 2024).",
+        p2: "Pour les documents de tous les jours, c'est en général accepté : dossier de location, attestation, devis, formulaire d'école ou d'association. En cas de litige, celui qui s'appuie sur le document doit prouver qui l'a signé ; gardez l'e-mail ou le message avec lequel il a été envoyé. Seule une signature « qualifiée » (avec un certificat délivré par un prestataire qualifié) est présumée fiable et équivaut à une signature manuscrite.",
+        p3: "Ce n'est pas le bon outil quand une signature qualifiée est exigée, quand la loi demande une mention écrite de votre main (caution, reconnaissance de dette), pour un testament ou un acte devant notaire, ou quand l'autre partie impose une plateforme précise (certains contrats de prêt ou d'assurance, certaines démarches administratives). Dans ce cas, utilisez l'outil demandé.",
+        note: "Ceci n'est pas un conseil juridique.",
+      },
+      faqTitle: "Questions fréquentes",
+      faq: [
+        {
+          q: "Mon document est-il envoyé à un serveur ?",
+          a: "Non, jamais. Le site n'a pas de serveur qui pourrait recevoir un fichier. Votre navigateur fait tout le travail, et la page lui interdit techniquement de contacter un autre site. Le test du mode avion le prouve en dix secondes.",
+        },
+        {
+          q: "Ma signature est-elle enregistrée ?",
+          a: "Non. Elle n'existe que dans la mémoire de l'onglet. Fermez-le et elle disparaît.",
+        },
+        {
+          q: "Peut-on retirer ou réutiliser ma signature ?",
+          a: "Elle fait partie de l'image de chaque page : on ne peut pas la déplacer ou la supprimer comme un élément du PDF. Comme une signature scannée sur papier, quelqu'un pourrait la découper et la coller ailleurs, et le fichier ne prouve ni qui l'a posée ni que le document n'a pas été modifié ensuite. Gardez votre copie. Pour limiter ce risque, ajoutez un filigrane qui lie la copie à son usage, et paraphez chaque page.",
+        },
+        {
+          q: "Le texte du PDF signé est-il encore sélectionnable ?",
+          a: "Non. Chaque page est reconstruite à partir de ses pixels, ce qui retire aussi le texte caché, les métadonnées et la position GPS des photos. Votre original reste chez vous, intact.",
+        },
+        {
+          q: "Ça marche sur mon téléphone ?",
+          a: "Oui, sur iPhone et Android. Signez avec le doigt, importez une photo si vous préférez.",
+        },
+      ],
+      watermarkLink: {
+        title: "Une copie de vos papiers à joindre ?",
+        body: "Pièce d'identité, avis d'imposition, fiche de paie : ajoutez un filigrane qui limite la copie à un seul usage. Même site, même promesse : rien n'est envoyé.",
+        cta: "Filigraner un document",
+      },
+      backToTop: "Signer un document",
     },
     privacy: {
       title: "Confidentialité et sécurité",
@@ -266,13 +355,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       faqTitle: "Questions fréquentes",
       related: "À lire aussi",
       cta: "Filigraner mon document",
+      ctaSign: "Signer mon document",
       ctaNote: "Gratuit, sans compte. Le document ne quitte pas votre appareil.",
       updated: (d) => `Mis à jour le ${d}`,
       allGuides: "Tous les guides",
     },
     compareUi: {
-      title: "Cachety face aux autres outils de filigrane",
+      title: "Cachety face aux autres outils de filigrane et de signature",
       lead: "Des comparatifs clairs et vérifiés avec les outils les plus utilisés : où vont vos fichiers, ce que ça coûte, et quand un autre outil est le meilleur choix.",
+      groups: { watermark: "Filigrane", sign: "Signature" },
       read: "Lire le comparatif",
       verdictTitle: "En bref",
       tableTitle: "Côte à côte",
@@ -308,7 +399,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
 
   en: {
     nav: {
-      tool: "The tool",
+      tool: "Watermark",
+      sign: "Sign",
       about: "Why watermark?",
       guides: "Guides",
       privacy: "Privacy",
@@ -385,10 +477,67 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
           a: "Yes, on iPhone and Android. Open cachety.com in your browser, tap the drop area and pick a photo or a PDF. You can also add Cachety to your home screen.",
         },
       ],
+      signLink: {
+        title: "Got a document to sign?",
+        body: "Lease, certificate, quote: draw, type or upload your signature and place it on the PDF. Here too, nothing leaves your device.",
+        cta: "Sign a document",
+      },
       guidesTitle: "Practical guides",
       guidesLead: "Step-by-step help for everyday situations.",
       guidesAll: "All guides",
       backToTop: "Watermark a document",
+    },
+    sign: {
+      hero: {
+        title: "Sign a document without sending it anywhere",
+        lead: "Lease, certificate, quote, consent form: sign in seconds. The document stays on your device from start to finish.",
+        pills: ["Free", "No account", "Nothing uploaded", "Made in France"],
+      },
+      howTitle: "How it works",
+      how: [
+        { title: "Drop your document", body: "A PDF or a photo of the document, even one taken with a phone. Several at once if you need." },
+        { title: "Make your signature", body: "Draw it with your finger or the mouse, type your name, or upload a photo of your signature." },
+        { title: "Place it, then download", body: "Drag it to the right spot. The preview shows exactly the signed PDF, saved to your device." },
+      ],
+      airplaneTitle: "Check it yourself: the aeroplane mode test",
+      airplaneBody:
+        "Open this page, then switch off the internet (aeroplane mode). Drop in a document and sign it: Cachety still works. Proof that nothing goes over the internet.",
+      legal: {
+        title: "What is this signature worth?",
+        p1: "A signature drawn, typed or uploaded and placed on the document is what is commonly called a 'simple' electronic signature. In the EU, a court cannot reject it as evidence solely because it is electronic (eIDAS Regulation, article 25). In France, a signature identifies its author and shows their consent; in electronic form, it must rely on a reliable process linking it to the document (Civil Code, article 1367). A signature image, like a scanned signature, does not meet that test on its own: it counts if nobody disputes it, but carries little weight if someone does (Cour de cassation, 2022 and 2024).",
+        p2: "For everyday documents, this is usually accepted: rental applications, certificates, quotes, school or club forms. In a dispute, whoever relies on the document must prove who signed it; keep the email or message it was sent with. Only a 'qualified' signature (with a certificate from a qualified provider) is presumed reliable and equivalent to a handwritten one.",
+        p3: "This is not the right tool when a qualified signature is required, when the law requires a statement in your own handwriting (guarantees, IOUs), for a will or a notarial deed, or when the other party requires a specific platform (some loan or insurance contracts, some administrative procedures). In that case, use the tool you are asked to use.",
+        note: "This is not legal advice.",
+      },
+      faqTitle: "Frequently asked questions",
+      faq: [
+        {
+          q: "Is my document uploaded to a server?",
+          a: "No, never. The site doesn't even have a server that could receive a file. Your browser does all the work, and the page technically forbids it from contacting any other website. The aeroplane mode test proves it in ten seconds.",
+        },
+        {
+          q: "Is my signature saved?",
+          a: "No. It only exists in the tab's memory. Close the tab and it is gone.",
+        },
+        {
+          q: "Can my signature be removed or reused?",
+          a: "It is part of the image of each page: it cannot be moved or deleted as a PDF element. Like a scanned paper signature, someone could cut it out and paste it elsewhere, and the file does not prove who placed it or that the document was not changed afterwards. Keep your copy. To limit that risk, add a watermark that ties the copy to its purpose, and initial every page.",
+        },
+        {
+          q: "Is the text of the signed PDF still selectable?",
+          a: "No. Each page is rebuilt from its pixels, which also strips hidden text, metadata and photo GPS location. Your original stays with you, untouched.",
+        },
+        {
+          q: "Does it work on my phone?",
+          a: "Yes, on iPhone and Android. Sign with your finger, or upload a photo if you prefer.",
+        },
+      ],
+      watermarkLink: {
+        title: "Attaching a copy of your ID?",
+        body: "ID card, tax notice, payslip: add a watermark that limits the copy to one purpose. Same site, same promise: nothing is uploaded.",
+        cta: "Watermark a document",
+      },
+      backToTop: "Sign a document",
     },
     privacy: {
       title: "Privacy and security",
@@ -470,13 +619,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       faqTitle: "Frequently asked questions",
       related: "Read next",
       cta: "Watermark my document",
+      ctaSign: "Sign my document",
       ctaNote: "Free, no account. The document never leaves your device.",
       updated: (d) => `Updated ${d}`,
       allGuides: "All guides",
     },
     compareUi: {
-      title: "Cachety compared with other watermark tools",
+      title: "Cachety compared with other watermark and signing tools",
       lead: "Plain-language, fact-checked comparisons with the tools people use most: where your files go, what it costs, and when another tool is the better choice.",
+      groups: { watermark: "Watermark", sign: "Sign" },
       read: "Read the comparison",
       verdictTitle: "In short",
       tableTitle: "Side by side",
@@ -512,7 +663,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
 
   ja: {
     nav: {
-      tool: "ツール",
+      tool: "透かし",
+      sign: "署名",
       about: "なぜ透かしを？",
       guides: "ガイド",
       privacy: "プライバシー",
@@ -589,10 +741,68 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
           a: "はい、iPhone でも Android でも使えます。ブラウザで cachety.com を開き、枠をタップして写真か PDF を選ぶだけです。ホーム画面に追加することもできます。",
         },
       ],
+      signLink: {
+        title: "署名が必要な書類がありますか？",
+        body: "賃貸契約、証明書、見積書：署名を手書き・入力・画像で用意して、PDF に配置できます。こちらも何も送信されません。",
+        cta: "書類に署名する",
+      },
       guidesTitle: "ガイド",
       guidesLead: "身近な場面ごとに、手順をやさしく説明します。",
       guidesAll: "ガイド一覧",
       backToTop: "書類に透かしを入れる",
+    },
+    // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+    sign: {
+      hero: {
+        title: "書類を、どこにも送らずに署名",
+        lead: "賃貸契約、証明書、見積書、同意書：数秒で署名できます。書類は最初から最後まで、あなたの端末から出ません。",
+        pills: ["無料", "登録不要", "アップロードなし", "フランス製"],
+      },
+      howTitle: "使い方",
+      how: [
+        { title: "書類をドロップ", body: "PDF でも、スマホで撮った書類の写真でもかまいません。複数まとめても大丈夫です。" },
+        { title: "署名を用意", body: "指やマウスで手書きするか、名前を入力するか、署名の写真を読み込みます。" },
+        { title: "配置してダウンロード", body: "署名をドラッグして位置を決めます。プレビューは署名済み PDF そのもので、端末に保存されます。" },
+      ],
+      airplaneTitle: "自分で確かめる：機内モードテスト",
+      airplaneBody:
+        "このページを開いてから、インターネットを切ってください（機内モード）。書類をドロップして署名しても、Cachety はそのまま動きます。何もネットに送られていない証拠です。",
+      legal: {
+        title: "この署名にはどんな効力がありますか？",
+        p1: "手書き、入力、または画像で用意した署名を書類に配置したものは、一般に「簡易な」電子署名と呼ばれるものです。EU では、電子的であるという理由だけで、裁判所がそれを証拠として退けることはできません（eIDAS 規則第 25 条）。フランスでは、署名は作成者を特定し、その人の同意を示すものです。電子的な署名は、書類との結びつきを保証する信頼できる方法によるものでなければなりません（民法典第 1367 条）。スキャンした署名のような署名の画像は、それだけではこの条件を満たしません。誰も争わなければ署名として扱われますが、争われた場合はあまり重みを持ちません（破毀院、2022 年と 2024 年の判決）。",
+        p2: "日常の書類なら、ふつうは受け入れられます：賃貸の申込書類、証明書、見積書、学校や団体の書類など。争いになった場合、誰が署名したかを証明しなければならないのは、その書類を根拠にする側です。書類を送ったときのメールやメッセージは残しておいてください。信頼性が推定され、手書きの署名と同等とされるのは、「適格」電子署名（適格トラストサービス事業者が発行する証明書付き）だけです。",
+        p3: "適格署名が求められる場合、法律が本人の手書きによる記載を求めている場合（保証、借用証書）、遺言や公証人の前で作成する証書、相手が特定のサービスを指定している場合（一部のローン契約や保険契約、一部の行政手続き）には向いていません。その場合は、指定されたツールを使ってください。",
+        note: "これは法的助言ではありません。書類によっては、国ごとにルールが異なります。この訳はネイティブスピーカーによる確認待ちです。",
+      },
+      faqTitle: "よくある質問",
+      faq: [
+        {
+          q: "書類はサーバーに送られますか？",
+          a: "いいえ、一切送られません。そもそもこのサイトには、ファイルを受け取るサーバーがありません。処理はすべてブラウザの中で行われ、このページの設定で他のサイトとの通信も禁止しています。機内モードテストなら 10 秒で確かめられます。",
+        },
+        {
+          q: "署名は保存されますか？",
+          a: "いいえ。署名はこのタブのメモリの中にしかありません。タブを閉じれば消えます。",
+        },
+        {
+          q: "署名を消されたり、使い回されたりしませんか？",
+          a: "署名は各ページの画像の一部なので、PDF の要素として動かしたり消したりはできません。ただし、紙の署名をスキャンした場合と同じように、誰かが署名を切り取って別の場所に貼り付けることはできます。また、このファイルは、誰が署名を置いたかも、その後に書類が変更されていないことも証明しません。控えを保管しておいてください。このリスクを減らすには、コピーを用途に結びつける透かしを入れ、全ページにも小さく署名してください。",
+        },
+        {
+          q: "署名済み PDF の文字は選択できますか？",
+          a: "できません。各ページは画素から作り直されるため、隠れたテキスト、メタデータ、写真の位置情報（GPS）も取り除かれます。元のファイルは手元にそのまま残ります。",
+        },
+        {
+          q: "スマホでも使えますか？",
+          a: "はい、iPhone でも Android でも使えます。指で署名するか、好みで写真を読み込んでください。",
+        },
+      ],
+      watermarkLink: {
+        title: "身分証のコピーも送りますか？",
+        body: "身分証や証明書類のコピーには、用途を一つに限る透かしを入れましょう。同じサイト、同じ約束：何も送信されません。",
+        cta: "書類に透かしを入れる",
+      },
+      backToTop: "書類に署名する",
     },
     privacy: {
       title: "プライバシーと安全性",
@@ -674,13 +884,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       faqTitle: "よくある質問",
       related: "あわせて読みたい",
       cta: "書類に透かしを入れる",
+      ctaSign: "書類に署名する",
       ctaNote: "無料・登録不要。書類が端末の外に出ることはありません。",
       updated: (d) => `${d} 更新`,
       allGuides: "ガイド一覧",
     },
     compareUi: {
-      title: "Cachety と他の透かしツールの比較",
+      title: "Cachety と他の透かし・署名ツールの比較",
       lead: "よく使われるツールとの比較を、事実に基づいてわかりやすくまとめました。ファイルの行き先、費用、そして他のツールの方が向いている場面まで。",
+      groups: { watermark: "透かし", sign: "署名" },
       read: "比較を読む",
       verdictTitle: "まとめ",
       tableTitle: "比較表",
@@ -716,7 +928,8 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
 
   zh: {
     nav: {
-      tool: "工具",
+      tool: "水印",
+      sign: "签名",
       about: "为什么加水印？",
       guides: "指南",
       privacy: "隐私",
@@ -793,10 +1006,68 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
           a: "能，iPhone 和安卓都可以。在浏览器中打开 cachety.com，点一下上传区域，选择照片或 PDF 即可。也可以添加到主屏幕。",
         },
       ],
+      signLink: {
+        title: "有文件要签？",
+        body: "租约、证明、报价单：手写、输入或导入签名，放到 PDF 上。同样不上传任何东西。",
+        cta: "签署文件",
+      },
       guidesTitle: "实用指南",
       guidesLead: "针对日常场景的分步说明。",
       guidesAll: "全部指南",
       backToTop: "给文件加水印",
+    },
+    // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+    sign: {
+      hero: {
+        title: "签署文件，无需发送到任何地方",
+        lead: "租约、证明、报价单、同意书：几秒钟就能签好。文件从头到尾都留在您的设备上。",
+        pills: ["免费", "无需注册", "不上传", "法国出品"],
+      },
+      howTitle: "使用方法",
+      how: [
+        { title: "拖入文件", body: "PDF 或文件照片都可以，用手机拍的也行。需要时可一次添加多份。" },
+        { title: "制作签名", body: "用手指或鼠标手写，输入您的姓名，或导入签名照片。" },
+        { title: "放置后下载", body: "把签名拖到合适位置。预览显示的就是签好的 PDF，并保存在您的设备上。" },
+      ],
+      airplaneTitle: "自己验证：飞行模式测试",
+      airplaneBody:
+        "先打开本页，然后断网（开启飞行模式）。再拖入一个文件并签名：Cachety 照常工作。这就证明没有任何东西经过互联网。",
+      legal: {
+        title: "这种签名有什么效力？",
+        p1: "手写、输入或导入后放到文件上的签名，就是通常所说的「简单」电子签名。在欧盟，法院不能仅因签名是电子形式就拒绝将其作为证据（eIDAS 条例第 25 条）。在法国，签名用于识别签署人并表明其同意；电子形式的签名还必须采用可靠的方法，确保它与文件相关联（《民法典》第 1367 条）。签名图片（例如扫描的签名）本身并不满足这一条件：如果没有人提出异议，它可以算作签名；但一旦有人提出异议，它的证明力就很弱（法国最高法院，2022 年和 2024 年）。",
+        p2: "对于日常文件，这通常是被接受的：租房申请材料、证明、报价单、学校或社团表格。如有争议，依据该文件主张权利的一方必须证明是谁签的字；请保留发送文件时所用的电子邮件或消息。只有「合格」电子签名（使用合格信任服务提供商颁发的证书）才被推定为可靠，并等同于手写签名。",
+        p3: "以下情况不适合使用本工具：要求使用合格签名时；法律要求由您亲笔书写某段文字时（保证、借据）；订立遗嘱或办理公证文书时；对方指定了某个平台时（例如某些贷款或保险合同、某些政务手续）。这种情况下，请使用对方要求的工具。",
+        note: "以上内容不构成法律意见。某些文件的规定因国家而异。本译文尚待母语人士审校。",
+      },
+      faqTitle: "常见问题",
+      faq: [
+        {
+          q: "我的文件会上传到服务器吗？",
+          a: "不会，永远不会。这个网站根本没有能接收文件的服务器。所有处理都由您的浏览器完成，而且页面从技术上禁止它联系任何其他网站。用飞行模式测试，十秒钟就能验证。",
+        },
+        {
+          q: "我的签名会被保存吗？",
+          a: "不会。它只存在于这个标签页的内存中。关闭标签页，它就消失了。",
+        },
+        {
+          q: "我的签名会被去掉或挪用吗？",
+          a: "签名是每一页图像的一部分：无法作为 PDF 元素被移动或删除。但就像扫描的纸质签名一样，有人可能把它剪下来，粘贴到别处；而且这个文件既不能证明是谁放上了签名，也不能证明文件之后没有被改动。请保留好您的副本。为降低这种风险，请加上把副本与用途绑定的水印，并在每一页都加上小签名。",
+        },
+        {
+          q: "签好的 PDF 里的文字还能选中吗？",
+          a: "不能。每一页都由像素重新生成，这也会去除隐藏文字、元数据和照片的 GPS 位置。您的原件留在您手里，原封不动。",
+        },
+        {
+          q: "手机上能用吗？",
+          a: "能，iPhone 和 Android 都可以。用手指签名，或者导入一张照片。",
+        },
+      ],
+      watermarkLink: {
+        title: "还要发送证件复印件？",
+        body: "身份证或证明材料的复印件，加上水印，限定只能用于一个用途。同一个网站，同样的承诺：不上传任何东西。",
+        cta: "给文件加水印",
+      },
+      backToTop: "签署文件",
     },
     privacy: {
       title: "隐私与安全",
@@ -878,13 +1149,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       faqTitle: "常见问题",
       related: "延伸阅读",
       cta: "给我的文件加水印",
+      ctaSign: "签署我的文件",
       ctaNote: "免费，无需注册。文件不会离开您的设备。",
       updated: (d) => `更新于 ${d}`,
       allGuides: "全部指南",
     },
     compareUi: {
-      title: "Cachety 与其他水印工具对比",
+      title: "Cachety 与其他水印和签名工具对比",
       lead: "与常用工具的对比，基于事实、通俗易懂：文件去了哪里、要花多少钱，以及什么时候其他工具更合适。",
+      groups: { watermark: "水印", sign: "签名" },
       read: "阅读对比",
       verdictTitle: "简要结论",
       tableTitle: "逐项对比",

@@ -62,6 +62,9 @@ export type SiteMeta = {
 // /fr/about /en/about /ja/about /zh/about l'imposent (métadonnées et lang corrects).
 export const ABOUT_ALTERNATES: Record<string, string> = pageAlternates("/about", true);
 
+// Outil de signature : /sign détecte la langue (x-default), /<lang>/sign l'impose.
+export const SIGN_ALTERNATES: Record<string, string> = pageAlternates("/sign", true);
+
 export type PageMeta = { title: string; description: string };
 
 /** Métadonnées d'une langue ajoutée dans lib/locales/<lang>/meta.ts. */
@@ -71,6 +74,7 @@ export type LocaleMeta = {
   privacy: PageMeta;
   guides: PageMeta;
   compare: PageMeta;
+  sign: PageMeta;
 };
 
 export const ABOUT_META: Record<Lang, PageMeta> = {
@@ -165,23 +169,23 @@ export const GUIDES_META: Record<Lang, PageMeta> = {
 
 export const COMPARE_META: Record<Lang, PageMeta> = {
   fr: {
-    title: `Comparatifs d'outils de filigrane | ${BRAND}`,
+    title: `Comparatifs : filigrane et signature | ${BRAND}`,
     description:
-      "Cachety comparé aux outils de filigrane les plus utilisés : où vont vos fichiers, prix, limites, confidentialité. Des comparatifs factuels et sourcés.",
+      "Cachety comparé aux outils de filigrane et de signature les plus utilisés : où vont vos fichiers, prix, limites, confidentialité. Factuel et sourcé.",
   },
   en: {
-    title: `Watermark tool comparisons | ${BRAND}`,
+    title: `Watermark and signing tool comparisons | ${BRAND}`,
     description:
-      "Cachety compared with the most popular watermark tools: where your files go, price, limits and privacy. Factual comparisons, with sources.",
+      "Cachety compared with the most popular watermark and e-signature tools: where your files go, price, limits and privacy. Factual, with sources.",
   },
   ja: {
-    title: `透かしツール比較 | ${BRAND}`,
+    title: `透かし・署名ツール比較 | ${BRAND}`,
     description:
-      "よく使われる透かしツールと Cachety を比較。ファイルの送信先、料金、制限、プライバシーを、出典つきで事実に基づいて解説します。",
+      "よく使われる透かしツールや電子署名ツールと Cachety を比較。ファイルの送信先、料金、制限、プライバシーを、出典つきで事実に基づいて解説します。",
   },
   zh: {
-    title: `水印工具对比 | ${BRAND}`,
-    description: "将 Cachety 与常用水印工具逐项对比：文件去向、价格、限制和隐私。基于事实，附资料来源。",
+    title: `水印和签名工具对比 | ${BRAND}`,
+    description: "将 Cachety 与常用水印和电子签名工具逐项对比：文件去向、价格、限制和隐私。基于事实，附资料来源。",
   },
   es: META_ES.compare,
   ar: META_AR.compare,
@@ -190,6 +194,38 @@ export const COMPARE_META: Record<Lang, PageMeta> = {
   pt: META_PT.compare,
   id: META_ID.compare,
   nl: META_NL.compare,
+};
+
+// Page « Signer » (docs/prd-sign.md §10.1). Titre ≤ 60 caractères : le FR
+// s'en passe de « | Cachety », qui le ferait déborder (même règle que pageTitle).
+export const SIGN_META: Record<Lang, PageMeta> = {
+  fr: {
+    title: "Signer un PDF gratuitement, sans l'envoyer nulle part",
+    description:
+      "Dessinez, tapez ou importez votre signature et posez-la sur un PDF ou une photo. Tout se passe dans votre navigateur : rien n'est envoyé. Gratuit, sans compte.",
+  },
+  en: {
+    title: `Sign a PDF for free, without uploading it | ${BRAND}`,
+    description:
+      "Draw, type or upload your signature and place it on a PDF or a photo. Everything happens in your browser: no file is uploaded. Free, no account, open source.",
+  },
+  ja: {
+    title: `PDF に無料で署名、アップロード不要 | ${BRAND}`,
+    description:
+      "署名を手書き・入力・画像で用意して、PDF や写真に配置できます。処理はすべてブラウザの中で行われ、ファイルは一切送信されません。無料、登録不要、オープンソース。",
+  },
+  zh: {
+    title: `免费签署 PDF，文件不上传 | ${BRAND}`,
+    description:
+      "手写、输入或导入您的签名，放到 PDF 或照片上。全程在浏览器内完成，文件绝不上传。免费，无需注册，开源。",
+  },
+  es: META_ES.sign,
+  ar: META_AR.sign,
+  fa: META_FA.sign,
+  de: META_DE.sign,
+  pt: META_PT.sign,
+  id: META_ID.sign,
+  nl: META_NL.sign,
 };
 
 export const SITE_META: Record<Lang, SiteMeta> = {

@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Contraseñas fáciles de leer en tu idioma",
     body: "Palabras de la contraseña en tu propio idioma, solo con letras sin acentos para que se escriban igual en cualquier teclado.",
   },
+  "remember-signature": {
+    title: "Recordar mi firma en este dispositivo",
+    body: "Una opción voluntaria para guardar tu firma en este dispositivo, con una frase clara sobre lo que se guarda y un botón para borrarla. Hoy nunca se guarda.",
+  },
+  "keep-vector-pages": {
+    title: "Conservar el texto de los PDF firmados",
+    body: "Una opción para firmar sin reconstruir las páginas a partir de píxeles, para que el texto se pueda seguir buscando. Tendría su propia limpieza de los datos ocultos.",
+  },
+  "sign-embed": {
+    title: "Firmar en webs asociadas",
+    body: "Las webs aprobadas pueden mostrar la herramienta de firma en sus propias páginas, sola o junto a la marca de agua, con el lugar y la nota ya rellenados. Los documentos siguen en el dispositivo del visitante.",
+  },
+  "sign": {
+    title: "Firmar un documento",
+    body: "Dibuja, escribe o importa tu firma, colócala en un PDF o una foto y descarga un PDF firmado. Como con la marca de agua, no se sube nada.",
+  },
   "simpler-tool": {
     title: "Una herramienta más sencilla",
     body: "Tres pasos con palabras claras: tu documento, para qué es y quién lo recibe, y luego la vista previa y la descarga. Las opciones avanzadas siguen a un toque.",
@@ -46,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "¿Echas algo en falta? Abre una incidencia en GitHub. Las ideas son bienvenidas en cualquier idioma.",
   meta: {
     title: "Lo que viene en Cachety: próximas funciones",
-    description: "Próximas funciones de Cachety, la herramienta gratuita de marcas de agua que no saca tus documentos de tu dispositivo: lo próximo, ideas y novedades.",
+    description: "Próximas funciones de Cachety, la herramienta gratuita para poner marcas de agua y firmar sin que tus documentos salgan de tu dispositivo: ideas y novedades.",
   },
 };
 

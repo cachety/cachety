@@ -33,12 +33,44 @@ describe("cadre intégré", () => {
       purpose: "Dossier location",
       recipient: "Agence Martin",
       accent: "#005a9c",
+      tools: ["watermark"],
+      place: undefined,
+      note: undefined,
     });
     expect(readPrefill(`#for=${"x".repeat(200)}`).purpose).toHaveLength(80);
     expect(readPrefill("#accent=red").accent).toBeUndefined();
     // Couleur trop claire : texte blanc illisible, ignorée.
     expect(readPrefill("#accent=%23ffee88").accent).toBeUndefined();
-    expect(readPrefill("")).toEqual({ purpose: undefined, recipient: undefined, accent: undefined });
+    expect(readPrefill("")).toEqual({
+      purpose: undefined,
+      recipient: undefined,
+      accent: undefined,
+      tools: ["watermark"],
+      place: undefined,
+      note: undefined,
+    });
+  });
+
+  test("outils : filigrane par défaut, signature seule ou les deux, dans l'ordre demandé", () => {
+    expect(readPrefill("#tools=sign").tools).toEqual(["sign"]);
+    expect(readPrefill("#tools=watermark,sign").tools).toEqual(["watermark", "sign"]);
+    expect(readPrefill("#tools=sign,watermark").tools).toEqual(["sign", "watermark"]);
+    expect(readPrefill("#tools=Sign,%20sign").tools).toEqual(["sign"]);
+    // Valeur inconnue ou vide : l'outil historique, pour ne casser aucun code déjà collé.
+    expect(readPrefill("#tools=stamp").tools).toEqual(["watermark"]);
+    expect(readPrefill("#tools=").tools).toEqual(["watermark"]);
+  });
+
+  test("signature : lieu et mention lus dans le fragment, bornés", () => {
+    const p = readPrefill("#tools=sign&place=Lyon&note=Lu%20et%20approuv%C3%A9");
+    expect(p.place).toBe("Lyon");
+    expect(p.note).toBe("Lu et approuvé");
+    expect(readPrefill(`#note=${"x".repeat(200)}`).note).toHaveLength(80);
+    expect(readPrefill("#place=%20%20").place).toBeUndefined();
+    // Emoji en 80e position : gardé entier ou retiré, jamais coupé en deux.
+    const note = readPrefill(`#note=${"x".repeat(79)}${encodeURIComponent("✍️😀")}`).note!;
+    expect(note.isWellFormed()).toBe(true);
+    expect(Array.from(note)).toHaveLength(80);
   });
 
   test("contraste et variante sombre", () => {

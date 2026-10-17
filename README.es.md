@@ -46,8 +46,9 @@ Alojarla por tu cuenta sigue siendo posible y está totalmente soportado (ver m�
 - **Funciona en el móvil**, se puede instalar como una app y funciona **sin conexión** una vez cargada.
 - **11 idiomas**, con diseño de derecha a izquierda para el árabe y el persa, y fuentes específicas para cada escritura.
 - **Recorrido guiado** para quien llega por primera vez, que se ofrece cuando alguien parece no saber por dónde empezar.
-- **70 guías prácticas** para situaciones cotidianas en Francia, el Reino Unido, Alemania, los Países Bajos, España y Latinoamérica, Brasil, Indonesia, el mundo árabe, Irán, Japón y China.
-- **82 comparativas verificadas** con otras herramientas de marca de agua (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat y más), con sus fuentes, incluido cuándo otra herramienta es mejor opción.
+- **92 guías prácticas** para situaciones cotidianas en Francia, el Reino Unido, Alemania, los Países Bajos, España y Latinoamérica, Brasil, Indonesia, el mundo árabe, Irán, Japón y China.
+- **Firmar documentos:** firma un PDF o una foto en tu navegador (dibuja, escribe o importa tu firma), sin que se suba nada. Es una firma electrónica simple, no una firma cualificada: [cachety.com/es/sign](https://cachety.com/es/sign).
+- **82 comparativas verificadas** con otras herramientas de marca de agua (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat y más) y 55 con herramientas de firma (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), con sus fuentes, incluido cuándo otra herramienta es mejor opción.
 - **En sitios asociados:** los sitios aprobados pueden mostrar la herramienta en sus páginas (un iframe servido por cachety.com, así que el sitio anfitrión no ve los documentos). Consulta [docs/embed.md](docs/embed.md) y [cachety.com/es/partners](https://cachety.com/es/partners).
 
 ## Privacidad desde el diseño, y verificable

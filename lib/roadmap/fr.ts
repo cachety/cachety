@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Des mots de passe lisibles dans votre langue",
     body: "Des mots de passe composés de mots de votre langue, en lettres simples pour se taper de la même façon sur tous les claviers.",
   },
+  "remember-signature": {
+    title: "Retenir ma signature sur cet appareil",
+    body: "Un choix facultatif pour garder votre signature sur cet appareil, avec une phrase claire sur ce qui est conservé et un bouton pour l'effacer. Aujourd'hui, elle n'est jamais enregistrée.",
+  },
+  "keep-vector-pages": {
+    title: "Garder le texte des PDF signés",
+    body: "Une option pour signer sans reconstruire les pages à partir des pixels, afin que le texte reste sélectionnable. Elle aurait son propre nettoyage des données cachées.",
+  },
+  "sign-embed": {
+    title: "La signature sur les sites partenaires",
+    body: "Les sites approuvés peuvent afficher l'outil de signature dans leurs pages, seul ou à côté du filigrane, avec le lieu et la mention déjà remplis. Les documents restent sur l'appareil du visiteur.",
+  },
+  "sign": {
+    title: "Signer un document",
+    body: "Dessinez, tapez ou importez votre signature, posez-la sur un PDF ou une photo, et téléchargez un PDF signé. Comme pour le filigrane, rien n'est envoyé.",
+  },
   "simpler-tool": {
     title: "Un outil plus simple",
     body: "Trois étapes en mots simples : votre document, son usage et son destinataire, puis l'aperçu et le téléchargement. Chaque option avancée reste à portée de main.",
@@ -46,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Il vous manque quelque chose ? Ouvrez un ticket sur GitHub. Les idées sont bienvenues dans toutes les langues.",
   meta: {
     title: "Feuille de route : ce qui arrive sur Cachety",
-    description: "Les prochaines fonctionnalités de Cachety, l'outil gratuit de filigrane qui garde vos documents sur votre appareil : à venir, idées, et nouveautés récentes.",
+    description: "Prochaines fonctionnalités de Cachety, l'outil gratuit pour filigraner et signer sans que vos documents quittent votre appareil : à venir, idées, nouveautés.",
   },
 };
 

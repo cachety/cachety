@@ -32,6 +32,7 @@ import {
   toBase64,
   withExif,
 } from "./helpers/fixtures";
+import { initialsRect } from "../lib/overlays";
 
 const ROOT = join(import.meta.dir, "..");
 const OUT_DIR = join(ROOT, "out");
@@ -50,6 +51,7 @@ type PageResult =
       pageCount: number;
       previewCount: number;
       previews: string[];
+      previewPageIndexes: number[];
       extension: string;
       blobType: string;
       outB64: string;
@@ -68,20 +70,36 @@ function runWatermark(input: {
   options?: unknown;
   /** Apparence ; par défaut celle de l'outil (réglage « Léger »). */
   style?: unknown;
+  /**
+   * Mode « signer » : image de signature unie, fabriquée dans la page (un
+   * ImageBitmap ne traverse pas page.evaluate), passée en overlayImages.
+   */
+  signature?: { width: number; height: number; color: string };
+  /** previewPages = signPreviewPages du bundle (une fonction ne se sérialise pas). */
+  signPreview?: boolean;
 }) {
   return page.evaluate(async (arg) => {
     const mod = (window as any).__wm;
     const bin = Uint8Array.from(atob(arg.b64), (c) => c.charCodeAt(0));
     const file = new File([bin], arg.name, { type: arg.type });
+    const options = { ...(arg.options as object) } as Record<string, unknown>;
+    if (arg.signature) {
+      const ink = new OffscreenCanvas(arg.signature.width, arg.signature.height);
+      const ictx = ink.getContext("2d")!;
+      ictx.fillStyle = arg.signature.color;
+      ictx.fillRect(0, 0, ink.width, ink.height);
+      options.overlayImages = { signature: await createImageBitmap(ink) };
+    }
+    if (arg.signPreview) options.previewPages = mod.signPreviewPages;
     try {
-      const res = await mod.watermarkFile(
+      const res = await (arg.signature ? mod.renderFile : mod.watermarkFile)(
         file,
         arg.text,
         undefined,
         arg.password,
         undefined,
         arg.style,
-        arg.options
+        options
       );
       const bytes = new Uint8Array(await res.blob.arrayBuffer());
       let out = "";
@@ -93,6 +111,7 @@ function runWatermark(input: {
         pageCount: res.pageCount,
         previewCount: res.previews.length,
         previews: res.previews,
+        previewPageIndexes: res.previewPageIndexes,
         extension: res.extension,
         blobType: res.blob.type,
         outB64: btoa(out),
@@ -124,6 +143,42 @@ function countRedPixels(url: string) {
     return { red, width: c.width, height: c.height };
   }, url);
 }
+
+type Region = { x: number; y: number; w: number; h: number };
+
+/**
+ * Zone d'une image (fractions 0–1, comme les placements) : nombre de pixels,
+ * pixels « rouge signature » (#ff0000 après JPEG) et couleur moyenne.
+ */
+function inspectRegion(url: string, region: Region) {
+  return page.evaluate(
+    async ({ src, r }) => {
+      const bmp = await createImageBitmap(await (await fetch(src)).blob());
+      const c = document.createElement("canvas");
+      c.width = bmp.width;
+      c.height = bmp.height;
+      const ctx = c.getContext("2d")!;
+      ctx.drawImage(bmp, 0, 0);
+      const x0 = Math.round(r.x * bmp.width);
+      const y0 = Math.round(r.y * bmp.height);
+      const w = Math.max(1, Math.round(r.w * bmp.width));
+      const h = Math.max(1, Math.round(r.h * bmp.height));
+      const d = ctx.getImageData(x0, y0, w, h).data;
+      let red = 0;
+      const sum = [0, 0, 0];
+      for (let i = 0; i < d.length; i += 4) {
+        if (d[i] > 190 && d[i + 1] < 70 && d[i + 2] < 70) red++;
+        for (let k = 0; k < 3; k++) sum[k] += d[i + k];
+      }
+      const total = d.length / 4;
+      return { total, red, share: red / total, mean: sum.map((s) => s / total) };
+    },
+    { src: url, r: region }
+  );
+}
+
+/** Cœur d'un placement (la moitié centrale) : loin des bords adoucis par le JPEG. */
+const core = (r: Region): Region => ({ x: r.x + r.w / 4, y: r.y + r.h / 4, w: r.w / 2, h: r.h / 2 });
 
 beforeAll(async () => {
   // 1. Bundle du module réel, tel qu'il est dans l'arbre de travail.
@@ -222,6 +277,7 @@ describe("moteur de filigrane (pipeline réel dans le navigateur)", () => {
       if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
       expect(res.pageCount).toBe(pageCount);
       expect(res.previewCount).toBe(PREVIEW_MAX_PAGES);
+      expect(res.previewPageIndexes).toEqual(Array.from({ length: PREVIEW_MAX_PAGES }, (_, i) => i));
       const out = await PDFDocument.load(fromBase64(res.outB64));
       expect(out.getPageCount()).toBe(pageCount);
     },
@@ -678,5 +734,238 @@ describe("taille cible", () => {
       expect((await PDFDocument.load(fromBase64(capped.outB64))).getPageCount()).toBe(1);
     },
     90_000
+  );
+});
+
+// Mode « signer » (docs/prd-sign.md §11.2) : même moteur, signature peinte
+// après les masques et avant le filigrane. Texte vide = pas de filigrane.
+describe("signature (mode « signer »)", () => {
+  const A4: [number, number] = [595.28, 841.89];
+  /** Signature unie 100 × 30, rouge pur : repérable pixel par pixel. */
+  const RED_SIGNATURE = { width: 100, height: 30, color: "#ff0000" };
+  const SIG_ASPECT = RED_SIGNATURE.width / RED_SIGNATURE.height;
+  const RECT: Region = { x: 0.2, y: 0.3, w: 0.3, h: 0.3 * (A4[0] / A4[1]) / SIG_ASPECT };
+  const sig = (rect: Region) => ({ rect, image: "signature" });
+
+  test(
+    "la signature est peinte au centre de son rectangle sur la page 3, pas sur la page 1",
+    async () => {
+      const res = await runWatermark({
+        b64: toBase64(await makePdf([A4, A4, A4])),
+        name: "contrat.pdf",
+        type: "application/pdf",
+        text: "",
+        signature: RED_SIGNATURE,
+        options: { overlays: { 2: [sig(RECT)] } },
+      });
+      if (!res.ok) throw new Error(`renderFile a rejeté : ${res.error}`);
+      expect(res.extension).toBe("pdf");
+      expect(res.pageCount).toBe(3);
+      expect(res.previewPageIndexes).toEqual([0, 1, 2]);
+      expect((await inspectRegion(res.previews[2], core(RECT))).share).toBeGreaterThan(0.95);
+      const blank = await inspectRegion(res.previews[0], core(RECT));
+      expect(blank.red).toBe(0);
+      expect(Math.min(...blank.mean)).toBeGreaterThan(240); // couleur de la page
+      // Sans filigrane : aucune police, aucun texte dans la sortie.
+      expect((await scanPdfForLeaks(fromBase64(res.outB64))).keys).toEqual([]);
+    },
+    60_000
+  );
+
+  test(
+    "ordre : un masque sous la signature ne la cache pas ; le filigrane passe par-dessus",
+    async () => {
+      const mask: Region = { x: 0.1, y: 0.2, w: 0.8, h: 0.5 };
+      const rect: Region = { x: 0.25, y: 0.35, w: 0.5, h: 0.5 * (A4[0] / A4[1]) / SIG_ASPECT };
+      const b64 = toBase64(await makePdf([A4]));
+      const options = { overlays: { 0: [sig(rect)] }, masks: { 0: [mask] }, layoutSeed: 7 };
+      // Encre sombre, opaque : le passage du filigrane sur le rouge se mesure sans ambiguïté.
+      const style = { font: "mono", scale: 1, color: "#1a1e33", opacity: 0.45, wave: 0 };
+      const signed = await runWatermark({ b64, name: "a.pdf", type: "application/pdf", text: "", signature: RED_SIGNATURE, options, style });
+      const stamped = await runWatermark({
+        b64,
+        name: "a.pdf",
+        type: "application/pdf",
+        text: WATERMARK_TEXT,
+        signature: RED_SIGNATURE,
+        options,
+        style,
+      });
+      if (!signed.ok || !stamped.ok) throw new Error("renderFile a rejeté");
+
+      const alone = await inspectRegion(signed.previews[0], core(rect));
+      expect(alone.share).toBeGreaterThan(0.95);
+      // Hors signature, le masque est bien noir.
+      const masked = await inspectRegion(signed.previews[0], { x: 0.12, y: 0.22, w: 0.08, h: 0.08 });
+      expect(Math.max(...masked.mean)).toBeLessThan(30);
+
+      const covered = await inspectRegion(stamped.previews[0], core(rect));
+      expect(covered.total - covered.red).toBeGreaterThan(500);
+      expect(covered.share).toBeLessThan(alone.share - 0.05);
+    },
+    60_000
+  );
+
+  test(
+    "assainissement inchangé : PDF hostile signé → ni texte, ni métadonnées, ni pièce jointe, ni JavaScript, ni lien",
+    async () => {
+      for (const text of ["", WATERMARK_TEXT]) {
+        const res = await runWatermark({
+          b64: toBase64(await makeHostilePdf()),
+          name: "hostile.pdf",
+          type: "application/pdf",
+          text,
+          signature: RED_SIGNATURE,
+          options: { overlays: { 0: [sig({ x: 0.5, y: 0.7, w: 0.4, h: 0.1 })] } },
+        });
+        if (!res.ok) throw new Error(`renderFile a rejeté : ${res.error}`);
+        const after = await scanPdfForLeaks(fromBase64(res.outB64));
+        expect(after.markerHits).toBe(0);
+        expect(after.keys).toEqual([]);
+        expect((await PDFDocument.load(fromBase64(res.outB64))).getPageCount()).toBe(1);
+        expect((await inspectRegion(res.previews[0], core({ x: 0.5, y: 0.7, w: 0.4, h: 0.1 }))).share).toBeGreaterThan(
+          text ? 0.5 : 0.95
+        );
+      }
+    },
+    60_000
+  );
+
+  test(
+    "image JPEG + forcePdf → PDF d'une page aux proportions de l'image, dans un A4 paysage, signature comprise",
+    async () => {
+      const jpegB64 = await page.evaluate(async () => {
+        const c = document.createElement("canvas");
+        c.width = 1000;
+        c.height = 700;
+        const ctx = c.getContext("2d")!;
+        ctx.fillStyle = "#f4f4f0";
+        ctx.fillRect(0, 0, c.width, c.height);
+        const blob: Blob = await new Promise((r) => c.toBlob((b) => r(b!), "image/jpeg", 0.9));
+        const bytes = new Uint8Array(await blob.arrayBuffer());
+        let s = "";
+        for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+        return btoa(s);
+      });
+      const rect: Region = { x: 0.55, y: 0.75, w: 0.3, h: (0.3 * (1000 / 700)) / SIG_ASPECT };
+      const res = await runWatermark({
+        b64: jpegB64,
+        name: "attestation.jpg",
+        type: "image/jpeg",
+        text: "",
+        signature: RED_SIGNATURE,
+        options: { overlays: { 0: [sig(rect)] }, forcePdf: true },
+      });
+      if (!res.ok) throw new Error(`renderFile a rejeté : ${res.error}`);
+      expect(res.extension).toBe("pdf");
+      expect(res.blobType).toBe("application/pdf");
+      expect(res.pageCount).toBe(1);
+      expect(res.previewPageIndexes).toEqual([0]);
+      const out = await PDFDocument.load(fromBase64(res.outB64));
+      expect(out.getPageCount()).toBe(1);
+      // 1000 × 700 px, plus large que haute : la largeur d'un A4 paysage (841,89 pt).
+      const size = out.getPage(0).getSize();
+      expect(size.width).toBeCloseTo(841.89, 1);
+      expect(size.height).toBeCloseTo(589.32, 1);
+      expect((await inspectRegion(res.previews[0], core(rect))).share).toBeGreaterThan(0.95);
+    },
+    30_000
+  );
+
+  test(
+    "aperçus « 11 premières + dernière » sur 40 pages : 12 aperçus, le 12e est la dernière page",
+    async () => {
+      const rect: Region = { x: 0.4, y: 0.75, w: 0.5, h: (0.5 * (200 / 300)) / SIG_ASPECT };
+      const res = await runWatermark({
+        b64: toBase64(await makePdf(Array.from({ length: 40 }, () => [200, 300] as [number, number]))),
+        name: "long.pdf",
+        type: "application/pdf",
+        text: "",
+        signature: RED_SIGNATURE,
+        signPreview: true,
+        options: { overlays: { 39: [sig(rect)] } },
+      });
+      if (!res.ok) throw new Error(`renderFile a rejeté : ${res.error}`);
+      expect(res.pageCount).toBe(40);
+      expect(res.previewCount).toBe(12);
+      expect(res.previewPageIndexes).toEqual([...Array.from({ length: 11 }, (_, i) => i), 39]);
+      expect((await inspectRegion(res.previews[11], core(rect))).share).toBeGreaterThan(0.95);
+      expect((await inspectRegion(res.previews[10], core(rect))).red).toBe(0);
+      expect((await PDFDocument.load(fromBase64(res.outB64))).getPageCount()).toBe(40);
+    },
+    120_000
+  );
+
+  test(
+    "paraphe sur chaque page sauf celle de la signature, placé d'après le format de chaque page",
+    async () => {
+      const sizes: [number, number][] = [A4, [841.89, 595.28], [300, 200]];
+      const top: Region = { x: 0.08, y: 0.08, w: 0.3, h: 0.1 };
+      const res = await runWatermark({
+        b64: toBase64(await makePdf(sizes)),
+        name: "bail.pdf",
+        type: "application/pdf",
+        text: "",
+        signature: RED_SIGNATURE,
+        options: { overlays: { 1: [sig(top)] }, initialsEveryPage: true },
+      });
+      if (!res.ok) throw new Error(`renderFile a rejeté : ${res.error}`);
+      for (const [i, [w, h]] of sizes.entries()) {
+        const initials = await inspectRegion(res.previews[i], core(initialsRect(w / h, SIG_ASPECT)));
+        if (i === 1) {
+          expect(initials.red).toBe(0);
+          expect((await inspectRegion(res.previews[i], core(top))).share).toBeGreaterThan(0.95);
+        } else {
+          expect(initials.share).toBeGreaterThan(0.95);
+          expect((await inspectRegion(res.previews[i], core(top))).red).toBe(0);
+        }
+      }
+    },
+    60_000
+  );
+
+  test(
+    "corpus adversarial avec une signature : mêmes refus, sorties valides, signature à sa place",
+    async () => {
+      const rect: Region = { x: 0.55, y: 0.7, w: 0.35, h: 0.08 };
+      const options = { overlays: { 0: [sig(rect)] } };
+      const run = (b64: string, name: string, type = "application/pdf", password?: string) =>
+        runWatermark({ b64, name, type, text: "", password, signature: RED_SIGNATURE, options });
+
+      const garbage = new Uint8Array(512);
+      crypto.getRandomValues(garbage);
+      const tooLong = toBase64(await makePdf(Array.from({ length: 501 }, () => [50, 50] as [number, number])));
+      const refused: [() => Promise<PageResult>, string][] = [
+        [() => run("", "vide.pdf"), "pdf_unreadable"],
+        [() => run(toBase64(garbage), "corrompu.pdf"), "pdf_unreadable"],
+        [() => run(ENCRYPTED_PDF_B64, "verrouille.pdf"), "pdf_password"],
+        [() => run(ENCRYPTED_PDF_B64, "verrouille.pdf", "application/pdf", "pas-le-bon"), "pdf_password_wrong"],
+        [() => run(toBase64(new TextEncoder().encode("ftypheic mais pas vraiment")), "faux.heic", "image/heic"), "image_unreadable"],
+        [() => run(tooLong, "annuaire.pdf"), "pdf_too_many_pages"],
+      ];
+      for (const [attempt, error] of refused) {
+        const res = await attempt();
+        expect(res.ok).toBe(false);
+        if (!res.ok) expect(res.error).toBe(error);
+      }
+
+      // Page pivotée : le placement suit la page telle qu'affichée.
+      const accepted = [
+        await run(toBase64(await makeRotatedPdf(595.28, 841.89, 90)), "pivotee.pdf"),
+        await run(toBase64(await makePdf([[200 * 72, 200 * 72]])), "geante.pdf"),
+        await run(ENCRYPTED_PDF_B64, "verrouille.pdf", "application/pdf", ENCRYPTED_PDF_PASSWORD),
+        await run(HEIC_320x240_B64, "IMG_0001.HEIC", "image/heic"),
+      ];
+      for (const res of accepted) {
+        if (!res.ok) throw new Error(`renderFile a rejeté : ${res.error}`);
+        expect(res.pageCount).toBe(1);
+        expect((await inspectRegion(res.previews[0], core(rect))).share).toBeGreaterThan(0.9);
+        if (res.extension === "pdf") {
+          expect((await PDFDocument.load(fromBase64(res.outB64))).getPageCount()).toBe(1);
+          expect((await scanPdfForLeaks(fromBase64(res.outB64))).keys).toEqual([]);
+        }
+      }
+    },
+    120_000
   );
 });

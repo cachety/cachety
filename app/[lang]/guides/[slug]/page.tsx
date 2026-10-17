@@ -5,8 +5,9 @@ import Prose from "@/components/Prose";
 import GuideBody from "@/components/GuideBody";
 import { ChevronIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
-import { findGuide, GUIDES, guideAlternates, guidePath, relatedGuides } from "@/lib/guides";
+import { findGuide, GUIDES, guideAlternates, guidePath, guideToolPath, relatedGuides } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
+import { displayTitle } from "@/lib/typography";
 import { LANG_CODES, SITE_META, SITE_URL, type Lang, ogImage, pageTitle } from "@/lib/site-meta";
 
 // Export statique : seuls les guides déclarés dans lib/guides existent.
@@ -74,7 +75,7 @@ export default async function GuidePage({ params }: Props) {
       </nav>
 
       <article className="mt-4">
-        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{g.title}</h1>
+        <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">{displayTitle(lang, g.title)}</h1>
         <p className="mt-2 text-sm text-encre-2">{ui.updated(updated)}</p>
         <p className="mt-5 text-pretty text-xl text-encre-2"><Prose text={g.intro} /></p>
 
@@ -90,10 +91,10 @@ export default async function GuidePage({ params }: Props) {
         <aside className="mt-12 flex flex-col items-start gap-3 rounded-2xl bg-encre p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <p className="text-pretty text-white/85">{ui.ctaNote}</p>
           <Link
-            href={`/${lang}`}
+            href={guideToolPath(lang, g)}
             className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            {ui.cta}
+            {g.tool === "sign" ? ui.ctaSign : ui.cta}
             <ChevronIcon direction="right" className="h-4 w-4" />
           </Link>
         </aside>

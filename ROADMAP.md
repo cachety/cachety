@@ -52,17 +52,76 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   non-Latin script), reviewed by native speakers, so they type the same on any
   keyboard and in any PDF reader.
 
+### `remember-signature`: remember my signature on this device
+- **Status:** idea
+- Opt-in only: keep the signature image on this device, with a plain sentence
+  about what is stored and a one-click delete. Today the signature exists only
+  in memory and is never written to storage (`docs/prd-sign.md` §4.4).
+
+### `keep-vector-pages`: keep the text of signed PDFs
+- **Status:** idea
+- An overlay-only mode that keeps the original pages, so the text stays
+  searchable. It needs its own sanitisation pass (metadata, attachments,
+  JavaScript, annotations) and a seam test proving it, since rebuilding pages
+  from pixels is what removes hidden data today.
+
 ## Backlog (internal)
 
 - **Large batches:** show the progress bar and the All / Needs attention /
   Ready filters in the new layout only above about five documents (kept from
   the previous layout; re-check after user tests).
 - **Native review:** the new tool wording in all 11 languages, especially
-  Arabic, Persian, Japanese and Chinese.
+  Arabic, Persian, Japanese and Chinese. Also the sign wording: the legal
+  section and FAQ of the sign page (FR and EN reviewed by a second reader
+  before launch), and the two sign guides (`sign`, `sign-phone` topics) and
+  sign roadmap entries in the nine languages other than French and English,
+  which are drafts translated from the English guide. Each of those guide
+  files marks them with a "Draft translation, awaiting native review" comment.
+  The sign page's legal section, the "removed or reused" FAQ answer, the
+  legal passages of the sign guides and the new hint under the mention
+  presets (`block.mentionHint`) were rewritten on 2026-10-17 after a check
+  against primary sources (eIDAS art. 25, Code civil art. 1367, 1376, 1175,
+  décret 2017-1416, Cour de cassation 2022 and 2024, 1993 on "lu et
+  approuvé"); the nine translations other than FR and EN need native review.
+  Also the partner page's tool choice and embed switch strings
+  (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
+  roadmap text, added in English and French first.
+- **Sign, later (v1.1+):** several placements per page (`multi-placement`), a
+  self-hosted handwriting font for the Type tab (`script-font`), and per-country mention presets
+  reviewed by native speakers (`more-mentions`). See `docs/prd-sign.md` §14.
+- **Sign social image:** decided for v1 (`docs/prd-sign.md` §13.5): the sign
+  pages reuse each language's social image (`public/og/<lang>.png`); a
+  dedicated `sign-<lang>.png` from `scripts/og.ts` is for later.
 - **User tests:** watch 3 to 5 non-technical people do "send your ID to a
   letting agency with the bank details hidden".
 
 ## Shipped
+
+### `sign-embed`: signing on partner websites (2026-10)
+Partners choose the tools in the embed code: watermark (default), sign, or
+both with a switch (`#tools=watermark,sign`). Signing reads a pre-filled place
+and note (`#place=…&note=…`); a pre-filled purpose or recipient also ticks
+"add a watermark" on the signed copy. Same page `/embed/<lang>`, same
+`partners.json` allow-list and headers. Switching tools with documents loaded
+asks first, since only one tool is mounted at a time.
+
+### `sign`: sign a document (2026-10)
+A second mode at `/<lang>/sign`: draw, type or upload a signature, add the
+date, place and a note if wanted, place it on a PDF or a photo, download a
+signed PDF. Same network lock and airplane-mode test as the watermark tool;
+the signature lives in memory only; pages are rebuilt from pixels. Options:
+initial every page, add a watermark, make smaller, password lock (off by
+default), SHA-256 fingerprint after download. It is a simple electronic
+signature: no certificate, no timestamp, no proof of identity, and the page
+says so. Two guides in all 11 languages. Spec: [docs/prd-sign.md](docs/prd-sign.md).
+
+Comparison pages for the sign tool (2026-10-17): DocuSign, Youtrust (formerly
+Yousign), Adobe Acrobat, iLovePDF and Smallpdf, in all 11 languages, in their
+own "Sign" section of `/<lang>/compare` (data in `lib/compare/sign/`). Facts
+checked on the publishers' pages and dated; each page says when the other tool
+is the better choice (several signers, audit trail, advanced or qualified
+signatures).
+
 
 ### `simpler-tool`: a simpler tool (2026-10)
 Three steps in plain words, guided form for the watermark text with an

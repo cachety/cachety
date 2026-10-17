@@ -1,5 +1,6 @@
 import { HEIC_TYPES } from "@/lib/heic";
 import { zipSync } from "fflate";
+import { PDFDocument } from "pdf-lib";
 
 const DECODED_TYPES =
   "application/pdf,image/png,image/jpeg,image/webp,image/gif,image/bmp,image/avif";
@@ -80,16 +81,64 @@ export function uniqueName(name: string, used: Set<string>) {
 const basename = (name: string) => name.split(/[/\\]/).pop() || "document";
 
 /**
+ * Chemins des fichiers dans l'archive, dans l'ordre donné : ceux que
+ * zipDocuments écrit (doublons renommés « -2 », « -3 »…). Sert aussi à
+ * nommer les empreintes, pour qu'elles correspondent au contenu du ZIP.
+ */
+export function zipPaths(files: { name: string; folder?: string }[]): string[] {
+  const used = new Set<string>();
+  return files.map((f) => {
+    const folder = f.folder ? basename(f.folder).replace(/^\.+$/, "") : "";
+    return uniqueName(folder ? `${folder}/${basename(f.name)}` : basename(f.name), used);
+  });
+}
+
+/**
  * Archive ZIP, à plat ou avec un dossier par destinataire. Le dossier est
  * lui aussi réduit à un seul segment : jamais de « ../ » dans un chemin.
  */
 export function zipDocuments(files: { name: string; bytes: Uint8Array; folder?: string }[]): Uint8Array {
-  const used = new Set<string>();
   const entries: Record<string, [Uint8Array, { level: 0 }]> = {};
-  for (const f of files) {
-    const folder = f.folder ? basename(f.folder).replace(/^\.+$/, "") : "";
-    const path = folder ? `${folder}/${basename(f.name)}` : basename(f.name);
-    entries[uniqueName(path, used)] = [f.bytes, { level: 0 }];
-  }
-  return zipSync(entries);
+  zipPaths(files).forEach((path, i) => (entries[path] = [files[i].bytes, { level: 0 }]));
+  // Date fixe pour chaque entrée : par défaut, l'heure de création (donc de
+  // la signature) serait inscrite dans l'archive. Heure locale, jamais avant
+  // 1980 (limite du format ZIP) quel que soit le fuseau.
+  return zipSync(entries, { mtime: new Date(2000, 0, 1) });
+}
+
+/**
+ * PDF vide, sans les champs que pdf-lib ajoute par défaut (Producer, Creator,
+ * dates de création et de modification). L'heure de création trahirait celle
+ * de la signature ; aucun fichier produit ici n'en porte.
+ */
+export const newPdf = () => PDFDocument.create({ updateMetadata: false });
+
+/** A4 en points (210 × 297 mm). */
+const A4 = { short: 595.28, long: 841.89 };
+
+/**
+ * Page d'une image signée : la plus grande qui tient dans un A4 (paysage si
+ * l'image est plus large que haute), aux proportions de l'image et sans marge.
+ * Une photo de 4000 px ne fait plus une page de 1,4 m, une image de 320 px
+ * ne devient plus une page minuscule ou agrandie au hasard : le destinataire
+ * imprime une page A4, et l'aperçu reste exactement la page produite.
+ */
+export function a4PageFor(width: number, height: number) {
+  const [maxW, maxH] = width > height ? [A4.long, A4.short] : [A4.short, A4.long];
+  const scale = Math.min(maxW / width, maxH / height);
+  const round = (v: number) => Math.round(v * 100) / 100;
+  return { width: round(width * scale), height: round(height * scale) };
+}
+
+/**
+ * Image (PNG ou JPEG déjà produite) en PDF d'une page, sans réencodage. Par
+ * défaut la page mesure en points ce que l'image mesure en pixels (PDF unique
+ * et verrouillage du filigrane) ; « a4 » : la page de a4PageFor (mode « signer »).
+ */
+export async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg", page: "image" | "a4" = "image") {
+  const doc = await newPdf();
+  const image = extension === "jpg" ? await doc.embedJpg(bytes) : await doc.embedPng(bytes);
+  const size = page === "a4" ? a4PageFor(image.width, image.height) : { width: image.width, height: image.height };
+  doc.addPage([size.width, size.height]).drawImage(image, { x: 0, y: 0, ...size });
+  return doc.save();
 }

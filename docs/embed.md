@@ -17,7 +17,8 @@ and neither can we.
 | Who can embed | **Approved partners only**: an allow-list of domains in `frame-ancestors`. |
 | How to join | Partner opens a **GitHub issue** (template); approved domains live in a file in the repo (`partners.json`), reviewed and deployed with the site. |
 | Customisation | **Pre-filled purpose**, **pre-filled recipient** (both still editable by the visitor), **accent colour**. Cachety's name and a "Runs on cachety.com" link always stay visible. |
-| Scope | **Full tool**: documents, details, preview, hide, adjust, lock, download. Without the site menu, landing sections and footer. |
+| Tools | **Watermark** (default, so codes pasted before stay unchanged), **sign**, or **both** with a switch. Signing takes a **pre-filled place and note** under the signature. |
+| Scope | **Full tool**: documents, details, preview, hide, adjust, lock, download (and, for signing, the signature, its placement, initials and the optional watermark). Without the site menu, landing sections and footer. |
 | Terms | **Free**, with a gentle donation suggestion on the partner page. |
 | Height | **Auto-resize**: the frame sends its height (a number) to the parent page, nothing else. |
 | Language | **Set by the partner** in the embed URL (`/embed/fr`, `/embed/ja`…). |
@@ -46,6 +47,28 @@ and neither can we.
 - Values are validated: text length limits as in the tool (purpose 80,
   recipient 60), accent restricted to `#rrggbb` with enough contrast against
   white (otherwise ignored).
+
+### Tools (`tools`)
+
+| Fragment | Shows |
+|---|---|
+| none, or `tools=watermark` | The watermark tool, as before. |
+| `tools=sign` | The sign tool only. |
+| `tools=watermark,sign` | Both, with a switch; the first listed opens first. |
+
+- Unknown values are ignored; if nothing valid is left, the watermark tool
+  shows (an old or mistyped code never breaks).
+- Signing reads `place` and `note` (80 characters each), shown under the
+  signature and editable by the visitor. A pre-filled `for` or `to` also
+  ticks "add a watermark" on the signed copy, since it only has a use there.
+- One tool is mounted at a time (both register page-wide paste and drop
+  handlers). Switching with documents loaded shows an inline warning first:
+  the documents of the tool being left are dropped. No `confirm()`, which
+  browsers may block in cross-origin frames.
+- The tools are read from the fragment after the page starts, so the frame
+  shows an empty space for that instant instead of one tool replaced by the
+  other.
+- Same page and headers: no new route, no extra `_headers` rule.
 
 ### Headers (`_headers`, generated)
 
@@ -80,8 +103,8 @@ and neither can we.
 ### Partner page (`/<lang>/partners`)
 
 - What the embed is and why it's private, in plain words.
-- Copy-paste code with the options (language, purpose, recipient, accent)
-  and a live preview.
+- Copy-paste code with the options (tools, language, purpose, recipient,
+  accent, and for signing: place and note) and a live preview.
 - Reusable wording, for example: "This tool runs on cachety.com. Your
   documents never leave your device: neither this site nor Cachety can see
   them."

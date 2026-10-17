@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { LANGS } from "@/components/LangToggle";
 import { SITE_URL } from "@/lib/brand";
 import { PARTNERS_COPY } from "@/lib/partners-copy";
-import { readPrefill } from "@/lib/partners";
+import { STRINGS } from "@/lib/i18n";
+import { readPrefill, type EmbedTool } from "@/lib/partners";
 import type { Lang } from "@/lib/site-meta";
 
 const RESIZE_SCRIPT = `<script>
@@ -18,12 +19,21 @@ window.addEventListener("message", function (e) {
 });
 </script>`;
 
-function fragment(purpose: string, recipient: string, accent: string) {
+type ToolChoice = "watermark" | "sign" | "both";
+const TOOLS: Record<ToolChoice, EmbedTool[]> = { watermark: ["watermark"], sign: ["sign"], both: ["watermark", "sign"] };
+
+type Options = { tools: ToolChoice; purpose: string; recipient: string; place: string; note: string; accent: string };
+
+/** Le filigrane seul est le choix par défaut : rien dans le fragment (codes déjà collés inchangés). */
+function fragment({ tools, purpose, recipient, place, note, accent }: Options) {
   const params = new URLSearchParams();
+  if (tools !== "watermark") params.set("tools", TOOLS[tools].join(","));
   if (purpose.trim()) params.set("for", purpose.trim());
   if (recipient.trim()) params.set("to", recipient.trim());
+  if (tools !== "watermark" && place.trim()) params.set("place", place.trim());
+  if (tools !== "watermark" && note.trim()) params.set("note", note.trim());
   if (accent) params.set("accent", accent);
-  const s = params.toString().replace(/\+/g, "%20");
+  const s = params.toString().replace(/\+/g, "%20").replace(/%2C/g, ",");
   return s ? `#${s}` : "";
 }
 
@@ -56,6 +66,10 @@ export function EmbedBuilder({ lang }: { lang: Lang }) {
   const c = PARTNERS_COPY[lang];
   const o = c.options;
   const [embedLang, setEmbedLang] = useState<Lang>(lang);
+  const b = STRINGS[embedLang].sign.block;
+  const [tools, setTools] = useState<ToolChoice>("watermark");
+  const [place, setPlace] = useState("");
+  const [note, setNote] = useState("");
   const [purpose, setPurpose] = useState("");
   const [recipient, setRecipient] = useState("");
   const [accent, setAccent] = useState("");
@@ -63,7 +77,7 @@ export function EmbedBuilder({ lang }: { lang: Lang }) {
   const frame = useRef<HTMLIFrameElement>(null);
   // Couleur trop claire pour un texte blanc : ignorée par la page intégrée.
   const accentOk = !accent || readPrefill(`#accent=${encodeURIComponent(accent)}`).accent === accent;
-  const hash = fragment(purpose, recipient, accentOk ? accent : "");
+  const hash = fragment({ tools, purpose, recipient, place, note, accent: accentOk ? accent : "" });
   const src = `${SITE_URL}/embed/${embedLang}${hash}`;
   const code = `<iframe src="${src}" title="Cachety" loading="lazy" allow="clipboard-write" style="width: 100%; min-height: 640px; border: 0"></iframe>`;
 
@@ -81,6 +95,16 @@ export function EmbedBuilder({ lang }: { lang: Lang }) {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 sm:grid-cols-2">
+        <label className="flex flex-col gap-1.5 text-sm font-medium sm:col-span-2">
+          {o.tools}
+          <select value={tools} onChange={(e) => setTools(e.target.value as ToolChoice)} className={field}>
+            {(Object.keys(TOOLS) as ToolChoice[]).map((choice) => (
+              <option key={choice} value={choice}>
+                {o.toolChoices[choice]}
+              </option>
+            ))}
+          </select>
+        </label>
         <label className="flex flex-col gap-1.5 text-sm font-medium">
           {o.lang}
           <select value={embedLang} onChange={(e) => setEmbedLang(e.target.value as Lang)} className={field}>
@@ -112,6 +136,20 @@ export function EmbedBuilder({ lang }: { lang: Lang }) {
           {o.recipient}
           <input value={recipient} maxLength={60} onChange={(e) => setRecipient(e.target.value)} placeholder={o.recipientPlaceholder} className={field} />
         </label>
+        {tools !== "watermark" && (
+          <fieldset className="grid gap-4 rounded-2xl border border-trait p-4 sm:col-span-2 sm:grid-cols-2">
+            <legend className="px-1 text-sm font-semibold">{b.title}</legend>
+            <label className="flex flex-col gap-1.5 text-sm font-medium">
+              {b.place}
+              <input value={place} maxLength={80} onChange={(e) => setPlace(e.target.value)} placeholder={b.placePh} className={field} />
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm font-medium">
+              {b.mention}
+              <input value={note} maxLength={80} onChange={(e) => setNote(e.target.value)} placeholder={b.mentionPh} className={field} />
+            </label>
+            <p className="text-sm text-encre-2 sm:col-span-2">{o.signHint}</p>
+          </fieldset>
+        )}
       </div>
 
       <CopyBlock label={c.embedCode} code={code} copy={c.copy} copied={c.copied} />

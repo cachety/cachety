@@ -9,7 +9,7 @@ import LangToggle from "@/components/LangToggle";
 import ShareButton from "@/components/ShareButton";
 import { CloseIcon, HeartIcon, Logo, MenuIcon } from "@/components/icons";
 
-export type NavKey = "tool" | "about" | "guides" | "compare" | "privacy";
+export type NavKey = "tool" | "sign" | "about" | "guides" | "compare" | "privacy";
 
 /**
  * Barre de navigation commune à toutes les pages. Sous 1280 px, les liens
@@ -39,6 +39,7 @@ export default function SiteNav({
 
   const items: { key: NavKey; href: string; label: string }[] = [
     { key: "tool", href: `/${lang}`, label: c.tool },
+    { key: "sign", href: `/${lang}/sign`, label: c.sign },
     { key: "guides", href: `/${lang}/guides`, label: c.guides },
     { key: "compare", href: `/${lang}/compare`, label: c.compare },
     { key: "about", href: `/${lang}/about`, label: c.about },

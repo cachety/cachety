@@ -5,7 +5,8 @@ import type { SiteCopy } from "@/lib/site-copy";
 
 export const SITE_PT: SiteCopy = {
   nav: {
-    tool: "A ferramenta",
+    tool: "Marca d'água",
+    sign: "Assinar",
     about: "Por que uma marca d'água?",
     guides: "Guias",
     privacy: "Privacidade",
@@ -131,10 +132,71 @@ export const SITE_PT: SiteCopy = {
         a: "Sim, no iPhone e no Android. Abra cachety.com no navegador, toque na área de arquivos e escolha uma foto ou um PDF. Você também pode adicionar o Cachety à tela inicial.",
       },
     ],
+    signLink: {
+      title: "Tem um documento para assinar?",
+      body: "Contrato de aluguel, declaração, orçamento: desenhe, digite ou importe sua assinatura e coloque no PDF. Aqui também nada é enviado.",
+      cta: "Assinar um documento",
+    },
     guidesTitle: "Guias práticos",
     guidesLead: "Ajuda passo a passo para situações do dia a dia.",
     guidesAll: "Todos os guias",
     backToTop: "Colocar uma marca d'água",
+  },
+  // Legal section and FAQ: draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  sign: {
+    hero: {
+      title: "Assine um documento sem enviá-lo a lugar nenhum",
+      lead: "Contrato de aluguel, declaração, orçamento, autorização: assine em segundos. O documento fica no seu aparelho do começo ao fim.",
+      pills: ["Grátis", "Sem cadastro", "Nada é enviado", "Feito na França"],
+    },
+    howTitle: "Como funciona",
+    how: [
+      { title: "Solte seu documento", body: "Um PDF ou uma foto do documento, mesmo tirada com o celular. Vários de uma vez, se precisar." },
+      { title: "Crie sua assinatura", body: "Desenhe com o dedo ou o mouse, digite seu nome ou importe uma foto da sua assinatura." },
+      {
+        title: "Posicione e baixe",
+        body: "Arraste-a para o lugar certo. A prévia mostra exatamente o PDF assinado, que é salvo no seu aparelho.",
+      },
+    ],
+    airplaneTitle: "Confira você mesmo: o teste do modo avião",
+    airplaneBody:
+      "Abra esta página e depois desligue a internet (modo avião). Solte um documento e assine: o Cachety continua funcionando. É a prova de que nada passa pela internet.",
+    legal: {
+      title: "Que valor tem esta assinatura?",
+      p1: "Uma assinatura desenhada, digitada ou importada e colocada no documento é o que se costuma chamar de assinatura eletrônica “simples”. Na União Europeia, um juiz não pode rejeitá-la como prova só por ser eletrônica (Regulamento eIDAS, artigo 25). Na França, uma assinatura identifica o seu autor e mostra o seu consentimento; na forma eletrônica, deve basear-se em um processo confiável que a vincule ao documento (Código Civil, artigo 1367). Uma imagem de assinatura, como uma assinatura escaneada, não cumpre sozinha essa condição: vale como assinatura se ninguém a contestar, mas tem pouco peso se for contestada (Corte de Cassação da França, 2022 e 2024).",
+      p2: "Para documentos do dia a dia, isso costuma ser aceito: papéis de aluguel, declarações, orçamentos, formulários de escola ou de associação. Em caso de disputa, quem se apoia no documento é que deve provar quem o assinou; guarde o e-mail ou a mensagem com que ele foi enviado. Só uma assinatura “qualificada” (com certificado de um prestador qualificado) é presumida confiável e equivale a uma assinatura de próprio punho.",
+      p3: "Não é a ferramenta certa quando se exige uma assinatura qualificada, quando a lei pede uma declaração escrita de próprio punho (fiança, confissão de dívida), para um testamento ou uma escritura em cartório, ou quando a outra parte impõe uma plataforma específica (alguns contratos de empréstimo ou de seguro, certos procedimentos oficiais). Nesse caso, use a ferramenta que pedirem.",
+      note: "Isto não é aconselhamento jurídico. As regras para alguns documentos mudam de país para país. Esta tradução ainda aguarda revisão por um falante nativo.",
+    },
+    faqTitle: "Perguntas frequentes",
+    faq: [
+      {
+        q: "Meu documento é enviado para algum servidor?",
+        a: "Não, nunca. O site nem tem um servidor capaz de receber um arquivo. Seu navegador faz todo o trabalho, e a página o impede tecnicamente de se conectar a qualquer outro site. O teste do modo avião comprova isso em dez segundos.",
+      },
+      {
+        q: "Minha assinatura fica salva?",
+        a: "Não. Ela só existe na memória da aba. Feche a aba e ela desaparece.",
+      },
+      {
+        q: "Minha assinatura pode ser removida ou reutilizada?",
+        a: "Ela faz parte da imagem de cada página: não dá para movê-la ou apagá-la como um elemento do PDF. Como acontece com uma assinatura em papel escaneada, alguém poderia recortá-la e colar em outro lugar, e o arquivo não prova quem a colocou nem que o documento não foi alterado depois. Guarde a sua cópia. Para limitar esse risco, adicione uma marca d'água que vincule a cópia à sua finalidade e rubrique cada página.",
+      },
+      {
+        q: "O texto do PDF assinado ainda pode ser selecionado?",
+        a: "Não. Cada página é reconstruída a partir dos seus pixels, o que também remove texto oculto, metadados e a localização GPS das fotos. Seu original fica com você, intacto.",
+      },
+      {
+        q: "Funciona no meu celular?",
+        a: "Sim, no iPhone e no Android. Assine com o dedo ou, se preferir, importe uma foto.",
+      },
+    ],
+    watermarkLink: {
+      title: "Vai mandar também uma cópia do seu RG?",
+      body: "RG, declaração de imposto, holerite: coloque uma marca d'água que limite a cópia a uma única finalidade. Mesmo site, mesma promessa: nada é enviado.",
+      cta: "Colocar uma marca d'água",
+    },
+    backToTop: "Assinar um documento",
   },
   privacy: {
     title: "Privacidade e segurança",
@@ -216,13 +278,15 @@ export const SITE_PT: SiteCopy = {
     faqTitle: "Perguntas frequentes",
     related: "Continue lendo",
     cta: "Colocar marca d'água no meu documento",
+    ctaSign: "Assinar meu documento",
     ctaNote: "Grátis, sem cadastro. O documento nunca sai do seu aparelho.",
     updated: (d) => `Atualizado em ${d}`,
     allGuides: "Todos os guias",
   },
   compareUi: {
-    title: "Cachety e outras ferramentas de marca d'água",
+    title: "Cachety e outras ferramentas de marca d'água e de assinatura",
     lead: "Comparativos claros e verificados com as ferramentas mais usadas: para onde vão seus arquivos, quanto custa e quando outra ferramenta é a melhor escolha.",
+    groups: { watermark: "Marca d'água", sign: "Assinatura" },
     read: "Ler o comparativo",
     verdictTitle: "Resumindo",
     tableTitle: "Lado a lado",

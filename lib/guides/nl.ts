@@ -483,4 +483,188 @@ export const GUIDES_NL: Guide[] = [
     ],
     updated: "2026-10-12",
   },
+
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  // ───────────────────────────── Ondertekenen ─────────────────────────────
+  {
+    slug: "huurcontract-online-ondertekenen",
+    topic: "sign",
+    tool: "sign",
+    title: "Zo onderteken je een huurcontract of huurdocument online, zonder het te uploaden",
+    metaTitle: "Huurcontract online ondertekenen: gratis, zonder upload",
+    description:
+      "Onderteken je huurovereenkomst, opleveringsrapport of huurformulier in je browser: handtekening tekenen of typen, plaatsen, klaar. Er wordt niets geüpload.",
+    intro:
+      "Makelaars en verhuurders sturen de huurovereenkomst vaak als pdf en willen hem ondertekend terug per mail. Je hoeft niets te printen, te scannen of een account aan te maken: je ondertekent in ongeveer een minuut in je browser, en het document verlaat je apparaat nooit.",
+    example: "Ondertekende huurovereenkomst, alleen voor Makelaardij De Linde, 17-10-2026",
+    body: [
+      { type: "h2", text: "Wat je moet ondertekenen bij een huurwoning" },
+      {
+        type: "p",
+        text: "Een woning huren betekent papierwerk: de huurovereenkomst zelf, het opleveringsrapport of inspectierapport bij de sleuteloverdracht, soms een verklaring voor de screening. Meestal komt alles als pdf met een regel voor je handtekening. Gebruikelijk is een ondertekenwebsite waar je het bestand moet uploaden en een account nodig hebt, of printen, tekenen, scannen en terugsturen. Cachety doet het in plaats daarvan in je browser.",
+      },
+      { type: "h2", text: "Zo onderteken je je huurdocumenten met Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com/nl/sign in je browser, op de computer of op je telefoon. Niets te installeren, geen account nodig.",
+          "Je documenten: sleep de pdf naar de pagina, of tik om hem te kiezen. Meerdere bestanden tegelijk kan ook, bijvoorbeeld de huurovereenkomst en het opleveringsrapport. Een foto van een papieren document werkt ook: die wordt een pdf van één pagina.",
+          "Je handtekening: teken hem met je vinger, een stylus of de muis, typ je naam, of importeer een foto van je handtekening op wit papier. Eronder kun je de datum van vandaag laten staan en als je wilt de plaats en een korte vermelding toevoegen, zoals Gelezen en goedgekeurd.",
+          "Plaatsen, controleren, downloaden: je handtekening verschijnt rechtsonder op de laatste pagina. Sleep hem naar de handtekeningregel en pas de grootte aan met de hoek. Vraagt de makelaar om een paraaf op elke pagina, zet dan Ook elke pagina paraferen aan.",
+          "Controleer het voorbeeld en download. De ondertekende kopie houdt de oorspronkelijke naam, met -signed erachter. Die kopie stuur je terug.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Bij meerdere documenten krijgt elk document zijn eigen plek. Een document is pas klaar als je handtekening erop staat: de lijst laat zien welke nog wachten.",
+      },
+      {
+        type: "tip",
+        text: "Na het downloaden toont Cachety een vingerafdruk van elk bestand: een code van 64 tekens, berekend uit precies het bestand dat je hebt gedownload. Kopieer hem, bewaar hem bij je papieren en stuur hem mee met het document (bijvoorbeeld in dezelfde e-mail). Duikt er ooit een andere versie van het contract op, dan klopt de vingerafdruk niet: je ziet dat het niet het bestand is dat jij hebt verstuurd.",
+      },
+      { type: "h2", text: "Handige opties" },
+      {
+        type: "list",
+        items: [
+          "Ook elke pagina paraferen zet een kleine kopie van je handtekening rechtsonder op elke andere pagina. Een verwisselde pagina valt zo sneller op.",
+          "Beveiligen met een wachtwoord staat standaard uit, want de makelaar moet het bestand kunnen openen. Zet het alleen aan als je het wachtwoord op een andere manier doorgeeft, bijvoorbeeld telefonisch.",
+          "Kleiner maken helpt als de mail of het portaal van de makelaar de bestandsgrootte beperkt.",
+          "Een watermerk toevoegen zet het doel, de ontvanger en de datum over de ondertekende kopie.",
+        ],
+      },
+      { type: "h2", text: "Je documenten verlaten je apparaat nooit" },
+      {
+        type: "p",
+        text: "Cachety werkt in je browser. Er is geen server die je documenten ontvangt, en de pagina mag technisch gezien geen contact maken met een andere website. Controleer het zelf: zet vliegtuigmodus aan zodra de pagina is geladen, en onderteken dan je document. Alles blijft werken. Ook je handtekening wordt niet bewaard: hij bestaat alleen in het geheugen van het tabblad en is weg zodra je het sluit.",
+      },
+      {
+        type: "p",
+        text: "Elke pagina van de ondertekende kopie wordt opnieuw opgebouwd uit haar pixels. Daardoor verdwijnen verborgen tekst en metadata, en kun je de tekst in de ondertekende kopie niet meer selecteren. Je origineel blijft onaangeroerd bij jou.",
+      },
+      { type: "h2", text: "Is deze handtekening geldig voor een huurcontract?" },
+      {
+        type: "p",
+        text: "Een handtekening die je tekent of typt en op het document zet, is wat men gewoonlijk een gewone elektronische handtekening noemt. In de EU mag een rechter haar niet als bewijs weigeren alleen omdat ze elektronisch is (eIDAS-verordening, artikel 25). Voor alledaagse huurdocumenten is dat meestal genoeg. De regels verschillen wel per land en per document.",
+      },
+      {
+        type: "p",
+        text: "Wordt de handtekening ooit betwist, dan moet wie zich op het document beroept, bewijzen wie het heeft ondertekend. Bewaar daarom de e-mail of het bericht waarmee het is verstuurd. Alleen een gekwalificeerde handtekening, gezet met een certificaat van een gekwalificeerde aanbieder, wordt vermoed betrouwbaar te zijn en staat gelijk aan een handgeschreven handtekening.",
+      },
+      {
+        type: "warning",
+        text: "Dit is niet de juiste tool als een gekwalificeerde handtekening verplicht is, als de wet een vermelding in je eigen handschrift eist (borgtocht, schuldbekentenis), voor een testament of een notariële akte, of als de andere partij een bepaald platform eist (sommige leen- of verzekeringscontracten, bepaalde procedures bij de overheid). Gebruik dan wat zij vragen. Dit is geen juridisch advies.",
+      },
+      { type: "h2", text: "Kan iemand mijn handtekening hergebruiken?" },
+      {
+        type: "p",
+        text: "Je handtekening is deel van het beeld van elke pagina. Je kunt hem dus niet als onderdeel van de pdf verplaatsen of verwijderen. Maar net als bij een gescande handtekening op papier zou iemand hem uit het beeld kunnen knippen en ergens anders kunnen plakken. Geen enkele afbeelding van een handtekening kan dat voorkomen, en het bestand bewijst niet wie hem heeft geplaatst of dat het document daarna niet is gewijzigd. Bewaar je kopie. Beperk het risico met een watermerk dat de kopie aan het doel en de ontvanger koppelt, en parafeer elke pagina.",
+      },
+    ],
+    faq: [
+      {
+        q: "Accepteert een makelaar een document dat zo is ondertekend?",
+        a: "Meestal wel: een ondertekende pdf per mail terugsturen is gewoon bij huurdocumenten. Gebruikt de makelaar een eigen ondertekenplatform en staat hij daarop, gebruik dan dat.",
+      },
+      {
+        q: "Moet ik iets printen?",
+        a: "Nee. Je tekent op het scherm en stuurt de ondertekende pdf terug. Heb je alleen een papieren exemplaar, maak er dan een scherpe foto van bij goed licht en onderteken de foto.",
+      },
+      {
+        q: "Wordt mijn handtekening bewaard?",
+        a: "Nee. Hij bestaat alleen in het geheugen van het tabblad. Sluit het en hij is weg. De volgende keer teken of typ je hem opnieuw.",
+      },
+      {
+        q: "Kan ik nog tekst kopiëren uit de ondertekende pdf?",
+        a: "Nee. Elke pagina wordt opnieuw opgebouwd uit haar pixels, waardoor ook verborgen tekst en metadata verdwijnen. Bewaar je origineel als je de tekst nodig hebt.",
+      },
+      {
+        q: "Is Cachety echt gratis?",
+        a: "Ja. Gratis, zonder account en zonder tracking. Het is opensourcesoftware, gemaakt in Frankrijk door Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
+  {
+    slug: "pdf-ondertekenen-op-telefoon",
+    topic: "sign-phone",
+    tool: "sign",
+    title: "Zo onderteken je een pdf op je iPhone of Android-telefoon",
+    metaTitle: "Pdf ondertekenen op je telefoon: iPhone en Android, gratis",
+    description:
+      "Onderteken een pdf met je vinger op je iPhone of Android-telefoon. Geen app, geen account, en het document wordt nooit geüpload. Gratis en open source.",
+    intro:
+      "Iemand heeft je een pdf gemaild om te ondertekenen en terug te sturen, en er is geen computer in de buurt. Je kunt hem met je vinger ondertekenen op je telefoon, gewoon in de browser, in ongeveer een minuut.",
+    example: "Ondertekend toestemmingsformulier, alleen voor basisschool De Regenboog, 17-10-2026",
+    body: [
+      { type: "h2", text: "Geen app, geen account, geen upload" },
+      {
+        type: "p",
+        text: "Cachety draait in de browser van je telefoon, zoals Safari of Chrome. Je downloadt niets uit een appwinkel en maakt geen account aan. Het document wordt op de telefoon zelf verwerkt en nooit geüpload: de pagina mag technisch gezien geen contact maken met een andere website.",
+      },
+      { type: "h2", text: "Stap voor stap" },
+      {
+        type: "steps",
+        items: [
+          "Bewaar de pdf die je kreeg op je telefoon. In de meeste mailapps tik je op de bijlage en bewaar je hem in Bestanden op een iPhone of in Downloads op Android.",
+          "Open cachety.com/nl/sign in je browser, tik op het vak en kies de pdf. Een foto van een papieren document werkt ook.",
+          "Teken je handtekening met je vinger in het vak. Niet tevreden? Maak de laatste lijn ongedaan of wis alles en probeer het opnieuw. Je kunt ook je naam typen of een foto van je handtekening importeren.",
+          "Kies wat er onder de handtekening komt, als je dat wilt. De datum van vandaag staat standaard aan, en je kunt de plaats en een vermelding zoals Gelezen en goedgekeurd toevoegen.",
+          "Ga naar de stap plaatsen, controleren, downloaden. Je handtekening verschijnt rechtsonder op de laatste pagina. Sleep hem met je vinger op zijn plek en pas de grootte aan met de hoek.",
+          "Controleer het voorbeeld, download de ondertekende pdf en stuur hem terug via mail of een berichtenapp.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Teken iets groter dan op papier en neem de tijd. De lege ruimte rond je handtekening wordt automatisch weggehaald, zodat hij scherp blijft op de pagina.",
+      },
+      { type: "h2", text: "Liever een foto van je handtekening?" },
+      {
+        type: "p",
+        text: "Vind je tekenen met je vinger lastig, zet dan je handtekening op een wit vel met een donkere pen, maak er bij daglicht een foto van en kies Importeren. De witte achtergrond wordt voor je weggehaald. Is er nog wat papier te zien, schuif dan met de regelaar Gevoeligheid. Foto's van je iPhone (HEIC) werken ook.",
+      },
+      { type: "h2", text: "Controleer dat alles op je telefoon blijft" },
+      {
+        type: "p",
+        text: "Zet vliegtuigmodus aan zodra de pagina is geladen, kies dan je pdf en onderteken hem. Alles blijft werken, dus er wordt niets verstuurd. Je handtekening wordt niet bewaard: sluit het tabblad en hij is weg.",
+      },
+      { type: "h2", text: "Opties voor je downloadt" },
+      {
+        type: "list",
+        items: [
+          "Ook elke pagina paraferen zet een kleine kopie van je handtekening op de andere pagina's.",
+          "Kleiner maken houdt het bestand onder de grootte die een mail of website toestaat.",
+          "Beveiligen met een wachtwoord staat standaard uit, zodat de ontvanger het bestand meteen kan openen.",
+          "Na het downloaden zie je een vingerafdruk van het bestand. Bewaar hem en stuur hem mee met het document: duikt er ooit een andere versie op, dan klopt de vingerafdruk niet en zie je dat het niet het bestand is dat jij hebt verstuurd.",
+        ],
+      },
+      { type: "h2", text: "Wat deze handtekening waard is" },
+      {
+        type: "p",
+        text: "Een handtekening die je op je telefoon tekent en op het document zet, noemt men gewoonlijk een gewone elektronische handtekening. Voor alledaagse documenten wordt die meestal geaccepteerd, zoals formulieren van school of de sportclub, toestemmingsformulieren, offertes en huurdocumenten. Wordt hij ooit betwist, dan moet wie zich op het document beroept, bewijzen wie het heeft ondertekend; bewaar de e-mail of het bericht waarmee het is verstuurd.",
+      },
+      {
+        type: "warning",
+        text: "Dit is niet de juiste tool als een gekwalificeerde handtekening met certificaat verplicht is, als de wet een vermelding in je eigen handschrift eist (borgtocht, schuldbekentenis), voor een testament of een notariële akte, of als de andere partij haar eigen ondertekenplatform eist (sommige leen- of verzekeringscontracten, bepaalde procedures bij de overheid). En net als bij een gescande handtekening op papier kan iemand je handtekening uit de kopie knippen en hergebruiken. Een watermerk met het doel en de ontvanger, en een paraaf op elke pagina, beperken dat risico. Dit is geen juridisch advies.",
+      },
+    ],
+    faq: [
+      {
+        q: "Moet ik een app downloaden?",
+        a: "Nee. Cachety werkt in de browser van je telefoon. Je kunt het op je beginscherm zetten voor snelle toegang, maar dat hoeft niet.",
+      },
+      {
+        q: "Kan ik met een stylus tekenen?",
+        a: "Ja. Het handtekeningvak werkt met je vinger, een stylus of, op een computer, de muis.",
+      },
+      {
+        q: "Wordt de pdf ergens geüpload?",
+        a: "Nee. Alles gebeurt op je telefoon. Zet na het laden van de pagina gerust vliegtuigmodus aan: het blijft werken.",
+      },
+      {
+        q: "Waarom kan ik de tekst in de ondertekende pdf niet meer selecteren?",
+        a: "Elke pagina wordt opnieuw opgebouwd uit haar pixels. Zo kan de handtekening er niet af worden gehaald en verdwijnen verborgen gegevens. Je origineel blijft onaangeroerd op je telefoon.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
 ];

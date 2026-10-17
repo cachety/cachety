@@ -46,9 +46,20 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 - **Fonctionne sur téléphone**, s'installe comme une appli, et fonctionne **hors connexion** une fois chargé.
 - **11 langues**, avec mise en page de droite à gauche pour l'arabe et le persan, et des polices dédiées à chaque écriture.
 - **Visite guidée** pour les nouveaux venus, proposée quand quelqu'un semble ne pas savoir par où commencer.
-- **70 guides pratiques** pour les situations de tous les jours en France, au Royaume-Uni, en Allemagne, aux Pays-Bas, en Espagne et en Amérique latine, au Brésil, en Indonésie, dans le monde arabe, en Iran, au Japon et en Chine.
-- **82 comparatifs vérifiés** avec d'autres outils de filigrane (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID et d'autres), sources à l'appui, y compris quand un autre outil est le meilleur choix.
-- **Sur des sites partenaires :** les sites approuvés peuvent afficher l'outil dans leurs pages (une iframe servie par cachety.com : le site qui l'accueille ne voit pas les documents). Voir [docs/embed.md](docs/embed.md) et [cachety.com/fr/partners](https://cachety.com/fr/partners).
+- **92 guides pratiques** pour les situations de tous les jours en France, au Royaume-Uni, en Allemagne, aux Pays-Bas, en Espagne et en Amérique latine, au Brésil, en Indonésie, dans le monde arabe, en Iran, au Japon et en Chine.
+- **82 comparatifs vérifiés** avec d'autres outils de filigrane (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID et d'autres), et **55** avec des outils de signature (DocuSign, Youtrust, Adobe Acrobat, iLovePDF et Smallpdf, 5 par langue), sources à l'appui, y compris quand un autre outil est le meilleur choix.
+- **Sur des sites partenaires :** les sites approuvés peuvent afficher l'outil de filigrane, l'outil de signature ou les deux dans leurs pages (une iframe servie par cachety.com : le site qui l'accueille ne voit pas les documents). Voir [docs/embed.md](docs/embed.md) et [cachety.com/fr/partners](https://cachety.com/fr/partners).
+
+## Signer un document
+
+Cachety sait aussi signer un PDF, sur **[cachety.com/fr/sign](https://cachety.com/fr/sign)**. Dessinez votre signature avec le doigt, un stylet ou la souris, tapez votre nom, ou importez-en une photo. Ajoutez si vous le souhaitez la date, le lieu et une mention comme « Lu et approuvé », placez-la sur la page, et téléchargez un PDF signé.
+
+- **Même promesse :** rien n'est envoyé. La page de signature a le même verrou réseau que l'outil de filigrane, et le test du mode avion y marche aussi. Votre signature n'existe que dans la mémoire de l'onglet et n'est jamais enregistrée.
+- **Pages aplaties :** chaque page est reconstruite à partir de ses pixels. La signature ne peut pas être déplacée ou supprimée en modifiant le PDF, et le texte caché, les métadonnées et la position GPS des photos sont retirés. Le texte n'est plus sélectionnable dans la copie signée ; votre original reste intact.
+- **Options :** parapher chaque page, ajouter un filigrane (usage, destinataire, date), réduire la taille, verrouiller avec un mot de passe (désactivé par défaut, pour que le destinataire puisse l'ouvrir), et garder l'empreinte SHA-256 de chaque fichier téléchargé.
+- **PDF et photos**, plusieurs documents à la fois, sur ordinateur et sur téléphone, dans les 11 langues.
+
+**Quelle valeur ?** Une signature posée ainsi est ce qu'on appelle couramment une *signature électronique simple*. Elle est en général acceptée pour les documents de tous les jours (dossier de location, attestation, devis, formulaire d'école ou d'association). Ce n'est pas une signature qualifiée : pas de certificat, pas d'horodatage, et rien qui prouve qui a signé. Quand une signature qualifiée, une mention écrite de votre main, un testament ou un acte devant notaire est exigé, ou quand l'autre partie impose une plateforme précise, utilisez l'outil demandé. Ceci n'est pas un conseil juridique.
 
 ## Confidentialité dès la conception, et vérifiable
 
@@ -91,6 +102,8 @@ Agences immobilières, plateformes RH, associations : les sites approuvés peuve
         title="Cachety" loading="lazy" allow="clipboard-write"
         style="width: 100%; min-height: 640px; border: 0"></iframe>
 ```
+
+Pour proposer aussi la signature, ajoutez `tools=sign` (signature seule) ou `tools=watermark,sign` (les deux, le visiteur passe de l'un à l'autre) au fragment, avec si besoin le lieu et la mention sous la signature déjà remplis : `#tools=watermark,sign&place=Lyon&note=Bon%20pour%20accord`.
 
 La [page partenaires](https://cachety.com/fr/partners) génère ce code pour vous, avec un aperçu réel, le court script de hauteur automatique et un texte à reprendre. Détails techniques : [docs/embed.md](docs/embed.md).
 

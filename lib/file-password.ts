@@ -5,6 +5,7 @@
 // dans aucun lecteur PDF.
 
 import { PDFDocument } from "pdf-lib";
+import { imageToPdf, newPdf } from "@/lib/files";
 
 const PDF_PASSWORD_MAX_BYTES = 127;
 
@@ -57,19 +58,11 @@ export async function encryptPdf(bytes: Uint8Array, password: string) {
   return lock(bytes, password.normalize("NFKC"));
 }
 
-async function imageToPdf(bytes: Uint8Array, extension: "png" | "jpg") {
-  const doc = await PDFDocument.create();
-  const image = extension === "jpg" ? await doc.embedJpg(bytes) : await doc.embedPng(bytes);
-  const page = doc.addPage([image.width, image.height]);
-  page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
-  return doc.save();
-}
-
 /** Réunit des PDF et des images filigranés en un seul PDF, dans l'ordre donné. */
 export async function combineAsPdf(
   parts: { bytes: Uint8Array; extension: "pdf" | "png" | "jpg" }[]
 ): Promise<Uint8Array> {
-  const out = await PDFDocument.create();
+  const out = await newPdf();
   for (const part of parts) {
     const srcBytes = part.extension === "pdf" ? part.bytes : await imageToPdf(part.bytes, part.extension);
     const src = await PDFDocument.load(srcBytes);

@@ -16,6 +16,10 @@ export type PartnersCopy = {
     recipientPlaceholder: string;
     accent: string;
     accentHint: string;
+    tools: string;
+    toolChoices: { watermark: string; sign: string; both: string };
+    /** Sous les champs « signer » (lieu, mention) : effet d'un motif pré-rempli. */
+    signHint: string;
   };
   embedCode: string;
   resizeCode: string;
@@ -35,5 +39,13 @@ export type PartnersCopy = {
   donateCta: string;
   usedBy: string;
   /** Bandeau de la page intégrée. */
-  embed: { runsOn: string; private: string };
+  embed: {
+    runsOn: string;
+    private: string;
+    /** Choix de l'outil quand le partenaire propose les deux. */
+    switchLabel: string;
+    switchWarn: string;
+    switchConfirm: string;
+    switchCancel: string;
+  };
 };

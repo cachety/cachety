@@ -27,11 +27,15 @@ describe("PDF unique", () => {
       { bytes: PNG_1x1, extension: "png" },
       { bytes: await src.save(), extension: "pdf" },
     ]);
-    const out = await PDFDocument.load(merged);
+    const out = await PDFDocument.load(merged, { updateMetadata: false });
     expect(out.getPageCount()).toBe(2);
     const [imagePage, pdfPage] = out.getPages();
     expect(imagePage.getWidth()).toBe(1);
     expect(pdfPage.getWidth()).toBe(200);
+    expect(out.getProducer()).toBeUndefined();
+    expect(out.getCreator()).toBeUndefined();
+    expect(out.getCreationDate()).toBeUndefined();
+    expect(out.getModificationDate()).toBeUndefined();
   });
 });
 

@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Easy-to-read passwords in your language",
     body: "Password words in your own language, limited to plain letters so they type the same on any keyboard.",
   },
+  "remember-signature": {
+    title: "Remember my signature on this device",
+    body: "An opt-in choice to keep your signature on this device, with a plain sentence about what is stored and a one-tap delete. Today it is never saved.",
+  },
+  "keep-vector-pages": {
+    title: "Keep the text of signed PDFs",
+    body: "An option to sign without rebuilding the pages from pixels, so the text stays searchable. It would come with its own removal of hidden data.",
+  },
+  "sign-embed": {
+    title: "Signing on partner websites",
+    body: "Approved websites can show the sign tool in their own pages, alone or next to the watermark tool, with the place and note already filled in. The documents still stay on the visitor's device.",
+  },
+  "sign": {
+    title: "Sign a document",
+    body: "Draw, type or upload your signature, place it on a PDF or a photo, and download a signed PDF. Like the watermark tool, nothing leaves your device.",
+  },
   "simpler-tool": {
     title: "A simpler tool",
     body: "Three steps in plain words: your document, what it's for and who gets it, then preview and download. Every advanced option stays one tap away.",
@@ -46,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Missing something? Open an issue on GitHub. Ideas are welcome in any language.",
   meta: {
     title: "Roadmap: what's coming to Cachety",
-    description: "Upcoming features of Cachety, the free watermarking tool that keeps your documents on your device: what's next, ideas, and what was added recently.",
+    description: "Upcoming features of Cachety, the free tool to watermark and sign documents without them leaving your device: what's next, ideas, and recent additions.",
   },
 };
 

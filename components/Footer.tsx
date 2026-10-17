@@ -58,6 +58,9 @@ export default function Footer({ width = "max-w-7xl" }: { width?: string }) {
 
         <div className="flex flex-col gap-2 sm:items-end">
           <nav aria-label={c.nav.menu} className="flex flex-wrap gap-x-4 gap-y-2 sm:justify-end">
+            <Link href={`/${lang}/sign`} className="hover:text-encre">
+              {c.nav.sign}
+            </Link>
             <Link href={`/${lang}/guides`} className="hover:text-encre">
               {c.nav.guides}
             </Link>

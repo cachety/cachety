@@ -40,6 +40,7 @@ export default function HelpTour({
   reveal,
   revealed,
   hideOnPhone,
+  strings,
 }: {
   hasDocs: boolean;
   lifted: boolean;
@@ -49,8 +50,11 @@ export default function HelpTour({
   revealed?: number;
   /** Sur téléphone, le bouton Aide masquerait les commandes de l'étape : caché. */
   hideOnPhone?: boolean;
+  /** Textes de la visite (mode « signer » : t.sign.tour, mêmes trois zones). */
+  strings?: ReturnType<typeof useT>["tour"];
 }) {
-  const t = useT().tour;
+  const base = useT().tour;
+  const t = strings ?? base;
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [nudge, setNudge] = useState(false);

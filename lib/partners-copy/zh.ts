@@ -4,10 +4,10 @@ const COPY: PartnersCopy = {
   nav: "网站合作",
   meta: {
     title: "把 Cachety 放到您的网站上",
-    description: "免费把 Cachety 的水印工具加到您的网站上。访客的文件始终留在他们自己的设备上，您的网站和 Cachety 都看不到这些文件。",
+    description: "免费把 Cachety 的水印和签名工具加到您的网站上。访客的文件始终留在他们自己的设备上，您的网站和 Cachety 都看不到这些文件。",
   },
   title: "把 Cachety 放到您的网站上",
-  lead: "房产中介、人力资源平台、社团组织：让向您发送身份证或工资单的人，直接在您的页面上给文件加水印。免费，而且文件始终不会离开他们的设备。",
+  lead: "房产中介、人力资源平台、社团组织：让向您发送身份证或工资单的人，直接在您的页面上给文件加水印。免费，而且文件始终不会离开他们的设备。他们也可以在这里签署文件，承诺不变。",
   privacyTitle: "为什么能保护隐私",
   privacy: [
     "工具运行在由 cachety.com 提供的框架中。您的页面以及页面上的任何脚本，都无法读取其中的内容。",
@@ -24,6 +24,9 @@ const COPY: PartnersCopy = {
     recipientPlaceholder: "例如：您的公司名称",
     accent: "按钮颜色",
     accentHint: "颜色太浅会被忽略，以保证按钮清晰可读。",
+    tools: "提供的工具",
+    toolChoices: { watermark: "仅水印", sign: "仅签名", both: "两者都有，由访客选择" },
+    signHint: "签名时，预先填写的用途或接收方还会给签好的副本加上水印。访客可以取消。",
   },
   embedCode: "1. 框架",
   resizeCode: "2. 自动高度",
@@ -46,7 +49,14 @@ const COPY: PartnersCopy = {
   free: "嵌入 Cachety 是免费的，和网站的其他部分一样。如果它对您和您的访客有帮助，一笔捐助能让它继续下去。",
   donateCta: "支持 Cachety",
   usedBy: "正在使用的网站",
-  embed: { runsOn: "运行在 cachety.com 上", private: "您的文件留在您的设备上" },
+  embed: {
+    runsOn: "运行在 cachety.com 上",
+    private: "您的文件留在您的设备上",
+    switchLabel: "工具",
+    switchWarn: "切换工具会移除在此添加的文件。",
+    switchConfirm: "切换工具",
+    switchCancel: "取消",
+  },
 };
 
 export default COPY;

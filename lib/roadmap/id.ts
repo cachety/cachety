@@ -21,6 +21,22 @@ const ITEMS: Record<RoadmapId, Text> = {
     title: "Kata sandi mudah dibaca dalam bahasa Anda",
     body: "Kata-kata kata sandi dalam bahasa Anda sendiri, hanya memakai huruf biasa agar diketik sama di keyboard mana pun.",
   },
+  "remember-signature": {
+    title: "Ingat tanda tangan saya di perangkat ini",
+    body: "Pilihan opsional untuk menyimpan tanda tangan Anda di perangkat ini, dengan penjelasan singkat tentang apa yang disimpan dan satu ketukan untuk menghapusnya. Saat ini tanda tangan tidak pernah disimpan.",
+  },
+  "keep-vector-pages": {
+    title: "Pertahankan teks PDF yang ditandatangani",
+    body: "Pilihan untuk menandatangani tanpa membuat ulang halaman dari piksel, sehingga teksnya tetap bisa dicari. Pilihan ini akan punya pembersihan data tersembunyi sendiri.",
+  },
+  "sign-embed": {
+    title: "Tanda tangan di situs mitra",
+    body: "Situs yang disetujui bisa menampilkan alat tanda tangan di halaman mereka sendiri, sendiri atau di samping alat watermark, dengan tempat dan catatan yang sudah terisi. Dokumen tetap berada di perangkat pengunjung.",
+  },
+  "sign": {
+    title: "Tanda tangani dokumen",
+    body: "Gambar, ketik, atau impor tanda tangan Anda, tempatkan di PDF atau foto, lalu unduh PDF yang sudah ditandatangani. Seperti alat watermark, tidak ada yang di-upload.",
+  },
   "simpler-tool": {
     title: "Alat yang lebih sederhana",
     body: "Tiga langkah dengan kata-kata sederhana: dokumen Anda, untuk apa dan siapa penerimanya, lalu pratinjau dan unduh. Semua opsi lanjutan tetap bisa dibuka dengan satu ketukan.",
@@ -46,7 +62,7 @@ const COPY: RoadmapCopy = {
   suggestBody: "Ada yang kurang? Buka issue di GitHub. Ide dalam bahasa apa pun kami terima.",
   meta: {
     title: "Rencana: yang akan datang di Cachety",
-    description: "Fitur Cachety yang akan datang, alat watermark gratis yang menjaga dokumen tetap di perangkat Anda: rencana berikutnya, ide, dan fitur baru.",
+    description: "Fitur Cachety yang akan datang, alat gratis untuk memberi watermark dan menandatangani dokumen yang tetap di perangkat Anda: rencana, ide, dan fitur baru.",
   },
 };
 

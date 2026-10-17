@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { LANG_CODES } from "@/lib/site-meta";
-import { GUIDES, guideAlternates } from "./index";
+import { GUIDES, SIGN_TOPICS, guideAlternates, guideToolPath } from "./index";
 
 describe("guides (pages de contenu par pays)", () => {
   test("au moins six guides par langue, plus de vingt au total", () => {
@@ -50,6 +50,19 @@ describe("guides (pages de contenu par pays)", () => {
         const all = JSON.stringify(guides);
         expect(all).not.toMatch(/<[a-z/][^>]*>/i);
         expect(all).not.toMatch(/https?:\/\//);
+      });
+
+      test("signature : un guide par sujet, qui mène à la page Signer", () => {
+        for (const topic of SIGN_TOPICS) {
+          const g = guides.find((x) => x.topic === topic);
+          expect(g, topic).toBeDefined();
+          expect(g!.tool, g!.slug).toBe("sign");
+          expect(guideToolPath(lang, g!)).toBe(`/${lang}/sign`);
+        }
+        for (const g of guides.filter((x) => !SIGN_TOPICS.includes(x.topic))) {
+          expect(g.tool ?? "watermark", g.slug).toBe("watermark");
+          expect(guideToolPath(lang, g)).toBe(`/${lang}`);
+        }
       });
 
       test("hreflang : chaque alternative pointe vers un guide existant", () => {

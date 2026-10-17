@@ -26,8 +26,13 @@ export const META_ES: LocaleMeta = {
       "Guías paso a paso para poner marca de agua a tu DNI, NIE o INE, nóminas y alquiler, tachar datos de un PDF o hacerlo desde el móvil. Gratis.",
   },
   compare: {
-    title: `Comparativas de herramientas de marca de agua | ${BRAND}`,
+    title: `Comparativas: marca de agua y firma | ${BRAND}`,
     description:
-      "Cachety frente a las herramientas de marca de agua más usadas: adónde van tus archivos, precio, límites y privacidad. Comparativas con fuentes.",
+      "Cachety frente a las herramientas de marca de agua y de firma más usadas: adónde van tus archivos, precio, límites y privacidad. Con fuentes.",
+  },
+  sign: {
+    title: `Firmar un PDF gratis, sin subirlo | ${BRAND}`,
+    description:
+      "Dibuja, escribe o importa tu firma y colócala en un PDF o una foto. Todo pasa en tu navegador: ningún archivo se sube. Gratis, sin cuenta, código abierto.",
   },
 };

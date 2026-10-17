@@ -490,4 +490,191 @@ export const GUIDES_FR: Guide[] = [
     ],
     updated: UPDATED,
   },
+
+  // ------------------------------------------------------------------
+  // Guides de signature (outil Signer, /fr/sign). Les passages juridiques
+  // reprennent la page Signer (docs/prd-sign.md, sections 10.6 et 10.7).
+  {
+    slug: "signer-bail-document-location",
+    topic: "sign",
+    tool: "sign",
+    title: "Signer un bail ou un document de location en ligne, sans l’envoyer nulle part",
+    metaTitle: "Signer un bail ou un état des lieux en ligne, gratuitement",
+    description:
+      "Signez un bail, un état des lieux ou une pièce du dossier de location dans votre navigateur : signature dessinée ou tapée, rien n’est envoyé. Gratuit.",
+    intro:
+      "L’agence ou le propriétaire vous envoie le bail en PDF et vous demande de le renvoyer signé. Pas besoin d’imprimer, de scanner ni de créer un compte : vous pouvez le signer dans votre navigateur en une minute, et le document ne quitte jamais votre appareil.",
+    example: "Bail signé – réservé à l’Agence Martin – 17/10/2026",
+    body: [
+      { type: "h2", text: "Les papiers à signer pour une location" },
+      {
+        type: "p",
+        text: "Louer un logement, c’est signer plusieurs documents : le bail lui-même, l’état des lieux d’entrée, parfois une attestation ou une pièce du dossier de location. Ils arrivent le plus souvent en PDF, avec une ligne « Signature ». D’habitude, on a le choix entre une plateforme de signature qui demande d’envoyer le fichier et d’ouvrir un compte, ou imprimer, signer, scanner et renvoyer. Avec Cachety, tout se fait dans le navigateur.",
+      },
+      { type: "h2", text: "Signer vos documents de location avec Cachety" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com/fr/sign dans votre navigateur, sur ordinateur ou sur téléphone. Rien à installer, aucun compte à créer.",
+          "Vos documents : déposez le PDF sur la page, ou touchez la zone pour le choisir. Vous pouvez en mettre plusieurs à la fois, par exemple le bail et l’état des lieux. Une photo d’un document papier marche aussi : elle devient un PDF d’une page.",
+          "Votre signature : dessinez-la avec le doigt, un stylet ou la souris, tapez votre nom, ou importez une photo de votre signature sur papier blanc. Dans la partie « Sous la signature (facultatif) », gardez la date du jour et ajoutez si besoin le lieu et une mention comme « Lu et approuvé ».",
+          "Placez, vérifiez, téléchargez : votre signature apparaît en bas à droite de la dernière page. Faites-la glisser sur la ligne prévue et utilisez le coin pour la redimensionner. Cochez « Parapher aussi chaque page » si l’agence demande un paraphe sur chaque page.",
+          "Vérifiez l’aperçu, puis téléchargez. La copie signée garde le nom d’origine, suivi de -signed. C’est cette copie que vous renvoyez à l’agence.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Avec plusieurs documents, chacun a son propre emplacement. Un document n’est prêt qu’une fois la signature posée dessus : la liste vous indique ceux qui l’attendent encore.",
+      },
+      {
+        type: "tip",
+        text: "Après le téléchargement, Cachety affiche l’empreinte de chaque fichier : un code de 64 caractères calculé à partir du fichier exact que vous téléchargez. Copiez-la, gardez-la avec vos papiers, et envoyez-la avec le document (dans le même e-mail, par exemple). Si une autre version du bail réapparaît un jour, son empreinte sera différente : vous pourrez voir que ce n’est pas le fichier que vous avez envoyé.",
+      },
+      { type: "h2", text: "Les options utiles" },
+      {
+        type: "list",
+        items: [
+          "« Parapher aussi chaque page » pose une petite copie de votre signature en bas à droite de chacune des autres pages : une page remplacée se voit plus facilement.",
+          "« Verrouiller avec un mot de passe » est désactivé par défaut, car l’agence doit pouvoir ouvrir le fichier. Ne l’activez que si vous lui donnez le mot de passe par un autre moyen, par exemple au téléphone.",
+          "« Réduire la taille » sert quand la messagerie ou le portail de l’agence limite le poids des fichiers.",
+          "« Ajouter aussi un filigrane » inscrit l’usage, le destinataire et la date sur la copie signée.",
+        ],
+      },
+      { type: "h2", text: "Vos documents ne quittent pas votre appareil" },
+      {
+        type: "p",
+        text: "Cachety fonctionne dans votre navigateur. Il n’existe aucun serveur qui recevrait vos documents, et la page a techniquement interdiction de contacter un autre site. Vérifiez-le vous-même : une fois la page chargée, passez en mode avion, puis signez votre document. Tout continue de fonctionner. Votre signature n’est pas enregistrée non plus : elle n’existe que dans la mémoire de l’onglet et disparaît quand vous le fermez.",
+      },
+      {
+        type: "p",
+        text: "Chaque page de la copie signée est reconstruite à partir de ses pixels. Cela retire le texte caché et les métadonnées, et le texte n’est plus sélectionnable dans la copie signée. Votre original reste chez vous, intact.",
+      },
+      { type: "h2", text: "Quelle valeur a cette signature pour un bail ?" },
+      {
+        type: "p",
+        text: "Une signature dessinée, tapée ou importée puis posée sur le document est ce qu’on appelle couramment une signature électronique « simple ». Dans l’Union européenne, un juge ne peut pas l’écarter comme preuve au seul motif qu’elle est électronique (règlement eIDAS, article 25). En France, une signature identifie son auteur et montre qu’il consent à l’acte ; sous forme électronique, elle doit reposer sur un procédé fiable qui la relie au document (Code civil, article 1367). Une image de signature, comme une signature scannée, ne remplit pas seule cette condition : elle vaut signature si personne ne la conteste, mais pèse peu si elle l’est (Cour de cassation, 2022 et 2024). Pour un bail d’habitation, un état des lieux ou une pièce du dossier de location, c’est en général accepté.",
+      },
+      {
+        type: "p",
+        text: "En cas de litige, celui qui s’appuie sur le document doit prouver qui l’a signé : gardez l’e-mail ou le message avec lequel il a été envoyé. Seule une signature « qualifiée », avec un certificat délivré par un prestataire qualifié, est présumée fiable et équivaut à une signature manuscrite.",
+      },
+      {
+        type: "warning",
+        text: "Ce n’est pas le bon outil quand une signature qualifiée est exigée, quand la loi demande une mention écrite de votre main (caution, reconnaissance de dette), pour un testament ou un acte devant notaire, ou quand l’autre partie impose une plateforme précise (certains contrats de prêt ou d’assurance, certaines démarches administratives). Dans ce cas, utilisez l’outil demandé. Ceci n’est pas un conseil juridique.",
+      },
+      { type: "h2", text: "Peut-on réutiliser ma signature ?" },
+      {
+        type: "p",
+        text: "Votre signature fait partie de l’image de chaque page : on ne peut pas la déplacer ou la supprimer comme un élément du PDF. Mais, comme pour une signature sur papier scanné, quelqu’un pourrait la découper et la coller ailleurs : aucune image de signature ne peut l’empêcher. Le fichier ne prouve pas non plus qui l’a posée, ni que le document n’a pas été modifié ensuite. Gardez votre copie. Pour limiter ce risque, ajoutez un filigrane qui lie la copie à son usage et à son destinataire, et paraphez chaque page.",
+      },
+    ],
+    faq: [
+      {
+        q: "Une agence accepte-t-elle un bail signé de cette façon ?",
+        a: "Dans la plupart des cas, oui : renvoyer un PDF signé par mail est courant pour les documents de location. Si l’agence utilise sa propre plateforme de signature et y tient, utilisez la sienne.",
+      },
+      {
+        q: "Faut-il imprimer quelque chose ?",
+        a: "Non. Vous signez à l’écran et vous renvoyez le PDF signé. Si vous n’avez qu’un exemplaire papier, prenez-le en photo, bien éclairé, et signez la photo.",
+      },
+      {
+        q: "Ma signature est-elle enregistrée ?",
+        a: "Non. Elle n’existe que dans la mémoire de l’onglet. Fermez-le et elle disparaît. La prochaine fois, vous la dessinez ou la tapez à nouveau.",
+      },
+      {
+        q: "Peut-on encore copier le texte du PDF signé ?",
+        a: "Non. Chaque page est reconstruite à partir de ses pixels, ce qui retire aussi le texte caché et les métadonnées. Gardez votre original si vous avez besoin du texte.",
+      },
+      {
+        q: "Cachety est-il vraiment gratuit ?",
+        a: "Oui. C’est gratuit, sans compte et sans pistage. C’est un logiciel libre fabriqué en France par Amir Moradi.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
+
+  // ------------------------------------------------------------------
+  {
+    slug: "signer-pdf-sur-telephone",
+    topic: "sign-phone",
+    tool: "sign",
+    title: "Signer un PDF sur son téléphone (iPhone et Android)",
+    metaTitle: "Signer un PDF sur téléphone : iPhone et Android, gratuit",
+    description:
+      "Signez un PDF avec le doigt sur votre iPhone ou votre téléphone Android. Sans application, sans compte, et le document n’est jamais envoyé. Gratuit.",
+    intro:
+      "On vous a envoyé un PDF à signer et à renvoyer, et vous n’avez pas d’ordinateur sous la main. Vous pouvez le signer avec le doigt, directement dans le navigateur de votre téléphone, en une minute.",
+    example: "Autorisation parentale signée – pour l’école Jules-Ferry – 17/10/2026",
+    body: [
+      { type: "h2", text: "Sans application, sans compte, sans envoi" },
+      {
+        type: "p",
+        text: "Cachety s’ouvre dans le navigateur de votre téléphone, Safari, Chrome ou un autre. Rien à télécharger depuis une boutique d’applications, aucun compte à créer. Le document est traité sur le téléphone lui-même, jamais envoyé : la page a techniquement interdiction de contacter un autre site.",
+      },
+      { type: "h2", text: "Pas à pas sur votre téléphone" },
+      {
+        type: "steps",
+        items: [
+          "Enregistrez sur votre téléphone le PDF reçu. Dans la plupart des applications de mail, touchez la pièce jointe, puis enregistrez-la dans Fichiers sur iPhone ou dans Téléchargements sur Android.",
+          "Ouvrez cachety.com/fr/sign dans votre navigateur, touchez la zone de dépôt et choisissez le PDF. Une photo d’un document papier marche aussi.",
+          "Dessinez votre signature dans le cadre avec le doigt. La signature ne vous plaît pas ? Touchez « Annuler le dernier trait » ou « Effacer », et recommencez. Vous pouvez aussi taper votre nom, ou importer une photo de votre signature.",
+          "Choisissez ce qui s’affiche sous la signature, si vous le souhaitez. La date du jour est cochée par défaut, et vous pouvez ajouter le lieu et une mention comme « Lu et approuvé ».",
+          "Passez à « Placez, vérifiez, téléchargez ». Votre signature apparaît en bas à droite de la dernière page. Faites-la glisser avec le doigt et utilisez le coin pour la redimensionner.",
+          "Vérifiez l’aperçu, téléchargez le PDF signé, puis renvoyez-le par mail ou par messagerie.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Signez un peu plus grand que sur papier, sans vous presser. L’espace vide autour de la signature est retiré automatiquement : elle reste nette une fois posée sur la page.",
+      },
+      { type: "h2", text: "Vous préférez une photo de votre signature ?" },
+      {
+        type: "p",
+        text: "Si signer avec le doigt vous gêne, signez une feuille blanche avec un stylo foncé, prenez-la en photo à la lumière du jour, et choisissez « Importer ». Le fond blanc est retiré pour vous. S’il reste un peu de papier visible, déplacez le curseur « Sensibilité ». Les photos HEIC de l’iPhone passent aussi.",
+      },
+      { type: "h2", text: "Vérifiez que tout reste sur votre téléphone" },
+      {
+        type: "p",
+        text: "Une fois la page chargée, passez en mode avion, puis choisissez votre PDF et signez-le. Tout continue de fonctionner : c’est la preuve que rien n’est envoyé nulle part. Votre signature n’est pas enregistrée : fermez l’onglet et elle disparaît.",
+      },
+      { type: "h2", text: "Les options avant de télécharger" },
+      {
+        type: "list",
+        items: [
+          "« Parapher aussi chaque page » ajoute une petite copie de votre signature sur les autres pages.",
+          "« Réduire la taille » garde le fichier sous le poids accepté par une messagerie ou un site.",
+          "« Verrouiller avec un mot de passe » est désactivé par défaut, pour que le destinataire puisse ouvrir le fichier tout de suite.",
+          "Après le téléchargement, l’empreinte du fichier s’affiche. Gardez-la et envoyez-la avec le document : si une autre version réapparaît un jour, son empreinte sera différente, et vous pourrez voir que ce n’est pas le fichier que vous avez envoyé.",
+        ],
+      },
+      { type: "h2", text: "Quelle valeur a cette signature ?" },
+      {
+        type: "p",
+        text: "Une signature dessinée sur votre téléphone puis posée sur le document est ce qu’on appelle couramment une signature électronique « simple ». Elle est en général acceptée pour les documents de tous les jours : autorisation parentale, formulaire d’école ou d’association, attestation, devis, dossier de location. En cas de litige, celui qui s’appuie sur le document doit prouver qui l’a signé : gardez l’e-mail ou le message avec lequel il a été envoyé.",
+      },
+      {
+        type: "warning",
+        text: "Ce n’est pas le bon outil quand une signature qualifiée, avec certificat, est exigée, quand la loi demande une mention écrite de votre main (caution, reconnaissance de dette), pour un testament ou un acte devant notaire, ou quand l’autre partie impose sa propre plateforme (certains contrats de prêt ou d’assurance, certaines démarches administratives). Et comme pour une signature sur papier scanné, quelqu’un pourrait découper votre signature sur la copie et la réutiliser. Un filigrane avec l’usage et le destinataire, et un paraphe sur chaque page, limitent ce risque. Ceci n’est pas un conseil juridique.",
+      },
+    ],
+    faq: [
+      {
+        q: "Faut-il installer une application ?",
+        a: "Non. Cachety fonctionne dans le navigateur. Vous pouvez l’ajouter à l’écran d’accueil pour y accéder plus vite, mais ce n’est pas obligatoire.",
+      },
+      {
+        q: "Puis-je signer avec un stylet ?",
+        a: "Oui. Le cadre de signature fonctionne avec le doigt, un stylet ou, sur ordinateur, la souris.",
+      },
+      {
+        q: "Le PDF est-il envoyé quelque part ?",
+        a: "Non. Tout se passe sur votre téléphone. Passez en mode avion une fois la page chargée : tout fonctionne.",
+      },
+      {
+        q: "Pourquoi le texte du PDF signé n’est-il plus sélectionnable ?",
+        a: "Chaque page est reconstruite à partir de ses pixels : la signature ne peut pas être détachée, et les données cachées sont retirées. Votre original reste sur votre téléphone, intact.",
+      },
+    ],
+    updated: "2026-10-17",
+  },
 ];
