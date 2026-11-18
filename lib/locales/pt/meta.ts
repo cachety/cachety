@@ -35,4 +35,10 @@ export const META_PT: LocaleMeta = {
     description:
       "Desenhe, digite ou importe sua assinatura e coloque em um PDF ou foto. Tudo acontece no seu navegador: nenhum arquivo é enviado. Grátis, sem cadastro.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "Junte seus documentos em um PDF leve, sem enviar nada",
+    description:
+      "PDFs e fotos em um só arquivo, na ordem e abaixo do tamanho pedido. Tudo acontece no seu navegador: nada é enviado. Grátis e de código aberto.",
+  },
 };

@@ -8,6 +8,7 @@ export const SITE_DE: SiteCopy = {
   nav: {
     tool: "Wasserzeichen",
     sign: "Unterschreiben",
+    dossier: "Dossier",
     about: "Warum ein Wasserzeichen?",
     guides: "Ratgeber",
     privacy: "Datenschutz",

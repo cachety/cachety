@@ -35,4 +35,10 @@ export const META_DE: LocaleMeta = {
     description:
       "Zeichne, tippe oder importiere deine Unterschrift und setz sie auf ein PDF oder Foto. Alles passiert im Browser, nichts wird hochgeladen. Kostenlos, ohne Konto.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "Dokumente zu einem kleinen PDF zusammenfügen, ohne Upload",
+    description:
+      "PDFs und Fotos in einer Datei, in der richtigen Reihenfolge, unter der verlangten Größe. Alles passiert im Browser, nichts wird hochgeladen. Kostenlos.",
+  },
 };

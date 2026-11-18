@@ -42,6 +42,8 @@ export type SiteCopy = {
     tool: string;
     /** Outil de signature (/sign). */
     sign: string;
+    /** Outil Dossier (/dossier) : un seul fichier à envoyer. */
+    dossier: string;
     about: string;
     guides: string;
     privacy: string;
@@ -136,6 +138,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     nav: {
       tool: "Filigraner",
       sign: "Signer",
+      dossier: "Dossier",
       about: "Pourquoi filigraner ?",
       guides: "Guides",
       privacy: "Confidentialité",
@@ -401,6 +404,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     nav: {
       tool: "Watermark",
       sign: "Sign",
+      dossier: "Dossier",
       about: "Why watermark?",
       guides: "Guides",
       privacy: "Privacy",
@@ -665,6 +669,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     nav: {
       tool: "透かし",
       sign: "署名",
+      dossier: "書類まとめ",
       about: "なぜ透かしを？",
       guides: "ガイド",
       privacy: "プライバシー",
@@ -930,6 +935,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
     nav: {
       tool: "水印",
       sign: "签名",
+      dossier: "合成一份",
       about: "为什么加水印？",
       guides: "指南",
       privacy: "隐私",

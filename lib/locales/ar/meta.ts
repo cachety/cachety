@@ -35,4 +35,10 @@ export const META_AR: LocaleMeta = {
     description:
       "ارسم توقيعك أو اكتبه أو استورده وضعه على ملف PDF أو صورة. كل شيء يتم داخل متصفحك: لا يُرفع أي ملف. مجاني، بدون تسجيل، مفتوح المصدر.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "اجمع مستنداتك في ملف PDF واحد خفيف دون رفع أي شيء",
+    description:
+      "ملفات PDF وصور في ملف واحد، بالترتيب، وتحت الحجم المطلوب. كل شيء يتم داخل متصفحك: لا يُرفع أي شيء. مجاني ومفتوح المصدر.",
+  },
 };

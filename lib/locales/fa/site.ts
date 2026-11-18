@@ -7,6 +7,7 @@ export const SITE_FA: SiteCopy = {
   nav: {
     tool: "واترمارک",
     sign: "امضا",
+    dossier: "پرونده",
     about: "چرا واترمارک؟",
     guides: "راهنماها",
     privacy: "حریم خصوصی",

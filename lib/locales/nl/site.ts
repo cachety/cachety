@@ -7,6 +7,7 @@ export const SITE_NL: SiteCopy = {
   nav: {
     tool: "Watermerk",
     sign: "Ondertekenen",
+    dossier: "Dossier",
     about: "Waarom een watermerk?",
     guides: "Uitleg",
     privacy: "Privacy",

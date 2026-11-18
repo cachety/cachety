@@ -330,6 +330,7 @@ entries.push({ path: "/", alternates: homeAlt, lastmod: SITE_DATE });
 for (const l of LANG_CODES) entries.push({ path: `/${l}`, alternates: homeAlt, lastmod: SITE_DATE });
 const indexDate: Record<string, string> = {
   "/sign": SITE_DATE,
+  "/dossier": SITE_DATE,
   "/about": SITE_DATE,
   "/privacy": SITE_DATE,
   "/roadmap": ROADMAP_DATE,
@@ -337,9 +338,9 @@ const indexDate: Record<string, string> = {
   "/guides": gitDate("lib/guides", "lib/site-meta.ts", "lib/locales"),
   "/compare": gitDate("lib/compare", "lib/site-meta.ts", "lib/locales"),
 };
-// Pages qui existent aussi sans langue (x-default, anglaises) : /sign, /about.
-const WITH_DEFAULT = new Set(["/sign", "/about"]);
-for (const suffix of ["/sign", "/about", "/guides", "/compare", "/privacy", "/roadmap", "/partners"]) {
+// Pages qui existent aussi sans langue (x-default, anglaises) : /sign, /dossier, /about.
+const WITH_DEFAULT = new Set(["/sign", "/dossier", "/about"]);
+for (const suffix of ["/sign", "/dossier", "/about", "/guides", "/compare", "/privacy", "/roadmap", "/partners"]) {
   const xDefault = WITH_DEFAULT.has(suffix) ? suffix : undefined;
   const alt = allLangs(suffix, xDefault);
   if (xDefault) entries.push({ path: xDefault, alternates: alt, lastmod: indexDate[suffix] });

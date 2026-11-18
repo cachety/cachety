@@ -7,6 +7,7 @@ export const SITE_AR: SiteCopy = {
   nav: {
     tool: "العلامة المائية",
     sign: "التوقيع",
+    dossier: "ملف واحد",
     about: "لماذا العلامة المائية؟",
     guides: "الأدلة",
     privacy: "الخصوصية",

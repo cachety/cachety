@@ -7,6 +7,7 @@ export const SITE_ID: SiteCopy = {
   nav: {
     tool: "Watermark",
     sign: "Tanda tangan",
+    dossier: "Berkas",
     about: "Mengapa perlu watermark?",
     guides: "Panduan",
     privacy: "Privasi",

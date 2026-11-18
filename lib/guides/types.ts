@@ -28,7 +28,7 @@ export type GuideTopic =
   | "sign-phone";
 
 /** Outil vers lequel pointe le bouton d'appel du guide. */
-export type GuideTool = "watermark" | "sign";
+export type GuideTool = "watermark" | "sign" | "dossier";
 
 export type GuideBlock =
   | { type: "h2"; text: string }

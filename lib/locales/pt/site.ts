@@ -7,6 +7,7 @@ export const SITE_PT: SiteCopy = {
   nav: {
     tool: "Marca d'água",
     sign: "Assinar",
+    dossier: "Dossier",
     about: "Por que uma marca d'água?",
     guides: "Guias",
     privacy: "Privacidade",

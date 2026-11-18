@@ -35,4 +35,10 @@ export const META_NL: LocaleMeta = {
     description:
       "Teken, typ of importeer je handtekening en plaats hem op een pdf of foto. Alles gebeurt in je browser: er wordt niets geüpload. Gratis, zonder account.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "Documenten samenvoegen tot één kleine pdf, zonder upload",
+    description:
+      "Pdf's en foto's in één bestand, in de juiste volgorde en onder de gevraagde grootte. Alles gebeurt in je browser: er wordt niets geüpload. Gratis en open source.",
+  },
 };

@@ -35,4 +35,10 @@ export const META_ES: LocaleMeta = {
     description:
       "Dibuja, escribe o importa tu firma y colócala en un PDF o una foto. Todo pasa en tu navegador: ningún archivo se sube. Gratis, sin cuenta, código abierto.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "Une tus documentos en un PDF ligero, sin subir nada",
+    description:
+      "PDF y fotos en un solo archivo, en orden y por debajo del tamaño que te piden. Todo pasa en tu navegador: no se sube nada. Gratis y de código abierto.",
+  },
 };
