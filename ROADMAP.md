@@ -10,6 +10,26 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 
 ## Next
 
+### `dossier`: one file to send
+- **Status:** next (built on the `feat/dossier` branch, 2026-11-18; becomes
+  **shipped** on release day, planned as v1.2.0)
+- **Why:** before sending documents, people have to put them in one PDF, in
+  order, under the size a website accepts. The tools they use for that today
+  process the files on their servers.
+- **Scope:** a third mode at `/<lang>/dossier`: drop PDFs and photos; reorder,
+  rotate and remove single pages in a page grid; one PDF, one PDF per section
+  or one per document (ZIP); a size target with a readability floor and an
+  estimate before download; straighten, crop and clean up a photo of a paper
+  page; optional watermark, masks, password and fingerprint as in the other
+  tools; `#tools=dossier` in the partner embed. Pages are rebuilt from pixels,
+  as everywhere else. Two guides in all 11 languages.
+  Spec: [docs/prd-dossier.md](docs/prd-dossier.md).
+- **Before release:** the manual pass of the spec's §11.5 (real phones, a real
+  portal with a size limit, a 300-page file on an iPhone), and the native
+  review below.
+- **Later:** automatic corner detection, comparison pages for merge and
+  compress, a `/compress` entry page, per-use-case checklists (spec §14).
+
 ### `per-recipient-password`: a different password for each recipient
 - **Status:** next
 - **Why:** today one password locks every copy. If several copies travel

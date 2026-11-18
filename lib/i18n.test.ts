@@ -91,6 +91,80 @@ describe("i18n (parité entre toutes les langues)", () => {
     }
   });
 
+  // Mode « dossier » (docs/prd-dossier.md §6.7, §10).
+  test("mode dossier : même arborescence de clés dans toutes les langues", () => {
+    const shape = (v: unknown): unknown =>
+      Array.isArray(v)
+        ? v.map(shape)
+        : typeof v === "function"
+          ? "fn"
+          : v && typeof v === "object"
+            ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, shape((v as Record<string, unknown>)[k])]))
+            : typeof v;
+    for (const t of ALL) expect(shape(t.dossier)).toEqual(shape(STRINGS.fr.dossier));
+  });
+
+  test("mode dossier : nom de fichier par défaut en ASCII, sections utilisables comme noms de fichiers", () => {
+    for (const t of ALL) {
+      const d = t.dossier;
+      // « dossier.pdf », « documents.pdf » : téléchargement sûr dans toutes les langues.
+      expect(d.defaultName).toMatch(/^[a-z][a-z-]*[a-z]$/);
+      expect(d.sections.presets).toHaveLength(5);
+      expect(new Set(d.sections.presets).size).toBe(5);
+      for (const name of d.sections.presets) {
+        expect(name.length).toBeLessThanOrEqual(40);
+        // Rien qu'un système de fichiers refuse, rien qui sorte du dossier.
+        expect(name).not.toMatch(/[\\/:*?"<>|\u0000-\u001f]/);
+        expect(name.trim()).toBe(name);
+        expect(name.startsWith(".")).toBe(false);
+      }
+    }
+  });
+
+  test("mode dossier : textes non vides, listes et fonctions complètes", () => {
+    const walk = (v: unknown): void => {
+      if (typeof v === "string") expect(v.trim().length).toBeGreaterThan(0);
+      else if (Array.isArray(v)) v.forEach(walk);
+      else if (v && typeof v === "object") Object.values(v).forEach(walk);
+    };
+    for (const t of ALL) {
+      const d = t.dossier;
+      walk(d);
+      expect(d.stepShort).toHaveLength(3);
+      expect(d.tour).toHaveLength(3);
+      expect(d.size.exits).toHaveLength(3);
+      for (const n of [1, 2, 23]) expect(d.grid.total(n)).toContain(String(n));
+      expect(d.grid.removed(7)).toContain("7");
+      expect(d.grid.rotated(7)).toContain("7");
+      expect(d.grid.restored(7)).toContain("7");
+      expect(d.grid.menu(7)).toContain("7");
+      for (const part of ["7", "30"]) expect(d.grid.position(7, 30)).toContain(part);
+      for (const part of ["4", "30"]) expect(d.grid.moved(4, 30)).toContain(part);
+      for (const part of ["3", "a.pdf"]) expect(d.grid.pageOf(3, "a.pdf")).toContain(part);
+      expect(d.photo.corner(2)).toContain("2");
+      expect(d.sections.unnamed(3)).toContain("3");
+      expect(d.sections.name(3)).toContain("3");
+      for (const part of ["3.2 MB", "5 MB"]) expect(d.size.fits("3.2 MB", "5 MB")).toContain(part);
+      expect(d.size.reduced("4.8 MB")).toContain("4.8 MB");
+      expect(d.size.unreachable("1 MB")).toContain("1 MB");
+      for (const part of ["Payslips", "2.1 MB"]) expect(d.size.section("Payslips", "2.1 MB")).toContain(part);
+      expect(d.summaryOne(23)).toContain("23");
+      for (const part of ["23", "4"]) expect(d.summaryMany(23, 4)).toContain(part);
+      expect(d.processingDoc("a.pdf")).toContain("a.pdf");
+      for (const part of ["a.pdf", "2", "5"]) expect(d.processingDoc("a.pdf", [2, 5])).toContain(part);
+      // La limite (MAX_DOSSIER_PAGES) est dite en chiffres : « 1 000 », « 1,000 », « 1.000 », « ۱٬۰۰۰ »…
+      const digits = t.errors.dossier_too_many_pages
+        .replace(/[۰-۹]/g, (c) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(c)))
+        .replace(/[٠-٩]/g, (c) => String("٠١٢٣٤٥٦٧٨٩".indexOf(c)))
+        .replace(/[^0-9]/g, "");
+      expect(digits).toContain("1000");
+    }
+  });
+
+  test("mode dossier : jamais « DossierFacile » dans l'outil (aucun lien avec le service de l'État)", () => {
+    for (const t of ALL) expect(JSON.stringify(t.dossier)).not.toMatch(/dossier\s?facile/i);
+  });
+
   test("texte libre : trois mots distincts, entre accolades, cités dans l'aide", () => {
     for (const t of ALL) {
       const { recipient, date, code } = t.stampCard.tokens;

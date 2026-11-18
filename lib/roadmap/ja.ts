@@ -1,6 +1,10 @@
 import type { RoadmapCopy, RoadmapId, Text } from "./types";
 
 const ITEMS: Record<RoadmapId, Text> = {
+  "dossier": {
+    title: "書類まとめ：送るファイルを1つに",
+    body: "PDFや写真をドロップしてページを並べ替え、ページを回転したり、いらないページを削除したりして、1つのPDF、またはセクションごとのPDFを、サイトが求めるサイズに収めてダウンロードします。何も端末の外に出ません。",
+  },
   "per-recipient-password": {
     title: "宛先ごとに別のパスワード",
     body: "宛先ごとのコピーをそれぞれ別のパスワードでロックし、ダウンロード後に番号と一緒に一覧で表示します。パスワードが一つ漏れても、開けるのはそのコピーだけです。",

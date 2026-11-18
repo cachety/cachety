@@ -37,6 +37,25 @@ export type SignCopy = {
   backToTop: string;
 };
 
+/**
+ * Page /dossier (docs/prd-dossier.md §10) : sous l'outil, la promesse, pourquoi
+ * le fichier peut grossir, et la FAQ. Les renvois vers le filigrane et la
+ * signature reprennent les encarts existants (sign.watermarkLink, landing.signLink).
+ */
+export type DossierCopy = {
+  hero: { title: string; lead: string; pills: string[] };
+  howTitle: string;
+  how: Item[];
+  airplaneTitle: string;
+  airplaneBody: string;
+  /** « Pourquoi le fichier peut être plus lourd que vos originaux » (§4.2). */
+  bigger: { title: string; body: string };
+  faqTitle: string;
+  faq: { q: string; a: string }[];
+  /** Bouton de retour à l'outil, et bouton d'appel des guides de l'outil Dossier. */
+  backToTop: string;
+};
+
 export type SiteCopy = {
   nav: {
     tool: string;
@@ -82,6 +101,7 @@ export type SiteCopy = {
     backToTop: string;
   };
   sign: SignCopy;
+  dossier: DossierCopy;
   privacy: { title: string; lead: string; sections: Section[]; updated: string };
   guidesUi: {
     title: string;
@@ -277,6 +297,51 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         cta: "Filigraner un document",
       },
       backToTop: "Signer un document",
+    },
+    // Page /dossier (docs/prd-dossier.md §10.2 et §10.5).
+    dossier: {
+      hero: {
+        title: "Un seul fichier à envoyer, sans rien mettre en ligne",
+        lead: "Pièce d'identité, fiches de paie, avis d'impôt, photo d'un papier : rangez les pages, tournez celles qui sont de travers, et obtenez un PDF sous la taille demandée.",
+        pills: ["Gratuit", "Sans compte", "Rien n'est envoyé", "Fabriqué en France"],
+      },
+      howTitle: "Comment ça marche",
+      how: [
+        { title: "Déposez vos documents", body: "Des PDF et des photos, même prises avec un téléphone : pièce d'identité, fiches de paie, avis d'impôt. Plusieurs à la fois." },
+        { title: "Rangez les pages", body: "Faites-les glisser dans l'ordre voulu, tournez celles qui sont de travers, retirez celles dont vous n'avez pas besoin." },
+        { title: "Choisissez la taille, puis téléchargez", body: "Un seul PDF, ou un par section, sous la taille que le site demande. Il est enregistré sur votre appareil." },
+      ],
+      airplaneTitle: "Vérifiez-le vous-même : le test du mode avion",
+      airplaneBody:
+        "Ouvrez cette page, puis coupez Internet (mode avion). Déposez vos documents et assemblez-les : Cachety fonctionne toujours. La preuve que rien ne passe par Internet.",
+      bigger: {
+        title: "Pourquoi le fichier peut être plus lourd que vos originaux",
+        body: "Cachety ne recopie pas vos fichiers : chaque page est reconstruite en image. C'est ce qui retire le texte caché, les métadonnées, les pièces jointes, les liens et la position GPS des photos. En contrepartie, un PDF qui ne contenait que du texte peut grossir, et son texte n'est plus sélectionnable. Si un site impose une limite, choisissez une taille maximale : Cachety réduit les pages pour tenir dedans, et vous prévient quand elles deviendraient illisibles.",
+      },
+      faqTitle: "Questions fréquentes",
+      faq: [
+        {
+          q: "Mes documents sont-ils envoyés quelque part ?",
+          a: "Non. Le site n'a pas de serveur qui pourrait les recevoir, et la page interdit à votre navigateur de contacter un autre site. Le test du mode avion le prouve en dix secondes.",
+        },
+        {
+          q: "Pourquoi mon fichier est-il parfois plus lourd ?",
+          a: "Chaque page est reconstruite à partir de ses pixels. Cela retire le texte caché, les métadonnées et la position GPS des photos, mais un PDF qui ne contenait que du texte peut grossir. Choisissez une taille maximale : Cachety réduit les pages pour tenir dedans.",
+        },
+        {
+          q: "Le texte reste-t-il sélectionnable ?",
+          a: "Non, les pages sont des images. Vos originaux restent intacts sur votre appareil.",
+        },
+        {
+          q: "Puis-je ajouter un fichier Word ou Excel ?",
+          a: "Pas directement. Enregistrez-le d'abord en PDF depuis Word, Excel ou votre téléphone (Imprimer, puis Enregistrer en PDF).",
+        },
+        {
+          q: "Ça marche sur mon téléphone ?",
+          a: "Oui. Prenez vos papiers en photo, redressez-les et rangez les pages avec le doigt.",
+        },
+      ],
+      backToTop: "Préparer mon dossier",
     },
     privacy: {
       title: "Confidentialité et sécurité",
@@ -542,6 +607,51 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         cta: "Watermark a document",
       },
       backToTop: "Sign a document",
+    },
+    // /dossier page (docs/prd-dossier.md §10.2 and §10.5).
+    dossier: {
+      hero: {
+        title: "One file to send, without uploading anything",
+        lead: "ID, payslips, tax notice, a photo of a paper form: put the pages in order, turn the sideways ones, and get one PDF under the size you were asked for.",
+        pills: ["Free", "No account", "Nothing uploaded", "Made in France"],
+      },
+      howTitle: "How it works",
+      how: [
+        { title: "Drop your documents", body: "PDFs and photos, even ones taken with a phone: ID, payslips, tax notice. Several at once." },
+        { title: "Put the pages in order", body: "Drag them into the order you want, turn the sideways ones, remove the ones you don't need." },
+        { title: "Choose the size, then download", body: "One PDF, or one per section, under the size the website asks for. It is saved to your device." },
+      ],
+      airplaneTitle: "Check it yourself: the aeroplane mode test",
+      airplaneBody:
+        "Open this page, then switch off the internet (aeroplane mode). Drop in your documents and put them together: Cachety still works. Proof that nothing goes over the internet.",
+      bigger: {
+        title: "Why the file can be bigger than your originals",
+        body: "Cachety does not copy your files: each page is rebuilt as an image. That is what removes hidden text, metadata, attachments, links and photo GPS location. In return, a PDF that only held text can get bigger, and its text can no longer be selected. If a website sets a limit, choose a maximum size: Cachety shrinks the pages to fit, and warns you when they would become unreadable.",
+      },
+      faqTitle: "Frequently asked questions",
+      faq: [
+        {
+          q: "Are my documents uploaded anywhere?",
+          a: "No. The site has no server that could receive them, and the page forbids your browser from contacting any other site. The airplane-mode test proves it in ten seconds.",
+        },
+        {
+          q: "Why is my file sometimes bigger?",
+          a: "Each page is rebuilt from its pixels. That removes hidden text, metadata and photo GPS location, but a PDF that only held text can get bigger. Choose a maximum size: Cachety shrinks the pages to fit.",
+        },
+        {
+          q: "Is the text still selectable?",
+          a: "No, the pages are images. Your originals stay untouched on your device.",
+        },
+        {
+          q: "Can I add a Word or Excel file?",
+          a: "Not directly. Save it as a PDF first from Word, Excel or your phone (Print, then Save as PDF).",
+        },
+        {
+          q: "Does it work on my phone?",
+          a: "Yes. Photograph your papers, straighten them and put the pages in order with your finger.",
+        },
+      ],
+      backToTop: "Prepare my file",
     },
     privacy: {
       title: "Privacy and security",
@@ -809,6 +919,51 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       },
       backToTop: "書類に署名する",
     },
+    // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+    dossier: {
+      hero: {
+        title: "送る書類を、アップロードせずに 1 つのファイルに",
+        lead: "身分証、給与明細、課税証明書、紙の書類を撮った写真。ページを並べ替え、横向きのページを直して、指定されたサイズに収まる 1 つの PDF にできます。",
+        pills: ["無料", "登録不要", "アップロードなし", "フランス製"],
+      },
+      howTitle: "使い方",
+      how: [
+        { title: "書類をドロップ", body: "PDF でも、スマホで撮った写真でもかまいません。身分証、給与明細、課税証明書など、複数まとめて追加できます。" },
+        { title: "ページを並べる", body: "ドラッグして好きな順番に並べ、横向きのページは回転し、いらないページは削除します。" },
+        { title: "サイズを選んでダウンロード", body: "1 つの PDF、またはセクションごとの PDF を、サイトが求めるサイズに収めて作ります。ファイルは端末に保存されます。" },
+      ],
+      airplaneTitle: "自分で確かめる：機内モードテスト",
+      airplaneBody:
+        "このページを開いてから、インターネットを切ってください（機内モード）。書類をドロップしてまとめても、Cachety はそのまま動きます。何もネットに送られていない証拠です。",
+      bigger: {
+        title: "ファイルが元の書類より大きくなることがある理由",
+        body: "Cachety はファイルをそのまま写すのではなく、各ページを画像として作り直します。これによって、隠れたテキスト、メタデータ、添付ファイル、リンク、写真の位置情報（GPS）が取り除かれます。その代わり、文字だけだった PDF は大きくなることがあり、文字は選択できなくなります。サイトに上限がある場合は、最大サイズを選んでください。Cachety がそのサイズに収まるようにページを軽くし、読めなくなりそうなときはお知らせします。",
+      },
+      faqTitle: "よくある質問",
+      faq: [
+        {
+          q: "書類はどこかにアップロードされますか？",
+          a: "いいえ。このサイトには書類を受け取るサーバーがなく、このページの設定で、ブラウザが他のサイトと通信することも禁止しています。機内モードテストなら 10 秒で確かめられます。",
+        },
+        {
+          q: "ファイルが大きくなることがあるのはなぜですか？",
+          a: "各ページを画素から作り直すためです。隠れたテキスト、メタデータ、写真の位置情報（GPS）は取り除かれますが、文字だけだった PDF は大きくなることがあります。最大サイズを選べば、Cachety がそのサイズに収まるようにページを軽くします。",
+        },
+        {
+          q: "文字は選択できますか？",
+          a: "できません。ページは画像になります。元のファイルは端末にそのまま残ります。",
+        },
+        {
+          q: "Word や Excel のファイルを追加できますか？",
+          a: "そのままではできません。先に Word、Excel、またはスマホで PDF として保存してください（「印刷」から「PDF として保存」）。",
+        },
+        {
+          q: "スマホでも使えますか？",
+          a: "はい。書類を撮影し、傾きを直して、指でページを並べ替えられます。",
+        },
+      ],
+      backToTop: "書類をまとめる",
+    },
     privacy: {
       title: "プライバシーと安全性",
       lead: "書類は大切な個人情報です。Cachety が何をして、何をしないのか、そして自分で確かめる方法を、わかりやすく説明します。",
@@ -1074,6 +1229,51 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
         cta: "给文件加水印",
       },
       backToTop: "签署文件",
+    },
+    // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+    dossier: {
+      hero: {
+        title: "合成一个文件再发送，全程不上传",
+        lead: "身份证件、工资条、纳税证明、纸质表格的照片：排好页面顺序，把横着的转正，生成一个不超过规定大小的 PDF。",
+        pills: ["免费", "无需注册", "不上传", "法国出品"],
+      },
+      howTitle: "使用方法",
+      how: [
+        { title: "拖入文件", body: "PDF 和照片都可以，用手机拍的也行：身份证件、工资条、纳税证明。可以一次添加多份。" },
+        { title: "排好页面顺序", body: "把页面拖成您想要的顺序，把横着的转正，移除不需要的页面。" },
+        { title: "选好大小后下载", body: "生成一个 PDF，或每个分组一个 PDF，不超过网站要求的大小。文件保存在您的设备上。" },
+      ],
+      airplaneTitle: "自己验证：飞行模式测试",
+      airplaneBody:
+        "先打开本页，然后断网（开启飞行模式）。再拖入您的文件并合成：Cachety 照常工作。这就证明没有任何东西经过互联网。",
+      bigger: {
+        title: "为什么生成的文件可能比原件大",
+        body: "Cachety 不是照搬您的文件：每一页都会重新生成为图片。这样才能去除隐藏文字、元数据、附件、链接和照片的 GPS 位置。代价是，原本只有文字的 PDF 可能会变大，其中的文字也不能再选中。如果网站限制了大小，请选择最大大小：Cachety 会压缩页面，使文件不超过这个大小；如果页面会因此变得看不清，它会提醒您。",
+      },
+      faqTitle: "常见问题",
+      faq: [
+        {
+          q: "我的文件会被上传到什么地方吗？",
+          a: "不会。这个网站没有能接收文件的服务器，页面也禁止您的浏览器联系任何其他网站。用飞行模式测试，十秒钟就能验证。",
+        },
+        {
+          q: "为什么文件有时会变大？",
+          a: "每一页都由像素重新生成。这会去除隐藏文字、元数据和照片的 GPS 位置，但原本只有文字的 PDF 可能会变大。选择最大大小，Cachety 就会压缩页面，使文件不超过这个大小。",
+        },
+        {
+          q: "文字还能选中吗？",
+          a: "不能，页面都是图片。您的原件留在您的设备上，原封不动。",
+        },
+        {
+          q: "可以添加 Word 或 Excel 文件吗？",
+          a: "不能直接添加。请先在 Word、Excel 或手机上把它保存为 PDF（先点「打印」，再选「存储为 PDF」）。",
+        },
+        {
+          q: "手机上能用吗？",
+          a: "能。给纸质文件拍照，拉正，再用手指排好页面顺序。",
+        },
+      ],
+      backToTop: "合成我的文件",
     },
     privacy: {
       title: "隐私与安全",

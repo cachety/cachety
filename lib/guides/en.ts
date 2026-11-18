@@ -651,4 +651,166 @@ export const GUIDES_EN: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+  // Dossier guides (Cachety Dossier, /en/dossier): docs/prd-dossier.md §5.9.
+  {
+    slug: "rental-application-one-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "How to put your rental application into one PDF, without uploading it anywhere",
+    metaTitle: "Rental Application in One PDF, Under the Size Limit",
+    description:
+      "Passport, payslips, bank statements and proof of address in one PDF, or one file per document, under 5 MB. Free, and nothing is uploaded.",
+    intro:
+      "A letting agent or landlord asks for your ID, payslips and proof of address ‘as one PDF’, or as separate files under a size limit. Here is how to prepare them on your own device, in a couple of minutes.",
+    example: "Tenancy application – Martin Lettings Islington – 18/11/2026",
+    body: [
+      { type: "h2", text: "What you are usually asked for" },
+      {
+        type: "p",
+        text: "An application to rent comes with the same handful of documents almost every time: a passport or other ID, your last three payslips, recent bank statements or a tax document, and proof of your current address. Some agents want everything in one PDF. Others, and most upload forms, want one file per kind of document, each under a limit such as 2, 5 or 10 MB.",
+      },
+      {
+        type: "p",
+        text: "Some of these documents are PDFs you downloaded. The others are often photos taken with your phone: sideways, with the table showing around the page, and far too heavy for the form.",
+      },
+      { type: "h2", text: "Why not use an online PDF merger?" },
+      {
+        type: "p",
+        text: "Most websites that merge or compress PDFs work on their servers: your files are uploaded, processed there and sent back. For a rental application, that means handing your identity, your income and your address, all at once, to one more company. Cachety works the other way round. Your browser does the work, on your device, and the page technically cannot send your files anywhere. You can check it: load the page, switch on aeroplane mode, and it still works.",
+      },
+      { type: "h2", text: "Step by step" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com and choose Dossier. There is nothing to install and no account to create.",
+          "Drop all your files at once: PDFs and photos, including iPhone photos (HEIC).",
+          "Look at the pages. Drag them into the order you want, turn the sideways ones, and remove the pages nobody asked for, such as a blank back page.",
+          "For a photo of a paper page, use ‘Straighten and crop’: put each corner on a corner of the sheet. ‘Whiten the background’ makes it look like a scan and makes the file much lighter.",
+          "If you were asked for separate files, choose ‘Split into several files’ and name each section: ID, Payslips, Tax notice, Proof of address.",
+          "Choose the maximum size, for example 5 MB. Cachety tells you whether it fits before you download.",
+          "Download. You get one PDF, or one PDF per section in a ZIP file.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "The order matters to the person reading. A common one is ID first, then proof of income, then proof of address.",
+      },
+      { type: "h2", text: "When the file is too big" },
+      {
+        type: "p",
+        text: "If the size line says the file cannot fit and stay readable, do not force it: the small print on a payslip becomes impossible to read, and the application may be turned down. Split it into sections so that each file has its own limit, remove the pages you do not need, or pick the next size up if the form allows it.",
+      },
+      { type: "h2", text: "Add a watermark if you want one" },
+      {
+        type: "p",
+        text: "A clean copy is often what the agent expects, so the watermark is off by default. If you want every page to say what the copy is for and who it is for, tick the watermark option before you download. You can also black out what the agent does not need with ‘Hide something’.",
+      },
+      { type: "h2", text: "Renting in France: DossierFacile" },
+      {
+        type: "p",
+        text: "In France, the State runs a free service for rental applications called DossierFacile. It has its own limits: when this guide was written, 10 MB per file and a set number of pages for each category of document. Cachety can prepare the files you then upload there: one section per category, each under the limit. Cachety is an independent tool and has no link with that service.",
+      },
+      {
+        type: "warning",
+        text: "The pages of the PDF you download are images. The text can no longer be selected or searched, and the file can be bigger than an original that only held text. That is the price of removing hidden data: metadata, hidden text and the GPS location stored in photos.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is my rental application uploaded anywhere?",
+        a: "No. There is no server that could receive it, and the page forbids your browser from contacting any other website. Everything happens on your device.",
+      },
+      {
+        q: "Can I add a Word document?",
+        a: "Not directly. Save it as a PDF first, from Word or from your phone (Print, then Save as PDF), then add that PDF.",
+      },
+      {
+        q: "One PDF or several files: which should I send?",
+        a: "Send what you were asked for. If the agent said nothing, one PDF in a sensible order is the easiest to read. Upload forms with one box per document need one file per section.",
+      },
+      {
+        q: "Will the agent be able to open it?",
+        a: "Yes. It is an ordinary PDF that opens on any phone or computer. The password lock is off by default, so nothing stands in the way.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+  {
+    slug: "make-a-pdf-smaller-for-an-online-form",
+    topic: "size",
+    tool: "dossier",
+    title: "How to make a PDF smaller for an online form, without uploading it",
+    metaTitle: "Make a PDF Smaller for an Online Form, for Free",
+    description:
+      "A form refuses your file because it is too big? Bring a PDF or a photo under 1, 2, 5 or 10 MB on your own device. Free, and nothing is uploaded.",
+    intro:
+      "Job applications, benefit claims, school and visa forms often refuse a file above 1, 2, 5 or 10 MB. Here is how to get under the limit and keep the document readable.",
+    example: "Job application – Greenfield Foods HR – 18/11/2026",
+    body: [
+      { type: "h2", text: "Why files are too big" },
+      {
+        type: "p",
+        text: "A phone photo of a single sheet of paper often weighs 3 to 6 MB, because the camera records far more detail than a form needs. A scanned PDF is the same thing: one large picture per page. A PDF made from Word, on the other hand, is usually tiny, because it holds text rather than pictures.",
+      },
+      { type: "h2", text: "Step by step" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com and choose Dossier.",
+          "Drop your PDF or your photos. Several files become one PDF.",
+          "Remove the pages the form does not ask for. Fewer pages leave more room for the ones that matter.",
+          "Under ‘Maximum size’, choose the limit of the form: 1, 2, 5 or 10 MB, or type another one.",
+          "Read the size line. It says whether the file fits as it is, fits with pages a little less sharp, or cannot fit and stay readable.",
+          "Download the PDF and upload it to the form.",
+        ],
+      },
+      { type: "h2", text: "What ‘readable’ means" },
+      {
+        type: "p",
+        text: "To make a file lighter, Cachety first lowers the picture quality of each page, then its resolution. It stops at a floor: below it, small print such as the lines of a payslip can no longer be read, and a file nobody can read is of no use. Pages that hold more, such as photos, get a larger share of the size than pages of plain text.",
+      },
+      {
+        type: "tip",
+        text: "For a photo of a paper page, turn on ‘Whiten the background’ or ‘Black and white’. The page reads better and weighs much less.",
+      },
+      { type: "h2", text: "When it does not fit" },
+      {
+        type: "list",
+        items: [
+          "Split the file into sections, if the form takes several files: each one gets its own limit.",
+          "Remove pages you were not asked for.",
+          "Choose a larger size, if the form allows it.",
+          "As a last resort, tick ‘Allow lower quality’, then check that you can still read the smallest print before you send the file.",
+        ],
+      },
+      { type: "h2", text: "Why a file can get bigger" },
+      {
+        type: "p",
+        text: "Cachety rebuilds each page as an image. That removes hidden text, metadata and the GPS location of photos, but a PDF that only held text can come out bigger than it went in. Choose a maximum size and the pages are shrunk to fit.",
+      },
+      {
+        type: "warning",
+        text: "The text of the PDF you download can no longer be selected or searched. Keep your original.",
+      },
+    ],
+    faq: [
+      {
+        q: "Is my file uploaded to be compressed?",
+        a: "No. Your browser does the work on your device. Switch on aeroplane mode after the page has loaded and it still works.",
+      },
+      {
+        q: "The form wants a PDF and I only have a photo. Does that work?",
+        a: "Yes. A photo, including an iPhone photo (HEIC), becomes a page of the PDF.",
+      },
+      {
+        q: "Why is my small PDF now bigger?",
+        a: "Because its text became a picture of the page. Choose a maximum size and Cachety shrinks the pages to fit under it.",
+      },
+      {
+        q: "Can I choose a size that is not in the list?",
+        a: "Yes. Choose ‘Other…’ and type a size between 0.5 and 50 MB.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

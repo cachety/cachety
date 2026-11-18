@@ -25,7 +25,11 @@ export type GuideTopic =
   /** Signer un bail ou un document de location (outil Signer). */
   | "sign"
   /** Signer un PDF sur téléphone (outil Signer). */
-  | "sign-phone";
+  | "sign-phone"
+  /** Réunir un dossier (location…) en un seul PDF (outil Dossier). */
+  | "dossier"
+  /** Passer sous la taille maximale d'un formulaire (outil Dossier). */
+  | "size";
 
 /** Outil vers lequel pointe le bouton d'appel du guide. */
 export type GuideTool = "watermark" | "sign" | "dossier";
@@ -48,7 +52,8 @@ export type Guide = {
   topic: GuideTopic;
   /**
    * Outil que le guide explique : le bouton d'appel mène à /<lang> pour
-   * « watermark » (défaut, si absent) et à /<lang>/sign pour « sign ».
+   * « watermark » (défaut, si absent), à /<lang>/sign pour « sign » et à
+   * /<lang>/dossier pour « dossier ».
    */
   tool?: GuideTool;
   /** Titre affiché (h1). */

@@ -36,7 +36,7 @@ export const guidesIndexPath = (lang: Lang) => `/${lang}/guides`;
 
 /** Page de l'outil expliqué par le guide (cible du bouton d'appel). */
 export const guideToolPath = (lang: Lang, guide: Guide) =>
-  guide.tool === "sign" ? `/${lang}/sign` : `/${lang}`;
+  guide.tool === "sign" ? `/${lang}/sign` : guide.tool === "dossier" ? `/${lang}/dossier` : `/${lang}`;
 
 export function findGuide(lang: Lang, slug: string): Guide | undefined {
   return GUIDES[lang].find((g) => g.slug === slug);
@@ -44,6 +44,9 @@ export function findGuide(lang: Lang, slug: string): Guide | undefined {
 
 /** Sujets traités avec l'outil Signer : leurs guides doivent y mener. */
 export const SIGN_TOPICS: readonly GuideTopic[] = ["sign", "sign-phone"];
+
+/** Sujets traités avec l'outil Dossier : leurs guides doivent y mener. */
+export const DOSSIER_TOPICS: readonly GuideTopic[] = ["dossier", "size"];
 
 /** hreflang : le guide de même sujet dans chaque autre langue, s'il existe. */
 export function guideAlternates(lang: Lang, guide: Guide): Record<string, string> {

@@ -17,9 +17,14 @@ export type PartnersCopy = {
     accent: string;
     accentHint: string;
     tools: string;
-    toolChoices: { watermark: string; sign: string; both: string };
+    toolChoices: { watermark: string; sign: string; both: string; dossier: string; all: string };
     /** Sous les champs « signer » (lieu, mention) : effet d'un motif pré-rempli. */
     signHint: string;
+    /** Outil Dossier : taille maximale présélectionnée (Mo) et sections déjà nommées. */
+    size: string;
+    sizePlaceholder: string;
+    sections: string;
+    sectionsPlaceholder: string;
   };
   embedCode: string;
   resizeCode: string;

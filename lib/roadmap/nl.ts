@@ -1,6 +1,10 @@
 import type { RoadmapCopy, RoadmapId, Text } from "./types";
 
 const ITEMS: Record<RoadmapId, Text> = {
+  "dossier": {
+    title: "Dossier: één bestand om te versturen",
+    body: "Sleep pdf's en foto's erin, zet de pagina's op volgorde, draai of verwijder wat je niet wilt, en download één pdf, of één per onderdeel, onder de grootte die een website vraagt. Niets verlaat je apparaat.",
+  },
   "per-recipient-password": {
     title: "Een ander wachtwoord voor elke ontvanger",
     body: "Elke kopie krijgt een eigen wachtwoord, na het downloaden vermeld bij de codes. Lekt er een wachtwoord uit, dan opent dat maar één kopie.",

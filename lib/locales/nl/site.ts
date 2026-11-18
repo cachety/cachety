@@ -199,6 +199,60 @@ export const SITE_NL: SiteCopy = {
     },
     backToTop: "Een document ondertekenen",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    hero: {
+      title: "Eén bestand om te versturen, zonder iets te uploaden",
+      lead: "Identiteitsbewijs, loonstroken, belastingaanslag, een foto van een papieren formulier: zet de pagina's op volgorde, draai de pagina's die op hun kant staan, en krijg één pdf onder de grootte die van je gevraagd is.",
+      pills: ["Gratis", "Geen account", "Niets wordt geüpload", "Gemaakt in Frankrijk"],
+    },
+    howTitle: "Zo werkt het",
+    how: [
+      {
+        title: "Sleep je documenten erin",
+        body: "Pdf's en foto's, ook als je die met je telefoon hebt gemaakt: identiteitsbewijs, loonstroken, belastingaanslag. Meerdere tegelijk.",
+      },
+      {
+        title: "Zet de pagina's op volgorde",
+        body: "Sleep ze in de volgorde die je wilt, draai de pagina's die op hun kant staan en verwijder wat je niet nodig hebt.",
+      },
+      {
+        title: "Kies de grootte en download",
+        body: "Eén pdf, of één per onderdeel, onder de grootte die de website vraagt. Hij wordt op je apparaat opgeslagen.",
+      },
+    ],
+    airplaneTitle: "Controleer het zelf: de vliegtuigmodustest",
+    airplaneBody:
+      "Open deze pagina en zet daarna je internet uit (vliegtuigmodus). Sleep je documenten erin en voeg ze samen: Cachety blijft werken. Het bewijs dat er niets over internet gaat.",
+    bigger: {
+      title: "Waarom het bestand groter kan zijn dan je originelen",
+      body: "Cachety kopieert je bestanden niet: elke pagina wordt opnieuw opgebouwd als afbeelding. Daardoor verdwijnen verborgen tekst, metadata, bijlagen, links en de gps-locatie van foto's. Daar staat tegenover dat een pdf met alleen tekst groter kan worden, en dat de tekst niet meer te selecteren is. Legt een website een limiet op, kies dan een maximale grootte: Cachety verkleint de pagina's tot het past, en waarschuwt je als ze onleesbaar zouden worden.",
+    },
+    faqTitle: "Veelgestelde vragen",
+    faq: [
+      {
+        q: "Worden mijn documenten ergens geüpload?",
+        a: "Nee. De site heeft geen server die ze zou kunnen ontvangen, en de pagina verbiedt je browser om contact te maken met een andere website. De vliegtuigmodustest bewijst het in tien seconden.",
+      },
+      {
+        q: "Waarom is mijn bestand soms groter?",
+        a: "Elke pagina wordt opnieuw opgebouwd uit haar pixels. Daarbij verdwijnen verborgen tekst, metadata en de gps-locatie van foto's, maar een pdf met alleen tekst kan groter worden. Kies een maximale grootte: Cachety verkleint de pagina's tot het past.",
+      },
+      {
+        q: "Is de tekst nog te selecteren?",
+        a: "Nee, de pagina's zijn afbeeldingen. Je originelen blijven onaangeroerd op je apparaat.",
+      },
+      {
+        q: "Kan ik een Word- of Excel-bestand toevoegen?",
+        a: "Niet direct. Sla het eerst op als pdf vanuit Word, Excel of je telefoon (Afdrukken, dan Opslaan als pdf).",
+      },
+      {
+        q: "Werkt het op mijn telefoon?",
+        a: "Ja. Fotografeer je papieren, zet ze recht en zet de pagina's met je vinger op volgorde.",
+      },
+    ],
+    backToTop: "Mijn bestand voorbereiden",
+  },
   privacy: {
     title: "Privacy en beveiliging",
     lead: "Je documenten zijn persoonlijk. Hier lees je in gewone taal wat Cachety wel en niet doet, en hoe je dat zelf controleert.",

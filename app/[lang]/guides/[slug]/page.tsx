@@ -94,7 +94,7 @@ export default async function GuidePage({ params }: Props) {
             href={guideToolPath(lang, g)}
             className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            {g.tool === "sign" ? ui.ctaSign : ui.cta}
+            {g.tool === "sign" ? ui.ctaSign : g.tool === "dossier" ? SITE_COPY[lang].dossier.backToTop : ui.cta}
             <ChevronIcon direction="right" className="h-4 w-4" />
           </Link>
         </aside>
