@@ -75,6 +75,8 @@ import { DocRow } from "@/components/DocList";
 import { useDragReorder } from "@/components/useDragReorder";
 import { Kiosk } from "@/components/Kiosk";
 import { readPrefill } from "@/lib/partners";
+import { takeSuggestions, withExtraction } from "@/lib/suggestions";
+import { useSuggestions } from "@/components/useSuggestions";
 
 // Au-delà de ce nombre de documents, la liste passe en zone défilante bornée
 // avec résumé et filtres (sinon mille lignes poussent les étapes 2 et 3 à
@@ -607,10 +609,11 @@ export default function CoreProduct({
             doc.password,
             job.aborter.signal,
             liveStyle,
-            renderOptions(doc, maxBytes)
+            // Suggestions de masquage : le texte du document est lu avec ce rendu, une seule fois.
+            withExtraction(renderOptions(doc, maxBytes), doc)
           );
           if (!keep()) releaseResult(result);
-          else update(doc.id, { status: "ready", result, stampedWith: own, progress: undefined });
+          else update(doc.id, { status: "ready", result, stampedWith: own, progress: undefined, ...takeSuggestions(doc, result) });
         } catch (e) {
           if (keep()) {
             const key = e instanceof Error ? (e.message as ErrorKey) : "";
@@ -737,6 +740,8 @@ export default function CoreProduct({
     docs.find((d) => d.result || d.error);
   sticky.current = shown ? { id: shown.id, fileKey } : null;
   shownIdRef.current = shown?.id;
+  // Suggestions de masquage : tous les modes qui affichent l'éditeur de masques.
+  const suggest = useSuggestions(docs, setDocs, shown?.id);
 
   const [bundling, setBundling] = useState(false);
   // Quelle étape a échoué : le message doit nommer la bonne (assemblage ou
@@ -1275,6 +1280,7 @@ export default function CoreProduct({
                   maskEditing={tool === "hide" && fresh}
                   onMaskEditing={(on) => setTool(on ? "hide" : null)}
                   updating={!fresh}
+                  suggest={suggest}
                   signing={
                     sign && sigReady
                       ? {
