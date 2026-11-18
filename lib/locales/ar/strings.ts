@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/ar";
 
 // Arabe standard moderne, pour un public non technique de tous les pays arabes.
 // Texte brut : la page est rendue en dir="rtl", aucun caractère de contrôle bidi.
@@ -201,6 +202,7 @@ export const STRINGS_AR: Strings = {
     remove: (n: number) => `إزالة المنطقة المخفية رقم ${n}`,
     editHint: "اسحب المنطقة لنقلها، أو اسحب زاويتها لتغيير حجمها، أو اضغط × لإزالتها.",
   },
+  suggest,
   shareReceived: (n: number) =>
     n > 1 ? `عدد الملفات المستلمة عبر المشاركة: ${n}.` : "تم استلام ملف واحد عبر المشاركة.",
   dragHandle: (name: string) => `نقل ${name} (اسحبه، أو استخدم مفتاحي السهم لأعلى ولأسفل)`,

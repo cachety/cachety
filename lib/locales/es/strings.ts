@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/es";
 
 // Español neutro (España y Latinoamérica), tuteo. Frases cortas, sin jerga.
 
@@ -186,6 +187,7 @@ export const STRINGS_ES: Strings = {
     remove: (n: number) => `Quitar la zona tapada ${n}`,
     editHint: "Arrastra una zona para moverla, su esquina para cambiar el tamaño, o toca × para quitarla.",
   },
+  suggest,
   shareReceived: (n: number) =>
     n > 1 ? `${n} archivos recibidos al compartir.` : `1 archivo recibido al compartir.`,
   dragHandle: (name: string) => `Mover ${name} (arrastra, o usa las flechas arriba y abajo)`,
