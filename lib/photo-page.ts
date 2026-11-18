@@ -7,6 +7,8 @@
 // navigateur) ; ce fichier ne fait que les brancher sur un canvas.
 
 import { a4PageFor } from "@/lib/files";
+import { decodeHeic, isHeic } from "@/lib/heic";
+import { imageSize, tooManyPixels } from "@/lib/image-size";
 import type { PageEdit } from "@/lib/pages";
 import { autoLevels, clampQuad, isUsableQuad, outputSize, toGray, warp } from "@/lib/photo-fix";
 
@@ -106,4 +108,27 @@ export async function thumbnailOf(canvas: HTMLCanvasElement, width: number): Pro
   );
   small.canvas.width = 0;
   return URL.createObjectURL(blob);
+}
+
+/**
+ * Photo décodée pour l'éditeur « Redresser et recadrer » : mêmes garde-fous
+ * que le moteur (dimensions lues dans l'en-tête avant tout décodage, HEIC par
+ * le navigateur ou par libheif). L'appelant ferme le bitmap (`close()`).
+ */
+export async function loadPhoto(file: File): Promise<ImageBitmap> {
+  try {
+    if (isHeic(file)) {
+      try {
+        return await createImageBitmap(file);
+      } catch {
+        return await createImageBitmap(await decodeHeic(new Uint8Array(await file.arrayBuffer())));
+      }
+    }
+    const head = new Uint8Array(await file.slice(0, 512 * 1024).arrayBuffer());
+    if (tooManyPixels(imageSize(head))) throw new Error("image_too_large");
+    return await createImageBitmap(file);
+  } catch (e) {
+    if (e instanceof Error && e.message === "image_too_large") throw e;
+    throw new Error("image_unreadable");
+  }
 }

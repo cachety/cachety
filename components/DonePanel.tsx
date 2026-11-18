@@ -22,6 +22,8 @@ export type DoneInfo = {
   file?: { url: string; name: string };
   /** Mode « signer » : empreinte SHA-256 de chaque fichier produit (montrée, jamais conservée). */
   fingerprints?: FingerprintItem[];
+  /** Mode « dossier » : la taille demandée n'a pas pu être tenue en restant lisible. */
+  notice?: string;
 };
 
 export function DonePanel({
@@ -97,6 +99,12 @@ export function DonePanel({
           <p className="text-sm text-encre-2">{d.saved}</p>
         </div>
       </div>
+
+      {info.notice && (
+        <p data-testid="done-notice" className="mt-3 rounded-xl border border-amber-600/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-900">
+          {info.notice}
+        </p>
+      )}
 
       {info.file && (
         <a

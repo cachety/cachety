@@ -24,10 +24,10 @@ export default function DossierApp({ forcedLang }: { forcedLang?: Lang }) {
     <LangProvider forcedLang={forcedLang}>
       <DossierLangSync />
       <div id="top" />
-      <Header />
+      <Header tool="dossier" />
       {/* flex-1 : le pied de page reste collé en bas de l'écran (cf. HomeApp). */}
       <main className="flex-1">
-        <CoreProduct />
+        <CoreProduct mode="dossier" />
         <DossierLanding teasers={TEASERS} />
       </main>
       <Footer />

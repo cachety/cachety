@@ -239,3 +239,28 @@ export const SlidersIcon = ({ className }: IconProps) => (
     <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" />
   </Stroke>
 );
+
+/** Un quart de tour dans le sens horaire (mode « dossier »). */
+export const RotateIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <path d="M21 4v6h-6" />
+    <path d="M20.5 14a8.5 8.5 0 11-2.2-7.9L21 10" />
+  </Stroke>
+);
+
+/** Autres actions (menu d'une page). */
+export const MoreIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    {[5, 12, 19].map((x) => (
+      <circle key={x} cx={x} cy={12} r={2} />
+    ))}
+  </svg>
+);
+
+/** Plusieurs pages réunies (outil Dossier). */
+export const PagesIcon = ({ className }: IconProps) => (
+  <Stroke className={className}>
+    <rect x="8" y="3" width="12" height="15" rx="2" />
+    <path d="M16 18v1a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2h2" />
+  </Stroke>
+);

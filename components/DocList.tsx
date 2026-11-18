@@ -21,6 +21,8 @@ export const DocRow = memo(function DocRow({
   dragging,
   dropEdge,
   placeMissing,
+  noPages,
+  onRestore,
 }: {
   doc: Doc;
   selected: boolean;
@@ -38,6 +40,9 @@ export const DocRow = memo(function DocRow({
   dropEdge?: "before" | "after";
   /** Mode « signer » : signature retirée de ce document, à replacer (pastille d'attention). */
   placeMissing?: boolean;
+  /** Mode « dossier » : toutes ses pages ont été retirées ; la ligne reste, grisée, avec « Remettre ses pages ». */
+  noPages?: boolean;
+  onRestore?: (id: string) => void;
 }) {
   const t = useT();
   const reorder = !!onMoveTo && !!onDragStart;
@@ -59,7 +64,7 @@ export const DocRow = memo(function DocRow({
           }`}
         />
       )}
-      <div className="flex items-center">
+      <div className={`flex items-center ${noPages ? "opacity-50" : ""}`}>
         {reorder && (
           <div className="flex shrink-0 items-center gap-0.5 py-1 ps-1">
             <button
@@ -121,6 +126,20 @@ export const DocRow = memo(function DocRow({
           <CloseIcon className="h-4 w-4" />
         </button>
       </div>
+      {noPages && (
+        <p className="flex flex-wrap items-center justify-between gap-2 border-t border-trait px-4 py-2 text-sm text-encre-2">
+          <span>{t.dossier.grid.noPages}</span>
+          {onRestore && (
+            <button
+              type="button"
+              onClick={() => onRestore(doc.id)}
+              className="font-medium text-bleu underline underline-offset-2 hover:no-underline"
+            >
+              {t.dossier.grid.restore}
+            </button>
+          )}
+        </p>
+      )}
       {needsPassword(doc) && (
         <UnlockForm
           name={doc.file.name}
