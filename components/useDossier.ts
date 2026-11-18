@@ -85,7 +85,7 @@ export type GridPage = {
   photo: boolean;
 };
 
-type Undo = { id: number; label: string; run: (current: DossierState) => DossierState };
+type Undo = { id: number; label: string; page: number; run: (current: DossierState) => DossierState };
 
 export function useDossier({
   enabled,
@@ -286,14 +286,14 @@ export function useDossier({
       setState(removed.state);
       const label = td.grid.removed(pageNumber(index));
       setAnnouncement(label);
-      setUndo({ id: ++undoSeq.current, label, run: removed.undo });
+      setUndo({ id: ++undoSeq.current, label, page: pageNumber(index), run: removed.undo });
     },
     [state, td]
   );
   const undoLast = useCallback(() => {
     if (!undo) return;
     setState((prev) => undo.run(prev));
-    setAnnouncement(td.grid.undo);
+    setAnnouncement(td.grid.restored(undo.page));
     setUndo(null);
   }, [undo, td]);
   const reset = useCallback(() => {

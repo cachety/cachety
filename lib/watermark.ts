@@ -56,7 +56,10 @@ export type RenderOptions = {
   thumbnails?: number;
   /** Plancher de lisibilité : échelle la plus basse de ENCODE_LADDER permise sous une taille cible. */
   minScale?: number;
-  /** Budget (octets) de l'image de chaque page, à la place du partage égal de `maxBytes` (lib/assemble.ts). */
+  /**
+   * Budget (octets) de l'image de chaque page, à la place du partage égal de
+   * `maxBytes` (lib/assemble.ts). 0 ou absent pour une page : sans limite.
+   */
   pageBudgets?: number[];
   /** Image en entrée : une page comme celles d'un PDF (A4 au plus, JPEG), au lieu d'un PNG (mode « dossier »). */
   photoPage?: boolean;

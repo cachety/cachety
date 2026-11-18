@@ -76,6 +76,7 @@ Where the count stands:
 | 2026-10-17 | 333 | 66 | 1,919 | Before `/dossier`. Finer grouping was one exact rule per page: 9 rules per language for de, es, id, pt. |
 | 2026-11-18 | 345 | 80 | 1,919 | Empty `/dossier` routes added, old grouping: `en` fell back too (10 rules). One more page or guide in the six other grouped languages would have gone past 100. |
 | 2026-11-18 | 345 | 45 | 1,919 | Same pages, finer grouping reduced to three rules per language (`/fr/:page`). |
+| 2026-11-18 | 367 | 57 | 1,163 | Dossier pages with their content, and two dossier guides per language: every language is now on the finer grouping. Longest line: the Spanish comparisons (`/es/compare/*`, 16 hashes). |
 
 With every language on the finer grouping the count is 57 (4 fixed rules, 3 for scripts and workers, 16 exact rules for the home pages and the pages without a language, 3 per language, 1 for the embed), so new pages and guides no longer move it. A new language adds 4 rules at most. What can still grow is a line: a section (`/fr/guides/*`, `/fr/compare/*`) holds about 30 guides or comparisons before it passes 1,950 characters, and the build fails if one does.
 

@@ -108,6 +108,21 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   Also the partner page's tool choice and embed switch strings
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.
+  Dossier (2026-11-18): everything outside French and English is a draft
+  translated from the English and marked "Draft translation, awaiting native
+  review" where it lives: the tool strings (`dossier` block and
+  `dossier_too_many_pages` in `lib/i18n.tsx` for ja and zh, and in
+  `lib/locales/<lang>/strings.ts`), the page copy (`dossier` in
+  `lib/site-copy.ts` and `lib/locales/<lang>/site.ts`), the page title and
+  description (`lib/site-meta.ts`, `lib/locales/<lang>/meta.ts`), the nav
+  label (`nav.dossier`: translated in ja, zh, es, ar, fa and id), the two
+  guides (`dossier` and `size` topics), the `dossier` roadmap text, the
+  partner builder labels and the one-line README entries. First things to
+  check: the word chosen for "section", the five section presets (they become
+  file names), the size sentences, and in the rental guides the paragraph
+  about DossierFacile, which must say no more than the English one. The
+  German and Dutch rental guides were adapted to local paperwork (Schufa,
+  Mieterselbstauskunft; werkgeversverklaring, uittreksel BRP): check those too.
 - **Sign, later (v1.1+):** several placements per page (`multi-placement`), a
   self-hosted handwriting font for the Type tab (`script-font`), and per-country mention presets
   reviewed by native speakers (`more-mentions`). See `docs/prd-sign.md` §14.

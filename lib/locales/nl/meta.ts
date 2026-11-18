@@ -39,6 +39,6 @@ export const META_NL: LocaleMeta = {
   dossier: {
     title: "Documenten samenvoegen tot één kleine pdf, zonder upload",
     description:
-      "Pdf's en foto's in één bestand, in de juiste volgorde en onder de gevraagde grootte. Alles gebeurt in je browser: er wordt niets geüpload. Gratis en open source.",
+      "Pdf's en foto's in één bestand, in de juiste volgorde en onder de gevraagde grootte. Alles gebeurt in je browser: er wordt niets geüpload. Gratis, open source.",
   },
 };

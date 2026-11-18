@@ -838,3 +838,23 @@ describe("dossier : aucun octet ne quitte le navigateur", () => {
     180_000
   );
 });
+
+describe("dossier : plafond de 1 000 pages", () => {
+  test(
+    "le fichier qui ferait dépasser 1 000 pages est écarté, avec sa raison ; de la place libérée, il revient",
+    async () => {
+      const blank = (n: number) => makePdf(Array.from({ length: n }, () => [200, 280] as [number, number]));
+      const page = await openPage("/en/dossier");
+      await addFiles(page, [pdf("one.pdf", await blank(500)), pdf("two.pdf", await blank(490)), pdf("three.pdf", await blank(20))]);
+      await page.getByText(en.errors.dossier_too_many_pages).first().waitFor({ timeout: 400_000 });
+      await page.getByTestId("page-total").filter({ hasText: d.grid.total(990) }).waitFor({ timeout: 400_000 });
+      // Le reste du dossier fonctionne : la grille reste légère malgré 990 pages.
+      expect(await page.locator("[data-page-index]").count()).toBeLessThan(80);
+
+      await page.getByRole("button", { name: en.remove("two.pdf"), exact: true }).click();
+      await page.getByTestId("page-total").filter({ hasText: d.grid.total(520) }).waitFor({ timeout: 200_000 });
+      await page.getByText(en.errors.dossier_too_many_pages).first().waitFor({ state: "detached" });
+    },
+    900_000
+  );
+});
