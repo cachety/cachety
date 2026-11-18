@@ -56,13 +56,16 @@ describe("apparence du filigrane", () => {
 
   test("une valeur hors limites ou illisible retombe sur le défaut, puis se cale sur le pas", () => {
     expect(normalizeStyle(null)).toEqual(DEFAULT_WATERMARK_STYLE);
-    expect(normalizeStyle({ font: "comic", scale: 9, color: "rouge", opacity: 0, wave: 9 })).toEqual({
+    expect(normalizeStyle({ font: "comic", scale: 9, color: "rouge", opacity: 0, wave: 9, outline: "épais" })).toEqual({
       font: "mono",
       scale: 2.2,
       color: "#c4262e",
       opacity: 0.05,
       wave: 1,
+      outline: "strong",
     });
+    expect(normalizeStyle({ outline: "thin" }).outline).toBe("thin");
+    expect(normalizeStyle({ outline: "none" }).outline).toBe("none");
     expect(normalizeStyle({ font: "serif", color: "#ABC" }).color).toBe("#aabbcc");
     expect(normalizeStyle({ scale: 0.2 }).scale).toBe(0.2); // plus petit réglage : 20 %
     expect(normalizeStyle({ scale: 0.1 }).scale).toBe(0.2);
@@ -77,6 +80,10 @@ describe("apparence du filigrane", () => {
     expect(stampKey("Dossier", { ...DEFAULT_WATERMARK_STYLE, color: "#223f92" })).not.toBe(base);
     expect(stampKey("Dossier", { ...DEFAULT_WATERMARK_STYLE, opacity: 0.8 })).not.toBe(base);
     expect(stampKey("Dossier", { ...DEFAULT_WATERMARK_STYLE, wave: 0.5 })).not.toBe(base);
+    expect(stampKey("Dossier", { ...DEFAULT_WATERMARK_STYLE, outline: "thin" })).not.toBe(base);
+    expect(stampKey("Dossier", { ...DEFAULT_WATERMARK_STYLE, outline: "none" })).not.toBe(
+      stampKey("Dossier", { ...DEFAULT_WATERMARK_STYLE, outline: "thin" })
+    );
   });
 
   test("le JSON stocké est relu, et un JSON cassé redonne le défaut", () => {
@@ -86,6 +93,7 @@ describe("apparence du filigrane", () => {
       color: "#223f92",
       opacity: 0.8,
       wave: 0.4,
+      outline: "thin",
     });
     expect(readStyle(saved)).toEqual({
       font: "sans",
@@ -93,10 +101,12 @@ describe("apparence du filigrane", () => {
       color: "#223f92",
       opacity: 0.8,
       wave: 0.4,
+      outline: "thin",
     });
+    // Réglage enregistré avant le choix du contour : contour marqué, comme avant.
     expect(
       readStyle(JSON.stringify({ font: "sans", scale: 1.25, color: "#223f92", opacity: 0.8 }))
-    ).toMatchObject({ wave: 0 });
+    ).toMatchObject({ wave: 0, outline: "strong" });
     expect(readStyle("{")).toEqual(DEFAULT_WATERMARK_STYLE);
     expect(readStyle(null)).toEqual(DEFAULT_WATERMARK_STYLE);
   });

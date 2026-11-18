@@ -142,3 +142,14 @@ describe("détection de langue (localStorage falsifiable)", () => {
     expect(detectLang(null, "it-IT")).toBe("en");
   });
 });
+
+describe("i18n : libellés du panneau Apparence", () => {
+  test("les choix de contour ne reprennent jamais un libellé d'intensité", () => {
+    for (const lang of LANG_CODES) {
+      const s = STRINGS[lang].style;
+      const presets = new Set(Object.values(s.presets));
+      for (const label of Object.values(s.outlines)) expect(presets.has(label)).toBe(false);
+      expect(new Set(Object.values(s.outlines)).size).toBe(3);
+    }
+  });
+});
