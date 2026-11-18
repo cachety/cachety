@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { unzipSync } from "fflate";
 import { PDFDocument } from "pdf-lib";
 import type { Browser, BrowserContext, Page } from "playwright-core";
-import { launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
+import { browserName, launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
 import { makePdf, pageJpeg, scanPdfForLeaks } from "./helpers/fixtures";
 import { makeColourPdf, makeFlatPng, makePhotoPng, makeTextPdf, type Rgb } from "./helpers/dossier-fixtures";
@@ -235,7 +235,7 @@ describe("dossier : parcours complet", () => {
   test(
     "téléphone (390 × 844) : deux colonnes, appui long pour glisser, menu de la page, bouton du bas à chaque étape",
     async () => {
-      const page = await openPage("/en/dossier", { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+      const page = await openPage("/en/dossier", { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: browserName() !== "firefox" });
       await addFiles(page, await threeFiles());
       // Étape 1 → 2 par le bouton du bas.
       await page.getByRole("button", { name: d.next.pages, exact: true }).click();
@@ -252,6 +252,44 @@ describe("dossier : parcours complet", () => {
       expect(await order(page)).toEqual(["a.pdf#0", "a.pdf#1", "b.pdf#0", "b.pdf#1", "photo.png#0"]);
       await touchDrag(page, 0, 3, "after", 400);
       expect(await order(page)).toEqual(["a.pdf#1", "b.pdf#0", "b.pdf#1", "a.pdf#0", "photo.png#0"]);
+
+      if (browserName() === "chromium") {
+        // Vrai geste tactile, par le protocole de Chromium : un balayage rapide fait
+        // défiler la grille sans rien déplacer ; un appui long puis un glissement
+        // déplace la page, sans que le navigateur reprenne la main pour défiler.
+        const cdp = await context!.newCDPSession(page);
+        const touch = (type: "touchStart" | "touchMove" | "touchEnd", p?: { x: number; y: number }) =>
+          cdp.send("Input.dispatchTouchEvent", { type, touchPoints: p ? [{ x: p.x, y: p.y }] : [] });
+        const centre = async (index: number, fx = 0.5) => {
+          const box = (await tile(page, index).boundingBox())!;
+          return { x: box.x + box.width * fx, y: box.y + box.height / 2 };
+        };
+        await page.getByTestId("page-grid").scrollIntoViewIfNeeded();
+        const swipeFrom = await centre(2);
+        await touch("touchStart", swipeFrom);
+        for (let i = 1; i <= 5; i++) await touch("touchMove", { x: swipeFrom.x, y: swipeFrom.y - i * 20 });
+        await touch("touchEnd");
+        expect(await order(page)).toEqual(["a.pdf#1", "b.pdf#0", "b.pdf#1", "a.pdf#0", "photo.png#0"]);
+        // L'élan du défilement doit être retombé : un doigt posé pendant l'élan ne fait que l'arrêter.
+        await page.waitForTimeout(800);
+        await page.getByTestId("page-grid").evaluate((el) => (el.scrollTop = 0));
+        await page.getByTestId("page-grid").scrollIntoViewIfNeeded();
+
+        const from = await centre(0);
+        const to = await centre(1, 0.8);
+        await touch("touchStart", from);
+        await page.waitForTimeout(400);
+        for (let i = 1; i <= 6; i++) {
+          await touch("touchMove", { x: from.x + ((to.x - from.x) * i) / 6, y: from.y + ((to.y - from.y) * i) / 6 });
+          await page.waitForTimeout(20);
+        }
+        await page.waitForTimeout(80);
+        await touch("touchEnd");
+        expect(await order(page)).toEqual(["b.pdf#0", "a.pdf#1", "b.pdf#1", "a.pdf#0", "photo.png#0"]);
+        // Retour à l'ordre précédent, pour la suite du parcours.
+        await touchDrag(page, 0, 1, "after", 400);
+        expect(await order(page)).toEqual(["a.pdf#1", "b.pdf#0", "b.pdf#1", "a.pdf#0", "photo.png#0"]);
+      }
 
       // Le menu de la page, pour qui ne glisse pas : tourner, puis « Déplacer vers… ».
       await tile(page, 4).getByRole("button", { name: d.grid.menu(5), exact: true }).tap();
@@ -643,7 +681,7 @@ describe("dossier : photo d'une feuille", () => {
   test(
     "téléphone : éditeur des coins au doigt (avec la loupe) et au clavier, nettoyage, puis la page recadrée dans le fichier",
     async () => {
-      const page = await openPage("/en/dossier", { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+      const page = await openPage("/en/dossier", { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: browserName() !== "firefox" });
       await addFiles(page, [png("sheet.png", makePhotoPng(1200, 900, 12))]);
       await page.getByRole("button", { name: d.next.pages, exact: true }).click();
       await waitPages(page, 1);
@@ -856,5 +894,46 @@ describe("dossier : plafond de 1 000 pages", () => {
       await page.getByText(en.errors.dossier_too_many_pages).first().waitFor({ state: "detached" });
     },
     900_000
+  );
+});
+
+// Le test du mode avion, automatisé : page chargée une fois, réseau coupé,
+// rechargée depuis le service worker, puis un dossier complet. Chromium
+// seulement : c'est là que playwright pilote le service worker de façon fiable.
+describe("dossier : mode avion", () => {
+  test.skipIf(browserName() !== "chromium")(
+    "réseau coupé après le premier chargement : la page se recharge et produit le fichier",
+    async () => {
+      context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+      await context.addInitScript(MAP_UPSERT_POLYFILL);
+      const page = await context.newPage();
+      await page.goto(`${E2E_ORIGIN}/en/dossier`);
+      // Le service worker a pris la page en charge et fini son précache (page et moteur PDF compris).
+      await page.waitForFunction(
+        async () => {
+          if (!navigator.serviceWorker.controller) return false;
+          const hits = await Promise.all(["/en/dossier", "/pdfjs/pdf.worker.min.mjs"].map((u) => caches.match(u)));
+          return hits.every(Boolean);
+        },
+        undefined,
+        { timeout: 60_000 }
+      );
+      // Laisse le précache finir les fichiers restants (scripts de la page).
+      await page.waitForTimeout(1500);
+
+      await context.setOffline(true);
+      await page.reload();
+      // Le réseau est bien coupé : une adresse du site absente du cache ne répond plus.
+      const reachable = await page.evaluate(() => fetch(`/robots.txt?offline=${Date.now()}`).then((r) => r.ok, () => false));
+      expect(reachable).toBe(false);
+      await addFiles(page, await threeFiles());
+      await waitPages(page, 5);
+      await dragTile(page, 4, 0, "before");
+      await sizeRadio(page, en.size.mb(2)).click();
+      const file = await download(page, d.download);
+      expect(await pageColours(page, file.bytes)).toEqual(["magenta", "red", "green", "blue", "yellow"]);
+      await context.setOffline(false);
+    },
+    180_000
   );
 });
