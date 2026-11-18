@@ -14,6 +14,17 @@ import { COMPARISONS_NL } from "./nl";
 import { COMPARISONS_FR } from "./fr";
 import { COMPARISONS_JA } from "./ja";
 import { COMPARISONS_ZH } from "./zh";
+import { DOSSIER_COMPARISONS_AR } from "./dossier/ar";
+import { DOSSIER_COMPARISONS_DE } from "./dossier/de";
+import { DOSSIER_COMPARISONS_EN } from "./dossier/en";
+import { DOSSIER_COMPARISONS_ES } from "./dossier/es";
+import { DOSSIER_COMPARISONS_FA } from "./dossier/fa";
+import { DOSSIER_COMPARISONS_FR } from "./dossier/fr";
+import { DOSSIER_COMPARISONS_ID } from "./dossier/id";
+import { DOSSIER_COMPARISONS_JA } from "./dossier/ja";
+import { DOSSIER_COMPARISONS_NL } from "./dossier/nl";
+import { DOSSIER_COMPARISONS_PT } from "./dossier/pt";
+import { DOSSIER_COMPARISONS_ZH } from "./dossier/zh";
 import { SIGN_COMPARISONS_AR } from "./sign/ar";
 import { SIGN_COMPARISONS_DE } from "./sign/de";
 import { SIGN_COMPARISONS_EN } from "./sign/en";
@@ -28,22 +39,29 @@ import { SIGN_COMPARISONS_ZH } from "./sign/zh";
 
 export type { Comparison, CompareRow } from "./types";
 
-/** Filigrane d'abord, puis signature (chaque entrée de lib/compare/sign/* porte tool: "sign"). */
+/** Filigrane d'abord, puis signature (tool: "sign"), puis Dossier (tool: "dossier"). */
 export const COMPARISONS: Record<Lang, Comparison[]> = {
-  fr: [...COMPARISONS_FR, ...SIGN_COMPARISONS_FR],
-  en: [...COMPARISONS_EN, ...SIGN_COMPARISONS_EN],
-  ja: [...COMPARISONS_JA, ...SIGN_COMPARISONS_JA],
-  zh: [...COMPARISONS_ZH, ...SIGN_COMPARISONS_ZH],
-  es: [...COMPARISONS_ES, ...SIGN_COMPARISONS_ES],
-  ar: [...COMPARISONS_AR, ...SIGN_COMPARISONS_AR],
-  fa: [...COMPARISONS_FA, ...SIGN_COMPARISONS_FA],
-  de: [...COMPARISONS_DE, ...SIGN_COMPARISONS_DE],
-  pt: [...COMPARISONS_PT, ...SIGN_COMPARISONS_PT],
-  id: [...COMPARISONS_ID, ...SIGN_COMPARISONS_ID],
-  nl: [...COMPARISONS_NL, ...SIGN_COMPARISONS_NL],
+  fr: [...COMPARISONS_FR, ...SIGN_COMPARISONS_FR, ...DOSSIER_COMPARISONS_FR],
+  en: [...COMPARISONS_EN, ...SIGN_COMPARISONS_EN, ...DOSSIER_COMPARISONS_EN],
+  ja: [...COMPARISONS_JA, ...SIGN_COMPARISONS_JA, ...DOSSIER_COMPARISONS_JA],
+  zh: [...COMPARISONS_ZH, ...SIGN_COMPARISONS_ZH, ...DOSSIER_COMPARISONS_ZH],
+  es: [...COMPARISONS_ES, ...SIGN_COMPARISONS_ES, ...DOSSIER_COMPARISONS_ES],
+  ar: [...COMPARISONS_AR, ...SIGN_COMPARISONS_AR, ...DOSSIER_COMPARISONS_AR],
+  fa: [...COMPARISONS_FA, ...SIGN_COMPARISONS_FA, ...DOSSIER_COMPARISONS_FA],
+  de: [...COMPARISONS_DE, ...SIGN_COMPARISONS_DE, ...DOSSIER_COMPARISONS_DE],
+  pt: [...COMPARISONS_PT, ...SIGN_COMPARISONS_PT, ...DOSSIER_COMPARISONS_PT],
+  id: [...COMPARISONS_ID, ...SIGN_COMPARISONS_ID, ...DOSSIER_COMPARISONS_ID],
+  nl: [...COMPARISONS_NL, ...SIGN_COMPARISONS_NL, ...DOSSIER_COMPARISONS_NL],
 };
 
 export const compareTool = (c: Comparison) => c.tool ?? "watermark";
+
+/** Groupes de la page d'index, dans l'ordre d'affichage. */
+export const COMPARE_TOOLS = ["watermark", "sign", "dossier"] as const;
+
+/** Page de l'outil de Cachety comparé (cible du bouton d'appel). */
+export const compareToolPath = (lang: Lang, c: Comparison) =>
+  c.tool === "sign" ? `/${lang}/sign` : c.tool === "dossier" ? `/${lang}/dossier` : `/${lang}`;
 
 export const comparePath = (lang: Lang, slug: string) => `/${lang}/compare/${slug}`;
 export const compareIndexPath = (lang: Lang) => `/${lang}/compare`;

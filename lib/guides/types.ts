@@ -31,10 +31,18 @@ export type GuideTopic =
   /** Donner son IBAN / ses coordonnées bancaires : risques, quoi masquer. */
   | "iban"
   /** Envoyer une copie de sa carte bancaire : quoi masquer. */
-  | "bank-card";
+  | "bank-card"
+  /** Réunir plusieurs PDF en un seul (outil Dossier). */
+  | "merge"
+  /** Photos de papiers vers un seul PDF, sur téléphone (outil Dossier). */
+  | "photo-to-pdf"
+  /** Tourner, réordonner, retirer des pages (outil Dossier). */
+  | "pdf-pages"
+  /** Retirer les métadonnées et données cachées d'un PDF ou d'une photo (outil Dossier). */
+  | "metadata";
 
 /** Outil vers lequel pointe le bouton d'appel du guide. */
-export type GuideTool = "watermark" | "sign";
+export type GuideTool = "watermark" | "sign" | "dossier";
 
 export type GuideBlock =
   | { type: "h2"; text: string }
@@ -54,7 +62,8 @@ export type Guide = {
   topic: GuideTopic;
   /**
    * Outil que le guide explique : le bouton d'appel mène à /<lang> pour
-   * « watermark » (défaut, si absent) et à /<lang>/sign pour « sign ».
+   * « watermark » (défaut, si absent), à /<lang>/sign pour « sign » et à
+   * /<lang>/dossier pour « dossier ».
    */
   tool?: GuideTool;
   /** Titre affiché (h1). */

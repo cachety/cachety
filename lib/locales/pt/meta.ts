@@ -26,9 +26,9 @@ export const META_PT: LocaleMeta = {
       "Guias passo a passo para colocar marca d'água no RG, CNH e holerite, ocultar o CPF num PDF, evitar golpes e fazer tudo pelo celular. Grátis.",
   },
   compare: {
-    title: `Comparativos: marca d'água e assinatura | ${BRAND}`,
+    title: `Comparativos: marca d'água, assinatura, juntar PDF | ${BRAND}`,
     description:
-      "Cachety e as ferramentas de marca d'água e de assinatura mais usadas: para onde vão seus arquivos, preço, limites e privacidade. Com fontes.",
+      "Cachety e as ferramentas mais usadas de marca d'água, assinatura e para juntar e comprimir PDFs: para onde vão seus arquivos, limites e privacidade. Com fontes.",
   },
   sign: {
     title: `Assinar PDF grátis, sem enviar o arquivo | ${BRAND}`,

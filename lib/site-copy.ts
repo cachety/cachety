@@ -91,6 +91,8 @@ export type SiteCopy = {
     cta: string;
     /** Bouton des guides de signature (tool: "sign"), vers /<lang>/sign. */
     ctaSign: string;
+    /** Bouton des guides et comparatifs de l'outil Dossier (tool: "dossier"), vers /<lang>/dossier. */
+    ctaDossier: string;
     ctaNote: string;
     updated: (date: string) => string;
     allGuides: string;
@@ -98,8 +100,8 @@ export type SiteCopy = {
   compareUi: {
     title: string;
     lead: string;
-    /** Intertitres de la page d'index : comparatifs du filigrane, puis de la signature. */
-    groups: { watermark: string; sign: string };
+    /** Intertitres de la page d'index : filigrane, signature, puis Dossier (réunir et alléger). */
+    groups: { watermark: string; sign: string; dossier: string };
     read: string;
     verdictTitle: string;
     tableTitle: string;
@@ -356,14 +358,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       related: "À lire aussi",
       cta: "Filigraner mon document",
       ctaSign: "Signer mon document",
+      ctaDossier: "Assembler mes documents",
       ctaNote: "Gratuit, sans compte. Le document ne quitte pas votre appareil.",
       updated: (d) => `Mis à jour le ${d}`,
       allGuides: "Tous les guides",
     },
     compareUi: {
-      title: "Cachety face aux autres outils de filigrane et de signature",
+      title: "Cachety face aux autres outils pour filigraner, signer, fusionner ou compresser un PDF",
       lead: "Des comparatifs clairs et vérifiés avec les outils les plus utilisés : où vont vos fichiers, ce que ça coûte, et quand un autre outil est le meilleur choix.",
-      groups: { watermark: "Filigrane", sign: "Signature" },
+      groups: { watermark: "Filigrane", sign: "Signature", dossier: "Fusion et compression" },
       read: "Lire le comparatif",
       verdictTitle: "En bref",
       tableTitle: "Côte à côte",
@@ -620,14 +623,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       related: "Read next",
       cta: "Watermark my document",
       ctaSign: "Sign my document",
+      ctaDossier: "Combine my documents",
       ctaNote: "Free, no account. The document never leaves your device.",
       updated: (d) => `Updated ${d}`,
       allGuides: "All guides",
     },
     compareUi: {
-      title: "Cachety compared with other watermark and signing tools",
+      title: "Cachety compared with other tools to watermark, sign, merge and compress PDFs",
       lead: "Plain-language, fact-checked comparisons with the tools people use most: where your files go, what it costs, and when another tool is the better choice.",
-      groups: { watermark: "Watermark", sign: "Sign" },
+      groups: { watermark: "Watermark", sign: "Sign", dossier: "Merge and compress" },
       read: "Read the comparison",
       verdictTitle: "In short",
       tableTitle: "Side by side",
@@ -885,14 +889,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       related: "あわせて読みたい",
       cta: "書類に透かしを入れる",
       ctaSign: "書類に署名する",
+      ctaDossier: "書類を1つのPDFにまとめる",
       ctaNote: "無料・登録不要。書類が端末の外に出ることはありません。",
       updated: (d) => `${d} 更新`,
       allGuides: "ガイド一覧",
     },
     compareUi: {
-      title: "Cachety と他の透かし・署名ツールの比較",
+      title: "Cachety と他の透かし・署名・PDF 結合／圧縮ツールの比較",
       lead: "よく使われるツールとの比較を、事実に基づいてわかりやすくまとめました。ファイルの行き先、費用、そして他のツールの方が向いている場面まで。",
-      groups: { watermark: "透かし", sign: "署名" },
+      groups: { watermark: "透かし", sign: "署名", dossier: "結合・圧縮" },
       read: "比較を読む",
       verdictTitle: "まとめ",
       tableTitle: "比較表",
@@ -1150,14 +1155,15 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       related: "延伸阅读",
       cta: "给我的文件加水印",
       ctaSign: "签署我的文件",
+      ctaDossier: "合并我的文件",
       ctaNote: "免费，无需注册。文件不会离开您的设备。",
       updated: (d) => `更新于 ${d}`,
       allGuides: "全部指南",
     },
     compareUi: {
-      title: "Cachety 与其他水印和签名工具对比",
+      title: "Cachety 与其他水印、签名和 PDF 合并压缩工具对比",
       lead: "与常用工具的对比，基于事实、通俗易懂：文件去了哪里、要花多少钱，以及什么时候其他工具更合适。",
-      groups: { watermark: "水印", sign: "签名" },
+      groups: { watermark: "水印", sign: "签名", dossier: "合并与压缩" },
       read: "阅读对比",
       verdictTitle: "简要结论",
       tableTitle: "逐项对比",

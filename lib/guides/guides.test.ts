@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { LANG_CODES } from "@/lib/site-meta";
-import { GUIDES, HIDE_TOPICS, SIGN_TOPICS, guideAlternates, guideToolPath } from "./index";
+import { DOSSIER_TOPICS, GUIDES, HIDE_TOPICS, SIGN_TOPICS, guideAlternates, guideToolPath } from "./index";
 
 describe("guides (pages de contenu par pays)", () => {
   test("au moins six guides par langue, plus de vingt au total", () => {
@@ -59,7 +59,7 @@ describe("guides (pages de contenu par pays)", () => {
           expect(g!.tool, g!.slug).toBe("sign");
           expect(guideToolPath(lang, g!)).toBe(`/${lang}/sign`);
         }
-        for (const g of guides.filter((x) => !SIGN_TOPICS.includes(x.topic))) {
+        for (const g of guides.filter((x) => !SIGN_TOPICS.includes(x.topic) && !DOSSIER_TOPICS.includes(x.topic))) {
           expect(g.tool ?? "watermark", g.slug).toBe("watermark");
           expect(guideToolPath(lang, g)).toBe(`/${lang}`);
         }
@@ -69,6 +69,16 @@ describe("guides (pages de contenu par pays)", () => {
         for (const topic of HIDE_TOPICS) {
           const g = guides.find((x) => x.topic === topic);
           expect(g, topic).toBeDefined();
+          expect(Object.keys(guideAlternates(lang, g!)).length, g!.slug).toBe(LANG_CODES.length);
+        }
+      });
+
+      test("dossier : un guide par sujet, qui mène à la page Dossier", () => {
+        for (const topic of DOSSIER_TOPICS) {
+          const g = guides.find((x) => x.topic === topic);
+          expect(g, topic).toBeDefined();
+          expect(g!.tool, g!.slug).toBe("dossier");
+          expect(guideToolPath(lang, g!)).toBe(`/${lang}/dossier`);
           expect(Object.keys(guideAlternates(lang, g!)).length, g!.slug).toBe(LANG_CODES.length);
         }
       });
