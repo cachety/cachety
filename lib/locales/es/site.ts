@@ -66,7 +66,7 @@ export const SITE_ES: SiteCopy = {
       },
       {
         title: "Tachar información",
-        body: "Oculta un número de cuenta, un número fiscal o una foto. El contenido se elimina de verdad, no solo se tapa.",
+        body: "Oculta un número de cuenta, un número fiscal o una foto. El contenido se elimina de verdad, no solo se tapa. En un PDF, Cachety te señala los números de cuenta y de tarjeta, y tú decides qué ocultar.",
       },
       {
         title: "Un código único en cada copia",

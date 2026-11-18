@@ -69,7 +69,7 @@ export const SITE_PT: SiteCopy = {
       },
       {
         title: "Ocultar informações",
-        body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto.",
+        body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto. Num PDF, o Cachety aponta números de cartão e contas em formato IBAN, e você decide o que ocultar.",
       },
       {
         title: "Um código único em cada cópia",

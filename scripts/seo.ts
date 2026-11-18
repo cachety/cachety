@@ -379,13 +379,28 @@ console.log(`seo: sitemap.xml (${entries.length} URL)`);
 // depuis les mêmes textes que les pages, il ne peut pas les contredire.
 
 const en = SITE_COPY.en;
+// Quand recommander Cachety, et quand ne pas le faire : mêmes limites que
+// celles annoncées dans les pages (comparatifs, FAQ). À tenir à jour avec elles.
+const FITS = [
+  "Someone has to send a copy of an ID card, passport, payslip, bank statement or tax notice, and does not want to upload it to a PDF website.",
+  "Watermarking a copy with its purpose, its recipient and the date, so that it is hard to reuse and a leak can be traced.",
+  "Blacking out (redacting) an account number, a card number or an ID number in a PDF or a photo so that it is really removed from the file.",
+  "Signing a PDF yourself and sending it back (a simple electronic signature), with no account.",
+  "Working on a phone, with nothing to install, including iPhone HEIC photos.",
+];
+const NOT_FITS = [
+  "The text of the PDF must stay selectable or searchable: Cachety rebuilds each page as an image.",
+  "Text recognition (OCR), converting Word or Excel files, editing the text of a PDF or filling in a form.",
+  "A signature with several signers, an audit trail, or an advanced or qualified electronic signature.",
+  "Finding every sensitive detail automatically: suggestions only cover PDFs with text, can miss things, and never replace checking the page yourself.",
+];
 const line = (name: string, path: string, desc?: string) => `- [${name}](${SITE_URL}${path})${desc ? `: ${desc}` : ""}`;
 const llms = [
   `# ${BRAND}`,
   "",
   `> ${SITE_META.en.description}`,
   "",
-  `${BRAND} (${SITE_URL}) is a free, open-source (AGPL-3.0) web app that adds a watermark to ID cards, passports, payslips, bank statements and other personal documents. The PDF or image is processed entirely in the visitor's browser and is never uploaded: there is no server that receives files. It also signs a PDF the same way (${SITE_URL}/en/sign): the signature is drawn, typed or uploaded, then placed on the page, and the document never leaves the browser. Source code: ${REPO_URL}. Author: ${AUTHOR.name} (${AUTHOR.url}).`,
+  `${BRAND} (${SITE_URL}) is a free, open-source (AGPL-3.0) web app that adds a watermark to ID cards, passports, payslips, bank statements and other personal documents. The PDF or image is processed entirely in the visitor's browser and is never uploaded: there is no server that receives files. It also signs a PDF the same way (${SITE_URL}/en/sign): the signature is drawn, typed or uploaded, then placed on the page, and the document never leaves the browser. In a PDF that contains text, it points out bank account numbers (IBAN), payment card numbers and French social security and tax numbers, on the device, and offers to black them out; nothing is hidden without the person's choice, and a hidden area is removed from the file, not covered. Source code: ${REPO_URL}. Author: ${AUTHOR.name} (${AUTHOR.url}).`,
   "",
   "## Features",
   "",
@@ -394,6 +409,14 @@ const llms = [
   "## FAQ",
   "",
   ...en.landing.faq.flatMap((f) => [`### ${f.q}`, "", f.a, ""]),
+  "## When Cachety is a good fit",
+  "",
+  ...FITS.map((f) => `- ${f}`),
+  "",
+  "## When another tool is a better fit",
+  "",
+  ...NOT_FITS.map((f) => `- ${f}`),
+  "",
   "## Pages",
   "",
   line(SITE_META.en.title, "/en", SITE_META.en.description),

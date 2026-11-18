@@ -67,7 +67,7 @@ export const SITE_DE: SiteCopy = {
       },
       {
         title: "Angaben schwärzen",
-        body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt.",
+        body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt. In einem PDF zeigt dir Cachety Konto- und Kartennummern, und du entscheidest, was geschwärzt wird.",
       },
       {
         title: "Ein eigener Code auf jeder Kopie",

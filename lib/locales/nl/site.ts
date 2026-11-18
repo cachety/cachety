@@ -66,7 +66,7 @@ export const SITE_NL: SiteCopy = {
       },
       {
         title: "Gegevens zwartlakken",
-        body: "Verberg een rekeningnummer, je BSN of een pasfoto. De inhoud wordt echt verwijderd, niet alleen bedekt.",
+        body: "Verberg een rekeningnummer, je BSN of een pasfoto. In een pdf wijst Cachety rekening- en kaartnummers aan; jij beslist wat je afdekt. De inhoud wordt echt verwijderd, niet alleen bedekt.",
       },
       {
         title: "Een unieke code op elke kopie",

@@ -25,7 +25,13 @@ export type GuideTopic =
   /** Signer un bail ou un document de location (outil Signer). */
   | "sign"
   /** Signer un PDF sur téléphone (outil Signer). */
-  | "sign-phone";
+  | "sign-phone"
+  /** Zones suggérées : repérer et masquer les numéros sensibles d'un PDF. */
+  | "auto-redact"
+  /** Donner son IBAN / ses coordonnées bancaires : risques, quoi masquer. */
+  | "iban"
+  /** Envoyer une copie de sa carte bancaire : quoi masquer. */
+  | "bank-card";
 
 /** Outil vers lequel pointe le bouton d'appel du guide. */
 export type GuideTool = "watermark" | "sign";

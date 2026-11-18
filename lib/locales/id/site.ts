@@ -69,7 +69,7 @@ export const SITE_ID: SiteCopy = {
       },
       {
         title: "Sensor data",
-        body: "Sembunyikan nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi.",
+        body: "Sembunyikan nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi. Di PDF, Cachety menunjukkan nomor kartu dan IBAN yang ditemukannya, dan Anda yang memutuskan apa yang disensor.",
       },
       {
         title: "Kode unik di setiap salinan",

@@ -170,7 +170,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       featuresTitle: "Tout ce qu'il faut pour protéger une copie",
       features: [
         { title: "Filigrane sur toute la page", body: "Répété en diagonale et fondu dans l'image : impossible à effacer en modifiant simplement le PDF." },
-        { title: "Masquer une information", body: "Noircissez un IBAN, un numéro fiscal ou une photo. Le contenu est réellement supprimé, pas seulement recouvert." },
+        { title: "Masquer une information", body: "Noircissez un IBAN, un numéro fiscal ou une photo. Le contenu est réellement supprimé, pas seulement recouvert. Dans un PDF, Cachety vous signale les numéros de compte et de carte : c'est vous qui décidez quoi masquer." },
         { title: "Un code unique par copie", body: "En modifiant le texte, ajoutez un code court, différent sur chaque copie : si l'une circule, vous saurez d'où elle vient." },
         { title: "Une copie par destinataire", body: "Ajoutez chaque destinataire : chacun reçoit sa propre copie, avec son nom dessus, en un seul téléchargement." },
         { title: "Mot de passe créé pour vous", body: "Verrouillez le fichier avec 12 mots aléatoires, faciles à lire au téléphone, et un chiffrement AES-256." },
@@ -435,7 +435,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       featuresTitle: "Everything you need to protect a copy",
       features: [
         { title: "Watermark across the page", body: "Repeated diagonally and blended into the image: it can't be deleted by simply editing the PDF." },
-        { title: "Black out information", body: "Hide an account number, a tax reference or a photo. The content is really removed, not just covered." },
+        { title: "Black out information", body: "Hide an account number, a tax reference or a photo. The content is really removed, not just covered. In a PDF, Cachety points out account and card numbers, and you decide what to hide." },
         { title: "A unique code on each copy", body: "When you edit the text, add a short code that is different on every copy: if one turns up somewhere, you'll know where it came from." },
         { title: "One copy per recipient", body: "Add each recipient: everyone gets their own copy, with their name on it, in a single download." },
         { title: "A password made for you", body: "Lock the file with 12 random words, easy to read out over the phone, and AES-256 encryption." },
@@ -699,7 +699,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       featuresTitle: "コピーを守るための機能がそろっています",
       features: [
         { title: "ページ全体に透かし", body: "斜めに繰り返し、画像そのものに焼き込みます。PDF を編集しただけでは消せません。" },
-        { title: "情報を隠す（黒塗り）", body: "口座番号やマイナンバー、顔写真を黒塗りできます。上から覆うのではなく、中身ごと消去します。" },
+        { title: "情報を隠す（黒塗り）", body: "口座番号やマイナンバー、顔写真を黒塗りできます。上から覆うのではなく、中身ごと消去します。PDF では、IBAN 形式の口座番号やカード番号を Cachety が示し、隠すかどうかはあなたが決めます。" },
         { title: "コピーごとに固有の番号", body: "文字を編集するときに、コピーごとに異なる短い番号を入れられます。どこかで見つかっても、出どころが分かります。" },
         { title: "宛先ごとに1部ずつ", body: "宛先を追加するだけで、名前入りのコピーがそれぞれに作られ、一度にダウンロードできます。" },
         { title: "パスワードも自動で作成", body: "ランダムな12個の単語と AES-256 暗号化でファイルをロックします。電話でも読み上げやすいパスワードです。" },
@@ -964,7 +964,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       featuresTitle: "保护复印件所需的功能，一应俱全",
       features: [
         { title: "整页水印", body: "斜向重复铺满整页，直接融进图像，单靠编辑 PDF 删不掉。" },
-        { title: "遮盖信息（打码）", body: "遮住银行卡号、身份证号或照片。内容会被真正删除，而不只是盖住。" },
+        { title: "遮盖信息（打码）", body: "遮住银行卡号、身份证号或照片。内容会被真正删除，而不只是盖住。如果是 PDF，Cachety 会标出其中的银行账号和卡号，遮不遮由您决定。" },
         { title: "每份副本一个专属编号", body: "编辑文字时，可以加上一个每份副本都不同的短编号：一旦外流，就知道是从哪里流出的。" },
         { title: "每个接收方一份副本", body: "添加每个接收方：每人都会得到一份印有自己名字的副本，一次下载。" },
         { title: "自动为您生成密码", body: "用 12 个随机单词和 AES-256 加密锁住文件，电话里也容易念给对方。" },
