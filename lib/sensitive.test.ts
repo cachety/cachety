@@ -37,14 +37,38 @@ import { MAX_LINE_CHARS, type Line } from "./text-lines";
 
 // Origine des exemples (docs/prd-suggested-areas.md §11.1). Tous sont
 // vérifiés ici par l'algorithme publié de chaque numéro.
-// - IBAN : exemples du registre ISO 13616 (SWIFT), un par pays.
+// - IBAN : exemples publiés (ceux qui accompagnent le registre ISO 13616, puis
+//   ceux d'iban.com, relevés le 2026-11-18), un ou deux par pays.
 // - Cartes : numéros d'essai courants des réseaux (aucune carte réelle).
-// - NIR : exemples publiés (spécimen de carte Vitale, INSEE) ; ceux de Corse
-//   sont calculés par la formule publiée (97 − numéro mod 97).
-// - Numéros nationaux : exemples de la documentation de python-stdnum et des
-//   pages de référence de chaque numéro ; le NIK (sans clé) est construit.
+// - NIR : exemples de la documentation de python-stdnum (dont la Corse, 2A et
+//   2B), relus le 2026-11-18, et exemples d'usage courant (spécimen de carte
+//   Vitale) ; deux exemples corses de plus sont calculés par la formule
+//   publiée (97 − numéro mod 97).
+// - Numéros nationaux : exemples de la documentation de python-stdnum, relus
+//   le 2026-11-18 (Allemagne, Espagne, Pays-Bas, Belgique, Portugal, Brésil,
+//   Italie, Chine, Japon), et exemples d'usage courant (Iran, autres numéros
+//   de chaque pays) ; le NIK, sans clé, est construit.
 
-/** Exemples du registre ISO 13616. */
+/** Exemples publiés par iban.com (page « IBAN structure », relevés le 2026-11-18). */
+const IBANS_IBAN_COM = [
+  "FR7630006000011234567890189",
+  "DE75512108001245126199",
+  "GB33BUKB20201555555555",
+  "ES7921000813610123456789",
+  "NL02ABNA0123456789",
+  "BE71096123456769",
+  "PT50003310311234567890197",
+  "IT60X0542811101000000123456",
+  "MT31MALT01100000000000000000123",
+  "LC14BOSL123456789012345678901234",
+  "RU0204452560040702810412345678901",
+  "CH5604835012345678009",
+  "NO8330001234567",
+  "BR1500000000000010932840814P2",
+  "HN54PISA00000000000000123124",
+];
+
+/** Exemples qui accompagnent le registre ISO 13616. */
 const IBANS: Record<string, string> = {
   FR: "FR14 2004 1010 0505 0001 3M02 606",
   DE: "DE89 3704 0044 0532 0130 00",
@@ -79,6 +103,23 @@ describe("IBAN", () => {
     }
     expect(ibanValid(IBANS.MT)).toBe(true);
     expect(IBANS.RU.replace(/ /g, "")).toHaveLength(33);
+  });
+
+  test("seconde série d'exemples publiés, sans espaces", () => {
+    for (const iban of IBANS_IBAN_COM) {
+      expect(ibanValid(iban), iban).toBe(true);
+      expect(kinds(found(`Account ${iban}`)), iban).toEqual(["iban"]);
+    }
+  });
+
+  test("table des longueurs : 89 pays, de 15 (Norvège) à 33 caractères (Russie)", () => {
+    // Aucun pays du registre n'atteint les 34 caractères que permet la norme.
+    const lengths = Object.values(IBAN_LENGTHS);
+    expect(lengths).toHaveLength(89);
+    expect(Math.min(...lengths)).toBe(15);
+    expect(Math.max(...lengths)).toBe(33);
+    expect(IBAN_LENGTHS.HN).toBe(28);
+    for (const code of Object.keys(IBAN_LENGTHS)) expect(code).toMatch(/^[A-Z]{2}$/);
   });
 
   test("un chiffre changé, ou la longueur d'un autre pays : refusé", () => {
@@ -188,7 +229,7 @@ describe("carte bancaire", () => {
 
 describe("NIR (sécurité sociale française)", () => {
   test("hommes, femmes, écrit avec ou sans espaces", () => {
-    for (const nir of ["2 69 05 49 588 157 80", "1 84 12 76 451 089 46", "2 55 08 14 168 025 38", "1 51 02 46 102 043 25"]) {
+    for (const nir of ["2 95 10 99 126 111 93", "2 69 05 49 588 157 80", "1 84 12 76 451 089 46", "2 55 08 14 168 025 38", "1 51 02 46 102 043 25"]) {
       expect(nirValid(nir), nir).toBe(true);
       expect(nirValid(nir.replace(/ /g, "")), nir).toBe(true);
       expect(kinds(found(`N° SS : ${nir}`)), nir).toEqual(["fr-nir"]);
@@ -197,6 +238,11 @@ describe("NIR (sécurité sociale française)", () => {
   });
 
   test("Corse : 2A compte 19, 2B compte 18", () => {
+    // Exemples publiés (python-stdnum).
+    expect(nirValid("253072A07300443")).toBe(true);
+    expect(nirValid("253072B07300470")).toBe(true);
+    expect(nirValid("253072C07300443")).toBe(false);
+    expect(kinds(found("NIR 2 53 07 2B 073 004 70"))).toEqual(["fr-nir"]);
     // Clés calculées par la formule publiée (97 − numéro mod 97).
     expect(nirValid("1 85 05 2A 123 456 33")).toBe(true);
     expect(nirValid("2 90 12 2B 123 456 71")).toBe(true);
@@ -207,6 +253,7 @@ describe("NIR (sécurité sociale française)", () => {
 
   test("clé fausse, sexe ou mois impossible, clé absente : refusé", () => {
     expect(nirValid("2 69 05 49 588 157 81")).toBe(false);
+    expect(nirValid("295109912611199")).toBe(false);
     expect(nirValid("3 69 05 49 588 157 80")).toBe(false);
     expect(nirValid("2 69 13 49 588 157 80")).toBe(false);
     expect(found("N° SS : 2 69 05 49 588 157 81")).toEqual([]);
@@ -273,6 +320,7 @@ describe("numéros nationaux (WP4)", () => {
     }
     expect(deTaxIdValid("36 574 261 809")).toBe(true);
     expect(deTaxIdValid("36574261808")).toBe(false);
+    expect(deTaxIdValid("36574261890")).toBe(false);
     expect(deTaxIdValid("36554266806")).toBe(false); // deux chiffres répétés
     expect(deTaxIdValid("06574261809")).toBe(false);
     expect(kinds(found("Steuer-ID: 36 574 261 809"))).toEqual(["de-taxid"]);
@@ -288,6 +336,10 @@ describe("numéros nationaux (WP4)", () => {
       expect(kinds(found(`DNI/NIE: ${id}`)), id).toEqual(["es-dni"]);
     }
     expect(esDniValid("12345678A")).toBe(false);
+    expect(esDniValid("54362315Z")).toBe(false);
+    expect(esDniValid("x-2482300w")).toBe(true);
+    expect(esDniValid("x-2482300a")).toBe(false);
+    expect(kinds(found("nie x-2482300w"))).toEqual(["es-dni"]);
     expect(kinds(found("NIF 12.345.678-Z"))).toEqual(["es-dni"]);
     expect(kinds(found("NIE X-1234567-L"))).toEqual(["es-dni"]);
     expect(found("12345678A")).toEqual([]);
@@ -298,6 +350,7 @@ describe("numéros nationaux (WP4)", () => {
     expect(nlBsnValid("111222333")).toBe(true);
     expect(nlBsnValid("123456782")).toBe(true);
     expect(nlBsnValid("123456789")).toBe(false);
+    expect(nlBsnValid("1112.52.333")).toBe(false);
     expect(kinds(found("BSN: 111222333"))).toEqual(["nl-bsn"]);
     expect(kinds(found("Burgerservicenummer 1112.22.333"))).toEqual(["nl-bsn"]);
     expect(found("Klantnummer 111222333")).toEqual([]);
@@ -308,6 +361,7 @@ describe("numéros nationaux (WP4)", () => {
     expect(beNnValid("85.07.30-033 28")).toBe(true);
     expect(beNnValid("17 07 30 033 84")).toBe(true);
     expect(beNnValid("85.07.30-033 29")).toBe(false);
+    expect(beNnValid("12345678901")).toBe(false);
     expect(beNnValid("85.13.30-033 28")).toBe(false);
     expect(kinds(found("Rijksregisternummer 85.07.30-033.28"))).toEqual(["be-nn"]);
     expect(kinds(found("N° national : 17073003384"))).toEqual(["be-nn"]);
@@ -317,6 +371,7 @@ describe("numéros nationaux (WP4)", () => {
     expect(ptNifValid("501964843")).toBe(true);
     expect(ptNifValid("123456789")).toBe(true);
     expect(ptNifValid("123456788")).toBe(false);
+    expect(ptNifValid("501 964 842")).toBe(false);
     expect(kinds(found("NIF: 501 964 843"))).toEqual(["pt-nif"]);
     expect(kinds(found("N.º de contribuinte 501964843"))).toEqual(["pt-nif"]);
     expect(found("Cliente 501964843")).toEqual([]);
@@ -328,6 +383,7 @@ describe("numéros nationaux (WP4)", () => {
       expect(kinds(found(`Titular ${cpf}`)), cpf).toEqual(["br-cpf"]);
     }
     expect(brCpfValid("390.533.447-06")).toBe(false);
+    expect(brCpfValid("231.002.999-00")).toBe(false);
     expect(brCpfValid("111.111.111-11")).toBe(false);
     expect(kinds(found("CPF 39053344705"))).toEqual(["br-cpf"]);
     // Onze chiffres nus, sans libellé ni points : pas un CPF.
@@ -335,7 +391,7 @@ describe("numéros nationaux (WP4)", () => {
   });
 
   test("Italie, codice fiscale : lettre de contrôle", () => {
-    for (const cf of ["RCCMNL83S18D969H", "RSSMRA80A01H501U", "RSSMRA85T10A562S", "MRTMTT25D09F205Z"]) {
+    for (const cf of ["RCCMNL83S18D969H", "CNTCHR83T41D969D", "RSSMRA80A01H501U", "RSSMRA85T10A562S", "MRTMTT25D09F205Z"]) {
       expect(itCfValid(cf), cf).toBe(true);
       expect(kinds(found(`Codice fiscale: ${cf}`)), cf).toEqual(["it-cf"]);
     }

@@ -416,7 +416,9 @@ describe("sans couche texte", () => {
         ctx.fillText("FR14 2004 1010 0505 0001 3M02 606", 40, 240);
         const blob: Blob = await new Promise((r) => c.toBlob((b) => r(b!), "image/jpeg", 0.9));
         const bytes = new Uint8Array(await blob.arrayBuffer());
-        return btoa(String.fromCharCode(...bytes));
+        let binary = "";
+        for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+        return btoa(binary);
       });
       await addFiles(page, [{ name: "photo.jpg", bytes: new Uint8Array(Buffer.from(jpeg, "base64")), mimeType: "image/jpeg" }]);
       await page.getByLabel(en.purpose.label).fill("Rental application");
