@@ -7,13 +7,21 @@ import { paintMasks, type PageMasks } from "@/lib/masks";
 import { overlaysOnPage, paintOverlays, type OverlayImages, type PageOverlays } from "@/lib/overlays";
 import { ENCODE_LADDER, pageBudget } from "@/lib/size-budget";
 import { fileKind, imageToPdf, newPdf } from "@/lib/files";
+import { fontCss, haloRgba, normalizeStyle, type WatermarkStyle } from "@/lib/watermark-style";
 import {
-  fillRgba,
-  fontCss,
-  haloRgba,
-  normalizeStyle,
-  type WatermarkStyle,
-} from "@/lib/watermark-style";
+  NO_TILE_VARIATION,
+  planRows,
+  rgba,
+  rng,
+  ROW_STREAM,
+  TILE_STREAM,
+  TILE_WAVE,
+  tileVariation,
+  type RowOffset,
+  type RowPlan,
+  type Shadow,
+  type TileVariation,
+} from "@/lib/watermark-variation";
 
 export type WatermarkResult = {
   blob: Blob;
@@ -333,15 +341,7 @@ async function heicBitmap(file: File): Promise<ImageBitmap> {
  * motif commun à soustraire. Déterministe pour une graine donnée (tests).
  */
 export function layoutVariation(seed: number) {
-  // mulberry32 : générateur rapide, suffisant ici (aucun secret en jeu).
-  let a = seed >>> 0;
-  const next = () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
+  const next = rng(seed);
   return {
     angle: -Math.PI / 4 + (next() - 0.5) * ((14 * Math.PI) / 180), // 45° ± 7°
     offsetX: next(), // fraction d'un pas horizontal
@@ -357,14 +357,19 @@ export function layoutVariation(seed: number) {
  * un trait fin et sombre comme le texte du document : l'effacer par couleur
  * ou par luminosité efface aussi le document. Et sans le remplissage, les
  * lettres restent lisibles, en creux. Mesuré par e2e/removal.e2e.ts.
+ *
+ * « thin » : rebord bien moins large mais plus dense, plus lisible ;
+ * « none » : aucun contour (null), le plus lisible, le plus facile à retirer.
  */
-export function outlineRgba(style: WatermarkStyle) {
+export function outlineRgba(style: WatermarkStyle): string | null {
   const s = normalizeStyle(style);
-  return `rgba(28, 28, 32, ${Math.min(0.9, Math.max(OUTLINE_MIN_ALPHA, Math.round(s.opacity * 1.6 * 1000) / 1000))})`;
+  if (s.outline === "none") return null;
+  const o = OUTLINES[s.outline];
+  return `rgba(28, 28, 32, ${Math.min(o.cap, Math.max(o.floor, Math.round(s.opacity * o.gain * 1000) / 1000))})`;
 }
 
 /**
- * Plancher du contour (celui de l'ancien réglage par défaut, 45 %), quelle que soit
+ * Plancher du contour marqué (celui de l'ancien réglage par défaut, 45 %), quelle que soit
  * l'opacité choisie. Le contour est tracé autour des lettres (intérieur évidé,
  * voir drawWatermarkRun) : la couleur choisie reste visible. Sur fond blanc, un
  * contour moins dense passe au-dessus du seuil « sombre » (≈ 110 sur 255) et
@@ -373,6 +378,18 @@ export function outlineRgba(style: WatermarkStyle) {
  * effaçable d'un geste.
  */
 export const OUTLINE_MIN_ALPHA = 0.72;
+/**
+ * Contour fin : rebord presque moitié moins large que le marqué, donc
+ * plus lisible, mais plus dense pour compenser : un rebord fin s'éclaircit au
+ * lissage et au JPEG, et passerait sinon au-dessus du seuil « sombre ».
+ * Mesuré par e2e/removal.e2e.ts (niveaux : 0,45, contre 0,32 à 0,66 de plancher).
+ */
+export const THIN_OUTLINE_MIN_ALPHA = 0.8;
+
+const OUTLINES = {
+  strong: { floor: OUTLINE_MIN_ALPHA, gain: 1.6, cap: 0.9, stroke: 3 },
+  thin: { floor: THIN_OUTLINE_MIN_ALPHA, gain: 1.6, cap: 0.9, stroke: 1.75 },
+} as const;
 
 /**
  * Suit la taille du texte : un petit filigrane garde un contour fin. Plancher
@@ -381,9 +398,52 @@ export const OUTLINE_MIN_ALPHA = 0.72;
  */
 export const outlineWidth = (fontSize: number) => Math.max(1, fontSize / 15);
 
+/**
+ * Largeur du trait de contour (le rebord visible en fait la moitié, l'intérieur
+ * étant évidé). Fin : rebord d'au moins 1 px, pour survivre au JPEG.
+ */
+export function outlineStroke(style: WatermarkStyle, fontSize: number) {
+  const s = normalizeStyle(style);
+  if (s.outline === "none") return 0;
+  const stroke = outlineWidth(fontSize) * OUTLINES[s.outline].stroke;
+  return s.outline === "thin" ? Math.max(2, stroke) : stroke;
+}
+
 /** Pas horizontal du pavage : la ligne entière, plus un écart variable (jamais de chevauchement). */
 export const watermarkStepX = (lineWidth: number, fontSize: number, spacing = 1) =>
   lineWidth + fontSize * 2.5 * spacing;
+
+/**
+ * Pas vertical : la hauteur du texte, l'écart variable, et deux crêtes d'onde
+ * à leur amplitude maximale (TILE_WAVE.max), plus une marge. La marge libre
+ * restante (`watermarkRoom`) borne le décalage et l'inclinaison propres à
+ * chaque occurrence : deux rangées voisines ne se touchent jamais.
+ */
+export const watermarkStepY = (fontSize: number, spacing: number, amplitude: number) =>
+  fontSize * (1 + 2.5 * spacing) + amplitude * 2.5;
+
+export const watermarkRoom = (stepY: number, fontSize: number, amplitude: number) =>
+  stepY - fontSize - 2 * TILE_WAVE.max * amplitude;
+
+/** Graine des dessins sans graine (aperçus de l'interface) : variés, mais stables d'un dessin à l'autre. */
+export const SAMPLE_SEED = 0x2f6b1c3d;
+
+/**
+ * Encre d'une rangée, pour drawWatermarkRun. Une rangée ordinaire porte une
+ * nuance de la couleur choisie, le halo, le contour et une ombre. Une rangée
+ * d'accent est « à plat » : couleur franche, sans halo ni ombre. L'accent en
+ * couleur garde le contour choisi (niveaux : 0,56 contre 0,52 sans, en
+ * marqué) ; l'accent presque noir n'en a pas besoin, il est déjà sombre.
+ */
+function rowInk(
+  plan: RowPlan,
+  halo: { color: string; width: number },
+  outline: { color: string; width: number } | undefined
+): RunInk {
+  if (plan.accent?.kind === "deep") return { fill: rgba(plan.accent.rgb, plan.accent.opacity) };
+  if (plan.accent) return { fill: rgba(plan.accent.rgb, plan.accent.opacity), outline };
+  return { fill: plan.fill, halo, outline, shadow: plan.shadow };
+}
 
 export function drawWatermark(
   ctx: CanvasRenderingContext2D,
@@ -391,7 +451,7 @@ export function drawWatermark(
   height: number,
   text: string,
   style?: WatermarkStyle,
-  /** Graine de variation de mise en page : absente, pavage fixe (aperçus de l'interface). */
+  /** Graine de variation : absente, pavage fixe et variation stable (aperçus de l'interface). */
   seed?: number
 ) {
   const line = text.trim();
@@ -422,43 +482,94 @@ export function drawWatermark(
     fontSize = Math.max(6, Math.floor((fontSize * maxWidth) / measured));
     ctx.font = font(fontSize);
   }
-
-  ctx.fillStyle = fillRgba(look);
-  // Halo contrasté : invisible sur un fond proche de l'encre, il porte la
-  // lisibilité quand l'encre se noie. Pas de lecture de pixel.
-  ctx.strokeStyle = haloRgba(look);
-  ctx.lineWidth = Math.max(1, fontSize / 10);
   ctx.lineJoin = "round";
 
-  const outline = outlineRgba(look);
+  // Halo contrasté : invisible sur un fond proche de l'encre, il porte la
+  // lisibilité quand l'encre se noie. Pas de lecture de pixel.
+  const halo = { color: haloRgba(look), width: Math.max(1, fontSize / 10) };
+  const outlineColor = outlineRgba(look);
+  const outline = outlineColor ? { color: outlineColor, width: outlineStroke(look, fontSize) } : undefined;
+
   const vary = seed === undefined ? null : layoutVariation(seed);
+  const angle = vary?.angle ?? -Math.PI / 4;
   const cx = width / 2;
   const cy = height / 2;
   ctx.translate(cx, cy);
-  ctx.rotate(vary?.angle ?? -Math.PI / 4);
+  ctx.rotate(angle);
   ctx.translate(-cx, -cy);
 
   // La variation porte sur les ÉCARTS, jamais sur la longueur du texte : un
   // pas réduit en proportion faisait chevaucher deux copies d'un texte long.
   const spacing = vary?.spacing ?? 1;
-  const stepX = watermarkStepX(ctx.measureText(line).width, fontSize, spacing);
-  // L'amplitude s'ajoute à l'écart vertical, sinon les crêtes se touchent.
-  const stepY = fontSize * (1 + 2.5 * spacing) + waveAmplitude(fontSize, look.wave) * 2.2;
+  const lineWidth = ctx.measureText(line).width;
+  const stepX = watermarkStepX(lineWidth, fontSize, spacing);
+  const amplitude = waveAmplitude(fontSize, look.wave);
+  const stepY = watermarkStepY(fontSize, spacing, amplitude);
+  const room = watermarkRoom(stepY, fontSize, amplitude);
   const shiftX = (vary?.offsetX ?? 0) * stepX;
   const shiftY = (vary?.offsetY ?? 0) * stepY;
   const radius = Math.hypot(width, height) / 2;
   const nx = Math.ceil((radius + stepX) / stepX) + 1;
   const ny = Math.ceil((radius + stepY) / stepY) + 1;
-  for (let i = -nx; i <= nx; i++) {
-    for (let j = -ny; j <= ny; j++) {
-      const x = cx + i * stepX + shiftX;
-      const y = cy + j * stepY + shiftY;
-      drawWatermarkRun(ctx, line, x, y, fontSize, look.wave, outline);
+
+  // Toujours active : sans graine, une graine fixe (aperçu stable).
+  const variationSeed = seed ?? SAMPLE_SEED;
+  const rows: RowOffset[] = [];
+  for (let j = -ny; j <= ny; j++) rows.push({ row: j, offset: j * stepY + shiftY });
+  // Demi-étendue de la page le long de la normale aux rangées.
+  const extent = (width * Math.abs(Math.sin(angle)) + height * Math.abs(Math.cos(angle))) / 2;
+  const plans = planRows(rows, extent, fontSize, look.color, look.opacity, rng(variationSeed ^ ROW_STREAM));
+  const tileRand = rng(variationSeed ^ TILE_STREAM);
+
+  for (const { row, offset } of rows) {
+    const ink = rowInk(plans.get(row)!, halo, outline);
+    for (let i = -nx; i <= nx; i++) {
+      const tile = tileVariation(tileRand, fontSize, room, lineWidth);
+      drawWatermarkRun(ctx, line, cx + i * stepX + shiftX, cy + offset, fontSize, look.wave, ink, tile);
     }
   }
 
   page.drawImage(layer, 0, 0);
   layer.width = 0;
+}
+
+/**
+ * Aperçu du réglage (panneau Apparence) : une rangée ordinaire et une rangée
+ * d'accent, avec les mêmes règles que le rendu, tirées d'une graine fixe.
+ * Dessine directement sur `ctx`, qui doit être transparent (contour évidé).
+ */
+export function drawWatermarkSample(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  text: string,
+  style: WatermarkStyle,
+  fontSize: number
+) {
+  const line = text.trim();
+  if (!line) return;
+  const look = normalizeStyle(style);
+  ctx.font = fontCss(look, fontSize, line);
+  ctx.textBaseline = "middle";
+  ctx.textAlign = "center";
+  ctx.direction = RTL.test(line) ? "rtl" : "ltr";
+  ctx.lineJoin = "round";
+  const halo = { color: haloRgba(look), width: Math.max(1, fontSize / 10) };
+  const outlineColor = outlineRgba(look);
+  const outline = outlineColor ? { color: outlineColor, width: outlineStroke(look, fontSize) } : undefined;
+  // Deux rangées bien visibles : la première ordinaire, la seconde d'accent.
+  const rows: RowOffset[] = [
+    { row: 0, offset: 0 },
+    { row: 2, offset: 0 },
+  ];
+  const plans = planRows(rows, Infinity, fontSize, look.color, look.opacity, rng(SAMPLE_SEED ^ ROW_STREAM), [2]);
+  const tileRand = rng(SAMPLE_SEED ^ TILE_STREAM);
+  const lineWidth = ctx.measureText(line).width;
+  rows.forEach(({ row }, k) => {
+    const tile = { ...tileVariation(tileRand, fontSize, 0, lineWidth), dx: 0, dy: 0 };
+    const y = height * (k === 0 ? 0.3 : 0.72);
+    drawWatermarkRun(ctx, line, width / 2, y, fontSize, look.wave, rowInk(plans.get(row)!, halo, outline), tile);
+  });
 }
 
 function makeLayer(width: number, height: number): HTMLCanvasElement | OffscreenCanvas {
@@ -469,7 +580,23 @@ function makeLayer(width: number, height: number): HTMLCanvasElement | Offscreen
   return c;
 }
 
-/** 0 laisse le texte droit. Sinon chaque glyphe suit une sinusoïde, tangent à la pente. */
+/** Encre d'une occurrence (voir rowInk). */
+export type RunInk = {
+  /** Remplissage (rgba). */
+  fill: string;
+  /** Halo de lisibilité ; absent : aucun (accent « à plat »). */
+  halo?: { color: string; width: number };
+  /** Contour sombre (outlineRgba, outlineStroke) ; absent : aucun. Exige un canevas transparent (calque). */
+  outline?: { color: string; width: number };
+  /** Ombre portée du remplissage. */
+  shadow?: Shadow;
+};
+
+/**
+ * Une occurrence du texte, centrée en (x, y), décalée et inclinée selon
+ * `tile`. Onde à 0 : texte droit. Sinon chaque glyphe suit une sinusoïde
+ * (phase, longueur d'onde et amplitude propres à l'occurrence), tangent à la pente.
+ */
 export function drawWatermarkRun(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -477,58 +604,79 @@ export function drawWatermarkRun(
   y: number,
   fontSize: number,
   wave: number,
-  /** Couleur du contour sombre (outlineRgba) ; absent : pas de contour. Exige un canevas transparent (calque). */
-  outline?: string
+  ink: RunInk,
+  tile: TileVariation = NO_TILE_VARIATION
 ) {
-  const ink = (s: string, px: number, py: number) => {
-    ctx.strokeText(s, px, py); // halo de lisibilité
-    if (outline) {
+  const paint = (s: string, px: number, py: number) => {
+    if (ink.halo) {
+      ctx.strokeStyle = ink.halo.color;
+      ctx.lineWidth = ink.halo.width;
+      ctx.strokeText(s, px, py); // halo de lisibilité
+    }
+    if (ink.outline) {
       // Contour sombre autour des lettres, jamais dessus : trait double
       // largeur, puis intérieur évidé. Il garde sa densité (résistance aux
       // niveaux et à la sélection de couleur), et l'intérieur montre la
       // couleur choisie au lieu d'un gris sombre aux petites tailles.
-      const [style, width, fill, op] = [ctx.strokeStyle, ctx.lineWidth, ctx.fillStyle, ctx.globalCompositeOperation];
-      ctx.strokeStyle = outline;
-      ctx.lineWidth = outlineWidth(fontSize) * 3;
+      ctx.strokeStyle = ink.outline.color;
+      ctx.lineWidth = ink.outline.width;
       ctx.strokeText(s, px, py);
+      const op = ctx.globalCompositeOperation;
       ctx.globalCompositeOperation = "destination-out";
       ctx.fillStyle = "#000";
       ctx.fillText(s, px, py);
       ctx.globalCompositeOperation = op;
-      ctx.strokeStyle = style;
-      ctx.lineWidth = width;
-      ctx.fillStyle = fill;
+    }
+    ctx.fillStyle = ink.fill;
+    // L'ombre ne vaut que pour le remplissage : posée sur l'évidement
+    // (destination-out), elle creuserait aussi la page autour des lettres.
+    if (ink.shadow) {
+      ctx.shadowColor = ink.shadow.color;
+      ctx.shadowOffsetX = ink.shadow.dx;
+      ctx.shadowOffsetY = ink.shadow.dy;
+      ctx.shadowBlur = ink.shadow.blur;
     }
     ctx.fillText(s, px, py);
+    if (ink.shadow) {
+      ctx.shadowColor = "rgba(0, 0, 0, 0)";
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.shadowBlur = 0;
+    }
   };
+
+  ctx.save();
+  ctx.translate(x + tile.dx, y + tile.dy);
+  ctx.rotate(tile.tilt);
   // Écriture de droite à gauche (arabe, hébreu…) : poser les lettres une à une
-  // inverserait le sens et casserait les liaisons. Le texte reste alors droit.
+  // inverserait le sens et casserait les liaisons. Le texte reste alors droit
+  // (décalage et inclinaison propres à l'occurrence conservés).
   if (!(wave > 0) || RTL.test(text)) {
-    ink(text, x, y);
+    paint(text, 0, 0);
+    ctx.restore();
     return;
   }
 
   const chars = graphemes(text);
   const widths = chars.map((ch) => Math.max(ctx.measureText(ch).width, fontSize * 0.15));
   const total = widths.reduce((sum, w) => sum + w, 0);
-  const align = ctx.textAlign;
   ctx.textAlign = "center";
-  let cursor = x - total / 2;
+  let cursor = -total / 2;
   for (let i = 0; i < chars.length; i++) {
     const width = widths[i];
     const mid = cursor + width / 2;
-    const { dy, angle } = waveDisplacement(mid - (x - total / 2), fontSize, wave);
+    const { dy, angle } = waveDisplacement(mid + total / 2, fontSize, wave, tile);
     ctx.save();
-    ctx.translate(mid, y + dy);
+    ctx.translate(mid, dy);
     ctx.rotate(angle);
-    ink(chars[i], 0, 0);
+    paint(chars[i], 0, 0);
     ctx.restore();
     cursor += width;
   }
-  ctx.textAlign = align;
+  ctx.restore();
 }
 
-const RTL = /[\u0590-\u08FF\uFB1D-\uFDFF\uFE70-\uFEFF]/;
+const RTL = /[֐-ࣿיִ-﷿ﹰ-﻿]/;
 
 /**
  * Caractères tels que lus : « é » décomposé, émoji composés (ZWJ) et
@@ -547,12 +695,20 @@ export function waveAmplitude(fontSize: number, wave: number) {
   return wave > 0 ? fontSize * wave * 0.85 : 0;
 }
 
-/** Déplacement vertical et rotation d'un glyphe le long de l'onde. `along` part du début de la ligne. */
-export function waveDisplacement(along: number, fontSize: number, wave: number) {
+/**
+ * Déplacement vertical et rotation d'un glyphe le long de l'onde. `along` part
+ * du début de la ligne ; `tile` porte la phase et les facteurs propres à l'occurrence.
+ */
+export function waveDisplacement(
+  along: number,
+  fontSize: number,
+  wave: number,
+  tile: Pick<TileVariation, "phase" | "wavelength" | "amplitude"> = NO_TILE_VARIATION
+) {
   if (!(wave > 0)) return { dy: 0, angle: 0 };
-  const amplitude = waveAmplitude(fontSize, wave);
-  const wavelength = Math.max(fontSize * 5, 1);
-  const theta = (along / wavelength) * Math.PI * 2;
+  const amplitude = waveAmplitude(fontSize, wave) * tile.amplitude;
+  const wavelength = Math.max(fontSize * 5 * tile.wavelength, 1);
+  const theta = (along / wavelength) * Math.PI * 2 + tile.phase;
   const slope = Math.cos(theta) * ((amplitude * Math.PI * 2) / wavelength);
   return { dy: Math.sin(theta) * amplitude, angle: Math.atan(slope) };
 }

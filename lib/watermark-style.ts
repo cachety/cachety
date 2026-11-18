@@ -5,6 +5,13 @@
 export const WATERMARK_FONTS = ["mono", "sans", "serif"] as const;
 export type WatermarkFontId = (typeof WATERMARK_FONTS)[number];
 
+/**
+ * Contour sombre autour des lettres (voir outlineRgba, lib/watermark.ts) :
+ * « strong » résiste le mieux à la suppression, « none » se lit le mieux.
+ */
+export const WATERMARK_OUTLINES = ["strong", "thin", "none"] as const;
+export type WatermarkOutline = (typeof WATERMARK_OUTLINES)[number];
+
 export type WatermarkStyle = {
   font: WatermarkFontId;
   /** Multiplicateur de la taille automatique (1 = le rendu historique, 0,5 par défaut). */
@@ -15,6 +22,8 @@ export type WatermarkStyle = {
   opacity: number;
   /** 0 = ligne droite, 1 = ondulation pleine. */
   wave: number;
+  /** Contour sombre : marqué (défaut), fin ou absent. */
+  outline: WatermarkOutline;
 };
 
 export const SCALE_PERCENT = { min: 20, max: 220, step: 5 } as const;
@@ -50,6 +59,7 @@ export const DEFAULT_WATERMARK_STYLE: WatermarkStyle = {
   color: COLOR_SWATCHES[0].color,
   opacity: OPACITY.fallback,
   wave: WAVE.fallback,
+  outline: "strong",
 };
 
 const STORAGE_KEY = "wmStyle";
@@ -123,7 +133,7 @@ export function haloRgba(style: WatermarkStyle) {
 /** Identifie un filigrane déjà produit : texte + apparence. */
 export function stampKey(text: string, style: WatermarkStyle) {
   const s = normalizeStyle(style);
-  return `${text}\0${s.font}\0${s.scale}\0${s.color}\0${s.opacity}\0${s.wave}`;
+  return `${text}\0${s.font}\0${s.scale}\0${s.color}\0${s.opacity}\0${s.wave}\0${s.outline}`;
 }
 
 export function normalizeStyle(input: unknown): WatermarkStyle {
@@ -134,6 +144,7 @@ export function normalizeStyle(input: unknown): WatermarkStyle {
     color: normalizeHex(src.color, DEFAULT_WATERMARK_STYLE.color),
     opacity: snap(src.opacity, OPACITY),
     wave: snap(src.wave, WAVE),
+    outline: isOutline(src.outline) ? src.outline : DEFAULT_WATERMARK_STYLE.outline,
   };
 }
 
@@ -156,6 +167,10 @@ function isFont(value: unknown): value is WatermarkFontId {
   return typeof value === "string" && (WATERMARK_FONTS as readonly string[]).includes(value);
 }
 
+function isOutline(value: unknown): value is WatermarkOutline {
+  return typeof value === "string" && (WATERMARK_OUTLINES as readonly string[]).includes(value);
+}
+
 function snap(
   value: unknown,
   bounds: { min: number; max: number; step: number; fallback: number }
@@ -176,7 +191,7 @@ function normalizeHex(value: unknown, fallback: string) {
   return `#${hex}`;
 }
 
-function hexRgb(hex: string) {
+export function hexRgb(hex: string) {
   return {
     r: parseInt(hex.slice(1, 3), 16),
     g: parseInt(hex.slice(3, 5), 16),

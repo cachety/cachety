@@ -260,10 +260,28 @@ and fails CI below a threshold.
 | Technique | Countermeasure | Survival (before → after) |
 | --- | --- | --- |
 | Delete the watermark object from the PDF | Rasterised pages: there is no object (§4.4) | — |
-| Selecting the watermark's colour | **Dark, neutral outline** around each letter: a thin dark stroke like the document's text; without the fill, the letters remain readable as hollow shapes | 0.16 → 0.40 |
-| "Levels": whiten everything that is not dark | Same outline: erasing it erases the document's text | 0.16 → 0.50 |
-| Median filter | Strokes and tiling thick enough | 0.89 → 0.83 |
-| Multi-copy estimation (Dekel et al., CVPR 2017): median of several documents bearing the same stamp, then inversion of the alpha blending | **Layout variation on every render** (angle 45° ± 7°, tiling offset, spacing ± 15 %), drawn from `crypto.getRandomValues`: no common pattern to estimate | 0.20 → 0.98 |
+| Selecting the watermark's colour | **Dark, neutral outline** around each letter: a thin dark stroke like the document's text; without the fill, the letters remain readable as hollow shapes. **Accent rows** in a hue at least 90° away from the ink | 0.16 → 0.71 |
+| Whitening every colour, whatever its hue | Same outline, plus one **near-black, near-neutral accent row** per page | — → 0.62 |
+| "Levels": whiten everything that is not dark | Same outline and near-black accent: erasing them erases the document's text | 0.16 → 0.56 |
+| Median filter | Strokes and tiling thick enough | 0.89 → 0.96 |
+| Multi-copy estimation (Dekel et al., CVPR 2017): median of several documents bearing the same stamp, then inversion of the alpha blending | **Layout variation on every render** (angle 45° ± 7°, tiling offset, spacing ± 15 %), drawn from `crypto.getRandomValues`: no common pattern to estimate | 0.20 → 0.97 |
+| Template matching: learn one occurrence of the stamp, find and inpaint every copy of it | **Every occurrence differs** (`lib/watermark-variation.ts`): wave phase, wavelength and amplitude (± 15 %), tilt (up to 2°), offset; every row its own shade of the ink (hue ± 10°, lightness ± 8 %) and drop shadow | — |
+
+"After" figures are for the default outline ("Strong"). The outline is a
+user choice (Appearance → Outline), because it costs legibility. The bench
+measures all three, with fixed seeds:
+
+| Outline | Ink hue | Any colour | Levels | Median | Multi-copy |
+| --- | --- | --- | --- | --- | --- |
+| Strong (default) | 0.71 | 0.62 | 0.56 | 0.96 | 0.97 |
+| Thin (narrower, denser edge) | 0.63 | 0.52 | 0.45 | 0.86 | 0.97 |
+| None | 0.33 | 0.20 | 0.18 | 0.92 | 0.96 |
+
+"None" is the easiest to remove by colour or levels, and the interface says
+so when it is selected. It still beats the pre-outline 0.16, thanks to the
+accent rows and shadows. Accents are a quarter of the rows that cross the
+page (at least two), drawn at a floor opacity so they stay visible at the
+"Light" setting; they are always on.
 
 The watermark covers the whole page and crosses the content (names,
 amounts, IBAN): an AI erasing tool has to **reinvent** those characters,

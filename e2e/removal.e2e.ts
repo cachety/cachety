@@ -9,11 +9,17 @@
 // Attaques :
 //  - teinte   : sélection de la couleur du filigrane, remplacée par du blanc
 //               (« plage de couleurs », 3 lignes de code) ;
+//  - chroma   : toute couleur, quelle que soit sa teinte, remplacée par du
+//               blanc (le pire cas « par couleur » sur un document noir et
+//               blanc : les accents d'une autre teinte n'y échappent pas) ;
 //  - niveaux  : tout ce qui n'est pas du texte sombre devient blanc ;
 //  - médian   : filtre médian 5×5 (efface les traits fins) ;
 //  - multi    : estimation du filigrane à partir de plusieurs documents
 //               portant le même tampon (Dekel et al., CVPR 2017), puis
 //               inversion du mélange alpha.
+//
+// Mesuré pour chaque contour (marqué, fin, aucun) : le choix « aucun »
+// échange de la résistance contre de la lisibilité, la mesure dit combien.
 //
 // Fichier *.e2e.ts : lancé par `bun run test:e2e`.
 
@@ -26,13 +32,15 @@ const INK = [0xc4, 0x26, 0x2e]; // couleur par défaut (rouge sceau)
 const COPIES = 6;
 
 let engine: Engine;
-let scores: Record<string, number>;
+const MODES = ["strong", "thin", "none"] as const;
+type Mode = (typeof MODES)[number];
+let all: Record<Mode, Record<string, number>>;
 
 beforeAll(async () => {
   engine = await startEngine();
   const docs = await Promise.all(Array.from({ length: COPIES }, (_, i) => makePayslipPdf(i + 1)));
-  scores = await engine.page.evaluate(
-    async ({ docs, text, ink, copies }) => {
+  all = (await engine.page.evaluate(
+    async ({ docs, text, ink, copies, modes }) => {
       const wm = (window as any).__wm;
       type Px = { w: number; h: number; d: Uint8ClampedArray };
       const pixels = async (url: string): Promise<Px> => {
@@ -42,16 +50,21 @@ beforeAll(async () => {
         ctx.drawImage(bmp, 0, 0);
         return { w: bmp.width, h: bmp.height, d: ctx.getImageData(0, 0, bmp.width, bmp.height).data };
       };
-      const render = async (b64: string, t: string) => {
+      // Graine fixe par copie : chaque copie diffère (multi-copies), mais la
+      // mesure est reproductible (accents tirés au même endroit à chaque passe).
+      const render = async (b64: string, t: string, outline = "strong", seed = 1) => {
         const bin = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
-        const res = await wm.watermarkFile(new File([bin], "p.pdf", { type: "application/pdf" }), t);
+        const file = new File([bin], "p.pdf", { type: "application/pdf" });
+        const res = await wm.watermarkFile(file, t, undefined, undefined, undefined, { outline }, { layoutSeed: seed });
         const px = await pixels(res.previews[0]);
         wm.releaseResult(res);
         return px;
       };
       // L'original : même rendu, sans filigrane (texte vide → rien n'est dessiné).
       const clean = await render(docs[0], " ");
-      const marked = await Promise.all(docs.map((b) => render(b, text)));
+      const out: Record<string, Record<string, number>> = {};
+      for (const mode of modes) {
+      const marked = await Promise.all(docs.map((b, k) => render(b, text, mode, 0x5eed + k * 7919)));
       const target = marked[0];
 
       const survival = (att: Uint8ClampedArray) => {
@@ -94,6 +107,13 @@ beforeAll(async () => {
         const chroma = Math.max(r, g, b) - Math.min(r, g, b);
         const dh = Math.abs(((hueOf(r, g, b) - inkHue + 540) % 360) - 180);
         if ((chroma > 20 && dh < 35) || Math.min(r, g, b) > 200) hue[i] = hue[i + 1] = hue[i + 2] = 255;
+      }
+      // 1 bis. Chroma : toute couleur, quelle que soit sa teinte.
+      const chromaAll = new Uint8ClampedArray(target.d);
+      for (let i = 0; i < chromaAll.length; i += 4) {
+        const [r, g, b] = [chromaAll[i], chromaAll[i + 1], chromaAll[i + 2]];
+        if (Math.max(r, g, b) - Math.min(r, g, b) > 20 || Math.min(r, g, b) > 200)
+          chromaAll[i] = chromaAll[i + 1] = chromaAll[i + 2] = 255;
       }
       // Couleur visible : part des pixels du filigrane dans la teinte choisie
       // (un contour posé sur les lettres les rendait gris aux petites tailles).
@@ -141,9 +161,11 @@ beforeAll(async () => {
         for (let c = 0; c < 3; c++) multi[i + c] = (target.d[i + c] - alpha * ink[c]) / (1 - alpha);
       }
 
-      return {
+      out[mode] = {
         hue: survival(hue),
         hueTextLoss: textLoss(hue),
+        chroma: survival(chromaAll),
+        chromaTextLoss: textLoss(chromaAll),
         levels: survival(levels),
         levelsTextLoss: textLoss(levels),
         median: survival(median),
@@ -151,41 +173,85 @@ beforeAll(async () => {
         identity: survival(target.d),
         inkShare: inked / touched,
       };
+      }
+      return out;
     },
-    { docs: docs.map(toBase64), text: TEXT, ink: INK, copies: COPIES }
-  );
-  console.log("[suppression] survie du filigrane :", JSON.stringify(scores, (_, v) => (typeof v === "number" ? +v.toFixed(3) : v)));
+    { docs: docs.map(toBase64), text: TEXT, ink: INK, copies: COPIES, modes: MODES }
+  )) as Record<Mode, Record<string, number>>;
+  for (const mode of MODES)
+    console.log(
+      `[suppression] survie du filigrane (${mode}) :`,
+      JSON.stringify(all[mode], (_, v) => (typeof v === "number" ? +v.toFixed(3) : v))
+    );
 }, 300_000);
 
 afterAll(async () => {
   await engine?.stop();
 });
 
-// Seuils : mesures du 10/10/2026 avec une marge. Avant le contour sombre et
-// la variation par copie, la teinte et les niveaux laissaient 0,16, et
+// Seuils : mesures avec une marge. Avant le contour sombre et la variation
+// par copie (10/10/2026), la teinte et les niveaux laissaient 0,16, et
 // l'estimation multi-copies 0,20 : le filigrane disparaissait.
+//
+// Mesures du 18/11/2026 (nuances, ombres et accents par rangée, graines
+// fixes ci-dessus), en survie :
+//
+//              teinte  chroma  niveaux  médian  multi
+//   marqué      0,71    0,62    0,56     0,96    0,97
+//   fin         0,63    0,52    0,45     0,86    0,97
+//   aucun       0,33    0,20    0,18     0,92    0,96
+//
+// Sur des graines au hasard, « aucun » varie de ±0,04 selon la place de
+// l'accent presque noir. Il reste au-dessus de l'ancien 0,16 grâce à cet
+// accent, aux accents d'une autre teinte et aux ombres, mais c'est le choix
+// le plus facile à retirer : l'interface le dit (style.outlineHints).
+const FLOORS: Record<Mode, { hue: number; chroma: number; levels: number; median: number }> = {
+  strong: { hue: 0.6, chroma: 0.52, levels: 0.48, median: 0.85 },
+  thin: { hue: 0.53, chroma: 0.44, levels: 0.38, median: 0.75 },
+  none: { hue: 0.27, chroma: 0.16, levels: 0.14, median: 0.8 },
+};
+
 describe("banc d'essai : suppression du filigrane", () => {
   test("la mesure est calibrée (sans attaque, survie = 1)", () => {
-    expect(scores.identity).toBeCloseTo(1, 5);
-  });
-
-  test("sélection de la couleur : le contour sombre survit (lettres lisibles en creux)", () => {
-    expect(scores.hue).toBeGreaterThan(0.33);
+    for (const mode of MODES) expect(all[mode].identity).toBeCloseTo(1, 5);
   });
 
   test("la couleur choisie se voit : le contour entoure les lettres sans les recouvrir", () => {
-    expect(scores.inkShare).toBeGreaterThan(0.3); // 0,25 quand le contour était posé dessus
+    // 0,25 quand le contour était posé dessus, sans accents. Les accents (autre
+    // teinte) et les ombres prennent désormais une part des pixels, par conception.
+    expect(all.strong.inkShare).toBeGreaterThan(0.26);
+    // Sans contour, la couleur choisie domine.
+    expect(all.none.inkShare).toBeGreaterThan(all.strong.inkShare);
   });
 
-  test("niveaux (blanchir tout sauf le sombre) : le contour survit", () => {
-    expect(scores.levels).toBeGreaterThan(0.42);
-  });
+  for (const mode of MODES) {
+    describe(`contour ${mode}`, () => {
+      const floor = FLOORS[mode];
 
-  test("filtre médian 5×5 : le filigrane survit", () => {
-    expect(scores.median).toBeGreaterThan(0.7);
-  });
+      test("sélection de la teinte de l'encre : le filigrane survit", () => {
+        expect(all[mode].hue).toBeGreaterThan(floor.hue);
+      });
 
-  test("estimation multi-copies : aucun motif commun à soustraire", () => {
-    expect(scores.multi).toBeGreaterThan(0.9);
+      test("toute couleur blanchie : l'accent presque noir et le contour survivent", () => {
+        expect(all[mode].chroma).toBeGreaterThan(floor.chroma);
+      });
+
+      test("niveaux (blanchir tout sauf le sombre) : le filigrane survit", () => {
+        expect(all[mode].levels).toBeGreaterThan(floor.levels);
+      });
+
+      test("filtre médian 5×5 : le filigrane survit", () => {
+        expect(all[mode].median).toBeGreaterThan(floor.median);
+      });
+
+      test("estimation multi-copies : aucun motif commun à soustraire", () => {
+        expect(all[mode].multi).toBeGreaterThan(0.9);
+      });
+    });
+  }
+
+  test("le contour coûte en lisibilité ce qu'il rapporte en résistance : marqué > fin > aucun", () => {
+    expect(all.strong.levels).toBeGreaterThan(all.thin.levels);
+    expect(all.thin.levels).toBeGreaterThan(all.none.levels);
   });
 });

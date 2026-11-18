@@ -34,7 +34,7 @@ Self-hosting is still possible and fully supported (see below), for organisation
 ## Features
 
 - **PDFs and images:** JPG, PNG, WebP, GIF, BMP, AVIF and iPhone photos (HEIC). One file or many at once (up to 200 MB per file, 500 pages per PDF).
-- **Watermark across the whole page**, blended into the image. It can't be removed by simply editing the PDF, and its layout varies on each copy. Choice of font, size, colour, opacity and a wave effect.
+- **Watermark across the whole page**, blended into the image. It can't be removed by simply editing the PDF, and its layout varies on each copy. Choice of font, size, colour, opacity, a wave effect and the outline (strong, thin or none: removal resistance against legibility). Every row varies in shade and shadow, and some rows are drawn in a contrasting accent colour, so no two occurrences match.
 - **Three simple steps:** your document, what it's for and who gets it, then preview and download. The watermark text is written for you ("purpose, recipient, date", with ready-made examples) and can be edited freely.
 - **Hidden data stripped:** selectable text, metadata and the GPS location of photos. Each page is rebuilt from pixels.
 - **Masking:** black out an IBAN, a tax number or a photo. The content is really removed, not just covered.

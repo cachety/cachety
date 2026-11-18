@@ -2,18 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
-import { drawWatermarkRun, outlineRgba } from "@/lib/watermark";
+import { drawWatermarkSample } from "@/lib/watermark";
 import {
   COLOR_SWATCHES,
   DEFAULT_WATERMARK_STYLE,
-  fillRgba,
   fontCss,
   fontFace,
-  haloRgba,
   OPACITY_PERCENT,
   SCALE_PERCENT,
   WAVE_PERCENT,
   WATERMARK_FONTS,
+  WATERMARK_OUTLINES,
   type WatermarkStyle,
 } from "@/lib/watermark-style";
 
@@ -75,6 +74,39 @@ export function WatermarkAppearance({
       </button>
       {more && (
       <div className="mt-1">
+      <div className="mt-3">
+        <p id="wm-outline" className="text-sm text-encre-2">
+          {s.outline}
+        </p>
+        <div role="radiogroup" aria-labelledby="wm-outline" aria-describedby="wm-outline-hint" className="mt-1.5 grid grid-cols-3 gap-1.5">
+          {WATERMARK_OUTLINES.map((id) => {
+            const on = style.outline === id;
+            return (
+              <label
+                key={id}
+                className={`flex cursor-pointer items-center justify-center rounded-lg border px-2 py-1.5 text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-bleu ${
+                  on
+                    ? "border-bleu bg-bleu/5 font-medium text-bleu"
+                    : "border-trait text-encre-2 hover:border-bleu hover:text-bleu"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="watermark-outline"
+                  className="sr-only"
+                  checked={on}
+                  onChange={() => onChange({ ...style, outline: id })}
+                />
+                {s.outlines[id]}
+              </label>
+            );
+          })}
+        </div>
+        <p id="wm-outline-hint" className="mt-1.5 text-xs text-encre-2" aria-live="polite">
+          {s.outlineHints[style.outline]}
+        </p>
+      </div>
+
       <div className="mt-3">
         <p id="wm-font" className="text-sm text-encre-2">
           {s.font}
@@ -215,10 +247,11 @@ export function WatermarkAppearance({
 
       {/* Bande claire / sombre : une encre blanche reste lisible à gauche,
           une encre sombre à droite. Ce n'est pas le document, juste le réglage. */}
-      <div className="relative mt-3 h-20 overflow-hidden rounded-lg border border-trait" aria-hidden>
+      <div className="relative mt-3 h-24 overflow-hidden rounded-lg border border-trait" aria-hidden>
         <div className="absolute inset-0 bg-gradient-to-r from-feuille from-40% to-encre" />
         <WaveSample style={style} sample={sample} />
       </div>
+      <p className="mt-1.5 text-xs text-encre-2">{s.variationNote}</p>
       <button
         type="button"
         onClick={() => onChange(DEFAULT_WATERMARK_STYLE)}
@@ -250,19 +283,13 @@ function WaveSample({ style, sample }: { style: WatermarkStyle; sample: string }
       if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
-      const fontSize = Math.min(28, Math.round(16 * style.scale));
-      ctx.font = fontCss(style, fontSize);
-      ctx.fillStyle = fillRgba(style);
-      ctx.strokeStyle = haloRgba(style);
-      ctx.lineWidth = Math.max(1, fontSize / 10);
-      ctx.lineJoin = "round";
-      ctx.textBaseline = "middle";
-      ctx.textAlign = "center";
-      drawWatermarkRun(ctx, sample, width / 2, height / 2, fontSize, style.wave ?? 0, outlineRgba(style));
+      // Deux rangées (ordinaire, accent) : la taille reste sous le croisement des crêtes.
+      const fontSize = Math.min(20, Math.round(16 * style.scale));
+      drawWatermarkSample(ctx, width, height, sample, style, fontSize);
     };
     // Promise.resolve : sans document.fonts, l'enchaînement optionnel sautait
     // aussi le .then, et l'aperçu ne se dessinait jamais.
-    Promise.resolve(document.fonts?.load(fontCss(style, 32)))
+    Promise.resolve(document.fonts?.load(fontCss(style, 32, sample), sample || " "))
       .catch(() => undefined)
       .then(paint);
     // Redessine à la taille réelle quand le panneau change de largeur

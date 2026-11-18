@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { fitScale, graphemes, layoutVariation, watermarkStepX, outlineRgba, outlineWidth, MAX_CANVAS_AREA, PREVIEW_MAX_PAGES, signPreviewPages, watermarkMaxLineWidth, waveDisplacement } from "./watermark";
+import { fitScale, graphemes, layoutVariation, watermarkStepX, watermarkStepY, watermarkRoom, outlineRgba, outlineStroke, outlineWidth, THIN_OUTLINE_MIN_ALPHA, MAX_CANVAS_AREA, PREVIEW_MAX_PAGES, signPreviewPages, watermarkMaxLineWidth, waveAmplitude, waveDisplacement } from "./watermark";
+import { rng, TILE_WAVE, tileVariation } from "./watermark-variation";
 
 describe("watermarkMaxLineWidth (une occurrence entière tient toujours)", () => {
   test("une ligne à la largeur max reste dans le canvas une fois pivotée de -45deg", () => {
@@ -22,6 +23,13 @@ describe("watermarkMaxLineWidth (une occurrence entière tient toujours)", () =>
 });
 
 describe("ondulation", () => {
+  test("la phase propre à une occurrence décale l'onde", () => {
+    const straight = waveDisplacement(0, 20, 1);
+    const shifted = waveDisplacement(0, 20, 1, { phase: Math.PI / 2, wavelength: 1, amplitude: 1 });
+    expect(straight.dy).toBeCloseTo(0, 6);
+    expect(shifted.dy).toBeCloseTo(waveAmplitude(20, 1), 6);
+  });
+
   test("à zéro, le glyphe ne bouge pas", () => {
     expect(waveDisplacement(40, 20, 0)).toEqual({ dy: 0, angle: 0 });
   });
@@ -80,12 +88,30 @@ describe("layoutVariation (une mise en page par copie)", () => {
 
 describe("contour sombre (résistance à la sélection par couleur)", () => {
   test("neutre quelle que soit l'encre, plus opaque que le remplissage, borné", () => {
-    const base = { font: "mono", scale: 1, color: "#c4262e", opacity: 0.45, wave: 0 } as const;
+    const base = { font: "mono", scale: 1, color: "#c4262e", opacity: 0.45, wave: 0, outline: "strong" } as const;
     expect(outlineRgba(base)).toBe("rgba(28, 28, 32, 0.72)");
     expect(outlineRgba({ ...base, color: "#223f92" })).toBe(outlineRgba(base));
     expect(outlineRgba({ ...base, opacity: 1 })).toBe("rgba(28, 28, 32, 0.9)");
     // Réglage « Léger » (25 %) : le contour garde son plancher, sinon les niveaux l'effacent.
     expect(outlineRgba({ ...base, opacity: 0.25 })).toBe("rgba(28, 28, 32, 0.72)");
+  });
+
+  test("fin : plus dense que le plancher marqué (rebord étroit) ; aucun : pas de contour", () => {
+    const base = { font: "mono", scale: 1, color: "#c4262e", opacity: 0.25, wave: 0, outline: "thin" } as const;
+    expect(outlineRgba(base)).toBe(`rgba(28, 28, 32, ${THIN_OUTLINE_MIN_ALPHA})`);
+    // Sur du blanc, le contour fin reste plus sombre que le seuil des niveaux (110).
+    expect(255 - THIN_OUTLINE_MIN_ALPHA * (255 - 28)).toBeLessThan(110);
+    expect(outlineRgba({ ...base, opacity: 1 })).toBe("rgba(28, 28, 32, 0.9)");
+    expect(outlineRgba({ ...base, outline: "none" })).toBeNull();
+    expect(outlineStroke({ ...base, outline: "none" }, 60)).toBe(0);
+  });
+
+  test("le contour fin est bien moins large, avec un rebord d'au moins 1 px", () => {
+    const strong = { font: "mono", scale: 1, color: "#c4262e", opacity: 0.25, wave: 0, outline: "strong" } as const;
+    const thin = { ...strong, outline: "thin" } as const;
+    expect(outlineStroke(strong, 60)).toBe(12);
+    expect(outlineStroke(thin, 60)).toBe(7);
+    expect(outlineStroke(thin, 10)).toBe(2); // plancher : rebord visible de 1 px
   });
 
   test("assez épais pour garder un cœur neutre après le sous-échantillonnage JPEG", () => {
@@ -96,6 +122,26 @@ describe("contour sombre (résistance à la sélection par couleur)", () => {
 });
 
 describe("pavage", () => {
+  test("deux rangées voisines ne se touchent pas, même décalées et inclinées à l'opposé", () => {
+    const rand = rng(7);
+    for (const [fontSize, wave, line] of [
+      [40, 0, 600],
+      [40, 1, 600],
+      [6, 1, 1600], // texte long rétréci : l'inclinaison est bridée
+      [120, 0.5, 900],
+    ] as const) {
+      const amplitude = waveAmplitude(fontSize, wave);
+      const stepY = watermarkStepY(fontSize, 0.9, amplitude);
+      const room = watermarkRoom(stepY, fontSize, amplitude);
+      for (let k = 0; k < 200; k++) {
+        const t = tileVariation(rand, fontSize, room, line);
+        // Écart maximal d'une occurrence : décalage + inclinaison au bout de la ligne + crête.
+        const reach = Math.abs(t.dy) + (line / 2) * Math.abs(Math.sin(t.tilt)) + amplitude * TILE_WAVE.max + fontSize / 2;
+        expect(2 * reach).toBeLessThan(stepY);
+      }
+    }
+  });
+
   test("deux copies d'un texte long ne se chevauchent jamais, quel que soit l'espacement tiré", () => {
     for (let seed = 0; seed < 200; seed++) {
       const { spacing } = layoutVariation(seed);
