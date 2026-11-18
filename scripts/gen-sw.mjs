@@ -104,13 +104,21 @@ console.log(`lang: ${retagged} pages réétiquetées (hors anglais)`);
 // Limite de 100 règles : les pages d'une langue sont regroupées. De préférence
 // une seule règle « /fr/* » réunissant les hachages de toutes les pages sous
 // /fr/ (plus la règle exacte de l'accueil /fr). Si cette ligne dépasse la
-// limite de longueur, la langue retombe sur un regroupement plus fin : une
-// règle par section de guides/comparatifs (« /fr/guides/* ») et une règle
-// exacte par autre page. La <meta> de chaque page, elle, reste exacte (ses
-// seuls hachages) : le navigateur applique les deux politiques, donc chaque
-// page n'exécute que ses propres scripts, quel que soit le regroupement.
+// limite de longueur, la langue retombe sur un regroupement plus fin, en trois
+// règles : une par section de guides/comparatifs (« /fr/guides/* ») et une
+// pour toutes les pages directement sous la langue (« /fr/:page », un
+// paramètre Cloudflare qui ne correspond qu'à un segment). Si cette dernière
+// ligne est elle-même trop longue : une règle exacte par page. La <meta> de
+// chaque page, elle, reste exacte (ses seuls hachages) : le navigateur
+// applique les deux politiques, donc chaque page n'exécute que ses propres
+// scripts, quel que soit le regroupement.
 const SECTION = new RegExp(`^/(${LANG_ALT})/(guides|compare)/[^/]+$`);
 const UNDER_LANG = new RegExp(`^/(${LANG_ALT})/.+$`);
+/** Page directement sous la langue : /fr/sign, /fr/dossier, /fr/guides (l'index)… */
+const DIRECT = new RegExp(`^/(${LANG_ALT})/[^/]+$`);
+// Cloudflare remplace aussi « :page » dans la VALEUR de l'en-tête par le
+// segment trouvé : une politique ne doit donc jamais contenir ce texte.
+const DIRECT_PLACEHOLDER = ":page";
 // Page intégrée des sites partenaires (/embed/<langue>) : une règle à part,
 // la seule à autoriser l'affichage en cadre, et seulement par le site et les
 // partenaires de partners.json (déjà validés par lib/partners.ts au build Next).
@@ -210,13 +218,25 @@ for (const [lang, pages] of [...byLang].sort()) {
     rules.push([`/${lang}/*`, policyWith(all)]);
     continue;
   }
-  // Trop de hachages pour une ligne : une règle par section, une par autre page.
+  // Trop de hachages pour une ligne : une règle par section, et une règle
+  // « /fr/:page » pour les pages directement sous la langue (signer, dossier,
+  // à propos, index des guides…). « :page » ne correspond qu'à UN segment :
+  // /fr/sign oui, /fr/guides/x non (cette page a déjà la règle de sa section,
+  // et deux règles sur une même page feraient deux politiques jointes).
   fineGrained.push(lang);
   const sections = new Map();
+  const direct = [];
   for (const page of pages) {
     const m = page.route.match(SECTION);
     if (m) sections.set(`/${m[1]}/${m[2]}/*`, [...(sections.get(`/${m[1]}/${m[2]}/*`) ?? []), page]);
-    else rules.push([page.route, policyWith(page.hashes)]);
+    else direct.push(page);
+  }
+  const directRule = `/${lang}/${DIRECT_PLACEHOLDER}`;
+  if (direct.length > 1 && direct.every((p) => DIRECT.test(p.route)) && fits(directRule, union(direct))) {
+    rules.push([directRule, policyWith(union(direct))]);
+  } else {
+    // Dernier recours : une règle exacte par page (ancien regroupement fin).
+    for (const page of direct) rules.push([page.route, policyWith(page.hashes)]);
   }
   for (const [key, list] of [...sections].sort()) rules.push([key, policyWith(union(list))]);
 }
@@ -238,13 +258,16 @@ if (embedPages.length) {
   ]);
 }
 if (fineGrained.length) console.log(`_headers : regroupement fin pour ${fineGrained.join(", ")} (ligne par langue trop longue)`);
+for (const [path, policy] of rules) {
+  if (policy.includes(DIRECT_PLACEHOLDER)) throw new Error(`_headers : la politique de ${path} contient « ${DIRECT_PLACEHOLDER} », que Cloudflare remplacerait`);
+}
 
 const generated = rules
   .map(([path, policy, extra = []]) => [`${path}`, `  Content-Security-Policy: ${policy}`, ...extra.map((l) => `  ${l}`)].join("\n"))
   .join("\n");
 const output =
   template.replace(/^\s*Content-Security-Policy:.*\n/m, "") +
-  "\n# --- Généré par scripts/gen-sw.mjs : une CSP par langue (hachages des scripts inline de ses pages), ou par section et par page si la ligne serait trop longue.\n" +
+  "\n# --- Généré par scripts/gen-sw.mjs : une CSP par langue (hachages des scripts inline de ses pages) ; si la ligne serait trop longue, une par section et une pour les pages directement sous la langue (« /fr/:page »).\n" +
   generated +
   "\n";
 
