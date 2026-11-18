@@ -27,13 +27,6 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 - **Tests:** each recipient's file opens only with its own password; the list
   matches the files.
 
-### `suggested-areas`: suggested areas to hide
-- **Status:** next
-- **Why:** people don't always know what to hide (account number, tax number,
-  card number).
-- **Scope:** detect IBANs, ID and tax numbers on the page (on the device, no
-  network) and show them as tappable areas in "Hide something".
-
 ### `more-languages`: Italian, Korean, Turkish
 - **Status:** next
 - **Constraint:** none left on headers: rules are grouped per language
@@ -88,6 +81,22 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   Also the partner page's tool choice and embed switch strings
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.
+- **Suggested areas, before release:** the manual pass on real documents
+  (`docs/prd-suggested-areas.md` §11.4): payslips from 3 French employers, a
+  French tax notice, a German Lohnabrechnung, a Spanish nómina, bank details
+  from 3 banks. Count detections and misses (counts only, no document), and
+  check that the tax-notice note reads well. Target (§12): at least 90 % of
+  IBANs and NIRs suggested, at most one false suggestion per 20 pages.
+- **Suggested areas, native review:** the suggestion wording (`t.suggest`,
+  `lib/suggest-copy/*`) in the nine languages other than French and English
+  is a draft translated from English; each file says so in a comment. Same
+  for the new README feature line in those languages.
+- **Suggested areas, later:** on-device OCR for photos and scans
+  (`ocr-suggestions`, about 5.8 MB of WebAssembly and model data for one
+  script, needs its own PRD), barcode and QR code hints (`barcode-hint`),
+  the machine-readable zone of passports (`mrz`), and more national numbers
+  as languages are added. Vertical text (Japanese, Chinese) is not read yet.
+  See `docs/prd-suggested-areas.md` §14.
 - **Sign, later (v1.1+):** several placements per page (`multi-placement`), a
   self-hosted handwriting font for the Type tab (`script-font`), and per-country mention presets
   reviewed by native speakers (`more-mentions`). See `docs/prd-sign.md` §14.
@@ -98,6 +107,19 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   letting agency with the bank details hidden".
 
 ## Shipped
+
+### `suggested-areas`: suggested areas to hide (2026-11)
+On PDFs with a text layer, "Hide something" points out the IBANs, card
+numbers, French social security and tax numbers, and national numbers
+(Germany, Spain, the Netherlands, Belgium, Portugal, Brazil, Italy, China,
+Japan, Iran, Indonesia) found on every page, on the device. A banner above
+the preview says how many; each one is an outline on the page and a line in a
+panel, hidden with one tap, or all at once, in one document or in every
+document. Nothing is hidden automatically, and the panel always says that
+suggestions can miss things (photos and scans are not read, nor are barcodes
+and QR codes). A number is suggested only if its checksum passes or its label
+is next to it. In the watermark and sign tools, in all 11 languages.
+Spec: [docs/prd-suggested-areas.md](docs/prd-suggested-areas.md).
 
 ### `sign-embed`: signing on partner websites (2026-10)
 Partners choose the tools in the embed code: watermark (default), sign, or

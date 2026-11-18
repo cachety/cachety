@@ -38,6 +38,7 @@ Alojarla por tu cuenta sigue siendo posible y está totalmente soportado (ver m�
 - **Tres pasos sencillos:** tu documento, para qué es y quién lo recibe, y luego vista previa y descarga. El texto de la marca de agua se escribe por ti («motivo, destinatario, fecha», con ejemplos ya hechos) y puedes editarlo libremente.
 - **Datos ocultos eliminados:** texto seleccionable, metadatos y ubicación GPS de las fotos. Cada página se reconstruye a partir de sus píxeles.
 - **Tachado:** oculta un IBAN, un número fiscal o una foto. El contenido se elimina de verdad, no solo se tapa.
+- **Zonas sugeridas:** en un PDF con texto, Cachety señala los IBAN, números de tarjeta, de la seguridad social, fiscales o de identidad que encuentra, en tu dispositivo, y oculta con un toque los que elijas. Nunca oculta nada por su cuenta, y puede pasar cosas por alto (fotos, documentos escaneados, códigos de barras): la página lo dice.
 - **Copias rastreables:** añade `{code}` al texto y cada copia recibe su propia referencia corta, que aparece en una lista después de la descarga para que la guardes.
 - **Varios destinatarios:** una copia para cada destinatario (hasta 20), cada una con su nombre, en una sola descarga.
 - **Contraseña:** cifrado de PDF AES-256 (PDF 2.0). Al marcar «Proteger con contraseña» se crea una contraseña fácil de leer de 12 palabras aleatorias (132 bits, lista de palabras BIP39); también puedes usar tu propia contraseña o una aleatoria de 256 bits. Borrado automático del portapapeles.

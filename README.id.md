@@ -38,6 +38,7 @@ Self-hosting tetap bisa dan didukung penuh (lihat di bawah), untuk organisasi ya
 - **Tiga langkah mudah:** dokumen Anda, untuk apa dan siapa penerimanya, lalu pratinjau dan unduh. Teks watermark dibuatkan untuk Anda ("keperluan, penerima, tanggal", dengan contoh siap pakai) dan bisa diubah sesuka hati.
 - **Data tersembunyi dihapus:** teks yang bisa diseleksi, metadata, dan lokasi GPS foto. Setiap halaman dibangun ulang dari piksel.
 - **Sensor:** tutup nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi.
+- **Saran area sensor:** pada PDF yang berisi teks, Cachety menunjukkan nomor rekening (IBAN), nomor kartu, NIK, dan nomor pajak yang ditemukannya, di perangkat Anda, lalu menyensor yang Anda pilih dengan satu ketukan. Cachety tidak pernah menyensor sendiri, dan bisa saja ada yang terlewat (foto, hasil pindai, barcode): halaman itu mengatakannya.
 - **Salinan yang bisa dilacak:** tambahkan `{code}` ke teks dan setiap salinan mendapat kode pendeknya sendiri, yang ditampilkan dalam daftar setelah diunduh agar bisa Anda simpan.
 - **Beberapa penerima:** satu salinan per penerima (sampai 20), masing-masing dengan namanya, dalam satu kali unduh.
 - **Kata sandi:** enkripsi PDF AES-256 (PDF 2.0). Mencentang "Kunci dengan kata sandi" akan membuat kata sandi yang mudah dibaca dari 12 kata acak (132 bit, daftar kata BIP39); kata sandi Anda sendiri atau kata sandi acak 256 bit tetap bisa dipakai. Pembersihan clipboard otomatis.

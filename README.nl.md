@@ -38,6 +38,7 @@ Zelf hosten kan nog steeds en wordt volledig ondersteund (zie hieronder), voor o
 - **Drie eenvoudige stappen:** je document, waarvoor het is en wie het krijgt, daarna bekijken en downloaden. De watermerktekst wordt voor je geschreven ("doel, ontvanger, datum", met kant-en-klare voorbeelden) en is vrij aan te passen.
 - **Verborgen gegevens verwijderd:** selecteerbare tekst, metadata en de gps-locatie van foto's. Elke pagina wordt opnieuw opgebouwd uit pixels.
 - **Afdekken:** lak een IBAN, een BSN of een pasfoto zwart. De inhoud wordt echt verwijderd, niet alleen bedekt.
+- **Suggesties om af te dekken:** in een pdf met tekst wijst Cachety de IBAN's, kaartnummers, BSN's en belasting- of identiteitsnummers aan die het vindt, op je eigen apparaat, en dekt met één tik af wat jij kiest. Het dekt nooit zelf iets af, en het kan dingen missen (foto's, scans, barcodes): dat staat er ook bij.
 - **Traceerbare kopieën:** zet `{code}` in de tekst en elke kopie krijgt een eigen kort kenmerk, dat na het downloaden in een lijst verschijnt zodat je het kunt bewaren.
 - **Meerdere ontvangers:** één kopie per ontvanger (tot 20), elk met de naam van die ontvanger, in één download.
 - **Wachtwoord:** AES-256-versleuteling van de pdf (PDF 2.0). Vink je "Beveiligen met een wachtwoord" aan, dan krijg je een goed leesbaar wachtwoord van 12 willekeurige woorden (132 bits, BIP39-woordenlijst); je eigen wachtwoord of een willekeurig wachtwoord van 256 bits blijven mogelijk. Automatisch wissen van het klembord.

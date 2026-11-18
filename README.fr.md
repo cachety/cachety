@@ -38,6 +38,7 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 - **Trois étapes simples :** votre document, son usage et son destinataire, puis l'aperçu et le téléchargement. Le texte du filigrane est rédigé pour vous (« usage, destinataire, date », avec des exemples prêts à l'emploi) et reste librement modifiable.
 - **Données cachées retirées :** texte sélectionnable, métadonnées et position GPS des photos. Chaque page est reconstruite à partir de ses pixels.
 - **Masquage :** noircissez un IBAN, un numéro fiscal ou une photo. Le contenu est réellement supprimé, pas seulement recouvert.
+- **Zones suggérées :** sur un PDF qui contient du texte, Cachety repère les IBAN, numéros de carte, de sécurité sociale, fiscaux ou d'identité, sur votre appareil, et masque d'un geste ceux que vous choisissez. Il ne masque jamais rien de lui-même, et il peut en oublier (photos, documents numérisés, codes-barres) : la page le dit.
 - **Copies traçables :** ajoutez `{code}` au texte et chaque copie reçoit sa propre référence courte, listée après le téléchargement pour que vous la conserviez.
 - **Plusieurs destinataires :** une copie par destinataire (jusqu'à 20), chacune à son nom, en un seul téléchargement.
 - **Mot de passe :** chiffrement PDF AES-256 (PDF 2.0). Cocher « Verrouiller avec un mot de passe » crée un mot de passe facile à lire de 12 mots aléatoires (132 bits, liste de mots BIP39) ; votre propre mot de passe ou un mot de passe aléatoire de 256 bits restent disponibles. Effacement automatique du presse-papiers.
