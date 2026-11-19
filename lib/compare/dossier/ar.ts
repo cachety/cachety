@@ -10,12 +10,14 @@ import type { Comparison } from "../types";
 // (lib/compare/dossier/en.ts) and backed by a page listed in its `sources`,
 // read on the `checked` date. Prices change often, so none are quoted here.
 //
-// The Cachety column describes the Dossier tool as specified in
-// docs/prd-dossier.md (Must scope). Publish with the tool, not before, and
-// re-check the column against the shipped interface.
+// The Cachety column describes the Dossier tool as shipped (sections, photo
+// straightening and custom size included): limits from lib/watermark.ts and
+// lib/pages.ts, sizes from lib/size-budget.ts. The quoted labels («ملف PDF
+// واحد»، «حجم آخر…») were checked against the `dossier` block of
+// lib/locales/ar/strings.ts. Keep the column in step with them.
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Address of the tool, written without a scheme. */
 const TOOL = "cachety.com/ar/dossier";
@@ -25,14 +27,17 @@ const CACHETY = {
   where: "في متصفحك، على جهازك. لا يُرفع أي شيء.",
   kept: "لا شيء يُحفظ: لا يوجد خادم يستقبل ملفاتك.",
   free: "مجاني، دون حساب ولا خطة مدفوعة ولا حد يومي. حتى 200 MB لكل ملف، و500 صفحة لكل ملف PDF، و1,000 صفحة في المجموع.",
-  pages: "كل صفحات كل الملفات في شبكة واحدة: تنقل الصفحة، ولو من ملف إلى آخر، أو تدوّرها أو تحذفها.",
-  size: "تختار حجمًا أقصى: 1 أو 2 أو 5 أو 10 MB. ويخبرك Cachety قبل التنزيل هل سيكون الملف ضمنه ويبقى مقروءًا.",
+  pages: "كل صفحات كل الملفات في شبكة واحدة: تنقل الصفحة، ولو من ملف إلى آخر، أو تدوّرها أو تحذفها. ملف PDF واحد، أو ملف PDF لكل قسم تسمّيه.",
+  size: "تختار حجمًا أقصى: 1 أو 2 أو 5 أو 10 MB، أو أي حد من 0.5 إلى 50 MB. ويخبرك Cachety قبل التنزيل هل سيكون الملف ضمنه ويبقى مقروءًا.",
   output: "يُعاد بناء كل صفحة كصورة. لا يمكن تحديد النص ولا البحث فيه، وقد يصبح ملف PDF النصي أكبر.",
   hidden: "تُحذف من كل ملف: النص المخفي، واسم المؤلف وبقية الخصائص، والمرفقات، والروابط، وموقع GPS في الصور.",
-  inputs: "ملفات PDF والصور معًا، ومنها صور iPhone بصيغة HEIC. لا ملفات Word أو Excel أو PowerPoint.",
+  inputs: "ملفات PDF والصور معًا، ومنها صور iPhone بصيغة HEIC. ويمكن تسوية صورة الورقة وقصّها وتبييضها. لا ملفات Word أو Excel أو PowerPoint.",
   offline: "لا شيء للتثبيت. تواصل الصفحة عملها في وضع الطيران بعد تحميلها، على الهاتف أو الحاسوب.",
   ads: "لا إعلانات ولا أدوات تتبع. والشيفرة مفتوحة المصدر.",
 };
+
+/** Table row «خيارات الدمج», for the tools that have bookmarks and tables of contents. */
+const MERGE_OPTIONS = "ترتيب الصفحات، وملف PDF لكل قسم إذا أردت عدة ملفات. لا إشارات مرجعية ولا جدول محتويات.";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "كيف يكون الملف الذي ينشئه Cachety" },
@@ -54,7 +59,7 @@ const HOW_TO: Comparison["body"] = [
       `افتح ${TOOL} في متصفحك، على الحاسوب أو الهاتف. لا تحتاج إلى تثبيت أي شيء ولا إلى إنشاء حساب.`,
       "أضف ملفات PDF والصور. كل صورة تصبح صفحة.",
       "انتقل إلى الصفحات: اسحبها لترتيبها، ودوّر المقلوبة على جانبها، واحذف ما لا تريده.",
-      "اختر ملف PDF واحدًا، وإذا حُدِّد لك حجم أقصى، فاختر 1 أو 2 أو 5 أو 10 MB.",
+      "اختر «ملف PDF واحد»، وإذا حُدِّد لك حجم أقصى، فاختر 1 أو 2 أو 5 أو 10 MB، أو «حجم آخر…» لحد آخر.",
       "راجِع المعاينة، وأخفِ أي معلومة لا تحتاجها الجهة المستلمة، ثم نزِّل الملف.",
     ],
   },
@@ -107,8 +112,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "ترتيب الصفحات",
         cachety: CACHETY.pages,
-        other: "أداة الدمج تعيد ترتيب الملفات كاملة. أما فرز الصفحات المفردة وحذفها وتدويرها فيتم في أداة منفصلة هي Organize PDF.",
-        edge: "cachety",
+        other: "أداة الدمج تعيد ترتيب الملفات كاملة. وأداة منفصلة، هي Organize PDF، تفرز الصفحات المفردة وتحذفها وتدوّرها، وتستطيع إضافة ملفات أخرى ودمجها (مجانًا: 5 ملفات و100 MB).",
       },
       {
         criterion: "الالتزام بحجم أقصى",
@@ -160,7 +164,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
           "يحوّل ملفات Word وExcel وPowerPoint إلى PDF.",
           "يتعرّف على النص في النسخ الممسوحة ضوئيًا (OCR)، فيمكن أن يصبح ملف PDF الممسوح ضوئيًا قابلًا للبحث.",
           "يقبل المهام الكبيرة: حتى 100 ملف في الدمج المجاني.",
-          "تطبيقه المدفوع للحاسوب يعالج الملفات على حاسوبك، بالأدوات نفسها الموجودة في الموقع.",
+          "تطبيقه المدفوع للحاسوب يعالج الملفات على حاسوبك، بأغلب أدوات الموقع.",
         ],
       },
       { type: "h2", text: "أين يتفوق Cachety" },
@@ -184,7 +188,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     chooseCachety: [
       "الملفات وثائق هوية أو كشوف رواتب أو كشوف حساب، وتفضّل ألا ترفعها.",
       "تحتاج إلى الصور وملفات PDF في ملف واحد، والصفحات بالترتيب الذي تريده.",
-      "يطلب نموذج ملفًا واحدًا أقل من 1 أو 2 أو 5 أو 10 MB.",
+      "يطلب نموذج ملفًا واحدًا، أو ملفًا لكل نوع من المستندات، بحجم أقصى محدد بالميغابايت.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -193,7 +197,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       ),
       {
         q: "هل يستطيع iLovePDF ضغط ملف PDF إلى حجم محدد بالضبط؟",
-        a: "لا. يقدّم ثلاثة مستويات للضغط، ودليله نفسه يقول إنه لا توجد أداة تستطيع أن تضمن حجمًا محددًا بالضبط للملف الناتج. أما مع Cachety فتختار 1 أو 2 أو 5 أو 10 MB، ويخبرك قبل التنزيل إذا تعذّر أن يكون الملف ضمن الحجم ويبقى مقروءًا.",
+        a: "لا. يقدّم ثلاثة مستويات للضغط، ودليله نفسه يقول إنه لا توجد أداة تستطيع أن تضمن حجمًا محددًا بالضبط للملف الناتج. أما مع Cachety فتختار حجمًا أقصى بالميغابايت، ويخبرك قبل التنزيل إذا تعذّر أن يكون الملف ضمنه ويبقى مقروءًا.",
       },
       {
         q: "هل يعمل iLovePDF دون اتصال بالإنترنت؟",
@@ -217,6 +221,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "مدونة iLovePDF: 15 عامًا على iLovePDF", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "عن iLovePDF", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -236,7 +241,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     intro:
       "Smallpdf مجموعة معروفة من أدوات PDF على الإنترنت، من سويسرا، وله تطبيقات للهواتف ولنظام Windows. أداتا الدمج والضغط فيه تعملان في السحابة. أما Cachety فيؤدي مهمة أضيق على جهازك: يضع ملفات PDF والصور في ملف واحد، تحت حجم أقصى، دون رفعها.",
     verdict:
-      "Smallpdf يفعل أكثر: يقبل ملفات Word وExcel وPowerPoint، ويتعرّف على النص في النسخ الممسوحة ضوئيًا، وله تطبيق على Windows يعمل دون اتصال بالإنترنت. ولهذا كله هو الخيار الأفضل. أما Cachety فهو الخيار الأفضل حين تكون الملفات مستندات شخصية تفضّل ألا ترفعها، أو حين يكون عليك تجهيز أكثر من ملفين في اليوم، أو حين يحدد نموذج حجمًا أقصى بالميغابايت.",
+      "Smallpdf يفعل أكثر: يقبل ملفات Word وExcel وPowerPoint، ويتعرّف على النص في النسخ الممسوحة ضوئيًا، وله تطبيق على Windows يعمل دون اتصال بالإنترنت. ولهذا كله هو الخيار الأفضل. أما Cachety فهو الخيار الأفضل حين تكون الملفات مستندات شخصية تفضّل ألا ترفعها، أو حين تبلغ الحد اليومي للخطة المجانية، أو حين يحدد نموذج حجمًا أقصى بالميغابايت.",
     table: [
       {
         criterion: "أين تُعالَج الملفات",
@@ -247,7 +252,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "مدة حفظ الملفات",
         cachety: CACHETY.kept,
-        other: "تُحذف من الخوادم بعد ساعة، ما لم تحفظها في حسابك.",
+        other: "بحسب صفحات المنتج لدى Smallpdf، تُحذف من الخوادم بعد ساعة، ما لم تحفظها في حسابك.",
         edge: "cachety",
       },
       {
@@ -259,7 +264,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "ترتيب الصفحات",
         cachety: CACHETY.pages,
-        other: "أداة الدمج تعيد ترتيب الصفحات وتدوّرها وتحذفها. وأداة منفصلة، اسمها Organize، تفعل الشيء نفسه في ملف PDF واحد.",
+        other: "أداة الدمج تستطيع عرض صفحات كل ملف لإعادة ترتيبها أو تدويرها أو حذفها، وصفحة الأسعار لدى Smallpdf تذكر عرض الصفحات هذا ضمن الخطة المدفوعة. وأداة Organize تعيد ترتيب الصفحات وتدوّرها وتحذفها وتضيف صفحات، وتستطيع ضم عدة مستندات.",
       },
       {
         criterion: "الالتزام بحجم أقصى",
@@ -281,7 +286,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "البيانات المخفية",
         cachety: CACHETY.hidden,
-        other: "غير موثّق لأداة الدمج في صفحات المنتج أو المساعدة.",
+        other: "غير موصوف لأداة الدمج. ومدونة Smallpdf تقول إن أداتَي Compress وFlatten فيه تحذفان البيانات الوصفية، في خطوة منفصلة.",
       },
       {
         criterion: "التطبيقات والعمل دون اتصال بالإنترنت",
@@ -330,17 +335,17 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     ],
     chooseCachety: [
       "الملفات وثائق هوية أو كشوف رواتب أو كشوف حساب، وتفضّل ألا ترفعها.",
-      "يطلب نموذج ملفًا واحدًا أقل من 1 أو 2 أو 5 أو 10 MB.",
+      "يطلب نموذج ملفًا واحدًا، أو ملفًا لكل نوع من المستندات، بحجم أقصى محدد بالميغابايت.",
       "أنت على الهاتف ولا تريد تثبيت تطبيق ولا إنشاء حساب.",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "مع أدوات Smallpdf على الإنترنت، نعم: تُرفع الملفات إلى خوادمه وتُحذف بعد ساعة ما لم تحفظها في حسابك. أما تطبيقه للحاسوب على Windows فيعالج الملفات دون اتصال بالإنترنت."
+        "مع أدوات Smallpdf على الإنترنت، نعم: تُرفع الملفات إلى خوادمه، وبحسب صفحات المنتج لديه، تُحذف بعد ساعة ما لم تحفظها في حسابك. أما تطبيقه للحاسوب على Windows فيعالج الملفات دون اتصال بالإنترنت."
       ),
       {
         q: "هل يستطيع Smallpdf ضغط ملف PDF إلى حجم محدد بالضبط؟",
-        a: "لا. يقدّم Smallpdf مستويات ضغط، ومدونته نفسها تقول إن الأداة لا تتيح إدخال حجم محدد بالضبط. أما مع Cachety فتختار 1 أو 2 أو 5 أو 10 MB.",
+        a: "لا. يقدّم Smallpdf مستويات ضغط، ومدونته نفسها تقول إن الأداة لا تتيح إدخال حجم محدد بالضبط. أما مع Cachety فتختار حجمًا أقصى بالميغابايت، ويبقى الملف تحته متى أمكن ذلك مع بقائه مقروءًا.",
       },
       {
         q: "هل Smallpdf مجاني؟",
@@ -358,6 +363,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       { label: "Smallpdf: مركز الثقة", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf: التطبيقات والإضافات", url: "https://smallpdf.com/download" },
       { label: "مدونة Smallpdf: ضغط PDF إلى حجم تختاره", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "مدونة Smallpdf: حذف البيانات الوصفية من PDF", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "عن Smallpdf", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -378,7 +384,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     intro:
       "Adobe هي التي ابتكرت صيغة PDF، وأدوات Acrobat المجانية عبر الإنترنت تدمج ملفات PDF وتضغطها في أي متصفح. وتُعالَج الملفات على خوادم Adobe. أما Cachety فيؤدي مهمة أضيق على جهازك: يضع ملفات PDF والصور في ملف واحد، تحت حجم أقصى، دون رفعها.",
     verdict:
-      "لملفات PDF التي يجب أن يبقى نصها كما هو، دمج Adobe هو الخيار الأفضل: يضم الملفات دون تقليل جودة الصور أو النص أو التنسيق، ويقبل حتى 100 ملف. وتطبيقه المدفوع للحاسوب يفعل أكثر بكثير من Cachety. أما Cachety فهو الخيار الأفضل للمستندات الشخصية التي تفضّل ألا ترفعها، وللجمع بين الصور وملفات PDF مجانًا، وللالتزام بحجم أقصى محدد بالميغابايت.",
+      "لملفات PDF التي يجب أن يبقى نصها كما هو، دمج Adobe هو الخيار الأفضل: يضم الملفات دون تقليل جودة الصور أو النص أو التنسيق، ويقبل حتى 100 ملف. وتطبيقه المدفوع للحاسوب يفعل أكثر بكثير من Cachety. أما Cachety فهو الخيار الأفضل للمستندات الشخصية التي تفضّل ألا ترفعها، وللجمع بين الصور وملفات PDF في خطوة واحدة، وللالتزام بحجم أقصى محدد بالميغابايت.",
     table: [
       {
         criterion: "أين تُعالَج الملفات",
@@ -395,12 +401,12 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "الحساب والاستخدام المجاني والحدود",
         cachety: CACHETY.free,
-        other: "الدمج: حتى 100 ملف من 500 صفحة لكل منها، دون علامة مائية. الضغط: مجاني باستخدام محدود، والاستخدام غير المحدود يحتاج إلى خطة مدفوعة.",
+        other: "الدمج: حتى 100 ملف من 500 صفحة لكل منها، و1,500 صفحة في الملف المدمج، دون علامة مائية. الضغط: مجاني باستخدام محدود، والاستخدام غير المحدود يحتاج إلى خطة مدفوعة.",
       },
       {
         criterion: "ترتيب الصفحات",
         cachety: CACHETY.pages,
-        other: "يمكن إعادة ترتيب الملفات قبل الدمج. أما إعادة تنظيم الصفحات المفردة فتتطلب تسجيل الدخول.",
+        other: "يمكن إعادة ترتيب الملفات قبل الدمج. أما إعادة تنظيم الصفحات المفردة فتتطلب تسجيل الدخول، ويكفي لذلك حساب مجاني.",
         edge: "cachety",
       },
       {
@@ -411,7 +417,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "الصور وأنواع الملفات الأخرى",
         cachety: CACHETY.inputs,
-        other: "الدمج المجاني يقبل ملفات PDF. أما ضم ملفات PDF إلى ملفات Word أو Excel أو PowerPoint أو الصور فجزء من Acrobat Pro. وهناك أداة منفصلة تحوّل الصور إلى PDF، ويجب تسجيل الدخول لتنزيل النتيجة.",
+        other: "الدمج المجاني يقبل ملفات PDF. أما ضم ملفات PDF إلى ملفات Word أو Excel أو PowerPoint أو الصور فجزء من Acrobat Pro. وهناك أدوات مجانية منفصلة تحوّل الصور، ومنها صور HEIC، إلى PDF، لعدد محدود من التحويلات.",
       },
       {
         criterion: "كيف يكون ملف PDF الجديد",
@@ -457,7 +463,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
         items: [
           "ملفاتك لا تُرفع أبدًا، ولا تسجيل دخول في أي مرحلة.",
           "نقل الصفحات المفردة وتدويرها وحذفها مجاني ولا يحتاج إلى حساب.",
-          "الصور وملفات PDF تدخل الملف نفسه مجانًا، ومنها صور iPhone بصيغة HEIC.",
+          "الصور وملفات PDF تدخل الملف نفسه في خطوة واحدة. أما مع أدوات Adobe المجانية فتحوّل الصور إلى PDF أولًا، ثم تدمج.",
           "تُحذف البيانات المخفية من كل ملف، وهي ميزة تخصّصها Adobe لخطتها المدفوعة Pro.",
           "تختار حجمًا بالميغابايت، ويخبرك قبل التنزيل هل يمكن بلوغه.",
         ],
@@ -473,7 +479,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     chooseCachety: [
       "الملفات وثائق هوية أو كشوف رواتب أو كشوف حساب، وتفضّل ألا ترفعها.",
       "تريد إعادة ترتيب الصفحات أو تدويرها أو حذفها دون تسجيل الدخول.",
-      "تحتاج إلى الجمع بين الصور وملفات PDF، وإبقاء النتيجة أقل من 1 أو 2 أو 5 أو 10 MB.",
+      "تحتاج إلى الجمع بين الصور وملفات PDF، وإبقاء النتيجة تحت حجم أقصى محدد بالميغابايت.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -482,7 +488,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       ),
       {
         q: "هل أحتاج إلى حساب Adobe لدمج ملفات PDF؟",
-        a: "ليس للدمج والتنزيل. تطلب Adobe تسجيل الدخول لإعادة تنظيم الصفحات المفردة، أو لمشاركة الملف برابط، أو لتنزيل ملف PDF مصنوع من صور. أما Cachety فلا حساب فيه إطلاقًا.",
+        a: "ليس للدمج والتنزيل. تطلب Adobe تسجيل الدخول لإعادة تنظيم الصفحات المفردة أو لمشاركة الملف برابط. أما Cachety فلا حساب فيه إطلاقًا.",
       },
       {
         q: "هل يستطيع Acrobat عبر الإنترنت حذف البيانات الوصفية من ملف PDF؟",
@@ -495,6 +501,8 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       { label: "Adobe Acrobat: دمج ملفات PDF", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat: ضغط PDF", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat: تحويل JPG إلى PDF", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat: تحويل الصور إلى PDF", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat: تحويل HEIC إلى PDF", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat: إعادة ترتيب صفحات PDF", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat: حذف صفحات PDF", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -545,7 +553,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "ترتيب الصفحات",
         cachety: CACHETY.pages,
-        other: "يُعاد ترتيب الملفات بالسحب والإفلات. ويعرض وضع الصفحات صفحات كل الملفات. أما تدوير الصفحات وحذفها فأداتان منفصلتان.",
+        other: "يُعاد ترتيب الملفات بالسحب والإفلات. ويعرض وضع الصفحات صفحات كل الملفات: تختار ما تريده منها وتسحبه لترتيبه، وتترك الباقي. أما تدوير الصفحات فأداة منفصلة.",
       },
       {
         criterion: "الالتزام بحجم أقصى",
@@ -567,17 +575,23 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "البيانات المخفية",
         cachety: CACHETY.hidden,
-        other: "أداة منفصلة تحذف البيانات الوصفية من ملف PDF.",
+        other: "أداة منفصلة تحذف البيانات الوصفية من ملف PDF. وأداة Compress PDF تستطيع أيضًا إزالة البيانات الوصفية والمرفقات والتعليقات التوضيحية.",
+      },
+      {
+        criterion: "خيارات الدمج",
+        cachety: MERGE_OPTIONS,
+        other: "إشارات مرجعية، وجدول محتويات، وصفحة غلاف قبل كل ملف، وصفحات فارغة للطباعة على الوجهين، واسم الملف على الصفحات.",
+        edge: "other",
       },
       {
         criterion: "التطبيقات والعمل دون اتصال بالإنترنت",
         cachety: CACHETY.offline,
-        other: "يوفّر PDF24 Creator كل الأدوات دون اتصال بالإنترنت، على Windows فقط. لا توجد بعدُ نسخة لنظام Mac أو Linux، ولا تطبيق في متاجر تطبيقات الهواتف.",
+        other: "يوفّر PDF24 Creator كل الأدوات دون اتصال بالإنترنت، على Windows فقط. لا توجد بعدُ نسخة لنظام Mac أو Linux، ولا تطبيق في متاجر تطبيقات الهواتف: يمكن إضافة الأدوات عبر الإنترنت إلى الشاشة الرئيسية للهاتف، لكنها تبقى بحاجة إلى اتصال.",
       },
       {
         criterion: "الإعلانات وأدوات التتبع",
         cachety: CACHETY.ads,
-        other: "الأدوات عبر الإنترنت مموَّلة بالإعلانات. وسياسة الخصوصية تذكر Google AdSense وGoogle Analytics.",
+        other: "الأدوات عبر الإنترنت مموَّلة بالإعلانات. وسياسة الخصوصية تذكر Google AdSense وGoogle Analytics، من بين جهات أخرى.",
         edge: "cachety",
       },
     ],
@@ -595,7 +609,8 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         type: "list",
         items: [
-          "ملف PDF المدمج يحتفظ بالصفحات الأصلية، فيبقى النص قابلًا للتحديد ويبقى الملف خفيفًا.",
+          "ملف PDF المدمج يحتفظ بالصفحات الأصلية كما هي: يحتفظ النص والصور والخطوط بجودتها.",
+          "خيارات دمج ليست في Cachety: إشارات مرجعية، وجدول محتويات، وصفحات غلاف، وصفحات فارغة للطباعة على الوجهين.",
           "يقبل مستندات Word وملفات أخرى، ويقدّم التعرّف على النص (OCR).",
           "على Windows، يفعل PDF24 Creator ذلك كله دون اتصال بالإنترنت، مجانًا.",
           "يمكنك أن تحدد بنفسك دقة الضغط وجودة الصور فيه.",
@@ -623,7 +638,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     ],
     chooseCachety: [
       "أنت على هاتف أو Mac أو حاسوب لا تستطيع تثبيت البرامج عليه، وتفضّل ألا ترفع مستنداتك.",
-      "يطلب نموذج ملفًا واحدًا أقل من 1 أو 2 أو 5 أو 10 MB.",
+      "يطلب نموذج ملفًا واحدًا، أو ملفًا لكل نوع من المستندات، بحجم أقصى محدد بالميغابايت.",
       "صورك ملتقطة بهاتف iPhone.",
     ],
     faq: [
@@ -633,7 +648,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       ),
       {
         q: "هل يستطيع PDF24 ضغط ملف PDF إلى حجم معيّن؟",
-        a: "ليس مباشرة. تحدد الدقة وجودة الصور، ودليل PDF24 نفسه يقول إنه لا يوجد خيار «اضغط إلى 5 MB». أما مع Cachety فتختار 1 أو 2 أو 5 أو 10 MB.",
+        a: "ليس مباشرة. تحدد الدقة وجودة الصور، ودليل PDF24 نفسه يقول إنه لا يوجد خيار «اضغط إلى 5 MB». أما مع Cachety فتختار حجمًا أقصى بالميغابايت، ويبقى الملف تحته متى أمكن ذلك مع بقائه مقروءًا.",
       },
       {
         q: "هل يعمل PDF24 دون اتصال بالإنترنت على Mac أو على الهاتف؟",
@@ -646,6 +661,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       { label: "PDF24 Tools: ضغط PDF", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools: تحويل الصور إلى PDF", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools: حذف البيانات الوصفية من PDF", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools: تدوير PDF", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools: أسئلة وأجوبة", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "مساعدة PDF24: دمج ملفات PDF", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -681,13 +697,13 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       {
         criterion: "مدة حفظ الملفات",
         cachety: CACHETY.kept,
-        other: "عبر الإنترنت: تُحذف تلقائيًا بعد ساعتين. ويوجد زر يحذفها قبل ذلك.",
+        other: "عبر الإنترنت: تُحذف تلقائيًا بعد ساعتين. وفي صفحة النتيجة زر «Delete files» لحذف الملفات.",
         edge: "cachety",
       },
       {
         criterion: "الحساب والاستخدام المجاني والحدود",
         cachety: CACHETY.free,
-        other: "دون تسجيل. الدمج المجاني عبر الإنترنت: حتى 50 صفحة أو 50 MB، و3 مهام في الساعة. الضغط المجاني: حتى 200 صفحة أو 100 MB. تطبيق الحاسوب المجاني: 3 مهام في اليوم. والخطة المدفوعة تزيل الحدود.",
+        other: "دون تسجيل. الدمج المجاني عبر الإنترنت: حتى 50 صفحة أو 50 MB، و3 مهام في الساعة. الضغط المجاني: حتى 200 صفحة أو 100 MB. تطبيق الحاسوب المجاني: 3 مهام في اليوم، لمستندات حتى 50 MB و200 صفحة. والخطة المدفوعة تزيل حدود الصفحات وحد المهام في الساعة، ويصل الرفع معها إلى 500 MB لكل ملف.",
         edge: "cachety",
       },
       {
@@ -708,14 +724,14 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       },
       {
         criterion: "خيارات الدمج",
-        cachety: "لا شيء غير ترتيب الصفحات: لا إشارات مرجعية ولا جدول محتويات.",
+        cachety: MERGE_OPTIONS,
         other: "إشارات مرجعية تُحفظ أو تُنشأ لكل ملف، وجدول محتويات، وصفحات فارغة للطباعة على الوجهين، واسم الملف في تذييل الصفحة.",
         edge: "other",
       },
       {
         criterion: "البيانات المخفية",
         cachety: CACHETY.hidden,
-        other: "أداة منفصلة تعدّل البيانات الوصفية لملف PDF.",
+        other: "أداة منفصلة تعدّل البيانات الوصفية لملف PDF أو تحذفها كلها.",
       },
       {
         criterion: "التطبيقات والعمل دون اتصال بالإنترنت",
@@ -731,7 +747,7 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       },
       {
         type: "p",
-        text: "أما Sejda Desktop فيعالج الملفات على حاسوبك، دون رفع، على Mac وWindows وLinux. ونسخته المجانية تسمح بثلاث مهام في اليوم. وهناك تفصيل مهم للمستندات الشخصية: شروط الخدمة لدى Sejda تنص على أن المستخدمين يجب ألا يرسلوا إلى خدمته عبر الإنترنت معلومات شخصية حساسة، مثل أرقام الهوية الحكومية.",
+        text: "أما Sejda Desktop فيعالج الملفات على حاسوبك، دون رفع، على Mac وWindows وLinux. ونسخته المجانية تسمح بثلاث مهام في اليوم، لمستندات حتى 50 MB و200 صفحة، وبدمج ما يصل إلى 30 ملفًا و50 صفحة. وهناك تفصيل مهم للمستندات الشخصية: شروط الخدمة لدى Sejda تنص على أن المستخدمين يجب ألا يرسلوا إلى خدمته عبر الإنترنت معلومات شخصية حساسة، مثل أرقام الهوية الحكومية.",
       },
       { type: "h2", text: "أين يتفوق Sejda" },
       {
@@ -739,7 +755,8 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
         items: [
           "خيارات دمج ليست في Cachety: إشارات مرجعية، وجدول محتويات، وصفحات فارغة للطباعة على الوجهين.",
           "تطبيق للحاسوب على Mac وWindows وLinux يُبقي الملفات على حاسوبك.",
-          "أدوات أخرى كثيرة في المكان نفسه: التعرّف على النص (OCR)، والاقتصاص، وتقويم النسخ الممسوحة ضوئيًا، والتعديل.",
+          "أدوات أخرى كثيرة في المكان نفسه: التعرّف على النص (OCR)، واقتصاص صفحات ملف PDF وتقويمها، والتعديل.",
+          "يستطيع أخذ الملفات مباشرة من Dropbox أو Google Drive أو OneDrive.",
           "تحكّم دقيق في الضغط، بإعدادات لجودة الصور ودقتها.",
         ],
       },
@@ -759,12 +776,12 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
     chooseOther: [
       "تحتاج إلى إشارات مرجعية أو جدول محتويات في ملف PDF المدمج.",
       "تستطيع تثبيت Sejda Desktop ومهمتك ضمن حدوده المجانية، أو لديك خطة مدفوعة.",
-      "تحتاج إلى التعرّف على النص، أو إلى اقتصاص النسخ الممسوحة ضوئيًا أو تقويمها.",
+      "تحتاج إلى التعرّف على النص، أو إلى اقتصاص صفحات ملف PDF ممسوح ضوئيًا أو تقويمها: Cachety لا يفعل ذلك إلا للصور.",
     ],
     chooseCachety: [
       "الملفات وثائق هوية أو كشوف رواتب أو كشوف حساب، وأنت على الهاتف أو لا تستطيع تثبيت البرامج.",
       "ملفك يزيد على 50 صفحة، أو لديك عدة ملفات تريد تجهيزها في الساعة نفسها.",
-      "يطلب نموذج ملفًا واحدًا أقل من 1 أو 2 أو 5 أو 10 MB.",
+      "يطلب نموذج ملفًا واحدًا، أو ملفًا لكل نوع من المستندات، بحجم أقصى محدد بالميغابايت.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -773,11 +790,11 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       ),
       {
         q: "ما حدود Sejda المجانية للدمج؟",
-        a: "عبر الإنترنت، مستندات حتى 50 صفحة أو 50 MB وثلاث مهام في الساعة. والنسخة المجانية من Sejda Desktop تسمح بثلاث مهام في اليوم. أما Cachety فليست له حدود كهذه: حتى 1,000 صفحة في ملف واحد.",
+        a: "عبر الإنترنت، مستندات حتى 50 صفحة أو 50 MB وثلاث مهام في الساعة. والنسخة المجانية من Sejda Desktop تسمح بثلاث مهام في اليوم، لمستندات حتى 50 MB و200 صفحة. أما Cachety فليست له حدود كهذه: حتى 1,000 صفحة في ملف واحد.",
       },
       {
         q: "هل يستطيع Sejda ضغط ملف PDF إلى حجم معيّن؟",
-        a: "أداة الضغط فيه تقدّم إعدادات لجودة الصور ودقتها، لا حجمًا تستهدفه. أما مع Cachety فتختار 1 أو 2 أو 5 أو 10 MB.",
+        a: "أداة الضغط فيه تقدّم إعدادات لجودة الصور ودقتها، لا حجمًا تستهدفه. أما مع Cachety فتختار حجمًا أقصى بالميغابايت، ويبقى الملف تحته متى أمكن ذلك مع بقائه مقروءًا.",
       },
       FAQ_TEXT,
     ],
@@ -787,7 +804,8 @@ export const DOSSIER_COMPARISONS_AR: Comparison[] = [
       { label: "Sejda: تحويل JPG إلى PDF", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda: تنظيم صفحات PDF", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda: تعديل البيانات الوصفية لملف PDF", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda: الأسعار والأسئلة", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda: الخطط والأسئلة", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda: صفحة النتيجة", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "الأمان في Sejda", url: "https://www.sejda.com/security" },
       { label: "Sejda: سياسة الخصوصية", url: "https://www.sejda.com/privacy" },
