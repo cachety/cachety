@@ -658,6 +658,9 @@ describe("HEIC (photos d'iPhone)", () => {
   }, 30_000);
 });
 
+/** Graine dont les accents ne sont pas bleus (vérifié dans les trois moteurs). */
+const MASK_TEST_SEED = 1;
+
 describe("masquage (caviardage)", () => {
   test(
     "la zone masquée ne contient plus aucun pixel d'origine ; le reste est intact",
@@ -667,7 +670,10 @@ describe("masquage (caviardage)", () => {
         name: "bleu.pdf",
         type: "application/pdf",
         text: WATERMARK_TEXT,
-        options: { masks: { 0: [{ x: 0, y: 0, w: 0.5, h: 0.5 }] } },
+        // Disposition fixée : le filigrane passe par-dessus le masque, et ses
+        // rangées d'accent, tirées au hasard, peuvent être bleues. Sans graine,
+        // ce test comptait parfois ces pixels-là pour des pixels d'origine.
+        options: { masks: { 0: [{ x: 0, y: 0, w: 0.5, h: 0.5 }] }, layoutSeed: MASK_TEST_SEED },
       });
       if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
       const blue = await page.evaluate(async (src) => {
