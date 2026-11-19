@@ -16,6 +16,7 @@ import { PDFDocument } from "pdf-lib";
 import type { Browser, Page } from "playwright-core";
 import { launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
+import { makeTextPdf } from "./helpers/dossier-fixtures";
 import {
   ENCRYPTED_PDF_B64,
   ENCRYPTED_PDF_PASSWORD,
@@ -697,6 +698,33 @@ describe("masquage (caviardage)", () => {
       expect(blue.open).toBeGreaterThan(10_000);
     },
     60_000
+  );
+});
+
+describe("même page, même disposition : même résultat", () => {
+  // Régression : sous WebKit, juste après le rendu par pdf.js d'une page qui
+  // contient du texte, le filigrane sortait une fois sur deux retourné et deux
+  // fois trop grand (lib/watermark.ts, nextTask). Le poids du fichier le trahit :
+  // à disposition fixée, il ne doit pas changer d'un rendu à l'autre.
+  test(
+    "un PDF de texte rendu huit fois avec la même graine pèse huit fois le même poids",
+    async () => {
+      const b64 = toBase64(await makeTextPdf(2, 70));
+      const sizes: number[] = [];
+      for (let i = 0; i < 8; i++) {
+        const res = await runWatermark({
+          b64,
+          name: "bulletins.pdf",
+          type: "application/pdf",
+          text: WATERMARK_TEXT,
+          options: { layoutSeed: 12345 },
+        });
+        if (!res.ok) throw new Error(`watermarkFile a rejeté : ${res.error}`);
+        sizes.push(res.size);
+      }
+      expect(new Set(sizes).size, sizes.join(" ")).toBe(1);
+    },
+    180_000
   );
 });
 

@@ -270,6 +270,8 @@ async function watermarkPdf(
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvas, viewport }).promise;
+      // WebKit : voir nextTask. Avant tout texte dessiné par nos soins (initiales, filigrane).
+      await nextTask();
       // Lecture du texte lancée maintenant, attendue en fin de page : le worker
       // pdf.js y travaille pendant que cette page est encodée.
       const textRead = pageText?.add(page, viewport);
@@ -855,6 +857,34 @@ export function waveDisplacement(
 
 export function watermarkMaxLineWidth(width: number, height: number, lineHeight: number) {
   return Math.SQRT2 * Math.min(width, height) * 0.9 - lineHeight;
+}
+
+/**
+ * Rend la main à la boucle d'événements, le temps d'une tâche.
+ *
+ * Contournement d'un défaut de WebKit (constaté le 2026-11-19 avec le WebKit
+ * de Playwright sous Linux) : juste après que pdf.js a dessiné une page qui
+ * contient du texte, un `fillText` sur un autre canevas reprend parfois la
+ * transformation des glyphes de pdf.js. Le filigrane sort alors retourné et
+ * deux fois trop grand, donc illisible : une fois sur deux sur un PDF de texte,
+ * jamais sur une photo ni sur un PDF sans texte. `getTransform()` et
+ * `measureText()` ne montrent rien d'anormal ; remettre la transformation à
+ * zéro ou changer de type de canevas n'y change rien. Une tâche plus tard,
+ * le défaut a disparu (0 rendu fautif sur 72, contre 18 sur 36 sans la pause).
+ *
+ * MessageChannel plutôt que setTimeout : pas de plancher de 4 ms par page
+ * (minuteries imbriquées), ni de ralentissement dans un onglet en arrière-plan.
+ */
+function nextTask(): Promise<void> {
+  if (typeof MessageChannel === "undefined") return new Promise((resolve) => setTimeout(resolve, 0));
+  return new Promise((resolve) => {
+    const { port1, port2 } = new MessageChannel();
+    port1.onmessage = () => {
+      port1.close();
+      resolve();
+    };
+    port2.postMessage(null);
+  });
 }
 
 async function ensureFont(style: WatermarkStyle, text: string) {
