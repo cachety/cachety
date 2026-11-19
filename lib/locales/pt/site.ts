@@ -70,7 +70,7 @@ export const SITE_PT: SiteCopy = {
       },
       {
         title: "Ocultar informações",
-        body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto.",
+        body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto. Num PDF, o Cachety aponta números de cartão e contas em formato IBAN, e você decide o que ocultar.",
       },
       {
         title: "Um código único em cada cópia",
@@ -334,14 +334,15 @@ export const SITE_PT: SiteCopy = {
     related: "Continue lendo",
     cta: "Colocar marca d'água no meu documento",
     ctaSign: "Assinar meu documento",
+    ctaDossier: "Juntar meus documentos",
     ctaNote: "Grátis, sem cadastro. O documento nunca sai do seu aparelho.",
     updated: (d) => `Atualizado em ${d}`,
     allGuides: "Todos os guias",
   },
   compareUi: {
-    title: "Cachety e outras ferramentas de marca d'água e de assinatura",
+    title: "Cachety e outras ferramentas de marca d'água, de assinatura e para juntar e comprimir PDFs",
     lead: "Comparativos claros e verificados com as ferramentas mais usadas: para onde vão seus arquivos, quanto custa e quando outra ferramenta é a melhor escolha.",
-    groups: { watermark: "Marca d'água", sign: "Assinatura" },
+    groups: { watermark: "Marca d'água", sign: "Assinatura", dossier: "Juntar e comprimir" },
     read: "Ler o comparativo",
     verdictTitle: "Resumindo",
     tableTitle: "Lado a lado",

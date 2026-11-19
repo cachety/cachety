@@ -70,7 +70,7 @@ export const SITE_ID: SiteCopy = {
       },
       {
         title: "Sensor data",
-        body: "Sembunyikan nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi.",
+        body: "Sembunyikan nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi. Di PDF, Cachety menunjukkan nomor kartu dan IBAN yang ditemukannya, dan Anda yang memutuskan apa yang disensor.",
       },
       {
         title: "Kode unik di setiap salinan",
@@ -328,14 +328,15 @@ export const SITE_ID: SiteCopy = {
     related: "Baca juga",
     cta: "Beri watermark pada dokumen saya",
     ctaSign: "Tanda tangani dokumen saya",
+    ctaDossier: "Gabungkan dokumen saya",
     ctaNote: "Gratis, tanpa akun. Dokumen tidak pernah keluar dari perangkat Anda.",
     updated: (d) => `Diperbarui ${d}`,
     allGuides: "Semua panduan",
   },
   compareUi: {
-    title: "Cachety dibandingkan alat watermark dan tanda tangan lain",
+    title: "Cachety dibandingkan alat lain untuk watermark, tanda tangan, serta gabung dan kompres PDF",
     lead: "Perbandingan yang jelas dan sudah dicek dengan alat-alat yang paling banyak dipakai: ke mana file Anda dikirim, berapa biayanya, dan kapan alat lain justru lebih cocok.",
-    groups: { watermark: "Watermark", sign: "Tanda tangan" },
+    groups: { watermark: "Watermark", sign: "Tanda tangan", dossier: "Gabung dan kompres" },
     read: "Baca perbandingan",
     verdictTitle: "Ringkasnya",
     tableTitle: "Berdampingan",

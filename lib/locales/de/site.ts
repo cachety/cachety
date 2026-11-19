@@ -68,7 +68,7 @@ export const SITE_DE: SiteCopy = {
       },
       {
         title: "Angaben schwärzen",
-        body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt.",
+        body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt. In einem PDF zeigt dir Cachety Konto- und Kartennummern, und du entscheidest, was geschwärzt wird.",
       },
       {
         title: "Ein eigener Code auf jeder Kopie",
@@ -332,14 +332,15 @@ export const SITE_DE: SiteCopy = {
     related: "Weiterlesen",
     cta: "Wasserzeichen auf mein Dokument",
     ctaSign: "Mein Dokument unterschreiben",
+    ctaDossier: "Meine Dokumente zusammenfügen",
     ctaNote: "Kostenlos, ohne Konto. Das Dokument verlässt nie dein Gerät.",
     updated: (d) => `Aktualisiert am ${d}`,
     allGuides: "Alle Ratgeber",
   },
   compareUi: {
-    title: "Cachety im Vergleich mit anderen Wasserzeichen- und Unterschriften-Tools",
+    title: "Cachety im Vergleich mit anderen Tools für Wasserzeichen, Unterschriften, Zusammenfügen und Komprimieren von PDFs",
     lead: "Verständliche, geprüfte Vergleiche mit den meistgenutzten Tools: wohin deine Dateien gehen, was es kostet und wann ein anderes Tool die bessere Wahl ist.",
-    groups: { watermark: "Wasserzeichen", sign: "Unterschreiben" },
+    groups: { watermark: "Wasserzeichen", sign: "Unterschreiben", dossier: "Zusammenfügen und komprimieren" },
     read: "Vergleich lesen",
     verdictTitle: "Kurz gesagt",
     tableTitle: "Im direkten Vergleich",

@@ -67,7 +67,7 @@ export const SITE_NL: SiteCopy = {
       },
       {
         title: "Gegevens zwartlakken",
-        body: "Verberg een rekeningnummer, je BSN of een pasfoto. De inhoud wordt echt verwijderd, niet alleen bedekt.",
+        body: "Verberg een rekeningnummer, je BSN of een pasfoto. In een pdf wijst Cachety rekening- en kaartnummers aan; jij beslist wat je afdekt. De inhoud wordt echt verwijderd, niet alleen bedekt.",
       },
       {
         title: "Een unieke code op elke kopie",
@@ -334,14 +334,15 @@ export const SITE_NL: SiteCopy = {
     related: "Lees ook",
     cta: "Mijn document watermerken",
     ctaSign: "Mijn document ondertekenen",
+    ctaDossier: "Mijn documenten samenvoegen",
     ctaNote: "Gratis, geen account. Het document verlaat nooit je apparaat.",
     updated: (d) => `Bijgewerkt op ${d}`,
     allGuides: "Alle uitleg",
   },
   compareUi: {
-    title: "Cachety vergeleken met andere watermerk- en ondertekentools",
+    title: "Cachety vergeleken met andere tools voor watermerken, ondertekenen, en pdf's samenvoegen en comprimeren",
     lead: "Heldere, gecontroleerde vergelijkingen met de tools die het meest worden gebruikt: waar je bestanden heen gaan, wat het kost, en wanneer een andere tool de betere keuze is.",
-    groups: { watermark: "Watermerk", sign: "Ondertekenen" },
+    groups: { watermark: "Watermerk", sign: "Ondertekenen", dossier: "Samenvoegen en comprimeren" },
     read: "Lees de vergelijking",
     verdictTitle: "In het kort",
     tableTitle: "Naast elkaar",

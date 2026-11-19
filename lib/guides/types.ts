@@ -29,7 +29,21 @@ export type GuideTopic =
   /** Réunir un dossier (location…) en un seul PDF (outil Dossier). */
   | "dossier"
   /** Passer sous la taille maximale d'un formulaire (outil Dossier). */
-  | "size";
+  | "size"
+  /** Zones suggérées : repérer et masquer les numéros sensibles d'un PDF. */
+  | "auto-redact"
+  /** Donner son IBAN / ses coordonnées bancaires : risques, quoi masquer. */
+  | "iban"
+  /** Envoyer une copie de sa carte bancaire : quoi masquer. */
+  | "bank-card"
+  /** Réunir plusieurs PDF en un seul (outil Dossier). */
+  | "merge"
+  /** Photos de papiers vers un seul PDF, sur téléphone (outil Dossier). */
+  | "photo-to-pdf"
+  /** Tourner, réordonner, retirer des pages (outil Dossier). */
+  | "pdf-pages"
+  /** Retirer les métadonnées et données cachées d'un PDF ou d'une photo (outil Dossier). */
+  | "metadata";
 
 /** Outil vers lequel pointe le bouton d'appel du guide. */
 export type GuideTool = "watermark" | "sign" | "dossier";

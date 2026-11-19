@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { LANG_CODES } from "@/lib/site-meta";
-import { comparisonAlternates, COMPARISONS, compareTool, relatedComparisons } from "./index";
+import { comparisonAlternates, COMPARISONS, compareTool, compareToolPath, relatedComparisons } from "./index";
 import type { Comparison } from "./types";
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -77,6 +77,19 @@ describe("comparatifs (pages « Cachety ou X ? »)", () => {
       for (const c of sign) {
         expect(c.slug, lang).toBe(`cachety-vs-${c.competitor}`);
         for (const r of relatedComparisons(lang, c)) expect(compareTool(r), c.slug).toBe("sign");
+      }
+    }
+  });
+
+  test("dossier : les mêmes cinq outils comparés dans chaque langue, liés entre eux seulement", () => {
+    const DOSSIER_TOOLS = ["adobe-merge", "ilovepdf-merge", "pdf24-merge", "sejda-merge", "smallpdf-merge"];
+    for (const lang of LANG_CODES) {
+      const dossier = COMPARISONS[lang].filter((c) => compareTool(c) === "dossier");
+      expect(dossier.map((c) => c.competitor).sort(), lang).toEqual(DOSSIER_TOOLS);
+      for (const c of dossier) {
+        expect(c.slug, lang).toBe(`cachety-vs-${c.competitor}`);
+        expect(compareToolPath(lang, c), lang).toBe(`/${lang}/dossier`);
+        for (const r of relatedComparisons(lang, c)) expect(compareTool(r), c.slug).toBe("dossier");
       }
     }
   });
