@@ -355,7 +355,8 @@ describe("dossier : pages", () => {
       await tile(page, 0).getByRole("button", { name: `${d.grid.remove} 1`, exact: true }).click();
       await waitPages(page, 3);
       expect(await order(page)).toEqual(["b.pdf#0", "b.pdf#1", "photo.png#0"]);
-      await page.getByText(d.grid.noPages, { exact: true }).waitFor();
+      // Dans la liste des documents (l'aperçu de l'étape 3 le dit aussi, à sa façon).
+      await page.getByRole("region", { name: d.step1 }).getByText(d.grid.noPages, { exact: true }).waitFor();
       // Le fichier produit ne contient plus ce document.
       const file = await download(page, d.download);
       expect(await pageColours(page, file.bytes)).toEqual(["blue", "yellow", "magenta"]);
