@@ -469,15 +469,21 @@ numbers of the countries Cachety serves (`lib/sensitive.ts`). This adds
   removed page is neither previewed nor counted in the suggestions.
 - **Order and removed pages change nothing but the assembly.** A removed page
   is still rendered with its document, then left out of the file.
-- **Size target.** The first render has no limit. If a file is over the
-  target, the documents concerned are rendered again with a byte budget per
-  page, weighted by the page's first-render weight, never below a readability
-  floor (scale 0.55 of the render, about 80 dpi on A4) unless the user ticks
-  "Allow lower quality". The panel says before the download whether the
-  target fits, fits with less sharp pages, or cannot be reached; the
-  prediction constants are measured on a fixture corpus and a test fails if
-  they drift by more than 15 %. The reduction is applied after the masks and
-  the watermark; it can neither remove them nor reintroduce data.
+- **Size target.** The first render has no limit. During it, each page is
+  also encoded once at the readability floor (scale 0.55 of the render, about
+  80 dpi on A4, lowest quality) and once at the bottom of the scale, and only
+  the two weights are kept: that is what the page will weigh if its budget
+  cannot be met. The panel's three states come from those measurements, not
+  from a model: the target fits; it fits with less sharp pages when the sum
+  of the measured floor weights, plus a 2 % reserve, fits; otherwise it
+  cannot be reached. If a file is over the target, the documents concerned
+  are rendered again with a byte budget per page: first the page's measured
+  floor weight with the same 2 %, then a share of what is left according to
+  its first-render weight, never below the floor unless the user ticks
+  "Allow lower quality". The second render repeats the same encoding of the
+  same pixels, with the same watermark layout as the first, so a file
+  announced as fitting does fit. The reduction is applied after the masks
+  and the watermark; it can neither remove them nor reintroduce data.
 - **Thumbnails** of every page are small JPEGs made from the same rendered
   canvas, kept as `blob:` URLs and revoked with the result.
 - **Options shared with the other tools**: masks ("Hide something"), "Also
@@ -621,9 +627,10 @@ service worker: it is neither a request nor a `blob:` URL.
 automatic application, target size, for the sign tool the ink colour,
 the last tab used and whether the date is added (`signInk`, `signTab`,
 `signDate`), and for the dossier tool the kind of file to produce and the
-size target (`dossierOutput`, `dossierSizeMb`). The page order, rotations,
-crops, section names and the file name of a dossier live in memory only.
-**No file, no watermark text, no password, no signature, no
+size target, and whether "Black and white" starts ticked in the photo
+clean-up panel (`dossierOutput`, `dossierSizeMb`, `dossierGray`). The page
+order, rotations, crops, section names and the file name of a dossier live in
+memory only. **No file, no watermark text, no password, no signature, no
 typed name, place or note, no extracted text, no suggestion and no
 dismissed suggestion.** Previews are `blob:` URLs revoked as soon as
 they are no longer needed.
@@ -742,8 +749,9 @@ What the application **does not guarantee**, stated plainly:
   a guarantee: very small print can become illegible above it, and the user
   can lower it ("Allow lower quality") or download a file the panel has said
   cannot fit. The tool warns before the download and again after it; the
-  person may still send the file. The size prediction is an estimate from a
-  synthetic corpus: it errs on the side of saying "cannot fit".
+  person may still send the file. The size prediction is measured on the
+  person's own pages; within its 2 % reserve it says "cannot fit" for a file
+  that would just pass.
 - **Straightening is manual and approximate.** The four corners are placed by
   the user; nothing checks that the result shows the whole sheet.
 - **Trust in the host.** The code is served by Cloudflare Pages; a

@@ -15,7 +15,7 @@ import type { Browser, BrowserContext, Page } from "playwright-core";
 import { browserName, launchBrowser, MAP_UPSERT_POLYFILL } from "./helpers/browser";
 import { E2E_ORIGIN, startServer, type E2eServer } from "./helpers/server";
 import { makePdf, pageJpeg, scanPdfForLeaks } from "./helpers/fixtures";
-import { makeColourPdf, makeFlatPng, makePhotoPng, makeTextPdf, type Rgb } from "./helpers/dossier-fixtures";
+import { makeColourPdf, makeFlatPng, makePhotoPdf, makePhotoPng, makeTextPdf, type Rgb } from "./helpers/dossier-fixtures";
 import {
   addFiles,
   download,
@@ -597,6 +597,33 @@ describe("dossier : taille", () => {
   );
 
   test(
+    "30 pages photo sous 1 Mo : le panneau annonce « tient, pages un peu moins nettes », sans proposer de séparer, et le fichier tient",
+    async () => {
+      const page = await openPage("/en/dossier");
+      await addFiles(page, [pdf("scan.pdf", await makePhotoPdf(30))]);
+      await waitPages(page, 30);
+      await sizeRadio(page, en.size.mb(1)).click();
+      const panel = page.getByTestId("size-panel");
+      await page.waitForFunction(() => document.querySelector('[data-testid="size-panel"]')?.getAttribute("data-fit") === "reduced");
+      await page.getByTestId("size-estimate").filter({ hasText: d.size.reduced("1.0 MB") }).waitFor();
+      // Ni « impossible », ni les trois issues : rien ne pousse à séparer ou à retirer des pages.
+      expect(await page.getByTestId("size-exits").count()).toBe(0);
+      expect(await panel.getByText(d.size.unreachable(en.size.mb(1))).count()).toBe(0);
+      const file = await download(page, d.download);
+      expect(file.bytes.length).toBeLessThanOrEqual(mbToBytes(1));
+      expect(await page.getByTestId("done-notice").count()).toBe(0);
+      const doc = await PDFDocument.load(file.bytes);
+      expect(doc.getPageCount()).toBe(30);
+      // Lisible : aucune page sous le plancher (0,55 du premier rendu).
+      for (const i of [0, 14, 29]) {
+        const jpeg = imageSize(await pageJpeg(file.bytes, i))!;
+        expect(jpeg.width / (doc.getPage(i).getWidth() * 2)).toBeGreaterThan(0.54);
+      }
+    },
+    300_000
+  );
+
+  test(
     "« Autre… » : une taille libre entre 0,5 et 50 Mo ; un petit PDF de texte qui grossit : le panneau dit pourquoi",
     async () => {
       const page = await openPage("/en/dossier");
@@ -679,6 +706,58 @@ describe("dossier : options communes aux autres outils", () => {
 });
 
 describe("dossier : photo d'une feuille", () => {
+  // docs/prd-dossier.md §7 : le choix « Noir et blanc » est une préférence d'affichage, gardée d'une visite à l'autre.
+  test(
+    "« Noir et blanc » : le dernier choix appliqué est proposé d'office pour la photo suivante, et à la visite suivante",
+    async () => {
+      const page = await openPage("/en/dossier");
+      const openEditor = async (index: number) => {
+        await tile(page, index).getByRole("button", { name: d.grid.menu(index + 1), exact: true }).click();
+        await page.getByRole("dialog", { name: d.grid.menu(index + 1) }).getByRole("button", { name: d.photo.fix, exact: true }).click();
+        const editor = page.getByTestId("photo-fix");
+        await editor.getByRole("button", { name: d.photo.corner(1), exact: true }).waitFor();
+        return editor;
+      };
+      await addFiles(page, [png("one.png", makePhotoPng(800, 600, 21)), png("two.png", makePhotoPng(800, 600, 22))]);
+      await waitPages(page, 2);
+      expect(await page.evaluate(() => localStorage.getItem("dossierGray"))).toBeNull();
+      let editor = await openEditor(0);
+      const gray = () => editor.getByRole("checkbox", { name: d.photo.gray, exact: true });
+      expect(await gray().isChecked()).toBe(false);
+      await gray().check();
+      await editor.getByRole("button", { name: d.photo.apply, exact: true }).click();
+      await editor.waitFor({ state: "detached" });
+      expect(await page.evaluate(() => localStorage.getItem("dossierGray"))).toBe("1");
+
+      // L'autre photo : la case part cochée, mais rien n'est appliqué sans « Appliquer ».
+      editor = await openEditor(1);
+      expect(await gray().isChecked()).toBe(true);
+      expect(await editor.getByRole("checkbox", { name: d.photo.whiten, exact: true }).isChecked()).toBe(false);
+      await editor.getByRole("button", { name: en.mask.cancel, exact: true }).click();
+      await editor.waitFor({ state: "detached" });
+      await waitPages(page, 2);
+      const file = await download(page, d.download);
+      const spread = async (index: number) => {
+        const mean = await centreColour(page, await pageJpeg(file.bytes, index));
+        return Math.max(...mean) - Math.min(...mean);
+      };
+      expect(await spread(0)).toBeLessThan(4);
+      expect(await spread(1)).toBeGreaterThan(10);
+
+      // Visite suivante : la préférence est relue. Décochée puis appliquée, elle est mise à jour.
+      await page.goto(`${E2E_ORIGIN}/en/dossier`);
+      await addFiles(page, [png("three.png", makePhotoPng(800, 600, 23))]);
+      await waitPages(page, 1);
+      editor = await openEditor(0);
+      expect(await gray().isChecked()).toBe(true);
+      await gray().uncheck();
+      await editor.getByRole("button", { name: d.photo.apply, exact: true }).click();
+      await editor.waitFor({ state: "detached" });
+      expect(await page.evaluate(() => localStorage.getItem("dossierGray"))).toBe("0");
+    },
+    180_000
+  );
+
   test(
     "téléphone : éditeur des coins au doigt (avec la loupe) et au clavier, nettoyage, puis la page recadrée dans le fichier",
     async () => {

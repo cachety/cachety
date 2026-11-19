@@ -39,6 +39,17 @@ export type WatermarkResult = {
   thumbs?: string[];
   /** Mode « dossier » : taille (octets) de l'image encodée de chaque page, pour le budget pondéré. */
   pageBytes?: number[];
+  /**
+   * Mode « dossier » : pour chaque plancher de `sizeProbes`, le poids mesuré
+   * de chaque page au barreau le plus compact que ce plancher permet.
+   */
+  probeBytes?: number[][];
+  /**
+   * Mode « dossier » : graine du pavage du filigrane de ce rendu. La redonner
+   * (RenderOptions.layoutSeed) au second rendu, sous budget, refait le même
+   * filigrane : les poids mesurés ici valent alors exactement pour lui.
+   */
+  layoutSeed?: number;
   pageCount: number;
   /** Taille cible demandée mais non atteinte, même à la compression maximale. */
   overBudget?: boolean;
@@ -62,6 +73,13 @@ export type RenderOptions = {
   thumbnails?: number;
   /** Plancher de lisibilité : échelle la plus basse de ENCODE_LADDER permise sous une taille cible. */
   minScale?: number;
+  /**
+   * Planchers (`minScale`) à mesurer pendant ce rendu : chaque page est aussi
+   * encodée au barreau le plus compact permis par chacun, et son poids rendu
+   * dans `probeBytes`. C'est ce que la page pèsera si son budget ne peut pas
+   * être tenu : la prédiction de taille part de cette mesure, pas d'un modèle.
+   */
+  sizeProbes?: readonly number[];
   /**
    * Budget (octets) de l'image de chaque page, à la place du partage égal de
    * `maxBytes` (lib/assemble.ts). 0 ou absent pour une page : sans limite.
@@ -227,6 +245,7 @@ async function watermarkPdf(
   // Mode « dossier » : vignettes de toutes les pages, poids de chaque page.
   const thumbs: string[] = [];
   const pageBytes: number[] = [];
+  const probeBytes: number[][] = (options.sizeProbes ?? []).map(() => []);
 
   try {
     for (let i = 1; i <= pageCount; i++) {
@@ -267,6 +286,7 @@ async function watermarkPdf(
       );
       drawWatermark(ctx, canvas.width, canvas.height, text, style, (seed + i) >>> 0);
       if (options.thumbnails) thumbs.push(await thumbnailOf(canvas, options.thumbnails));
+      (await probeSizes(canvas, options.sizeProbes)).forEach((bytes, k) => probeBytes[k].push(bytes));
 
       const budget = budgetOf(options, i - 1, pageCount);
       const pageBlob = budget
@@ -301,6 +321,8 @@ async function watermarkPdf(
       previewPageIndexes,
       thumbs,
       pageBytes,
+      probeBytes,
+      layoutSeed: seed,
       pageCount,
       overBudget: !!maxBytes && blob.size > maxBytes,
       ...(pageText ? { lines: pageText.lines, linesIncomplete: pageText.incomplete } : {}),
@@ -410,8 +432,10 @@ async function watermarkPhotoPage(
   paintMasks(ctx, canvas.width, canvas.height, masks?.[0]);
   paintOverlays(ctx, canvas.width, canvas.height, overlaysOnPage(overlays, 0, initialsFor(canvas, options)), overlayImages);
   await ensureFont(style, text);
-  drawWatermark(ctx, canvas.width, canvas.height, text, style, layoutSeed ?? randomSeed());
+  const seed = layoutSeed ?? randomSeed();
+  drawWatermark(ctx, canvas.width, canvas.height, text, style, seed);
   const thumbs = options.thumbnails ? [await thumbnailOf(canvas, options.thumbnails)] : [];
+  const probeBytes = (await probeSizes(canvas, options.sizeProbes)).map((bytes) => [bytes]);
   try {
     const budget = budgetOf(options, 0, 1);
     const image = budget
@@ -429,6 +453,8 @@ async function watermarkPhotoPage(
       previewPageIndexes: [0],
       thumbs,
       pageBytes: [image.size],
+      probeBytes,
+      layoutSeed: seed,
       pageCount: 1,
       overBudget: !!maxBytes && blob.size > maxBytes,
     };
@@ -858,6 +884,21 @@ async function encodeWithin(canvas: HTMLCanvasElement, budget: number, minScale 
     if (blob.size <= budget) return blob;
   }
   return best!;
+}
+
+/**
+ * Poids (octets) de la page au barreau le plus compact permis par chaque
+ * plancher : exactement l'essai que ferait encodeWithin en dernier recours.
+ */
+async function probeSizes(canvas: HTMLCanvasElement, minScales: readonly number[] | undefined): Promise<number[]> {
+  const sizes: number[] = [];
+  for (const minScale of minScales ?? []) {
+    const { scale, quality } = ladderFrom(minScale).at(-1)!;
+    const source = scale === 1 ? canvas : downscale(canvas, scale);
+    sizes.push((await canvasToBlob(source, "image/jpeg", quality)).size);
+    if (source !== canvas) source.width = 0;
+  }
+  return sizes;
 }
 
 function downscale(canvas: HTMLCanvasElement, scale: number) {

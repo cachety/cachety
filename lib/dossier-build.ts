@@ -3,14 +3,47 @@
 // les résultats du moteur (pages déjà reconstruites en images) et une
 // fonction pour en demander un nouveau rendu sous budget. C'est le seul
 // appelant de assemblePdf (vérifié par lib/assemble.test.ts).
+//
+// Prédiction et fabrication partent des mêmes nombres : le poids de chaque
+// page au premier rendu, et son poids MESURÉ au plancher (sonde du premier
+// rendu, SIZE_PROBES). Quand l'estimation dit « tient », les budgets donnés
+// au second rendu garantissent que le fichier tient.
 
-import { assemblePdf, estimatePdfSize, predictFit, weightedBudgets, type FitState, type FloorModel } from "@/lib/assemble";
+import {
+  assemblePdf,
+  estimatePdfSize,
+  FLOOR,
+  floorWeights,
+  LOWEST,
+  predictFit,
+  weightedBudgets,
+  type FitState,
+} from "@/lib/assemble";
 import { safeFileName, splitBySection, type DossierState } from "@/lib/pages";
+import { DOSSIER_MIN_SCALE } from "@/lib/size-budget";
 import type { WatermarkResult } from "@/lib/watermark";
 
 /** Un seul PDF, un PDF par section, ou un PDF par document d'origine (dans un ZIP). */
 export type OutputKind = "one" | "sections" | "separate";
 export const OUTPUT_KINDS: readonly OutputKind[] = ["one", "sections", "separate"];
+
+/**
+ * Jusqu'où les pages peuvent être réduites : « floor », le plancher de
+ * lisibilité (DOSSIER_MIN_SCALE) ; « lowest », tout en bas de l'échelle,
+ * quand la personne accepte une qualité plus faible.
+ */
+export type FloorKind = "floor" | "lowest";
+
+/**
+ * Planchers mesurés par le moteur au premier rendu (RenderOptions.sizeProbes),
+ * dans l'ordre de WatermarkResult.probeBytes : le plancher de lisibilité,
+ * puis aucun plancher.
+ */
+export const SIZE_PROBES: readonly number[] = [DOSSIER_MIN_SCALE, 0];
+const PROBE_OF: Record<FloorKind, number> = { floor: 0, lowest: 1 };
+
+/** Échelle la plus basse permise au second rendu (RenderOptions.minScale). */
+export const minScaleOf = (kind: FloorKind) => (kind === "lowest" ? undefined : DOSSIER_MIN_SCALE);
 
 export type PlannedPage = { doc: string; page: number };
 /** Un fichier à produire : son nom (sans extension) et ses pages, dans l'ordre. */
@@ -59,22 +92,38 @@ export function planFiles(state: DossierState, options: PlanOptions): PlannedFil
   return pages.length ? [{ name: main, pages }] : [];
 }
 
+/**
+ * Pour un fichier : le poids de chaque page au premier rendu, et son poids au
+ * plancher choisi. Ce dernier est la mesure du premier rendu ; une page sans
+ * mesure (ce qui n'arrive pas en mode dossier) est estimée par le modèle,
+ * avec sa marge plus large (floorWeights).
+ */
+export function pageWeights(file: PlannedFile, results: ReadonlyMap<string, WatermarkResult>, kind: FloorKind = "floor") {
+  const natural = file.pages.map((p) => results.get(p.doc)?.pageBytes?.[p.page] ?? 0);
+  const measured = file.pages.map((p) => results.get(p.doc)?.probeBytes?.[PROBE_OF[kind]]?.[p.page]);
+  return { natural, floors: floorWeights(natural, measured, kind === "lowest" ? LOWEST : FLOOR) };
+}
+
 export type FileEstimate = { name: string; pages: number; bytes: number; fit: FitState };
 
 /**
  * Taille estimée de chaque fichier, et si la cible (par fichier) est tenable,
- * d'après le poids des pages au premier rendu. `floor` : voir predictFit.
+ * d'après le premier rendu : poids des pages, et leur poids mesuré au plancher.
  */
 export function estimateFiles(
   files: PlannedFile[],
   results: ReadonlyMap<string, WatermarkResult>,
   targetBytes: number,
-  floor?: FloorModel
+  kind: FloorKind = "floor"
 ): FileEstimate[] {
   return files.map((file) => {
-    const weights = file.pages.map((p) => results.get(p.doc)?.pageBytes?.[p.page] ?? 0);
-    const bytes = estimatePdfSize(weights);
-    return { name: file.name, pages: file.pages.length, bytes, fit: targetBytes > 0 ? predictFit(weights, targetBytes, floor) : "fits" };
+    const { natural, floors } = pageWeights(file, results, kind);
+    return {
+      name: file.name,
+      pages: file.pages.length,
+      bytes: estimatePdfSize(natural),
+      fit: targetBytes > 0 ? predictFit(natural, targetBytes, floors) : "fits",
+    };
   });
 }
 
@@ -92,6 +141,8 @@ export type BuildOptions = {
   results: ReadonlyMap<string, WatermarkResult>;
   /** Taille maximale de CHAQUE fichier, en octets ; absente : aucune limite. */
   maxBytes?: number;
+  /** Jusqu'où réduire : le même choix que pour l'estimation (estimateFiles). */
+  floor?: FloorKind;
   /**
    * Nouveau rendu d'un document avec un budget par page (0 : page sans
    * limite). Le résultat est libéré par l'appelant (`release`) après assemblage.
@@ -104,18 +155,19 @@ export type BuildOptions = {
 /**
  * Produit les fichiers. Sans cible, ou si un fichier tient déjà : assemblage
  * direct des pages du premier rendu. Sinon, second rendu des documents
- * concernés, chaque page avec un budget pondéré par son poids au premier
- * rendu (une photo reçoit plus qu'une page de texte), puis assemblage.
- * `over` : la cible n'a pas pu être tenue au plancher de lisibilité.
+ * concernés, chaque page avec un budget qui couvre son poids mesuré au
+ * plancher, le reste étant réparti selon son poids au premier rendu (une
+ * photo reçoit plus qu'une page de texte), puis assemblage.
+ * `over` : la cible n'a pas pu être tenue au plancher.
  */
-export async function buildDossier({ files, results, maxBytes, rerender, release, onProgress }: BuildOptions): Promise<BuiltFile[]> {
+export async function buildDossier({ files, results, maxBytes, floor = "floor", rerender, release, onProgress }: BuildOptions): Promise<BuiltFile[]> {
   // Budget de chaque page des fichiers trop lourds, par document.
   const budgets = new Map<string, number[]>();
   if (maxBytes) {
     for (const file of files) {
-      const weights = file.pages.map((p) => results.get(p.doc)?.pageBytes?.[p.page] ?? 0);
-      if (estimatePdfSize(weights) <= maxBytes) continue;
-      const shares = weightedBudgets(weights, maxBytes);
+      const { natural, floors } = pageWeights(file, results, floor);
+      if (estimatePdfSize(natural) <= maxBytes) continue;
+      const shares = weightedBudgets(natural, maxBytes, floors);
       file.pages.forEach((p, i) => {
         const list = budgets.get(p.doc) ?? new Array<number>(results.get(p.doc)?.pageCount ?? 0).fill(0);
         // Au moins 1 : un budget nul voudrait dire « sans limite ».

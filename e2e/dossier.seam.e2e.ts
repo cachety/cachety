@@ -21,21 +21,24 @@ import {
   makeTextPdf,
   type Rgb,
 } from "./helpers/dossier-fixtures";
-import { FIT_MARGIN, FLOOR_PAGE_BYTES, FLOOR_RATIO, floorEstimate, LOWEST, LOWEST_PAGE_BYTES, LOWEST_RATIO, predictFit } from "../lib/assemble";
+import { FIT_MARGIN, FLOOR_PAGE_BYTES, FLOOR_RATIO, floorEstimate, LOWEST, LOWEST_PAGE_BYTES, LOWEST_RATIO, MODEL_MARGIN, type FitState } from "../lib/assemble";
+import { SIZE_PROBES, type FloorKind } from "../lib/dossier-build";
 import { a4PageFor } from "../lib/files";
 import { imageSize } from "../lib/image-size";
 import { DOSSIER_MIN_SCALE, mbToBytes, pdfOverhead } from "../lib/size-budget";
 
 let engine: Engine;
 
-/** Options du mode « dossier », comme CoreProduct les passe au moteur. */
-const DOSSIER = { forcePdf: true, photoPage: true };
+/** Options du second rendu (sous budget) du mode « dossier ». */
+const SECOND = { forcePdf: true, photoPage: true };
+/** Options du premier rendu, comme useDossier les passe au moteur : avec la mesure du poids de chaque page au plancher. */
+const DOSSIER = { ...SECOND, sizeProbes: [...SIZE_PROBES] };
 const PDF = "application/pdf";
 /** Échelle de rendu des pages (RENDER_SCALE de lib/watermark.ts). */
 const RENDER_SCALE = 2;
 
 type Rendered =
-  | { ok: true; pageCount: number; pageBytes: number[]; thumbs: number; size: number; overBudget?: boolean; extension: string; ms: number }
+  | { ok: true; pageCount: number; pageBytes: number[]; probeBytes: number[][]; thumbs: number; size: number; overBudget?: boolean; extension: string; ms: number }
   | { ok: false; error: string };
 
 beforeAll(async () => {
@@ -79,6 +82,7 @@ function render(id: string, bytes: Uint8Array, name: string, type: string, optio
           ok: true,
           pageCount: res.pageCount,
           pageBytes: res.pageBytes ?? [],
+          probeBytes: res.probeBytes ?? [],
           thumbs: res.thumbs?.length ?? 0,
           size: res.blob.size,
           overBudget: res.overBudget,
@@ -121,21 +125,42 @@ async function assemble(order: { doc: string; page: number }[]) {
 
 type Built = { name: string; b64: string; over: boolean; passes: Record<string, number[]> };
 
-/** buildDossier, avec un second rendu par le vrai moteur ; `passes` : poids des pages au second rendu, par document. */
-async function build(files: { name: string; pages: { doc: string; page: number }[] }[], maxBytes: number | undefined, minScale: number | undefined) {
+type Planned = { name: string; pages: { doc: string; page: number }[] };
+
+/** estimateFiles sur les résultats gardés dans la page : ce que le panneau de taille annonce avant le téléchargement. */
+function estimate(files: Planned[], target: number, floor: FloorKind = "floor") {
+  return engine.page.evaluate(
+    ({ files, target, floor }) => {
+      const w = window as any;
+      return w.__db.estimateFiles(files, new Map(Object.entries(w.__r)), target, floor);
+    },
+    { files, target, floor }
+  ) as Promise<{ name: string; pages: number; bytes: number; fit: FitState }[]>;
+}
+
+/**
+ * buildDossier, avec un second rendu par le vrai moteur ; `passes` : poids des
+ * pages au second rendu, par document. `floor` : le plancher de lisibilité, ou
+ * tout en bas de l'échelle (« Accepter une qualité plus faible »). `text` : le
+ * filigrane facultatif, redessiné au second rendu.
+ */
+async function build(files: Planned[], maxBytes: number | undefined, floor: FloorKind = "floor", text = "") {
   const built = (await engine.page.evaluate(
-    async ({ files, maxBytes, minScale, options }) => {
+    async ({ files, maxBytes, floor, options, text }) => {
       const w = window as any;
       const passes: Record<string, number[]> = {};
       const out = await w.__db.buildDossier({
         files,
         results: new Map(Object.entries(w.__r)),
         maxBytes,
+        floor,
         rerender: async (doc: string, pageBudgets: number[]) => {
-          const res = await w.__wm.watermarkFile(w.__files[doc], "", undefined, undefined, undefined, undefined, {
+          const res = await w.__wm.watermarkFile(w.__files[doc], text, undefined, undefined, undefined, undefined, {
             ...options,
             pageBudgets,
-            minScale,
+            minScale: w.__db.minScaleOf(floor),
+            // Comme useDossier : le filigrane du premier rendu, refait à l'identique.
+            layoutSeed: w.__r[doc].layoutSeed,
             previewPages: () => [],
           });
           passes[doc] = res.pageBytes;
@@ -145,7 +170,7 @@ async function build(files: { name: string; pages: { doc: string; page: number }
       });
       return out.map((f: { name: string; bytes: Uint8Array; over: boolean }) => ({ name: f.name, b64: w.__b64(f.bytes), over: f.over, passes }));
     },
-    { files, maxBytes, minScale, options: DOSSIER }
+    { files, maxBytes, floor, options: SECOND, text }
   )) as Built[];
   return built.map((f) => ({ ...f, bytes: fromBase64(f.b64) }));
 }
@@ -472,17 +497,29 @@ describe("assemblage : l'ordre demandé, et rien du document d'origine", () => {
   );
 });
 
-describe("taille cible : budget pondéré et plancher de lisibilité", () => {
+describe("taille cible : estimation, budget pondéré et plancher de lisibilité", () => {
+  const pagesOf = (doc: string, count: number) => Array.from({ length: count }, (_, page) => ({ doc, page }));
+  /** Aucune page sous le plancher : l'image de la page n'est jamais plus petite que 0,55 du premier rendu. */
+  const atOrAboveFloor = async (bytes: Uint8Array, indexes: number[]) => {
+    for (const i of indexes) expect(await pageScale(bytes, i)).toBeGreaterThanOrEqual(DOSSIER_MIN_SCALE - 0.01);
+  };
+
   test(
-    "dossier mixte de 10 pages sous 1 Mo : tenu, les pages photo reçoivent plus que les pages de texte, aucune sous le plancher",
+    "dossier mixte de 10 pages sous 1 Mo : annoncé tenable, tenu, les pages photo reçoivent plus que les pages de texte, aucune sous le plancher",
     async () => {
       const target = mbToBytes(1);
       const first = await rendered("mixed", await makeMixedPdf(), "mixed.pdf", PDF, DOSSIER);
       expect(first.size).toBeGreaterThan(target);
+      // Le premier rendu a mesuré chaque page au plancher, et tout en bas de l'échelle.
+      expect(first.probeBytes.map((list) => list.length)).toEqual([10, 10]);
+      first.probeBytes[0].forEach((floor, i) => {
+        expect(floor).toBeLessThan(first.pageBytes[i]);
+        expect(first.probeBytes[1][i]).toBeLessThan(floor);
+      });
+      const files = [{ name: "dossier", pages: pagesOf("mixed", 10) }];
       // Annoncé avant tout second rendu.
-      expect(predictFit(first.pageBytes, target)).toBe("reduced");
-      const pages = Array.from({ length: 10 }, (_, page) => ({ doc: "mixed", page }));
-      const [file] = await build([{ name: "dossier", pages }], target, DOSSIER_MIN_SCALE);
+      expect((await estimate(files, target))[0].fit).toBe("reduced");
+      const [file] = await build(files, target);
       expect(file.over).toBe(false);
       expect(file.bytes.length).toBeLessThanOrEqual(target);
       // La cible est vraiment utilisée : pas un fichier réduit à l'extrême par prudence.
@@ -491,11 +528,32 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       expect(second).toHaveLength(10);
       const photo = second.filter((_, i) => i % 2 === 0);
       const text = second.filter((_, i) => i % 2 === 1);
-      expect(Math.min(...photo)).toBeGreaterThan(Math.max(...text));
-      for (let i = 0; i < 10; i++) expect(await pageScale(file.bytes, i)).toBeGreaterThanOrEqual(DOSSIER_MIN_SCALE - 0.01);
+      expect(sum(photo)).toBeGreaterThan(sum(text));
+      await atOrAboveFloor(file.bytes, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
       expect((await scanPdfForLeaks(file.bytes)).keys).toEqual([]);
     },
     240_000
+  );
+
+  // Les deux côtés de la promesse (docs/prd-dossier.md §4.3, §5.5) : ne pas
+  // dire « impossible » quand le fichier tiendrait, ni « tient » quand il ne tient pas.
+  test(
+    "30 pages photo sous 1 Mo : annoncé tenable (pas « impossible »), et le fichier produit tient, sans passer sous le plancher",
+    async () => {
+      const target = mbToBytes(1);
+      const first = await rendered("thirty", await makePhotoPdf(30), "thirty.pdf", PDF, DOSSIER);
+      expect(first.size).toBeGreaterThan(target);
+      const files = [{ name: "dossier", pages: pagesOf("thirty", 30) }];
+      const [announced] = await estimate(files, target);
+      expect(announced.fit).not.toBe("unreachable");
+      expect(announced.fit).toBe("reduced");
+      const [file] = await build(files, target);
+      expect(file.over).toBe(false);
+      expect(file.bytes.length).toBeLessThanOrEqual(target);
+      expect((await PDFDocument.load(file.bytes)).getPageCount()).toBe(30);
+      await atOrAboveFloor(file.bytes, [0, 1, 2, 15, 29]);
+    },
+    300_000
   );
 
   test(
@@ -504,9 +562,9 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       const target = mbToBytes(1);
       const first = await rendered("sixty", await makePhotoPdf(60), "sixty.pdf", PDF, DOSSIER);
       expect(first.pageCount).toBe(60);
-      expect(predictFit(first.pageBytes, target)).toBe("unreachable");
-      const pages = Array.from({ length: 60 }, (_, page) => ({ doc: "sixty", page }));
-      const [file] = await build([{ name: "dossier", pages }], target, DOSSIER_MIN_SCALE);
+      const files = [{ name: "dossier", pages: pagesOf("sixty", 60) }];
+      expect((await estimate(files, target))[0].fit).toBe("unreachable");
+      const [file] = await build(files, target);
       expect(file.over).toBe(true);
       expect(file.bytes.length).toBeGreaterThan(target);
       for (const i of [0, 1, 2, 29, 59]) {
@@ -514,10 +572,66 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
         expect(scale).toBeGreaterThanOrEqual(DOSSIER_MIN_SCALE - 0.01);
         expect(scale).toBeLessThanOrEqual(DOSSIER_MIN_SCALE + 0.01);
       }
-      // Avec « Accepter une qualité plus faible » (pas de plancher), le moteur descend plus bas.
-      const [lower] = await build([{ name: "dossier", pages }], target, undefined);
+      // Avec « Accepter une qualité plus faible » (pas de plancher) : annoncé tenable, et tenu, plus bas que le plancher.
+      expect((await estimate(files, target, "lowest"))[0].fit).toBe("reduced");
+      const [lower] = await build(files, target, "lowest");
+      expect(lower.over).toBe(false);
+      expect(lower.bytes.length).toBeLessThanOrEqual(target);
       expect(await pageScale(lower.bytes, 0)).toBeLessThan(DOSSIER_MIN_SCALE - 0.05);
-      expect(lower.bytes.length).toBeLessThan(file.bytes.length);
+    },
+    600_000
+  );
+
+  test(
+    "entre les deux : une annonce « tenable » est toujours tenue ; « impossible » n'est dit que si le fichier frôle ou dépasse la cible",
+    async () => {
+      const target = mbToBytes(1);
+      // Les 60 pages photo du test précédent. Le seuil dépend de l'encodeur JPEG du navigateur (une page
+      // photo pèse de 18 à 26 Ko au plancher) : il est lu dans les poids mesurés, puis encadré de près.
+      const floors = await engine.page.evaluate(() => (window as any).__r.sixty.probeBytes[0] as number[]);
+      let last = 0;
+      for (let n = 1; n <= 60; n++) if (sum(floors.slice(0, n)) * FIT_MARGIN + pdfOverhead(n) <= target) last = n;
+      expect(last).toBeGreaterThan(10);
+      expect(last).toBeLessThan(60);
+      const counts = [...new Set([last - 6, last - 1, last, last + 1, last + 5].map((n) => Math.min(60, Math.max(1, n))))];
+      const seen: string[] = [];
+      for (const count of counts) {
+        const files = [{ name: "dossier", pages: pagesOf("sixty", count) }];
+        const [announced] = await estimate(files, target);
+        const [file] = await build(files, target);
+        seen.push(`${count} pages : ${announced.fit}, ${file.bytes.length} octets`);
+        if (announced.fit === "unreachable") {
+          // Jamais « impossible » pour un fichier qui tiendrait avec plus que la marge de la prédiction.
+          expect(file.bytes.length, seen.at(-1)).toBeGreaterThan(target / (FIT_MARGIN + 0.02));
+        } else {
+          expect(file.over, seen.at(-1)).toBe(false);
+          expect(file.bytes.length, seen.at(-1)).toBeLessThanOrEqual(target);
+        }
+      }
+      console.log(`[dossier.seam] pages photo sous 1 Mo, annonce puis fichier : ${seen.join(" ; ")}`);
+      // Les deux annonces se rencontrent bien dans cette plage.
+      expect(seen.some((s) => s.includes("reduced"))).toBe(true);
+      expect(seen.some((s) => s.includes("unreachable"))).toBe(true);
+    },
+    600_000
+  );
+
+  test(
+    "30 pages de texte sous 1 Mo : annoncé intenable, et le fichier produit dépasse bien la cible, au plancher",
+    async () => {
+      const target = mbToBytes(1);
+      await rendered("text30", await makeTextPdf(30, 50), "payslips.pdf", PDF, DOSSIER);
+      const files = [{ name: "dossier", pages: pagesOf("text30", 30) }];
+      expect((await estimate(files, target))[0].fit).toBe("unreachable");
+      const [file] = await build(files, target);
+      expect(file.over).toBe(true);
+      expect(file.bytes.length).toBeGreaterThan(target);
+      for (const i of [0, 14, 29]) expect(await pageScale(file.bytes, i)).toBeCloseTo(DOSSIER_MIN_SCALE, 1);
+      // 2 Mo : tenable en réduisant, et tenu.
+      expect((await estimate(files, mbToBytes(2)))[0].fit).toBe("reduced");
+      const [larger] = await build(files, mbToBytes(2));
+      expect(larger.over).toBe(false);
+      expect(larger.bytes.length).toBeLessThanOrEqual(mbToBytes(2));
     },
     600_000
   );
@@ -529,14 +643,13 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       const photos = await rendered("heavy", await makePhotoPdf(6, 11), "photos.pdf", PDF, DOSSIER);
       await rendered("light", await makeTextPdf(2, 31), "text.pdf", PDF, DOSSIER);
       expect(sum(photos.pageBytes)).toBeGreaterThan(target);
-      const files = await build(
-        [
-          { name: "Photos", pages: Array.from({ length: 6 }, (_, page) => ({ doc: "heavy", page })) },
-          { name: "Payslips", pages: [{ doc: "light", page: 1 }, { doc: "light", page: 0 }] },
-        ],
-        target,
-        DOSSIER_MIN_SCALE
-      );
+      const planned = [
+        { name: "Photos", pages: pagesOf("heavy", 6) },
+        { name: "Payslips", pages: [{ doc: "light", page: 1 }, { doc: "light", page: 0 }] },
+      ];
+      // L'estimation vaut pour chaque fichier.
+      expect((await estimate(planned, target)).map((e) => e.fit)).toEqual(["reduced", "fits"]);
+      const files = await build(planned, target);
       expect(files.map((f) => f.name)).toEqual(["Photos", "Payslips"]);
       for (const f of files) {
         expect(f.over).toBe(false);
@@ -550,7 +663,75 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
   );
 
   test(
-    "FLOOR_RATIO et LOWEST_RATIO : mesurés sur le corpus, à 15 % près de la constante",
+    "la mesure du premier rendu est ce que le second rendu produit : écart nul sans filigrane, dans la marge avec",
+    async () => {
+      const text = await makeTextPdf(4, 3);
+      const photo = await makePhotoPdf(4, 5);
+      const tight = (n: number, layoutSeed?: number) => ({ ...SECOND, pageBudgets: new Array(n).fill(1), minScale: DOSSIER_MIN_SCALE, layoutSeed });
+      const seedOf = (id: string) => engine.page.evaluate((id) => (window as any).__r[id].layoutSeed as number, id);
+      const deviations: string[] = [];
+      for (const [id, bytes, name] of [["m-text", text, "text.pdf"], ["m-photo", photo, "photo.pdf"]] as const) {
+        // Sans filigrane : même canvas, même encodage, au pixel près.
+        const first = await rendered(id, bytes, name, PDF, DOSSIER);
+        const again = await rendered(`${id}-tight`, bytes, name, PDF, tight(first.pageCount));
+        const plain = Math.abs(sum(again.pageBytes) / sum(first.probeBytes[0]) - 1);
+        expect(plain, `${id} sans filigrane`).toBeLessThan(0.002);
+        // Avec le filigrane facultatif : le second rendu reprend la graine du premier, donc le même dessin.
+        const mark = "Dossier de location, agence Martin, 18/11/2026";
+        const marked = await rendered(`${id}-marked`, bytes, name, PDF, DOSSIER, mark);
+        const seed = await seedOf(`${id}-marked`);
+        expect(Number.isInteger(seed)).toBe(true);
+        let worst = 0;
+        let drift = 0;
+        for (let round = 0; round < 3; round++) {
+          const second = await rendered(`${id}-marked-tight`, bytes, name, PDF, tight(marked.pageCount, seed), mark);
+          // Page par page : c'est page par page que le budget doit suffire.
+          second.pageBytes.forEach((b, i) => (worst = Math.max(worst, b / marked.probeBytes[0][i] - 1)));
+          // Témoin : sans reprendre la graine, le filigrane est tiré au hasard et le poids des pages bouge.
+          const other = await rendered(`${id}-marked-other`, bytes, name, PDF, tight(marked.pageCount), mark);
+          other.pageBytes.forEach((b, i) => (drift = Math.max(drift, Math.abs(b / marked.probeBytes[0][i] - 1))));
+        }
+        deviations.push(
+          `${id} : ${(plain * 100).toFixed(2)} % sans filigrane, au plus +${(worst * 100).toFixed(2)} % par page avec (jusqu'à ${(drift * 100).toFixed(1)} % si la graine n'était pas reprise)`
+        );
+        // La marge de la prédiction couvre l'écart mesuré, avec de la réserve.
+        expect(worst, `${id} avec filigrane`).toBeLessThan((FIT_MARGIN - 1) * 0.5);
+      }
+      console.log(`[dossier.seam] mesure du premier rendu contre second rendu au plancher : ${deviations.join(" ; ")} (marge ${FIT_MARGIN})`);
+
+      // Avec filigrane, une annonce « tenable » au plus juste est encore tenue.
+      const mark = "Dossier de location, agence Martin, 18/11/2026";
+      const many = await rendered("m-many", await makeTextPdf(12, 70), "payslips.pdf", PDF, DOSSIER, mark);
+      const files = [{ name: "dossier", pages: pagesOf("m-many", 12) }];
+      // La plus petite cible encore annoncée tenable, à l'octet près.
+      const justEnough = Math.ceil(sum(many.probeBytes[0]) * FIT_MARGIN + pdfOverhead(12)) + 1;
+      expect((await estimate(files, justEnough))[0].fit).toBe("reduced");
+      expect((await estimate(files, justEnough - 2000))[0].fit).toBe("unreachable");
+      const [file] = await build(files, justEnough, "floor", mark);
+      expect(file.over).toBe(false);
+      expect(file.bytes.length).toBeLessThanOrEqual(justEnough);
+    },
+    600_000
+  );
+
+  test(
+    "coût de la mesure : le premier rendu avec sondes reste proche du rendu sans",
+    async () => {
+      const mixed = await makeMixedPdf();
+      const plain = await rendered("cost-plain", mixed, "mixed.pdf", PDF, SECOND);
+      const probed = await rendered("cost-probed", mixed, "mixed.pdf", PDF, DOSSIER);
+      console.log(`[dossier.seam] premier rendu de 10 pages : ${plain.ms.toFixed(0)} ms sans mesure, ${probed.ms.toFixed(0)} ms avec les deux sondes`);
+      // Sans les sondes, pas de mesure : les autres outils n'en paient pas le coût.
+      expect(plain.probeBytes).toEqual([]);
+      expect(probed.pageBytes).toEqual(plain.pageBytes);
+      // Garde-fou large : la mesure ne double pas le temps de rendu.
+      expect(probed.ms).toBeLessThan(plain.ms * 2 + 500);
+    },
+    240_000
+  );
+
+  test(
+    "FLOOR_RATIO et LOWEST_RATIO (modèle de repli) : mesurés sur le corpus, à 15 % près de la constante",
     async () => {
       const corpus: [string, Uint8Array, string, string][] = [
         ["c-text", await makeTextPdf(4, 3), "text.pdf", PDF],
@@ -562,14 +743,15 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       const floor: Record<string, number> = {};
       const lowest: Record<string, number> = {};
       const pages: Record<string, number> = {};
+      const firsts: Record<string, number[]> = {};
       for (const [id, bytes, name, type] of corpus) {
         const first = await rendered(id, bytes, name, type, DOSSIER);
-        // Budget d'un octet par page : le moteur va au dernier barreau permis.
-        const tight = new Array(first.pageCount).fill(1);
         natural[id] = sum(first.pageBytes);
         pages[id] = first.pageCount;
-        floor[id] = sum((await rendered(`${id}-floor`, bytes, name, type, { ...DOSSIER, pageBudgets: tight, minScale: DOSSIER_MIN_SCALE })).pageBytes);
-        lowest[id] = sum((await rendered(`${id}-lowest`, bytes, name, type, { ...DOSSIER, pageBudgets: tight })).pageBytes);
+        firsts[id] = first.pageBytes;
+        // Les sondes du premier rendu : le poids de chaque page au plancher, et tout en bas de l'échelle.
+        floor[id] = sum(first.probeBytes[0]);
+        lowest[id] = sum(first.probeBytes[1]);
       }
       const total = (o: Record<string, number>) => sum(Object.values(o));
       const floorRatio = total(floor) / total(natural);
@@ -580,8 +762,8 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       );
 
       // Une page de texte se comprime bien moins qu'une photo : son poids au
-      // plancher est mesuré à part (octets par page A4), pour que la prédiction
-      // ne promette pas trop sur un dossier fait surtout de texte.
+      // plancher est mesuré à part (octets par page A4), pour que le modèle de
+      // repli ne promette pas trop sur un dossier fait surtout de texte.
       const textFloor = floor["c-text"] / pages["c-text"];
       const textLowest = lowest["c-text"] / pages["c-text"];
       console.log(
@@ -591,11 +773,10 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       expect(Math.abs(lowestRatio / LOWEST_RATIO - 1)).toBeLessThanOrEqual(0.15);
       expect(Math.abs(textFloor / FLOOR_PAGE_BYTES - 1)).toBeLessThanOrEqual(0.15);
       expect(Math.abs(textLowest / LOWEST_PAGE_BYTES - 1)).toBeLessThanOrEqual(0.15);
-      // La prédiction ne sous-estime aucun document du corpus de plus de sa marge.
-      for (const [id, , ,] of corpus) {
-        const first = await engine.page.evaluate((id) => (window as any).__r[id].pageBytes as number[], id);
-        expect(floorEstimate(first) * FIT_MARGIN, id).toBeGreaterThanOrEqual(floor[id]);
-        expect(floorEstimate(first, LOWEST) * FIT_MARGIN, id).toBeGreaterThanOrEqual(lowest[id]);
+      // Le modèle de repli, avec sa marge, ne sous-estime aucun document du corpus.
+      for (const [id] of corpus) {
+        expect(floorEstimate(firsts[id]) * MODEL_MARGIN, id).toBeGreaterThanOrEqual(floor[id]);
+        expect(floorEstimate(firsts[id], LOWEST) * MODEL_MARGIN, id).toBeGreaterThanOrEqual(lowest[id]);
       }
     },
     600_000

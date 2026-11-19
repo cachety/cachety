@@ -58,11 +58,33 @@ export const FLOOR: FloorModel = { ratio: FLOOR_RATIO, pageBytes: FLOOR_PAGE_BYT
 export const LOWEST: FloorModel = { ratio: LOWEST_RATIO, pageBytes: LOWEST_PAGE_BYTES };
 
 /**
- * Marge de la prédiction : « tient avec des pages moins nettes » n'est
- * annoncé que si l'estimation au plancher laisse 15 % de marge (la tolérance
- * de la mesure). Dans le doute, l'outil dit que cela ne tient pas.
+ * Marge de la prédiction. Le poids de chaque page au plancher est MESURÉ au
+ * premier rendu (RenderOptions.sizeProbes) : la page est encodée une fois au
+ * barreau le plus compact permis, sur le canvas même qui a servi à l'aperçu.
+ * Le second rendu refait ce même encodage des mêmes pixels : même page,
+ * mêmes retouches, mêmes masques, et le même filigrane, dont il reprend la
+ * graine (WatermarkResult.layoutSeed). Écart mesuré par
+ * e2e/dossier.seam.e2e.ts entre la mesure et le second rendu : 0,00 %, avec
+ * ou sans filigrane, dans Chromium, WebKit et Firefox. (Sans reprendre la
+ * graine, le filigrane redessiné au hasard déplaçait le poids d'une page de
+ * près de 5 %.)
+ *
+ * La marge de 2 % est donc une réserve, pas une correction : « tient avec des
+ * pages moins nettes » n'est annoncé que si la somme mesurée, augmentée de
+ * 2 %, tient sous la cible, et le budget de chaque page contient ces 2 %
+ * (weightedBudgets). Le fichier produit tient alors à coup sûr. Dans la
+ * bande des 2 %, l'outil dit que cela ne tient pas alors que le fichier
+ * passerait de justesse : c'est le sens prudent.
  */
-export const FIT_MARGIN = 1.15;
+export const FIT_MARGIN = 1.02;
+
+/**
+ * Marge d'une page SANS mesure (résultat venu d'un rendu sans sonde) : son
+ * poids au plancher n'est alors qu'estimé par le modèle ci-dessus, dont la
+ * tolérance est de 15 %. Le mode dossier mesure toujours ; ce repli n'existe
+ * que pour ne jamais promettre sans donnée.
+ */
+export const MODEL_MARGIN = 1.15;
 
 export type FitState = "fits" | "reduced" | "unreachable";
 
@@ -72,21 +94,48 @@ const sum = (values: readonly number[]) => values.reduce((a, b) => a + b, 0);
 export const estimatePdfSize = (pageBytes: readonly number[]) => (pageBytes.length ? sum(pageBytes) + pdfOverhead(pageBytes.length) : 0);
 
 /**
- * La cible est-elle tenable en restant lisible ? D'après les poids du premier
- * rendu, sans attendre un second : « fits » tel quel, « reduced » en
- * réduisant les pages sans passer sous le plancher, « unreachable » sinon.
- * `floor` : FLOOR par défaut, LOWEST si la qualité plus faible est acceptée.
+ * Poids de chaque page au plancher, tel que la prédiction et les budgets le
+ * comptent : la mesure du premier rendu quand elle existe (`measured`), sinon
+ * l'estimation du modèle, gonflée de sa propre marge. Jamais plus que le
+ * poids de la page au premier rendu.
  */
-export function predictFit(pageBytes: readonly number[], target: number, floor: FloorModel = FLOOR): FitState {
-  if (!pageBytes.length || !(target > 0)) return "fits";
-  if (estimatePdfSize(pageBytes) <= target) return "fits";
-  return floorEstimate(pageBytes, floor) * FIT_MARGIN + pdfOverhead(pageBytes.length) <= target ? "reduced" : "unreachable";
+export function floorWeights(
+  pageBytes: readonly number[],
+  measured?: readonly (number | undefined)[],
+  model: FloorModel = FLOOR
+): number[] {
+  return pageBytes.map((b, i) => {
+    const m = measured?.[i];
+    if (typeof m === "number" && m > 0) return Math.min(m, Math.max(b, 1));
+    return (Math.max(b * model.ratio, Math.min(b, model.pageBytes)) * MODEL_MARGIN) / FIT_MARGIN;
+  });
 }
 
 /**
- * Poids estimé des images de page au plancher : le rapport mesuré sur le
- * corpus, sans jamais descendre sous le poids d'une page de texte (ni compter
- * une page plus lourde qu'elle ne l'est déjà).
+ * La cible est-elle tenable en restant lisible ? D'après le premier rendu,
+ * sans attendre un second : « fits » tel quel, « reduced » en réduisant les
+ * pages sans passer sous le plancher, « unreachable » sinon.
+ *
+ * `floors` : le poids de chaque page au plancher (floorWeights, donc la
+ * mesure du premier rendu), ou un modèle quand aucune mesure n'existe (FLOOR
+ * par défaut, LOWEST si la qualité plus faible est acceptée). La cible est
+ * dite tenable si la somme de ces poids, augmentée de FIT_MARGIN, tient.
+ */
+export function predictFit(pageBytes: readonly number[], target: number, floors: readonly number[] | FloorModel = FLOOR): FitState {
+  if (!pageBytes.length || !(target > 0)) return "fits";
+  if (estimatePdfSize(pageBytes) <= target) return "fits";
+  const weights = isModel(floors) ? floorWeights(pageBytes, undefined, floors) : floors;
+  return sum(weights) * FIT_MARGIN + pdfOverhead(pageBytes.length) <= target ? "reduced" : "unreachable";
+}
+
+const isModel = (v: readonly number[] | FloorModel): v is FloorModel => !Array.isArray(v);
+
+/**
+ * Repli, pour des pages sans mesure : poids estimé des images de page au
+ * plancher d'après le seul modèle. Le rapport mesuré sur le corpus, sans
+ * jamais descendre sous le poids d'une page de texte (ni compter une page
+ * plus lourde qu'elle ne l'est déjà). Prudent pour les photos, qui se
+ * compriment bien mieux : c'est pourquoi le mode dossier mesure.
  */
 export function floorEstimate(pageBytes: readonly number[], floor: FloorModel = FLOOR): number {
   return sum(pageBytes.map((b) => Math.max(b * floor.ratio, Math.min(b, floor.pageBytes))));
@@ -95,16 +144,42 @@ export function floorEstimate(pageBytes: readonly number[], floor: FloorModel = 
 /**
  * Budget (octets) de l'image de chaque page pour tenir sous `maxBytes`,
  * pondéré par son poids au premier rendu : une page photo reçoit plus qu'une
- * page de texte. Aucune page sous `floor` (par défaut le tiers d'une part
- * égale), pour qu'aucune ne soit sacrifiée ; la somme, structure du PDF
- * comprise, ne dépasse jamais `maxBytes`.
+ * page de texte. La somme, structure du PDF comprise, ne dépasse jamais
+ * `maxBytes`.
+ *
+ * `floor`, une liste (floorWeights) : le poids de chaque page au plancher.
+ * Chaque page reçoit d'abord ce poids, marge comprise, donc de quoi tenir au
+ * moins au barreau du plancher ; le reste est réparti au prorata de ce que la
+ * page peut encore gagner. Ainsi, quand predictFit dit « tenable », le
+ * fichier produit tient : c'est la même somme des deux côtés. Si la cible
+ * est intenable, le budget est partagé au prorata des poids au plancher :
+ * toutes les pages sortent au plancher, aucune en dessous.
+ *
+ * `floor`, un nombre ou rien : même plancher pour toutes les pages (par
+ * défaut le tiers d'une part égale), quand aucune mesure n'existe.
  */
-export function weightedBudgets(pageBytes: readonly number[], maxBytes: number, floor?: number): number[] {
+export function weightedBudgets(pageBytes: readonly number[], maxBytes: number, floor?: number | readonly number[]): number[] {
   const n = pageBytes.length;
   if (!n) return [];
   const available = Math.max(0, Math.floor(maxBytes - pdfOverhead(n)));
+  if (typeof floor === "object") {
+    const sizes = pageBytes.map((b) => Math.max(0, Math.floor(b)));
+    // Tout tient déjà : chaque page garde son poids d'origine.
+    if (sum(sizes) <= available) return sizes;
+    const needs = sizes.map((b, i) => Math.min(b, Math.ceil(Math.max(1, floor[i] ?? b) * FIT_MARGIN)));
+    const needed = sum(needs);
+    if (needed > available) {
+      // Intenable : au prorata des poids au plancher, chaque page sort au plancher.
+      return needs.map((need) => Math.max(1, Math.floor((available * need) / needed)));
+    }
+    const room = sizes.map((b, i) => b - needs[i]);
+    const total = sum(room);
+    const pool = available - needed;
+    return needs.map((need, i) => need + (total > 0 ? Math.floor((pool * room[i]) / total) : 0));
+  }
   // Le plancher ne peut pas promettre plus que ce qu'il y a à partager.
-  const min = Math.max(0, Math.min(Math.floor(floor ?? pageBudget(maxBytes, n) / 3), Math.floor(available / n)));
+  const same = typeof floor === "number" ? floor : pageBudget(maxBytes, n) / 3;
+  const min = Math.max(0, Math.min(Math.floor(same), Math.floor(available / n)));
   // Chaque page reçoit le plancher (ou son propre poids, s'il est plus léger :
   // elle n'a besoin de rien de plus). Ce qui reste est réparti au prorata de
   // ce que chaque page pèse AU-DESSUS de ce plancher.

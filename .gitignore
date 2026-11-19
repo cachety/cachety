@@ -55,3 +55,7 @@ Thumbs.db
 
 # Contenus de publication (posts, captures) : hors dépôt
 /publications/
+
+# Core dump left by a browser that crashed during the e2e suite
+/core
+/core.*

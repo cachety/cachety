@@ -10,15 +10,17 @@
 // aucun état utile.
 
 import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
-import { FLOOR, LOWEST } from "@/lib/assemble";
 import { attemptKey, docStamp, renderedRotation, type Doc } from "@/lib/doc";
 import {
   buildDossier,
   estimateFiles,
+  minScaleOf,
   OUTPUT_KINDS,
   planFiles,
+  SIZE_PROBES,
   worstFit,
   type BuiltFile,
+  type FloorKind,
   type OutputKind,
 } from "@/lib/dossier-build";
 import { fileKind } from "@/lib/files";
@@ -52,7 +54,7 @@ import {
   type Quad,
 } from "@/lib/pages";
 import { readPrefill } from "@/lib/partners";
-import { DOSSIER_MIN_SCALE, mbToBytes, SIZE_TARGETS_MB } from "@/lib/size-budget";
+import { mbToBytes, SIZE_TARGETS_MB } from "@/lib/size-budget";
 import { readPref, writePref } from "@/lib/storage";
 import { releaseResult, type RenderOptions, type WatermarkResult } from "@/lib/watermark";
 
@@ -133,6 +135,8 @@ export function useDossier({
   /** Noms de sections fournis par le partenaire, à la place de la liste de la langue. */
   const [presetNames, setPresetNames] = useState<string[] | null>(null);
   const undoSeq = useRef(0);
+  /** « Noir et blanc » coché d'office dans l'éditeur d'une photo pas encore nettoyée (préférence d'affichage). */
+  const [grayDefault, setGrayDefaultState] = useState(false);
 
   // Préférences d'affichage (jamais de contenu) et pré-remplissage du partenaire.
   useEffect(() => {
@@ -140,6 +144,7 @@ export function useDossier({
     const saved = readPref("dossierOutput");
     if (saved && (OUTPUT_KINDS as readonly string[]).includes(saved)) setOutputState(saved as OutputKind);
     setSizeState(cleanSizeMb(readPref("dossierSizeMb")));
+    setGrayDefaultState(readPref("dossierGray") === "1");
     const prefill = readPrefill(window.location.hash);
     if (prefill.size) setSizeState(prefill.size);
     if (prefill.sections?.length) {
@@ -150,6 +155,11 @@ export function useDossier({
     // Une fois, au chargement.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, embed]);
+
+  const setGrayDefault = useCallback((on: boolean) => {
+    setGrayDefaultState(on);
+    writePref("dossierGray", on ? "1" : "0");
+  }, []);
 
   const setSize = useCallback((mb: number) => {
     const clean = cleanSizeMb(mb);
@@ -465,9 +475,11 @@ export function useDossier({
   );
   const results = useMemo(() => new Map(ready.map((d) => [d.id, d.result!] as const)), [ready]);
   const maxBytes = sizeMb ? mbToBytes(sizeMb) : 0;
+  // Jusqu'où réduire : le même choix pour l'estimation et pour la fabrication.
+  const floorKind: FloorKind = allowLow ? "lowest" : "floor";
   const estimates = useMemo(
-    () => estimateFiles(files, results, maxBytes, allowLow ? LOWEST : FLOOR),
-    [files, results, maxBytes, allowLow]
+    () => estimateFiles(files, results, maxBytes, floorKind),
+    [files, results, maxBytes, floorKind]
   );
   const keptPages = files.reduce((n, f) => n + f.pages.length, 0);
   // Un document ni prêt ni en échec (retouche juste demandée, rendu pas encore lancé) : le
@@ -488,6 +500,8 @@ export function useDossier({
       photoPage: true,
       // Vignettes : 160 px CSS, à la densité de l'écran, 320 px au plus.
       thumbnails: Math.round(160 * Math.min(2, typeof window === "undefined" ? 1 : window.devicePixelRatio || 1)),
+      // Poids de chaque page au plancher, mesuré pendant ce rendu : c'est de là que part l'estimation de taille.
+      sizeProbes: SIZE_PROBES,
     }),
     []
   );
@@ -505,21 +519,25 @@ export function useDossier({
         files,
         results,
         maxBytes: maxBytes || undefined,
+        floor: floorKind,
         rerender: (id, pageBudgets) => {
           const doc = byId.get(id);
           if (!doc) throw new Error("assemble_missing_part");
           return rerender(doc, {
             ...renderOptions(doc),
             thumbnails: undefined,
+            sizeProbes: undefined,
+            // Même filigrane qu'au premier rendu : les poids mesurés alors valent exactement pour celui-ci.
+            layoutSeed: doc.result?.layoutSeed,
             previewPages: () => [],
             pageBudgets,
-            minScale: allowLow ? undefined : DOSSIER_MIN_SCALE,
+            minScale: minScaleOf(floorKind),
           });
         },
         release: releaseResult,
         onProgress,
       }),
-    [files, results, maxBytes, byId, renderOptions, allowLow]
+    [files, results, maxBytes, byId, renderOptions, floorKind]
   );
 
   /** Documents dont plus aucune page n'est gardée (« Aucune page gardée », « Remettre ses pages »). */
@@ -594,6 +612,8 @@ export function useDossier({
     setFixing,
     setPhoto,
     cleanAllPhotos,
+    grayDefault,
+    setGrayDefault,
     hasPhotos: grid.some((p) => p.photo),
     // Sortie
     output: kind,
