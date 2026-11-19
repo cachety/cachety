@@ -91,7 +91,14 @@ const compactOf = (s: string) => normaliseDigits(s).replace(/[\s.\-\/]/g, "").to
 // débarrassé de ses séparateurs, en majuscules (ce que lit la recherche) ;
 // `xxxValid`, exportée, accepte le numéro tel qu'il est écrit.
 
-/** Longueur de l'IBAN par pays (registre ISO 13616 tenu par SWIFT ; 89 pays, relevé le 2026-11-18). */
+/**
+ * Longueur de l'IBAN par pays : les 89 pays du registre ISO 13616 tenu par
+ * SWIFT (relevé le 2026-11-18), puis 22 pays qui utilisent le format IBAN
+ * sans figurer au registre (Iran et son « شبا », Maroc, Algérie, Afrique de
+ * l'Ouest et centrale… ; liste de Wikipédia, « International Bank Account
+ * Number », relevée le 2026-11-19). La clé mod 97 reste exigée dans tous les
+ * cas : une longueur de plus n'ajoute pas de fausse suggestion.
+ */
 export const IBAN_LENGTHS: Readonly<Record<string, number>> = {
   AD: 24, AE: 23, AL: 28, AT: 20, AZ: 28, BA: 20, BE: 16, BG: 22, BH: 22, BI: 27, BR: 29, BY: 28, CH: 21, CR: 22,
   CY: 28, CZ: 24, DE: 22, DJ: 27, DK: 18, DO: 28, EE: 20, EG: 29, ES: 24, FI: 18, FK: 18, FO: 18, FR: 27, GB: 22,
@@ -100,6 +107,9 @@ export const IBAN_LENGTHS: Readonly<Record<string, number>> = {
   MR: 27, MT: 31, MU: 30, NI: 28, NL: 18, NO: 15, OM: 23, PK: 24, PL: 28, PS: 29, PT: 25, QA: 29, RO: 24, RS: 22,
   RU: 33, SA: 24, SC: 31, SD: 18, SE: 24, SI: 19, SK: 24, SM: 27, SO: 23, ST: 25, SV: 28, TL: 23, TN: 24, TR: 26,
   UA: 29, VA: 22, VG: 24, XK: 20, YE: 30,
+  // Hors registre.
+  AO: 25, BF: 28, BJ: 28, CF: 27, CG: 27, CI: 28, CM: 27, CV: 25, DZ: 26, GA: 27, GQ: 27, GW: 25, IR: 26, KM: 27,
+  MA: 28, MG: 27, ML: 28, MZ: 25, NE: 28, SN: 28, TD: 27, TG: 28,
 };
 
 /** Reste modulo 97 d'un numéro écrit en chiffres et en lettres (A = 10 … Z = 35). */

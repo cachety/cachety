@@ -112,10 +112,40 @@ describe("IBAN", () => {
     }
   });
 
-  test("table des longueurs : 89 pays, de 15 (Norvège) à 33 caractères (Russie)", () => {
+  // Pays hors du registre SWIFT qui écrivent leurs comptes au format IBAN.
+  // Exemples de la liste de Wikipédia (« International Bank Account Number »),
+  // de mémoire, non relus en ligne ; chacun passe la clé mod 97 à la longueur
+  // que donne cette liste (relevée le 2026-11-19).
+  test("hors registre : شبا iranien, Maroc, Algérie, Afrique de l'Ouest et centrale", () => {
+    const examples = [
+      "IR58 0540 1051 8002 1273 1130 07",
+      "MA64 0115 1900 0001 2050 0053 4921",
+      "DZ58 0002 1000 0111 3000 0005 70",
+      "SN08 SN01 0015 2000 0485 0000 3035",
+      "CI93 CI00 8011 1301 1342 9120 0589",
+      "ML13 ML01 6012 0102 6001 0066 8497",
+      "AO06 0044 0000 6729 5030 1010 2",
+      "MZ59 0003 0108 0016 3671 0237 1",
+      "CM21 1000 2000 3002 7797 6315 008",
+      "MG46 0000 5030 0712 8942 1016 045",
+    ];
+    for (const iban of examples) {
+      expect(ibanValid(iban), iban).toBe(true);
+      expect(iban.replace(/ /g, "").length, iban).toBe(IBAN_LENGTHS[iban.slice(0, 2)]);
+      expect(kinds(found(`IBAN ${iban}`)), iban).toEqual(["iban"]);
+    }
+    // Le شبا tel qu'on l'écrit en Iran : chiffres persans, avec ou sans espaces.
+    expect(kinds(found("شماره شبا: IR۵۸۰۵۴۰۱۰۵۱۸۰۰۲۱۲۷۳۱۱۳۰۰۷"))).toEqual(["iban"]);
+    expect(kinds(found("شماره شبا: IR۵۸ ۰۵۴۰ ۱۰۵۱ ۸۰۰۲ ۱۲۷۳ ۱۱۳۰ ۰۷"))).toEqual(["iban"]);
+    // Un chiffre changé, ou un chiffre de moins : rien.
+    expect(found("IBAN IR58 0540 1051 8002 1273 1130 08")).toEqual([]);
+    expect(found("IBAN IR58 0540 1051 8002 1273 1130 0")).toEqual([]);
+  });
+
+  test("table des longueurs : 89 pays du registre et 22 hors registre, de 15 (Norvège) à 33 caractères (Russie)", () => {
     // Aucun pays du registre n'atteint les 34 caractères que permet la norme.
     const lengths = Object.values(IBAN_LENGTHS);
-    expect(lengths).toHaveLength(89);
+    expect(lengths).toHaveLength(111);
     expect(Math.min(...lengths)).toBe(15);
     expect(Math.max(...lengths)).toBe(33);
     expect(IBAN_LENGTHS.HN).toBe(28);
