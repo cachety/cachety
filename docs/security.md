@@ -460,7 +460,13 @@ numbers of the countries Cachety serves (`lib/sensitive.ts`). This adds
   (`lib/photo-fix.ts`), run on the device before the masks; the original file
   is not modified. Masks are drawn on the page as displayed: when a page is
   rotated or re-cropped, its masks are **removed and the user is told**,
-  rather than left covering the wrong place.
+  rather than left covering the wrong place. Suggested areas (§4.4
+  quinquies) follow the same rule: a rotation drops that document's
+  suggestions, and the render it triggers reads the text again in the new
+  orientation (`e2e/dossier-suggest.e2e.ts`).
+- **The preview shows what will be in the file.** In step 3 it shows only
+  the pages kept from the selected document, in the order of the file; a
+  removed page is neither previewed nor counted in the suggestions.
 - **Order and removed pages change nothing but the assembly.** A removed page
   is still rendered with its document, then left out of the file.
 - **Size target.** The first render has no limit. If a file is over the
