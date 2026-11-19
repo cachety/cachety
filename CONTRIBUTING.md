@@ -42,6 +42,7 @@ These are checked by tests and in review. A change that breaks one is not merged
 | Guides | `lib/guides/<lang>.ts` |
 | Comparisons | `lib/compare/<lang>.ts` |
 | Watermark engine | `lib/watermark.ts`, `lib/watermark-style.ts` |
+| Suggested areas to hide | `lib/sensitive.ts` (detection), `lib/text-lines.ts`, `lib/suggestions.ts`, strings in `lib/suggest-copy/<lang>.ts` |
 | Security headers and CSP | `public/_headers`, `scripts/gen-sw.mjs` |
 
 ## Pull requests

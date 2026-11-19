@@ -231,7 +231,13 @@ describe("masquage depuis l'aperçu", () => {
         const count = (x: number, y: number, w: number, h: number) => {
           const d = ctx.getImageData(x, y, w, h).data;
           let n = 0;
-          for (let i = 0; i < d.length; i += 4) if (d[i + 2] > 120 && d[i + 2] > d[i] + 40) n++;
+          // Le bleu de la page d'origine (makeBluePdf : 32, 64, 191), pas un
+          // bleu quelconque : le filigrane passe par-dessus le masque, et ses
+          // rangées d'accent, tirées au hasard, peuvent être bleues. Le test
+          // les prenait parfois pour des pixels d'origine (une fois sur
+          // vingt-cinq environ).
+          const near = (v: number, target: number) => Math.abs(v - target) < 25;
+          for (let i = 0; i < d.length; i += 4) if (near(d[i], 32) && near(d[i + 1], 64) && near(d[i + 2], 191)) n++;
           return n;
         };
         const q = Math.floor(bmp.width * 0.4);

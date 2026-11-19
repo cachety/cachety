@@ -22,7 +22,15 @@ critical documents. The assets to protect are therefore:
 | Output file | **Integrity** of the watermark: it cannot be removed by simply editing the PDF. |
 | Passwords (opening a locked PDF, encrypting the output) | **Confidentiality**: in memory only, never persisted or transmitted. |
 | Signature image (drawn, typed or uploaded), and the name, place and note typed with it | **Confidentiality**: in memory only, never persisted or transmitted (§4.4 quater, §4.10). |
+| Text extracted from the documents (for suggested areas to hide) | **Confidentiality**: in memory only, never stored, never sent, dropped when the document is removed or the tab is closed; the interface shows only a partly masked form of each number (§4.4 quinquies). |
 | Served code | **Integrity**: no third-party script, no unapproved inline script. |
+
+The dossier tool (`/<lang>/dossier`) adds no asset: it handles the same
+documents. It adds two pieces of text typed by the user, the file name and the
+section names. They are not secrets, but they are untrusted input (a partner
+can also pre-fill the section names through the embed link): React escapes
+them on screen, and they only become file names after `safeFileName`
+(`lib/pages.ts`) and `zipPaths` (§4.6).
 
 ## 2. Architecture and attack surface
 
@@ -43,6 +51,16 @@ masks and the watermark, and the output is always a PDF (§4.4 quater):
 file ──► pdf.js (Web Worker) ──► canvas ──► [masks] ──► signature ──► [watermark] ──► JPEG/PNG ──► pdf-lib ──► [AES-256] ──► download (blob:)
 ```
 
+The dossier tool (`/<lang>/dossier`) is a third mode of the same component
+and the same engine. Each document is rebuilt page by page as in the other
+tools; a page edit (rotation, crop, clean-up) is applied to the pixels before
+the masks. The kept pages are then put in the chosen order (§4.4 sexies):
+
+```
+files ──► pdf.js (Web Worker) ──► canvas ──► [rotation / crop / clean-up] ──► [masks] ──► [watermark] ──► JPEG ──► pdf-lib (one rebuilt PDF per document)
+      ──► assemblePdf: pages copied from those rebuilt PDFs only, in the chosen order ──► [AES-256] ──► download (blob:)
+```
+
 The remaining attack surface is therefore:
 
 1. **Hostile files** parsed by pdf.js, libheif and the browser's image decoders.
@@ -50,6 +68,16 @@ The remaining attack surface is therefore:
    image, which goes through the same header pre-check, the same
    `createImageBitmap`/libheif decoding and the same pixel cap as document
    images (§4.3).
+   Suggested areas to hide (§4.4 quinquies) add **no decoder**: the text is
+   read with pdf.js `streamTextContent`, code already loaded to render the
+   page. What is new is the text itself as an input: very long lines,
+   millions of text items, odd Unicode. It is bounded (§4.3).
+   Dossier mode adds **no decoder**: PDFs and photos go through the same
+   paths and the same caps, plus a cap of 1,000 pages per dossier. It adds
+   one operation on PDF structure, `assemblePdf` (`lib/assemble.ts`), which
+   is the one place in the project where pages are **copied**
+   (`PDFDocument.copyPages`) instead of drawn. It only ever reads PDFs that
+   Cachety has just rebuilt, never a file the user dropped (§4.4 sexies).
 2. **Script injection** (XSS) that could read the files and exfiltrate them.
 3. **The supply chain**: npm dependencies, CI actions, host.
 4. **Leakage through the output file**: original data that would survive processing.
@@ -59,17 +87,18 @@ The remaining attack surface is therefore:
 
 | # | Threat | Attacker | Controls | Verification |
 | --- | --- | --- | --- | --- |
-| T1 | Exfiltration of the files (or of the signature) to a third-party server | Injected script, compromised dependency | CSP `connect-src 'self'`, `default-src 'self'` (§4.1), on the sign pages too | `ui.smoke.e2e.ts` (watermark and sign modes: exfiltration blocked, zero off-origin requests), `security-headers.test.ts`, `security.static.test.ts` |
+| T1 | Exfiltration of the files (or of the signature) to a third-party server | Injected script, compromised dependency | CSP `connect-src 'self'`, `default-src 'self'` (§4.1), on the sign and dossier pages too | `ui.smoke.e2e.ts` (watermark and sign modes: exfiltration blocked, zero off-origin requests), `dossier.e2e.ts` (same, dossier mode), `security-headers.test.ts`, `security.static.test.ts`, `dossier.static.test.ts` |
 | T2 | XSS via file name, watermark text, `localStorage` | Booby-trapped file or link | React escaping, no `dangerouslySetInnerHTML`/`eval`, hash-based CSP (§4.2) | `security.static.test.ts` |
 | T3 | Code execution via a booby-trapped PDF (PDF JavaScript, XFA, malicious font) | Sender of the document | pdf.js 6 without an `eval` path, XFA disabled, rendering in a Worker, CSP without `unsafe-eval` (§4.3) | `watermark.seam.e2e.ts` (adversarial corpus) |
-| T4 | Leakage of hidden data in the output (text, author, GPS, attachment, JS, links) | Recipient of the watermarked or signed document | Full rasterisation, re-encoding of images (§4.4); a signed page is rebuilt the same way (§4.4 quater) | `watermark.seam.e2e.ts` (sanitisation, also on a signed hostile PDF), `sign.e2e.ts` |
+| T4 | Leakage of hidden data in the output (text, author, GPS, attachment, JS, links), including hidden data that would survive a merge of several documents | Recipient of the watermarked, signed or assembled document | Full rasterisation, re-encoding of images (§4.4); a signed page is rebuilt the same way (§4.4 quater); a dossier is assembled only from pages rebuilt that way, and `assemblePdf` refuses any PDF that does not have the shape of Cachety's own output (§4.4 sexies) | `watermark.seam.e2e.ts` (sanitisation, also on a signed hostile PDF), `sign.e2e.ts`, `dossier.seam.e2e.ts` (assembled output clean; a source PDF passed as a part is refused; hostile PDF through dossier mode with a rotation and a mask), `assemble.test.ts`, `dossier.e2e.ts` |
 | T5 | Removal of the watermark, or moving or deleting the signature, by editing the PDF | Recipient | The watermark and the signature are blended into the pixels, not layers (§4.4, §4.4 quater) | same |
 | T6 | Cryptographic attack on the protected PDF | Recipient, thief of the file | AES-256 (PDF 2.0, /V 5 /R 6), never RC4, generated secret of 132 bits (12 words) or 256 bits (§4.5) | `file-password.test.ts` |
-| T7 | Zip-Slip when extracting the downloaded archive | Forged file name | Only the basename is kept, names de-duplicated (§4.6) | `files.test.ts` |
+| T7 | Zip-Slip when extracting the downloaded archive | Forged file name, or a section or file name typed in the dossier tool or pre-filled by a partner link | Only the basename is kept, names de-duplicated (§4.6); typed names lose path separators and reserved characters first (`safeFileName`) | `files.test.ts`, `pages.test.ts`, `dossier.e2e.ts` |
 | T8 | Clickjacking, tab-nabbing, Referer leakage | Third-party site | `frame-ancestors 'none'`, `X-Frame-Options`, COOP, `noopener noreferrer`, `Referrer-Policy` (§4.7); only `/embed/*` can be framed, and only by cachety.com and the sites in `partners.json` ([embed.md](embed.md)) | `security-headers.test.ts`, `security.static.test.ts`, `embed.e2e.ts` |
 | T9 | Vulnerable or compromised dependency | Supply chain | Frozen lockfile, `bun audit` in CI + weekly, Dependabot, actions pinned by SHA (§4.8) | CI |
 | T10 | Poisoned or stale service worker | Network, old deployment | Same origin, GET only, revalidation of `sw.js` (§4.9) | `security-headers.test.ts` |
 | T11 | Reuse of the signature by a recipient (cut out of the signed copy and pasted elsewhere) | Recipient | **Not prevented technically**, as with a scanned paper signature: the legal section and the FAQ of the sign page say so; the "Also add a watermark" option ties the copy to a purpose and a recipient; initials on every page make page substitution visible (§4.4 quater, §6) | `site-copy.test.ts` (the FAQ says it in all 11 languages); no technical verification, since nothing technical is claimed |
+| T12 | False sense of completeness: the person relies on the suggested areas and sends a page with a sensitive number that was not detected (text inside an image, barcode or QR code, unknown format) | The limits of detection | **Not prevented technically.** Nothing is ever hidden automatically; the suggestions panel always ends with "Suggestions can miss things. Check the whole page yourself. Barcodes and QR codes can contain the same information."; a document without a text layer says "No text to read on this document: draw the areas yourself." (§4.4 quinquies, §6) | `lib/suggest-copy/suggest-copy.test.ts` (the footer exists in all 11 languages and names QR codes), `e2e/suggest.e2e.ts` (the footer is shown with the suggestions); no technical verification, since nothing technical is claimed |
 
 ## 4. Controls in place
 
@@ -107,10 +136,14 @@ policies. The build ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)) therefore:
   lists only that page's hashes;
 - groups the pages of each language into one rule (`/fr/*`), listing the
   hashes of that language's pages only. If that line would exceed the
-  limit, the language falls back to one rule per guide or comparison section
-  (`/fr/guides/*`) and one exact rule per other page. Each page still carries
-  its exact `<meta>` policy, and the browser enforces both, so a page can only
-  run its own scripts;
+  limit, the language falls back to three rules: one per guide or comparison
+  section (`/fr/guides/*`, `/fr/compare/*`) and one for the pages directly
+  under the language (`/fr/:page`, a Cloudflare placeholder that matches a
+  single path segment, so it never also applies to a guide), and to one exact
+  rule per page if even that line is too long. Since the dossier pages and
+  their guides (2026-11-18) every language uses the three-rule grouping. Each
+  page still carries its exact `<meta>` policy, and the browser enforces
+  both, so a page can only run its own scripts;
 - adds one rule for the partner embed pages (`/embed/*`), the only ones that
   may be framed: `frame-ancestors 'self'` plus the origins of `partners.json`,
   `X-Frame-Options` removed there (`! X-Frame-Options`), and
@@ -139,6 +172,19 @@ redirect is an inline script allowed by its hash) and by `e2e/ui.smoke.e2e.ts`
 both pages, a complete signing run with no off-origin request and no CSP
 violation, an exfiltration attempt via `fetch` blocked). The general static
 tests above cover these pages like every other one.
+
+**Dossier pages.** `/<lang>/dossier` and `/dossier` follow the same pattern:
+`/fr/dossier` falls under its language's rule for direct pages (`/fr/:page`),
+`/dossier` (English, `x-default`) has its own exact rule and its own hashed
+language redirect. Verified by `e2e/dossier.static.test.ts` (same checks as
+for the sign pages, plus: a guide page never also receives the direct-pages
+rule) and by `e2e/dossier.e2e.ts` ("aucun octet ne quitte le navigateur":
+one header policy and one `<meta>` policy on `/fr/dossier` and `/en/dossier`,
+a complete run with a page moved, rotated and removed, sections, a size
+target and a password, with no off-origin request and no CSP violation, an
+exfiltration attempt via `fetch` blocked, nothing but display preferences in
+`localStorage`). The same checks that `ui.smoke.e2e.ts` runs for the other
+two tools live there, next to the rest of the dossier suite.
 
 **Self-hosting.** `_headers` is only read by Cloudflare Pages. The build
 therefore copies each page's policy into a `<meta http-equiv>` tag placed
@@ -222,6 +268,18 @@ the server (see §6).
   `image/*` type is left to the browser's decoder (see §6). Errors are
   neutral codes (`unsupported`, `file_too_large`, `image_too_large`,
   `image_unreadable`).
+- **Hostile text** (suggested areas, §4.4 quinquies): a PDF's text layer is
+  read by chunks (`lib/text-extract.ts`), and reading stops after
+  **200,000 text items or 2 million characters per document**; the
+  suggestions are then marked incomplete ("Suggestions stopped before the
+  end of this document") and the render itself is unaffected. A page whose
+  text cannot be read counts as empty. Lines are cut at **2,000 characters**
+  (`lib/text-lines.ts`), and the search stops after 2,000 matches per
+  document. Detection (`lib/sensitive.ts`) is linear: each word start
+  triggers one bounded read (34 characters at most), and **no regular
+  expression has an unbounded quantifier** (`+`, `*`, `{n,}`), so there is
+  no catastrophic backtracking. Looking for a label next to a number
+  examines a bounded number of neighbouring lines.
 - Read errors are converted to neutral codes (`pdf_unreadable`,
   `image_unreadable`…): no internal message is displayed.
 
@@ -335,6 +393,108 @@ identifies the copy.
   fingerprint equals the SHA-256 of the downloaded bytes) and
   `e2e/signature.seam.e2e.ts` (upload guards, §4.3).
 
+### 4.4 quinquies Suggested areas to hide
+
+"Hide something" can point out the numbers it finds in a PDF's text layer:
+IBANs, card numbers, French social security and tax numbers, and national
+numbers of the countries Cachety serves (`lib/sensitive.ts`). This adds
+**detection**, not a new way of removing content.
+
+- **Suggestions never hide anything.** They are dashed outlines and a list.
+  One becomes a mask only when the person taps it or taps "Hide them all".
+  An accepted suggestion is an ordinary mask (`lib/masks.ts`): everything
+  §4.4 says about masks applies unchanged, and it can be moved, resized or
+  removed like one drawn by hand.
+- **Validated numbers only.** A number is suggested only if its checksum
+  passes (IBAN mod 97 and country length, Luhn and a known card prefix, the
+  key of the French NIR, and so on) or, for formats without a checksum, if
+  its label is next to it ("Numéro fiscal", "BSN", "NIK"…). A bare run of
+  digits is never suggested.
+- **On the device, in memory.** The text is read during the render pass
+  that already runs (`RenderOptions.extractText`, once per document), on the
+  main thread and in the pdf.js worker, with no request. The lines and the
+  suggestions live in component state; they are never written to
+  `localStorage`, the URL, logs or the service worker, and none of it goes
+  into the output file. After detection, character positions are kept only
+  for the lines that carry a suggestion. The panel shows a partly masked
+  form (`FR76 •••• •••• 0189`): at most 4 characters at each end, and never
+  more than half of a short number.
+- **Text layer only.** Photos and scanned PDFs get no suggestions: there is
+  no OCR. Barcodes, QR codes, faces, signatures, names, addresses and dates
+  are not looked for (§6).
+- Verified by `lib/sensitive.test.ts` (published examples and wrong
+  variants for each number, labels, overlaps, time bounds on random and
+  pathological text, no unbounded regular expression),
+  `lib/text-lines.test.ts`, `lib/text-extract.test.ts` (caps, unreadable
+  page), `lib/suggestions.test.ts` (suggestions stay out of the render key;
+  undo removes exactly the suggested rectangles) and
+  `e2e/suggest.seam.e2e.ts` (on generated PDFs, the suggested rectangle
+  covers the number; once accepted, that area is black in the output, which
+  has no text layer left; rotated page; page 30 of 40; a right-to-left
+  page), then `e2e/suggest.e2e.ts` in the interface.
+
+### 4.4 sexies Dossier (`/<lang>/dossier`)
+
+- **Same rebuild, then assembly.** Each dropped document is rendered by the
+  same engine as in the other tools, page by page, into a PDF created from
+  scratch whose pages hold one JPEG each. A photo becomes a page the same way
+  (an A4-fitted page, JPEG). Nothing of the original survives: no text layer,
+  metadata, attachment, JavaScript, link or photo EXIF/GPS (§4.4).
+- **`assemblePdf` only copies Cachety's own output.** Putting the kept pages
+  in order uses `PDFDocument.copyPages` (pdf-lib). Copying is safe only
+  because every source is one of those rebuilt PDFs. Two guards keep it so:
+  - its signature takes the engine's results (`WatermarkResult`), not files or
+    bytes; `lib/dossier-build.ts`, its only caller, never sees a dropped file
+    (a test checks both);
+  - before copying, it checks that the part has the shape of Cachety output:
+    a bare catalog (no `Names`, `OpenAction`, `AcroForm`, `Metadata`…), no
+    `/Info` entries, no encryption, and pages that carry exactly one image
+    and nothing else (no annotation, no font, no form). A dropped PDF passed
+    by mistake is **refused** (`assemble_foreign_page`), never copied.
+  The assembled file is created with no metadata, and the empty `/Annots`
+  array pdf-lib adds to pages is removed.
+- **Page edits are pixels.** A rotation is applied when the page is rendered
+  (added to the PDF's own `/Rotate`), so the output page is upright, not
+  tagged. Straightening and cropping a photo (a projective warp), whitening
+  and black-and-white are pure functions on the decoded pixels
+  (`lib/photo-fix.ts`), run on the device before the masks; the original file
+  is not modified. Masks are drawn on the page as displayed: when a page is
+  rotated or re-cropped, its masks are **removed and the user is told**,
+  rather than left covering the wrong place. Suggested areas (§4.4
+  quinquies) follow the same rule: a rotation drops that document's
+  suggestions, and the render it triggers reads the text again in the new
+  orientation (`e2e/dossier-suggest.e2e.ts`).
+- **The preview shows what will be in the file.** In step 3 it shows only
+  the pages kept from the selected document, in the order of the file; a
+  removed page is neither previewed nor counted in the suggestions.
+- **Order and removed pages change nothing but the assembly.** A removed page
+  is still rendered with its document, then left out of the file.
+- **Size target.** The first render has no limit. During it, each page is
+  also encoded once at the readability floor (scale 0.55 of the render, about
+  80 dpi on A4, lowest quality) and once at the bottom of the scale, and only
+  the two weights are kept: that is what the page will weigh if its budget
+  cannot be met. The panel's three states come from those measurements, not
+  from a model: the target fits; it fits with less sharp pages when the sum
+  of the measured floor weights, plus a 2 % reserve, fits; otherwise it
+  cannot be reached. If a file is over the target, the documents concerned
+  are rendered again with a byte budget per page: first the page's measured
+  floor weight with the same 2 %, then a share of what is left according to
+  its first-render weight, never below the floor unless the user ticks
+  "Allow lower quality". The second render repeats the same encoding of the
+  same pixels, with the same watermark layout as the first, so a file
+  announced as fitting does fit. The reduction is applied after the masks
+  and the watermark; it can neither remove them nor reintroduce data.
+- **Thumbnails** of every page are small JPEGs made from the same rendered
+  canvas, kept as `blob:` URLs and revoked with the result.
+- **Options shared with the other tools**: masks ("Hide something"), "Also
+  add a watermark" (off by default), password lock (off by default),
+  fingerprint after the download.
+- Verified by `e2e/dossier.seam.e2e.ts` (rotation, thumbnails, assembly order
+  and sanitisation, refusal of a source PDF, weighted budget, floor, warp,
+  adversarial corpus), `e2e/dossier.e2e.ts` (full runs: desktop, keyboard
+  only, phone, right-to-left, sections, unreachable target, embed) and the
+  unit tests `assemble.test.ts`, `pages.test.ts`, `photo-fix.test.ts`.
+
 ### 4.5 Encryption of the output file
 
 - **AES-256, PDF 2.0 (/V 5 /R 6, /AESV3)** via `pdf-lib-encrypt`, built on
@@ -378,7 +538,12 @@ identifies the copy.
 
 File names are reduced to their basename (no `../`) and de-duplicated
 before compression (`zipDocuments`). Per-recipient folders are likewise
-reduced to a single segment.
+reduced to a single segment. In the dossier tool, the file name and the
+section names are typed by the user (or pre-filled by a partner link): they
+first go through `safeFileName` (`lib/pages.ts`), which removes path
+separators, characters a file system refuses and leading dots, and cuts the
+name to 60 whole characters; an empty result falls back to "Section N" or to
+the default file name. They then go through `zipPaths` like every other name.
 
 ### 4.7 HTTP headers
 
@@ -459,10 +624,15 @@ service worker: it is neither a request nor a `blob:` URL.
 ### 4.10 Local storage
 
 `localStorage` only holds preferences: language, watermark appearance,
-automatic application, target size, and for the sign tool the ink colour,
+automatic application, target size, for the sign tool the ink colour,
 the last tab used and whether the date is added (`signInk`, `signTab`,
-`signDate`). **No file, no watermark text, no password, no signature, no
-typed name, place or note.** Previews are `blob:` URLs revoked as soon as
+`signDate`), and for the dossier tool the kind of file to produce and the
+size target, and whether "Black and white" starts ticked in the photo
+clean-up panel (`dossierOutput`, `dossierSizeMb`, `dossierGray`). The page
+order, rotations, crops, section names and the file name of a dossier live in
+memory only. **No file, no watermark text, no password, no signature, no
+typed name, place or note, no extracted text, no suggestion and no
+dismissed suggestion.** Previews are `blob:` URLs revoked as soon as
 they are no longer needed.
 
 ## 5. Security tests
@@ -494,6 +664,18 @@ replays `out/_headers` ([e2e/helpers/server.ts](../e2e/helpers/server.ts)).
 | `e2e/signature.seam.e2e.ts` (`fromFile`) | Header announcing 40,000 × 40,000 px → `image_too_large` without decoding; junk bytes → `image_unreadable`; a PDF → `unsupported`; real HEIC decoded locally by libheif |
 | `e2e/sign.e2e.ts` | Full signing runs (draw, keyboard-only type, upload, phone, right-to-left, initials, watermark); fingerprint equal to the SHA-256 of the downloaded bytes |
 | `lib/site-copy.test.ts` (T11) | The sign page's FAQ says, in all 11 languages, that a signature can be cut out and pasted elsewhere; the legal section cites eIDAS art. 25 and Civil Code art. 1367 everywhere |
+| `lib/sensitive.test.ts` | Suggested areas: checksums on published examples and on altered ones; a label is required where there is no checksum; no suggestion on dates, phone numbers, amounts; 500 pages of text under 100 ms, pathological lines under 50 ms; no regular expression with an unbounded quantifier |
+| `lib/text-extract.test.ts`, `lib/text-lines.test.ts` | Reading stops at the caps (items, characters) and cancels the stream; an unreadable page does not fail the render; forged items are ignored; a line longer than 2,000 characters is cut |
+| `e2e/suggest.seam.e2e.ts` | Real pipeline: suggested rectangles cover the numbers of generated PDFs (rotated page, page 30 of 40, right-to-left page); accepted, the area is black in the output, which has no text layer; no suggestion on a photo or before a locked PDF is unlocked; reading the text adds at most 10 % to the render of 500 pages |
+| `e2e/suggest.e2e.ts` | Nothing is hidden before the person acts; a full run (banner, review, hide, download) only contacts the origin, with no CSP violation; only the partly masked number is displayed; watermark and sign tools, keyboard only, right-to-left, phone |
+| `lib/suggest-copy/suggest-copy.test.ts` (T12) | The "Suggestions can miss things" footer exists in all 11 languages and names barcodes and QR codes |
+| `lib/assemble.test.ts` | `assemblePdf`: page order and count, no metadata, no `/Annots`; a PDF with text, an annotation, metadata, an attachment, an open action or no image is refused; its only caller is `lib/dossier-build.ts`, which never reads a dropped file; budgets never exceed the target or go below the floor |
+| `lib/pages.test.ts`, `lib/photo-fix.test.ts` | Page model (move across documents and sections, rotate, remove and undo, 1,000-page cap), file names made safe (Zip-Slip); homography, warp, levels |
+| `e2e/dossier.seam.e2e.ts` | Rotation really applied to the page; one thumbnail per page; assembled output with no text, metadata, attachment, script or annotation; a source PDF passed as a part refused; hostile PDF through dossier mode with a rotation and a mask; size target met with the floor respected; measured prediction constants within 15 % |
+| `e2e/dossier.static.test.ts` | `/dossier` and `/<lang>/dossier` in 11 languages: one `<meta>` CSP listing exactly the page's scripts, one header CSP limited to the page's language, `frame-ancestors 'none'`, the hashed language redirect; sitemap, hreflang, service-worker precache; `_headers` within 100 rules and 2,000 characters, no page matched by two CSP rules |
+| `e2e/dossier.e2e.ts` (network isolation) | `/en/dossier` and `/fr/dossier` carry the header and `<meta>` CSP; a complete run only contacts the origin, with no CSP violation; an exfiltration attempt via `fetch` is blocked; only display preferences in `localStorage` |
+| `lib/http-headers.test.ts` | The `_headers` reader used by the e2e server and the static tests matches Cloudflare's patterns: `*`, and `:name` for exactly one path segment |
+| `e2e/dossier.e2e.ts` | Full dossier runs (desktop, keyboard only, phone, right-to-left, sections, sizes, embed); output order and orientation read back from the file; typed names made safe |
 | `bun audit` (CI) | No known CVE in the dependency tree |
 
 Run everything:
@@ -541,11 +723,37 @@ What the application **does not guarantee**, stated plainly:
 - **The signature can be reused** (T11): a recipient can cut it out of the
   signed copy and paste it elsewhere, as with a scanned paper signature. A
   watermark and initials limit the damage; nothing prevents it.
+- **Suggestions can miss things** (T12). Suggested areas come from the
+  PDF's text layer and from a fixed list of number formats. A number inside
+  an image, a scan or a photo is not seen (no OCR); nor is one in a format
+  that is not on the list, or one whose text layer is broken. **Barcodes and
+  QR codes are not read**: the 2D-Doc on a French tax notice, for example,
+  encodes data from the notice, and stays visible unless the person masks it
+  by hand. A suggestion can also be wrong (a reference number that passes
+  the Luhn check), or point at something the recipient needs (the IBAN on
+  bank details). This is why nothing is hidden automatically and why the
+  panel always says to check the whole page. Positions are estimated from
+  the width of each text run, with a margin: on an unusual font the box can
+  be slightly off, and the person sees it on the preview before accepting.
 - **Signed copies are flattened.** Each page is rebuilt from its pixels
   (§4.4 quater): the text of the signed copy can no longer be selected,
   searched or copied, and the file is usually larger than the original text
   PDF. This is the
   price of the sanitisation; the original stays with the user, unchanged.
+- **Dossier files are flattened too, and can be bigger.** Every page of an
+  assembled file is an image: the text cannot be selected or searched, and a
+  PDF that only held text usually comes out bigger than it went in. The tool
+  says so next to the size, and on the page.
+- **A reduced page can be hard to read.** Under a size target, pages lose
+  sharpness. The readability floor (about 80 dpi on A4) is a compromise, not
+  a guarantee: very small print can become illegible above it, and the user
+  can lower it ("Allow lower quality") or download a file the panel has said
+  cannot fit. The tool warns before the download and again after it; the
+  person may still send the file. The size prediction is measured on the
+  person's own pages; within its 2 % reserve it says "cannot fit" for a file
+  that would just pass.
+- **Straightening is manual and approximate.** The four corners are placed by
+  the user; nothing checks that the result shows the whole sheet.
 - **Trust in the host.** The code is served by Cloudflare Pages; a
   compromised deployment could serve different code. The repository is
   public and the site can be self-hosted with one command (see README) for
@@ -588,4 +796,6 @@ Before merging a PR:
       `pdf-lib-encrypt` is reviewed line by line.
 - [ ] A new input format goes through the allowlist and the rasterisation
       pipeline (no copying of objects from the original document).
+- [ ] `assemblePdf` (and `copyPages` in general) is only ever given PDFs
+      rebuilt by the engine, never a dropped file (§4.4 sexies).
 - [ ] `bun audit`, `bun test` and `bun run test:e2e` are green.

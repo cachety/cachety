@@ -19,19 +19,42 @@ window.addEventListener("message", function (e) {
 });
 </script>`;
 
-type ToolChoice = "watermark" | "sign" | "both";
-const TOOLS: Record<ToolChoice, EmbedTool[]> = { watermark: ["watermark"], sign: ["sign"], both: ["watermark", "sign"] };
+type ToolChoice = "watermark" | "sign" | "both" | "dossier" | "all";
+const TOOLS: Record<ToolChoice, EmbedTool[]> = {
+  watermark: ["watermark"],
+  sign: ["sign"],
+  both: ["watermark", "sign"],
+  dossier: ["dossier"],
+  all: ["watermark", "sign", "dossier"],
+};
+const offers = (choice: ToolChoice, tool: EmbedTool) => TOOLS[choice].includes(tool);
 
-type Options = { tools: ToolChoice; purpose: string; recipient: string; place: string; note: string; accent: string };
+type Options = {
+  tools: ToolChoice;
+  purpose: string;
+  recipient: string;
+  place: string;
+  note: string;
+  accent: string;
+  /** Outil Dossier : taille maximale par fichier (Mo) et noms des sections, séparés par des virgules. */
+  size: string;
+  sections: string;
+};
 
 /** Le filigrane seul est le choix par défaut : rien dans le fragment (codes déjà collés inchangés). */
-function fragment({ tools, purpose, recipient, place, note, accent }: Options) {
+function fragment({ tools, purpose, recipient, place, note, accent, size, sections }: Options) {
   const params = new URLSearchParams();
   if (tools !== "watermark") params.set("tools", TOOLS[tools].join(","));
   if (purpose.trim()) params.set("for", purpose.trim());
   if (recipient.trim()) params.set("to", recipient.trim());
-  if (tools !== "watermark" && place.trim()) params.set("place", place.trim());
-  if (tools !== "watermark" && note.trim()) params.set("note", note.trim());
+  if (offers(tools, "sign") && place.trim()) params.set("place", place.trim());
+  if (offers(tools, "sign") && note.trim()) params.set("note", note.trim());
+  // Relus par readPrefill : seules les valeurs qu'il accepte passent dans le code.
+  if (offers(tools, "dossier")) {
+    const prefill = readPrefill(`#size=${encodeURIComponent(size)}&sections=${encodeURIComponent(sections)}`);
+    if (prefill.size) params.set("size", String(prefill.size));
+    if (prefill.sections) params.set("sections", prefill.sections.join(","));
+  }
   if (accent) params.set("accent", accent);
   const s = params.toString().replace(/\+/g, "%20").replace(/%2C/g, ",");
   return s ? `#${s}` : "";
@@ -73,11 +96,13 @@ export function EmbedBuilder({ lang }: { lang: Lang }) {
   const [purpose, setPurpose] = useState("");
   const [recipient, setRecipient] = useState("");
   const [accent, setAccent] = useState("");
+  const [size, setSize] = useState("");
+  const [sections, setSections] = useState("");
   const [height, setHeight] = useState(900);
   const frame = useRef<HTMLIFrameElement>(null);
   // Couleur trop claire pour un texte blanc : ignorée par la page intégrée.
   const accentOk = !accent || readPrefill(`#accent=${encodeURIComponent(accent)}`).accent === accent;
-  const hash = fragment({ tools, purpose, recipient, place, note, accent: accentOk ? accent : "" });
+  const hash = fragment({ tools, purpose, recipient, place, note, accent: accentOk ? accent : "", size, sections });
   const src = `${SITE_URL}/embed/${embedLang}${hash}`;
   const code = `<iframe src="${src}" title="Cachety" loading="lazy" allow="clipboard-write" style="width: 100%; min-height: 640px; border: 0"></iframe>`;
 
@@ -136,7 +161,29 @@ export function EmbedBuilder({ lang }: { lang: Lang }) {
           {o.recipient}
           <input value={recipient} maxLength={60} onChange={(e) => setRecipient(e.target.value)} placeholder={o.recipientPlaceholder} className={field} />
         </label>
-        {tools !== "watermark" && (
+        {offers(tools, "dossier") && (
+          <>
+            <label className="flex flex-col gap-1.5 text-sm font-medium">
+              {o.size}
+              <input
+                type="number"
+                inputMode="decimal"
+                min={0.5}
+                max={50}
+                step={0.5}
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+                placeholder={o.sizePlaceholder}
+                className={field}
+              />
+            </label>
+            <label className="flex flex-col gap-1.5 text-sm font-medium">
+              {o.sections}
+              <input value={sections} maxLength={420} onChange={(e) => setSections(e.target.value)} placeholder={o.sectionsPlaceholder} className={field} />
+            </label>
+          </>
+        )}
+        {offers(tools, "sign") && (
           <fieldset className="grid gap-4 rounded-2xl border border-trait p-4 sm:col-span-2 sm:grid-cols-2">
             <legend className="px-1 text-sm font-semibold">{b.title}</legend>
             <label className="flex flex-col gap-1.5 text-sm font-medium">

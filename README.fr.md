@@ -38,6 +38,7 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 - **Trois étapes simples :** votre document, son usage et son destinataire, puis l'aperçu et le téléchargement. Le texte du filigrane est rédigé pour vous (« usage, destinataire, date », avec des exemples prêts à l'emploi) et reste librement modifiable.
 - **Données cachées retirées :** texte sélectionnable, métadonnées et position GPS des photos. Chaque page est reconstruite à partir de ses pixels.
 - **Masquage :** noircissez un IBAN, un numéro fiscal ou une photo. Le contenu est réellement supprimé, pas seulement recouvert.
+- **Zones suggérées :** sur un PDF qui contient du texte, Cachety repère les IBAN, numéros de carte, de sécurité sociale, fiscaux ou d'identité, sur votre appareil, et masque d'un geste ceux que vous choisissez. Il ne masque jamais rien de lui-même, et il peut en oublier (photos, documents numérisés, codes-barres) : la page le dit.
 - **Copies traçables :** ajoutez `{code}` au texte et chaque copie reçoit sa propre référence courte, listée après le téléchargement pour que vous la conserviez.
 - **Plusieurs destinataires :** une copie par destinataire (jusqu'à 20), chacune à son nom, en un seul téléchargement.
 - **Mot de passe :** chiffrement PDF AES-256 (PDF 2.0). Cocher « Verrouiller avec un mot de passe » crée un mot de passe facile à lire de 12 mots aléatoires (132 bits, liste de mots BIP39) ; votre propre mot de passe ou un mot de passe aléatoire de 256 bits restent disponibles. Effacement automatique du presse-papiers.
@@ -48,7 +49,7 @@ L'auto-hébergement reste possible et pleinement pris en charge (voir plus bas),
 - **Visite guidée** pour les nouveaux venus, proposée quand quelqu'un semble ne pas savoir par où commencer.
 - **92 guides pratiques** pour les situations de tous les jours en France, au Royaume-Uni, en Allemagne, aux Pays-Bas, en Espagne et en Amérique latine, au Brésil, en Indonésie, dans le monde arabe, en Iran, au Japon et en Chine.
 - **82 comparatifs vérifiés** avec d'autres outils de filigrane (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID et d'autres), et **55** avec des outils de signature (DocuSign, Youtrust, Adobe Acrobat, iLovePDF et Smallpdf, 5 par langue), sources à l'appui, y compris quand un autre outil est le meilleur choix.
-- **Sur des sites partenaires :** les sites approuvés peuvent afficher l'outil de filigrane, l'outil de signature ou les deux dans leurs pages (une iframe servie par cachety.com : le site qui l'accueille ne voit pas les documents). Voir [docs/embed.md](docs/embed.md) et [cachety.com/fr/partners](https://cachety.com/fr/partners).
+- **Sur des sites partenaires :** les sites approuvés peuvent afficher l'outil de filigrane, l'outil de signature, l'outil Dossier ou plusieurs d'entre eux dans leurs pages (une iframe servie par cachety.com : le site qui l'accueille ne voit pas les documents). Voir [docs/embed.md](docs/embed.md) et [cachety.com/fr/partners](https://cachety.com/fr/partners).
 
 ## Signer un document
 
@@ -60,6 +61,19 @@ Cachety sait aussi signer un PDF, sur **[cachety.com/fr/sign](https://cachety.co
 - **PDF et photos**, plusieurs documents à la fois, sur ordinateur et sur téléphone, dans les 11 langues.
 
 **Quelle valeur ?** Une signature posée ainsi est ce qu'on appelle couramment une *signature électronique simple*. Elle est en général acceptée pour les documents de tous les jours (dossier de location, attestation, devis, formulaire d'école ou d'association). Ce n'est pas une signature qualifiée : pas de certificat, pas d'horodatage, et rien qui prouve qui a signé. Quand une signature qualifiée, une mention écrite de votre main, un testament ou un acte devant notaire est exigé, ou quand l'autre partie impose une plateforme précise, utilisez l'outil demandé. Ceci n'est pas un conseil juridique.
+
+## Un seul fichier à envoyer (Dossier)
+
+Cachety sait aussi réunir vos documents en un seul PDF, sur **[cachety.com/fr/dossier](https://cachety.com/fr/dossier)**. Déposez des PDF et des photos, rangez les pages, tournez celles qui sont de travers, retirez celles qu'on ne vous demande pas, et téléchargez un PDF, ou un par section, sous la taille qu'un site accepte.
+
+- **Même promesse :** rien n'est envoyé. Même verrou réseau que les autres outils, et le test du mode avion y marche aussi.
+- **Page par page :** toutes les pages de tous les fichiers dans une seule grille. Faites glisser une page (ou Alt + flèches), tournez-la, retirez-la, annulez. Séparez le fichier en sections nommées pour obtenir un PDF par type de pièce.
+- **Franc sur la taille :** choisissez 1, 2, 5 ou 10 Mo, ou une autre taille. Avant le téléchargement, l'outil dit si le fichier tient, s'il tient avec des pages un peu moins nettes, ou s'il est impossible de passer dessous en restant lisible, et quoi faire alors : séparer, retirer des pages, ou choisir une taille plus grande.
+- **Photos de papiers :** placez quatre coins sur la feuille pour la redresser et la recadrer, blanchissez le fond, ou passez en noir et blanc.
+- **Pages reconstruites :** chaque page devient une image, ce qui retire le texte caché, les métadonnées, les pièces jointes, les liens et la position GPS des photos. Le texte n'est plus sélectionnable, et un PDF qui ne contenait que du texte peut ressortir plus lourd.
+- **En option :** un filigrane (désactivé par défaut), des zones masquées, un mot de passe, et l'empreinte SHA-256 du fichier téléchargé.
+
+Il ne modifie pas un PDF, ne convertit pas les fichiers Word ou Excel, ne reconnaît pas le texte (OCR) et ne garde pas les pages d'origine telles quelles.
 
 ## Confidentialité dès la conception, et vérifiable
 
@@ -104,6 +118,8 @@ Agences immobilières, plateformes RH, associations : les sites approuvés peuve
 ```
 
 Pour proposer aussi la signature, ajoutez `tools=sign` (signature seule) ou `tools=watermark,sign` (les deux, le visiteur passe de l'un à l'autre) au fragment, avec si besoin le lieu et la mention sous la signature déjà remplis : `#tools=watermark,sign&place=Lyon&note=Bon%20pour%20accord`.
+
+L'outil Dossier s'obtient avec `tools=dossier` (seul ou avec les autres), avec si besoin une taille en Mo déjà choisie et des noms de sections : `#tools=dossier&size=5&sections=Identit%C3%A9,Fiches%20de%20paie,Avis%20d'imp%C3%B4t`.
 
 La [page partenaires](https://cachety.com/fr/partners) génère ce code pour vous, avec un aperçu réel, le court script de hauteur automatique et un texte à reprendre. Détails techniques : [docs/embed.md](docs/embed.md).
 

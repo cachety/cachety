@@ -7,10 +7,12 @@ export const SITE_PT: SiteCopy = {
   nav: {
     tool: "Marca d'água",
     sign: "Assinar",
+    dossier: "Dossier",
     about: "Por que uma marca d'água?",
     guides: "Guias",
     privacy: "Privacidade",
     menu: "Menu",
+    tools: "Ferramentas",
     close: "Fechar o menu",
     donate: "Doar",
     compare: "Comparativos",
@@ -69,7 +71,7 @@ export const SITE_PT: SiteCopy = {
       },
       {
         title: "Ocultar informações",
-        body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto.",
+        body: "Esconda um número de conta, o CPF ou uma foto. O conteúdo é apagado de verdade, não só coberto. Num PDF, o Cachety aponta números de cartão e contas em formato IBAN, e você decide o que ocultar.",
       },
       {
         title: "Um código único em cada cópia",
@@ -198,6 +200,60 @@ export const SITE_PT: SiteCopy = {
     },
     backToTop: "Assinar um documento",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    hero: {
+      title: "Um único arquivo para enviar, sem fazer upload de nada",
+      lead: "RG, holerites, declaração de imposto, a foto de um formulário em papel: coloque as páginas em ordem, gire as que estão de lado e saia com um único PDF abaixo do tamanho que pediram.",
+      pills: ["Grátis", "Sem cadastro", "Nada é enviado", "Feito na França"],
+    },
+    howTitle: "Como funciona",
+    how: [
+      {
+        title: "Solte seus documentos",
+        body: "PDFs e fotos, mesmo tiradas com o celular: RG, holerites, declaração de imposto. Vários de uma vez.",
+      },
+      {
+        title: "Coloque as páginas em ordem",
+        body: "Arraste as páginas para a ordem que quiser, gire as que estão de lado e remova as que você não vai usar.",
+      },
+      {
+        title: "Escolha o tamanho e baixe",
+        body: "Um único PDF, ou um por seção, abaixo do tamanho que o site pede. Ele é salvo no seu aparelho.",
+      },
+    ],
+    airplaneTitle: "Confira você mesmo: o teste do modo avião",
+    airplaneBody:
+      "Abra esta página e depois desligue a internet (modo avião). Solte seus documentos e junte tudo: o Cachety continua funcionando. É a prova de que nada passa pela internet.",
+    bigger: {
+      title: "Por que o arquivo pode ficar maior que os seus originais",
+      body: "O Cachety não copia os seus arquivos: cada página é refeita como imagem. É isso que remove texto oculto, metadados, anexos, links e a localização GPS das fotos. Em troca, um PDF que só tinha texto pode ficar maior, e o texto dele não pode mais ser selecionado. Se um site impõe um limite, escolha um tamanho máximo: o Cachety reduz as páginas até caber e avisa quando elas ficariam ilegíveis.",
+    },
+    faqTitle: "Perguntas frequentes",
+    faq: [
+      {
+        q: "Meus documentos são enviados para algum lugar?",
+        a: "Não. O site não tem um servidor capaz de recebê-los, e a página proíbe seu navegador de se conectar a qualquer outro site. O teste do modo avião comprova isso em dez segundos.",
+      },
+      {
+        q: "Por que meu arquivo às vezes fica maior?",
+        a: "Cada página é reconstruída a partir dos seus pixels. Isso remove texto oculto, metadados e a localização GPS das fotos, mas um PDF que só tinha texto pode ficar maior. Escolha um tamanho máximo: o Cachety reduz as páginas até caber.",
+      },
+      {
+        q: "O texto ainda pode ser selecionado?",
+        a: "Não, as páginas são imagens. Seus originais ficam intactos no seu aparelho.",
+      },
+      {
+        q: "Posso adicionar um arquivo do Word ou do Excel?",
+        a: "Não diretamente. Primeiro salve como PDF pelo Word, pelo Excel ou pelo celular (Imprimir, depois Salvar como PDF).",
+      },
+      {
+        q: "Funciona no meu celular?",
+        a: "Sim. Fotografe seus papéis, endireite as fotos e coloque as páginas em ordem com o dedo.",
+      },
+    ],
+    backToTop: "Preparar meu arquivo",
+  },
   privacy: {
     title: "Privacidade e segurança",
     lead: "Seus documentos são pessoais. Aqui explicamos, com palavras simples, o que o Cachety faz e o que não faz, e como conferir isso você mesmo.",
@@ -279,14 +335,15 @@ export const SITE_PT: SiteCopy = {
     related: "Continue lendo",
     cta: "Colocar marca d'água no meu documento",
     ctaSign: "Assinar meu documento",
+    ctaDossier: "Juntar meus documentos",
     ctaNote: "Grátis, sem cadastro. O documento nunca sai do seu aparelho.",
     updated: (d) => `Atualizado em ${d}`,
     allGuides: "Todos os guias",
   },
   compareUi: {
-    title: "Cachety e outras ferramentas de marca d'água e de assinatura",
+    title: "Cachety e outras ferramentas de marca d'água, de assinatura e para juntar e comprimir PDFs",
     lead: "Comparativos claros e verificados com as ferramentas mais usadas: para onde vão seus arquivos, quanto custa e quando outra ferramenta é a melhor escolha.",
-    groups: { watermark: "Marca d'água", sign: "Assinatura" },
+    groups: { watermark: "Marca d'água", sign: "Assinatura", dossier: "Juntar e comprimir" },
     read: "Ler o comparativo",
     verdictTitle: "Resumindo",
     tableTitle: "Lado a lado",

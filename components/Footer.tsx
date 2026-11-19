@@ -61,6 +61,9 @@ export default function Footer({ width = "max-w-7xl" }: { width?: string }) {
             <Link href={`/${lang}/sign`} className="hover:text-encre">
               {c.nav.sign}
             </Link>
+            <Link href={`/${lang}/dossier`} className="hover:text-encre">
+              {c.nav.dossier}
+            </Link>
             <Link href={`/${lang}/guides`} className="hover:text-encre">
               {c.nav.guides}
             </Link>

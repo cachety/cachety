@@ -38,6 +38,7 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **Three simple steps:** your document, what it's for and who gets it, then preview and download. The watermark text is written for you ("purpose, recipient, date", with ready-made examples) and can be edited freely.
 - **Hidden data stripped:** selectable text, metadata and the GPS location of photos. Each page is rebuilt from pixels.
 - **Masking:** black out an IBAN, a tax number or a photo. The content is really removed, not just covered.
+- **Suggested areas to hide:** on a PDF with text, Cachety points out the IBANs, card numbers and social security, tax or ID numbers it finds, on your device, and hides the ones you pick with one tap. It never hides anything on its own, and it can miss things (photos, scans, barcodes): the page says so.
 - **Traceable copies:** add `{code}` to the text and every copy gets its own short reference, listed after download for you to keep.
 - **Several recipients:** one copy per recipient (up to 20), each with their name on it, in a single download.
 - **Password:** AES-256 PDF encryption (PDF 2.0). Ticking "Lock with a password" makes an easy-to-read password of 12 random words (132 bits, BIP39 word list); your own password or a random 256-bit one stay available. Automatic clipboard clearing.
@@ -48,7 +49,7 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **Guided help tour** for first-time visitors, offered when someone seems unsure where to start.
 - **92 practical guides** for everyday situations in France, the UK, Germany, the Netherlands, Spain and Latin America, Brazil, Indonesia, the Arab world, Iran, Japan and China.
 - **82 fact-checked comparisons** with other watermark tools (iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, KopieID, FiligraneFacile and more), and **55** with signing tools (DocuSign, Youtrust, Adobe Acrobat, iLovePDF and Smallpdf, 5 in each language), with sources, including when another tool is the better choice.
-- **On partner websites:** approved sites can show the watermark tool, the sign tool or both in their own pages (an iframe served by cachety.com, so the host site can't see the documents). See [docs/embed.md](docs/embed.md) and [cachety.com/en/partners](https://cachety.com/en/partners).
+- **On partner websites:** approved sites can show the watermark tool, the sign tool, the dossier tool or several of them in their own pages (an iframe served by cachety.com, so the host site can't see the documents). See [docs/embed.md](docs/embed.md) and [cachety.com/en/partners](https://cachety.com/en/partners).
 
 ## Sign a document
 
@@ -60,6 +61,19 @@ Cachety can also sign a PDF, at **[cachety.com/en/sign](https://cachety.com/en/s
 - **PDFs and photos**, several documents at once, on computers and phones, in all 11 languages.
 
 **What it's worth:** a signature placed this way is what is commonly called a *simple electronic signature*. It is usually accepted for everyday documents (rental paperwork, certificates, quotes, school and association forms). It is not a qualified signature: there is no certificate, no timestamp, and nothing that proves who signed. When a qualified signature, a statement in your own handwriting, a will or a notarial deed is required, or the other party imposes a specific platform, use that instead. This is not legal advice.
+
+## One file to send (Dossier)
+
+Cachety can also put your documents into one PDF, at **[cachety.com/en/dossier](https://cachety.com/en/dossier)**. Drop PDFs and photos, put the pages in order, turn the sideways ones, remove the ones nobody asked for, and download one PDF, or one per section, under the size a website accepts.
+
+- **Same promise:** nothing leaves your device. Same network lock as the other tools, and the airplane-mode test works there too.
+- **Page by page:** every page of every file in one grid. Drag a page (or use Alt + arrows), rotate it, remove it, undo. Split the file into named sections to get one PDF per kind of document.
+- **Honest about size:** choose 1, 2, 5 or 10 MB, or another size. Before you download, the tool says whether the file fits, fits with pages a little less sharp, or cannot fit and stay readable, and what to do then: split it, remove pages, or pick a larger size.
+- **Photos of paper:** put four corners on the sheet to straighten and crop it, whiten the background, or switch to black and white.
+- **Rebuilt from pixels:** each page becomes an image, which removes hidden text, metadata, attachments, links and photo GPS location. The text is no longer selectable, and a PDF that only held text can come out bigger than it went in.
+- **Optional:** a watermark (off by default), hidden areas, a password, and a SHA-256 fingerprint of the file you downloaded.
+
+It does not edit PDFs, convert Word or Excel files, recognise text (OCR) or keep the original pages as they are.
 
 ## Privacy by design, and verifiable
 
@@ -104,6 +118,8 @@ Letting agencies, HR platforms, associations: approved websites can show the ful
 ```
 
 To offer signing too, add `tools=sign` (signing only) or `tools=watermark,sign` (both, the visitor switches) to the fragment, with an optional pre-filled place and note under the signature: `#tools=watermark,sign&place=Lyon&note=Agreed`.
+
+The dossier tool is `tools=dossier` (alone or with the others), with an optional pre-selected size in MB and section names: `#tools=dossier&size=5&sections=ID,Payslips,Tax%20notice`.
 
 The [partners page](https://cachety.com/en/partners) builds this code for you, with a live preview, the short script for automatic height, and wording you can reuse. Technical details: [docs/embed.md](docs/embed.md).
 

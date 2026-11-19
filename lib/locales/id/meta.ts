@@ -26,13 +26,19 @@ export const META_ID: LocaleMeta = {
       "Panduan langkah demi langkah: watermark KTP, selfie KTP untuk verifikasi, sewa kos, lamaran kerja, sensor NIK di PDF, dan watermark dari HP. Gratis.",
   },
   compare: {
-    title: `Perbandingan Alat Watermark dan Tanda Tangan | ${BRAND}`,
+    title: `Perbandingan: Watermark, Tanda Tangan, Gabung PDF | ${BRAND}`,
     description:
-      "Cachety dibandingkan alat watermark dan tanda tangan populer: ke mana file Anda dikirim, harga, batasan, dan privasi. Perbandingan jujur dengan sumber.",
+      "Cachety dibandingkan alat populer untuk watermark, tanda tangan, serta gabung dan kompres PDF: ke mana file Anda dikirim, batasan, dan privasi. Dengan sumber.",
   },
   sign: {
     title: `Tanda tangani PDF gratis, tanpa upload | ${BRAND}`,
     description:
       "Gambar, ketik, atau impor tanda tangan Anda dan tempatkan di PDF atau foto. Semua terjadi di browser Anda: tidak ada file yang di-upload. Gratis, tanpa akun.",
+  },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "Gabungkan dokumen jadi satu PDF kecil, tanpa upload",
+    description:
+      "PDF dan foto dalam satu file, berurutan, di bawah ukuran yang diminta. Semua terjadi di browser Anda: tidak ada yang di-upload. Gratis dan open source.",
   },
 };

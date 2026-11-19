@@ -67,7 +67,25 @@ The response should show a CSP with sha256 hashes, HSTS and `X-Frame-Options: DE
 
 ### Limits to keep in mind
 
-`_headers` allows at most **100 rules** and **2,000 characters per line**. The build groups the CSP rules by language: one rule per language for every page under `/fr/`, `/ja/`… plus one exact rule for each home page (66 rules for 333 pages in 11 languages on 2026-10-17, including the shared `/embed/*` rule of the partner embed; de, es, id and pt already use the finer grouping below, 9 rules each). If a language's rule would exceed the line limit, that language automatically falls back to one rule per guide or comparison section and one per other page. The build **fails** if either limit is still exceeded, so you will know before deploying. A new language adds 2 rules; new pages add none until their language falls back to the finer grouping (about 7 more rules per language). With 7 languages still grouped, that leaves room for every language to fall back only if the finer grouping gets coarser first: watch the count the build prints.
+`_headers` allows at most **100 rules** and **2,000 characters per line**. The build groups the CSP rules by language: one rule per language for every page under `/fr/`, `/ja/`… plus one exact rule for each home page. If a language's rule would exceed the line limit (the build keeps a margin: 1,950 characters), that language automatically falls back to a finer grouping of **three rules**: one for its guides (`/fr/guides/*`), one for its comparisons (`/fr/compare/*`) and one for every page directly under the language (`/fr/:page`: sign, dossier, about, privacy, roadmap, partners and the two index pages). `:page` is a Cloudflare placeholder: it matches exactly one path segment, so `/fr/sign` gets that rule and `/fr/guides/some-guide` does not. Only if that third line were itself too long would the build go back to one exact rule per page. The build **fails** if either limit is still exceeded, so you will know before deploying.
+
+Where the count stands:
+
+| Date | Pages | Rules | Longest line | Note |
+| --- | --- | --- | --- | --- |
+| 2026-10-17 | 333 | 66 | 1,919 | Before `/dossier`. Finer grouping was one exact rule per page: 9 rules per language for de, es, id, pt. |
+| 2026-11-18 | 345 | 80 | 1,919 | Empty `/dossier` routes added, old grouping: `en` fell back too (10 rules). One more page or guide in the six other grouped languages would have gone past 100. |
+| 2026-11-18 | 345 | 45 | 1,919 | Same pages, finer grouping reduced to three rules per language (`/fr/:page`). |
+| 2026-11-18 | 367 | 57 | 1,163 | Dossier pages with their content, and two dossier guides per language: every language is now on the finer grouping. Longest line: the Spanish comparisons (`/es/compare/*`, 16 hashes). |
+
+With every language on the finer grouping the count is 57 (4 fixed rules, 3 for scripts and workers, 16 exact rules for the home pages and the pages without a language, 3 per language, 1 for the embed), so new pages and guides no longer move it. A new language adds 4 rules at most. What can still grow is a line: a section (`/fr/guides/*`, `/fr/compare/*`) holds about 30 guides or comparisons before it passes 1,950 characters, and the build fails if one does.
+
+After the first deployment that carries a `/<lang>/:page` rule, check one page of each kind once (the placeholder had not been used on this site before 2026-11-18):
+
+```sh
+curl -sI https://cachety.com/de/dossier | grep -i -c "content-security-policy"      # 1
+curl -sI https://cachety.com/de/guides/<a-guide> | grep -i "content-security-policy" # one policy, no ", default-src" in the middle
+```
 
 ---
 

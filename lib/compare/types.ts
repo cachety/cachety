@@ -19,11 +19,12 @@ export type CompareRow = {
 
 export type Comparison = {
   /**
-   * Outil de Cachety comparé : le filigrane (par défaut) ou la signature
-   * (lib/compare/sign/<langue>.ts). Groupe la page d'index, choisit le bouton
-   * d'appel et les comparatifs liés.
+   * Outil de Cachety comparé : le filigrane (par défaut), la signature
+   * (lib/compare/sign/<langue>.ts) ou Dossier, pour réunir et alléger des
+   * fichiers (lib/compare/dossier/<langue>.ts). Groupe la page d'index,
+   * choisit le bouton d'appel et les comparatifs liés.
    */
-  tool?: "watermark" | "sign";
+  tool?: "watermark" | "sign" | "dossier";
   /** Segment d'URL : ASCII, minuscules, tirets (ex. "cachety-vs-ilovepdf"). */
   slug: string;
   /**

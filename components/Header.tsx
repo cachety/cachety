@@ -7,17 +7,19 @@ import SiteNav from "@/components/SiteNav";
 import { CheckIcon, ShieldIcon } from "@/components/icons";
 
 /**
- * En-tête de l'accueil : navigation, promesse, et rien de plus. Sur mobile
- * le bloc reste court : l'outil doit apparaître sans avoir à défiler.
- * `tool="sign"` : même en-tête pour la page /sign, avec sa propre promesse.
+ * En-tête de l'accueil : navigation (deux lignes, voir SiteNav : le site, puis
+ * les trois outils), promesse, et rien de plus. Sur mobile le bloc reste
+ * court : l'outil doit apparaître sans avoir à défiler.
+ * `tool="sign"`, `tool="dossier"` : même en-tête pour les pages /sign et
+ * /dossier, chacune avec sa propre promesse.
  */
-export default function Header({ tool = "watermark" }: { tool?: "watermark" | "sign" }) {
+export default function Header({ tool = "watermark" }: { tool?: "watermark" | "sign" | "dossier" }) {
   const { lang } = useLang();
   const c = SITE_COPY[lang];
-  const h = tool === "sign" ? c.sign.hero : c.hero;
+  const h = tool === "sign" ? c.sign.hero : tool === "dossier" ? c.dossier.hero : c.hero;
   return (
     <>
-      <SiteNav current={tool === "sign" ? "sign" : "tool"} />
+      <SiteNav current={tool === "watermark" ? "tool" : tool} />
       <div data-tool-aside className="mx-auto w-full max-w-3xl pb-6 pt-2 text-center sm:pb-10 sm:pt-6">
         {/* Sous 1280 px, la barre n'a pas la place pour l'étymologie du nom. */}
         <p className="mb-2 text-xs text-encre-2 sm:text-sm xl:hidden">

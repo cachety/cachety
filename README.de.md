@@ -38,6 +38,7 @@ Selbst hosten ist weiterhin möglich und vollständig unterstützt (siehe unten)
 - **Drei einfache Schritte:** dein Dokument, wofür es ist und wer es bekommt, dann Vorschau und Download. Der Wasserzeichentext wird für dich geschrieben („Zweck, Empfänger, Datum“, mit fertigen Beispielen) und lässt sich frei bearbeiten.
 - **Versteckte Daten entfernt:** markierbarer Text, Metadaten und der GPS-Standort von Fotos. Jede Seite wird aus Pixeln neu aufgebaut.
 - **Schwärzen:** IBAN, Steuer-ID oder Foto unkenntlich machen. Der Inhalt wird wirklich entfernt, nicht nur abgedeckt.
+- **Vorschläge zum Schwärzen:** In einem PDF mit Text zeigt Cachety die IBANs, Kartennummern, Sozialversicherungs-, Steuer- und Ausweisnummern an, die es findet, direkt auf deinem Gerät, und schwärzt mit einem Tipp die, die du auswählst. Von selbst wird nie etwas geschwärzt, und es kann etwas übersehen (Fotos, Scans, Barcodes): Das steht auch auf der Seite.
 - **Nachverfolgbare Kopien:** Füge `{code}` in den Text ein, und jede Kopie bekommt eine eigene kurze Referenz, die nach dem Download zum Aufbewahren aufgelistet wird.
 - **Mehrere Empfänger:** eine Kopie pro Empfänger (bis zu 20), jeweils mit dessen Namen, in einem einzigen Download.
 - **Passwort:** AES-256-Verschlüsselung für PDFs (PDF 2.0). Ein Häkchen bei „Mit Passwort schützen“ erzeugt ein gut lesbares Passwort aus 12 zufälligen Wörtern (132 Bit, BIP39-Wortliste); ein eigenes Passwort oder ein zufälliges 256-Bit-Passwort sind weiterhin möglich. Automatisches Leeren der Zwischenablage.
@@ -48,6 +49,7 @@ Selbst hosten ist weiterhin möglich und vollständig unterstützt (siehe unten)
 - **Geführte Hilfe-Tour** für neue Besucher, angeboten, wenn jemand unsicher wirkt, wo er anfangen soll.
 - **92 praktische Ratgeber** für Alltagssituationen in Deutschland, Frankreich, Großbritannien, den Niederlanden, Spanien und Lateinamerika, Brasilien, Indonesien, der arabischen Welt, Iran, Japan und China.
 - **Dokumente unterschreiben:** ein PDF oder Foto im Browser unterschreiben (Unterschrift zeichnen, tippen oder als Bild importieren), ohne dass etwas hochgeladen wird. Das ist eine einfache elektronische Signatur, keine qualifizierte: [cachety.com/de/sign](https://cachety.com/de/sign).
+- **Ein einziges PDF zum Verschicken (Dossier):** PDFs und Fotos zusammenfügen, Seiten ordnen, drehen oder entfernen und ein PDF unter der verlangten Größe herunterladen, ohne dass etwas hochgeladen wird. Jede Seite wird als Bild neu aufgebaut, der Text ist danach nicht mehr markierbar: [cachety.com/de/dossier](https://cachety.com/de/dossier).
 - **Geprüfte Vergleiche** mit anderen Wasserzeichen-Tools (PDF24, iLovePDF, Proton, Smallpdf, Adobe Acrobat und weitere) und mit Unterschriften-Tools (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), mit Quellen, auch dazu, wann ein anderes Tool die bessere Wahl ist.
 - **Auf Partner-Websites:** freigegebene Websites können das Tool in ihren Seiten zeigen (ein iframe von cachety.com, die einbindende Website sieht die Dokumente nicht). Siehe [docs/embed.md](docs/embed.md) und [cachety.com/de/partners](https://cachety.com/de/partners).
 

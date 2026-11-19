@@ -11,6 +11,7 @@ import {
   comparisonAlternates,
   COMPARISONS,
   compareTool,
+  compareToolPath,
   findComparison,
   relatedComparisons,
   type CompareRow,
@@ -89,7 +90,7 @@ export default async function ComparePage({ params }: Props) {
   const ui = copy.compareUi;
   const g = copy.guidesUi;
   const related = relatedComparisons(lang, c);
-  const sign = compareTool(c) === "sign";
+  const tool = compareTool(c);
   const links = Object.fromEntries(
     LANG_CODES.map((l) => [l, comparisonAlternates(lang, c)[l] ?? compareIndexPath(l)])
   ) as Record<Lang, string>;
@@ -184,10 +185,10 @@ export default async function ComparePage({ params }: Props) {
         <aside className="mt-12 flex flex-col items-start gap-3 rounded-2xl bg-encre p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <p className="text-pretty text-white/85">{g.ctaNote}</p>
           <Link
-            href={sign ? `/${lang}/sign` : `/${lang}`}
+            href={compareToolPath(lang, c)}
             className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl bg-sceau px-6 py-3 font-semibold text-white transition-colors hover:bg-sceau-fonce focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            {sign ? g.ctaSign : g.cta}
+            {tool === "sign" ? g.ctaSign : tool === "dossier" ? g.ctaDossier : g.cta}
             <ChevronIcon direction="right" className="h-4 w-4" />
           </Link>
         </aside>

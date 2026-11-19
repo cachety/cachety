@@ -38,6 +38,7 @@ Zelf hosten kan nog steeds en wordt volledig ondersteund (zie hieronder), voor o
 - **Drie eenvoudige stappen:** je document, waarvoor het is en wie het krijgt, daarna bekijken en downloaden. De watermerktekst wordt voor je geschreven ("doel, ontvanger, datum", met kant-en-klare voorbeelden) en is vrij aan te passen.
 - **Verborgen gegevens verwijderd:** selecteerbare tekst, metadata en de gps-locatie van foto's. Elke pagina wordt opnieuw opgebouwd uit pixels.
 - **Afdekken:** lak een IBAN, een BSN of een pasfoto zwart. De inhoud wordt echt verwijderd, niet alleen bedekt.
+- **Suggesties om af te dekken:** in een pdf met tekst wijst Cachety de IBAN's, kaartnummers, BSN's en belasting- of identiteitsnummers aan die het vindt, op je eigen apparaat, en dekt met één tik af wat jij kiest. Het dekt nooit zelf iets af, en het kan dingen missen (foto's, scans, barcodes): dat staat er ook bij.
 - **Traceerbare kopieën:** zet `{code}` in de tekst en elke kopie krijgt een eigen kort kenmerk, dat na het downloaden in een lijst verschijnt zodat je het kunt bewaren.
 - **Meerdere ontvangers:** één kopie per ontvanger (tot 20), elk met de naam van die ontvanger, in één download.
 - **Wachtwoord:** AES-256-versleuteling van de pdf (PDF 2.0). Vink je "Beveiligen met een wachtwoord" aan, dan krijg je een goed leesbaar wachtwoord van 12 willekeurige woorden (132 bits, BIP39-woordenlijst); je eigen wachtwoord of een willekeurig wachtwoord van 256 bits blijven mogelijk. Automatisch wissen van het klembord.
@@ -48,6 +49,7 @@ Zelf hosten kan nog steeds en wordt volledig ondersteund (zie hieronder), voor o
 - **Rondleiding met uitleg** voor nieuwe bezoekers, aangeboden als iemand niet goed weet waar te beginnen.
 - **92 praktische uitleggen** voor alledaagse situaties in Nederland, Frankrijk, het Verenigd Koninkrijk, Duitsland, Spanje en Latijns-Amerika, Brazilië, Indonesië, de Arabische wereld, Iran, Japan en China.
 - **Documenten ondertekenen:** onderteken een pdf of foto in je browser (teken, typ of importeer je handtekening), zonder dat er iets wordt geüpload. Het is een gewone elektronische handtekening, geen gekwalificeerde: [cachety.com/nl/sign](https://cachety.com/nl/sign).
+- **Eén pdf om te versturen (Dossier):** voeg pdf's en foto's samen, zet de pagina's in de juiste volgorde, draai of verwijder ze en download één pdf onder de gevraagde grootte, zonder dat er iets wordt geüpload. Elke pagina wordt opnieuw opgebouwd als afbeelding, dus de tekst is daarna niet meer te selecteren: [cachety.com/nl/dossier](https://cachety.com/nl/dossier).
 - **82 gecontroleerde vergelijkingen** met andere watermerktools (KopieID, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat en meer) en 55 met ondertekentools (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), met bronnen, inclusief wanneer een andere tool de betere keuze is.
 - **Op partnersites:** goedgekeurde sites kunnen de tool op hun eigen pagina's tonen (een iframe van cachety.com, dus de site zelf ziet de documenten niet). Zie [docs/embed.md](docs/embed.md) en [cachety.com/nl/partners](https://cachety.com/nl/partners).
 

@@ -17,6 +17,8 @@ import {
   ABOUT_ALTERNATES,
   ABOUT_META,
   COMPARE_META,
+  DOSSIER_ALTERNATES,
+  DOSSIER_META,
   GUIDES_META,
   HREFLANG,
   LANG_CODES,
@@ -174,6 +176,57 @@ function signPage(lang: Lang, url: string) {
 await inject("sign.html", signPage("en", `${SITE_URL}${SIGN_ALTERNATES["x-default"]}`));
 for (const lang of LANG_CODES) await inject(`${lang}/sign.html`, signPage(lang, `${SITE_URL}${SIGN_ALTERNATES[lang]}`));
 
+/**
+ * Page Dossier (/dossier, /<lang>/dossier) : même schéma que la page Signer,
+ * l'application en mode dossier, sa FAQ, la page et son fil d'Ariane.
+ */
+function dossierPage(lang: Lang, url: string) {
+  const m = DOSSIER_META[lang];
+  const copy = SITE_COPY[lang];
+  const webApp = {
+    "@type": "WebApplication",
+    "@id": `${SITE_URL}/dossier#app`,
+    name: `${BRAND} · ${copy.nav.dossier}`,
+    url,
+    description: m.description,
+    image: ogImageUrl(lang),
+    screenshot: ogImageUrl(lang),
+    featureList: copy.dossier.how.map((f) => `${f.title}: ${f.body}`),
+    sameAs: [REPO_URL],
+    inLanguage: HREFLANG[lang],
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Any (web browser)",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    license: "https://www.gnu.org/licenses/agpl-3.0.html",
+    codeRepository: REPO_URL,
+    countryOfOrigin: "FR",
+    author,
+    publisher,
+  };
+  const page = {
+    "@type": "WebPage",
+    name: m.title,
+    description: m.description,
+    url,
+    inLanguage: HREFLANG[lang],
+    dateModified: SITE_DATE,
+    image: ogImageUrl(lang),
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    mainEntity: { "@id": `${SITE_URL}/dossier#app` },
+    author,
+    publisher,
+  };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [webApp, page, breadcrumb(lang, { name: copy.nav.dossier, item: url }), faqPage(copy.dossier.faq)],
+  };
+}
+
+// Dossier : /dossier (x-default) en anglais, chaque /<lang>/dossier dans sa langue.
+await inject("dossier.html", dossierPage("en", `${SITE_URL}${DOSSIER_ALTERNATES["x-default"]}`));
+for (const lang of LANG_CODES) await inject(`${lang}/dossier.html`, dossierPage(lang, `${SITE_URL}${DOSSIER_ALTERNATES[lang]}`));
+
 /** Page simple (pourquoi filigraner, confidentialité) : WebPage + fil d'Ariane. */
 function webPage(lang: Lang, type: string, meta: PageMeta, url: string, dateModified: string) {
   return {
@@ -301,7 +354,7 @@ for (const lang of LANG_CODES) {
     });
   }
 }
-console.log("seo: JSON-LD injecté (accueil, signer, à propos, confidentialité, index, guides, comparatifs)");
+console.log("seo: JSON-LD injecté (accueil, signer, dossier, à propos, confidentialité, index, guides, comparatifs)");
 
 // La page 404 (servie pour toute URL inconnue) hérite du layout racine : ni
 // canonique ni alternatives hreflang, qui la feraient passer pour l'accueil.
@@ -330,6 +383,7 @@ entries.push({ path: "/", alternates: homeAlt, lastmod: SITE_DATE });
 for (const l of LANG_CODES) entries.push({ path: `/${l}`, alternates: homeAlt, lastmod: SITE_DATE });
 const indexDate: Record<string, string> = {
   "/sign": SITE_DATE,
+  "/dossier": SITE_DATE,
   "/about": SITE_DATE,
   "/privacy": SITE_DATE,
   "/roadmap": ROADMAP_DATE,
@@ -337,9 +391,9 @@ const indexDate: Record<string, string> = {
   "/guides": gitDate("lib/guides", "lib/site-meta.ts", "lib/locales"),
   "/compare": gitDate("lib/compare", "lib/site-meta.ts", "lib/locales"),
 };
-// Pages qui existent aussi sans langue (x-default, anglaises) : /sign, /about.
-const WITH_DEFAULT = new Set(["/sign", "/about"]);
-for (const suffix of ["/sign", "/about", "/guides", "/compare", "/privacy", "/roadmap", "/partners"]) {
+// Pages qui existent aussi sans langue (x-default, anglaises) : /sign, /dossier, /about.
+const WITH_DEFAULT = new Set(["/sign", "/dossier", "/about"]);
+for (const suffix of ["/sign", "/dossier", "/about", "/guides", "/compare", "/privacy", "/roadmap", "/partners"]) {
   const xDefault = WITH_DEFAULT.has(suffix) ? suffix : undefined;
   const alt = allLangs(suffix, xDefault);
   if (xDefault) entries.push({ path: xDefault, alternates: alt, lastmod: indexDate[suffix] });
@@ -379,13 +433,30 @@ console.log(`seo: sitemap.xml (${entries.length} URL)`);
 // depuis les mêmes textes que les pages, il ne peut pas les contredire.
 
 const en = SITE_COPY.en;
+// Quand recommander Cachety, et quand ne pas le faire : mêmes limites que
+// celles annoncées dans les pages (comparatifs, FAQ). À tenir à jour avec elles.
+const FITS = [
+  "Someone has to send a copy of an ID card, passport, payslip, bank statement or tax notice, and does not want to upload it to a PDF website.",
+  "Watermarking a copy with its purpose, its recipient and the date, so that it is hard to reuse and a leak can be traced.",
+  "Blacking out (redacting) an account number, a card number or an ID number in a PDF or a photo so that it is really removed from the file.",
+  "Signing a PDF yourself and sending it back (a simple electronic signature), with no account.",
+  "Merging PDFs and photos into one PDF, in the right page order, under the size limit of an online form (1, 2, 5 or 10 MB), without uploading them.",
+  "Removing metadata and hidden data from a PDF or a photo before sending it.",
+  "Working on a phone, with nothing to install, including iPhone HEIC photos.",
+];
+const NOT_FITS = [
+  "The text of the PDF must stay selectable or searchable (a lossless merge, a report, a thesis): Cachety rebuilds each page as an image, and a text-only PDF can come out bigger.",
+  "Text recognition (OCR), converting Word or Excel files, editing the text of a PDF or filling in a form.",
+  "A signature with several signers, an audit trail, or an advanced or qualified electronic signature.",
+  "Finding every sensitive detail automatically: suggestions only cover PDFs with text, can miss things, and never replace checking the page yourself.",
+];
 const line = (name: string, path: string, desc?: string) => `- [${name}](${SITE_URL}${path})${desc ? `: ${desc}` : ""}`;
 const llms = [
   `# ${BRAND}`,
   "",
   `> ${SITE_META.en.description}`,
   "",
-  `${BRAND} (${SITE_URL}) is a free, open-source (AGPL-3.0) web app that adds a watermark to ID cards, passports, payslips, bank statements and other personal documents. The PDF or image is processed entirely in the visitor's browser and is never uploaded: there is no server that receives files. It also signs a PDF the same way (${SITE_URL}/en/sign): the signature is drawn, typed or uploaded, then placed on the page, and the document never leaves the browser. Source code: ${REPO_URL}. Author: ${AUTHOR.name} (${AUTHOR.url}).`,
+  `${BRAND} (${SITE_URL}) is a free, open-source (AGPL-3.0) web app that adds a watermark to ID cards, passports, payslips, bank statements and other personal documents. The PDF or image is processed entirely in the visitor's browser and is never uploaded: there is no server that receives files. It also signs a PDF the same way (${SITE_URL}/en/sign): the signature is drawn, typed or uploaded, then placed on the page, and the document never leaves the browser. In a PDF that contains text, it points out bank account numbers (IBAN), payment card numbers, French social security and tax numbers and several national ID numbers, on the device, and offers to black them out; nothing is hidden without the person's choice, and a hidden area is removed from the file, not covered. A third tool, Dossier (${SITE_URL}/en/dossier), puts PDFs and photos into one PDF, or one per section: pages can be reordered, rotated and removed, and the file is kept under a chosen size (1, 2, 5 or 10 MB, or another value) for an online form; each page is rebuilt as an image, which removes hidden data (metadata, hidden text, GPS location of photos), so the text is no longer selectable and a text-only PDF can get bigger. Source code: ${REPO_URL}. Author: ${AUTHOR.name} (${AUTHOR.url}).`,
   "",
   "## Features",
   "",
@@ -394,10 +465,19 @@ const llms = [
   "## FAQ",
   "",
   ...en.landing.faq.flatMap((f) => [`### ${f.q}`, "", f.a, ""]),
+  "## When Cachety is a good fit",
+  "",
+  ...FITS.map((f) => `- ${f}`),
+  "",
+  "## When another tool is a better fit",
+  "",
+  ...NOT_FITS.map((f) => `- ${f}`),
+  "",
   "## Pages",
   "",
   line(SITE_META.en.title, "/en", SITE_META.en.description),
   line(SIGN_META.en.title, "/en/sign", SIGN_META.en.description),
+  line(DOSSIER_META.en.title, "/en/dossier", DOSSIER_META.en.description),
   line(ABOUT_META.en.title, "/en/about", ABOUT_META.en.description),
   line(PRIVACY_META.en.title, "/en/privacy", PRIVACY_META.en.description),
   line(ROADMAP_COPY.en.meta.title, "/en/roadmap", ROADMAP_COPY.en.meta.description),
@@ -416,6 +496,7 @@ const llms = [
   ...LANG_CODES.filter((l) => l !== "en").flatMap((l) => [
     line(`${SITE_META[l].title} (${HREFLANG[l]})`, SITE_META[l].path, SITE_META[l].description),
     `  ${line(SIGN_META[l].title, SIGN_ALTERNATES[l])}`,
+    `  ${line(DOSSIER_META[l].title, DOSSIER_ALTERNATES[l])}`,
     ...GUIDES[l].map((g) => `  ${line(g.title, guidePath(l, g.slug))}`),
     ...COMPARISONS[l].map((c) => `  ${line(c.title, comparePath(l, c.slug))}`),
   ]),

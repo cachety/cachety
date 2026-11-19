@@ -38,6 +38,7 @@ Self-hosting tetap bisa dan didukung penuh (lihat di bawah), untuk organisasi ya
 - **Tiga langkah mudah:** dokumen Anda, untuk apa dan siapa penerimanya, lalu pratinjau dan unduh. Teks watermark dibuatkan untuk Anda ("keperluan, penerima, tanggal", dengan contoh siap pakai) dan bisa diubah sesuka hati.
 - **Data tersembunyi dihapus:** teks yang bisa diseleksi, metadata, dan lokasi GPS foto. Setiap halaman dibangun ulang dari piksel.
 - **Sensor:** tutup nomor rekening, NIK, atau foto. Isinya benar-benar dihapus, bukan sekadar ditutupi.
+- **Saran area sensor:** pada PDF yang berisi teks, Cachety menunjukkan nomor rekening (IBAN), nomor kartu, NIK, dan nomor pajak yang ditemukannya, di perangkat Anda, lalu menyensor yang Anda pilih dengan satu ketukan. Cachety tidak pernah menyensor sendiri, dan bisa saja ada yang terlewat (foto, hasil pindai, barcode): halaman itu mengatakannya.
 - **Salinan yang bisa dilacak:** tambahkan `{code}` ke teks dan setiap salinan mendapat kode pendeknya sendiri, yang ditampilkan dalam daftar setelah diunduh agar bisa Anda simpan.
 - **Beberapa penerima:** satu salinan per penerima (sampai 20), masing-masing dengan namanya, dalam satu kali unduh.
 - **Kata sandi:** enkripsi PDF AES-256 (PDF 2.0). Mencentang "Kunci dengan kata sandi" akan membuat kata sandi yang mudah dibaca dari 12 kata acak (132 bit, daftar kata BIP39); kata sandi Anda sendiri atau kata sandi acak 256 bit tetap bisa dipakai. Pembersihan clipboard otomatis.
@@ -48,6 +49,7 @@ Self-hosting tetap bisa dan didukung penuh (lihat di bawah), untuk organisasi ya
 - **Tur bantuan terpandu** untuk pengunjung baru, ditawarkan saat seseorang tampak bingung harus mulai dari mana.
 - **92 panduan praktis** untuk situasi sehari-hari di Indonesia, Prancis, Inggris, Jerman, Belanda, Spanyol dan Amerika Latin, Brasil, dunia Arab, Iran, Jepang, dan Tiongkok.
 - **Tanda tangani dokumen:** tanda tangani PDF atau foto di browser dengan menggambar, mengetik, atau mengimpor foto tanda tangan Anda, tanpa meng-upload apa pun: [cachety.com/id/sign](https://cachety.com/id/sign). Ini tanda tangan elektronik tidak tersertifikasi, bukan tanda tangan tersertifikasi.
+- **Satu PDF untuk dikirim (Berkas):** gabungkan PDF dan foto, urutkan, putar, atau buang halaman, lalu unduh satu PDF di bawah ukuran yang diminta, tanpa meng-upload apa pun. Setiap halaman dibuat ulang sebagai gambar, jadi teksnya tidak bisa lagi diseleksi: [cachety.com/id/dossier](https://cachety.com/id/dossier).
 - **82 perbandingan yang sudah dicek faktanya** dengan alat watermark lain (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat, dan lainnya) dan 55 dengan alat tanda tangan (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), lengkap dengan sumber, termasuk kapan alat lain justru lebih cocok.
 - **Di situs mitra:** situs yang disetujui bisa menampilkan alat ini di halamannya sendiri (iframe dari cachety.com, jadi situs tersebut tidak bisa melihat dokumen). Lihat [docs/embed.md](docs/embed.md) dan [cachety.com/id/partners](https://cachety.com/id/partners).
 

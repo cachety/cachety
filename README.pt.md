@@ -38,6 +38,7 @@ Hospedar por conta própria continua possível e com suporte completo (veja abai
 - **Três passos simples:** seu documento, para que serve e quem vai receber, depois a prévia e o download. O texto da marca d'água é escrito para você ("finalidade, destinatário, data", com exemplos prontos) e pode ser editado à vontade.
 - **Dados ocultos removidos:** texto selecionável, metadados e a localização GPS das fotos. Cada página é reconstruída a partir dos pixels.
 - **Ocultação:** cubra um número de conta, o CPF ou uma foto. O conteúdo é realmente apagado, não só coberto.
+- **Áreas sugeridas:** em um PDF com texto, o Cachety aponta os números de conta (IBAN), de cartão, de seguridade social, fiscais ou de identidade (como o CPF) que encontra, no seu aparelho, e oculta com um toque os que você escolher. Ele nunca oculta nada sozinho, e pode deixar passar alguma coisa (fotos, documentos digitalizados, códigos de barras): a página avisa.
 - **Cópias rastreáveis:** adicione `{code}` ao texto e cada cópia ganha seu próprio código curto, listado depois do download para você guardar.
 - **Vários destinatários:** uma cópia por destinatário (até 20), cada uma com o nome da pessoa, num único download.
 - **Senha:** criptografia AES-256 do PDF (PDF 2.0). Marcar "Proteger com senha" cria uma senha fácil de ler com 12 palavras aleatórias (132 bits, lista de palavras BIP39); sua própria senha ou uma senha aleatória de 256 bits continuam disponíveis. Limpeza automática da área de transferência.
@@ -48,6 +49,7 @@ Hospedar por conta própria continua possível e com suporte completo (veja abai
 - **Tour de ajuda guiado** para quem chega pela primeira vez, oferecido quando a pessoa parece não saber por onde começar.
 - **92 guias práticos** para situações do dia a dia na França, no Reino Unido, na Alemanha, na Holanda, na Espanha e na América Latina, no Brasil, na Indonésia, no mundo árabe, no Irã, no Japão e na China.
 - **Assinar um documento:** assine um PDF ou uma foto no navegador, desenhando, digitando ou importando a imagem da sua assinatura, sem enviar nada a lugar nenhum: [cachety.com/pt/sign](https://cachety.com/pt/sign). É uma assinatura eletrônica simples, não uma assinatura qualificada.
+- **Um único PDF para enviar (Dossier):** junte PDFs e fotos, ordene, gire ou remova páginas e baixe um PDF abaixo do tamanho pedido, sem enviar nada a lugar nenhum. Cada página é reconstruída como imagem, então o texto deixa de ser selecionável: [cachety.com/pt/dossier](https://cachety.com/pt/dossier).
 - **82 comparativos verificados** com outras ferramentas de marca d'água (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat e outras) e 55 com ferramentas de assinatura (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), com fontes, incluindo quando outra ferramenta é a melhor escolha.
 - **Em sites parceiros:** sites aprovados podem mostrar a ferramenta nas próprias páginas (um iframe servido por cachety.com, então o site anfitrião não vê os documentos). Veja [docs/embed.md](docs/embed.md) e [cachety.com/pt/partners](https://cachety.com/pt/partners).
 

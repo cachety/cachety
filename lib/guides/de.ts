@@ -713,4 +713,166 @@ export const GUIDES_DE: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  {
+    slug: "mietbewerbung-unterlagen-in-einem-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "Mietbewerbung: alle Unterlagen in einem PDF, ohne sie irgendwo hochzuladen",
+    metaTitle: "Mietbewerbung in einem PDF, unter der Größengrenze",
+    description:
+      "Ausweis, Gehaltsabrechnungen, Schufa-Auskunft und Selbstauskunft in einem PDF oder als eine Datei pro Dokument, unter 5 MB. Kostenlos, ohne Upload.",
+    intro:
+      "Makler oder Vermieter wollen Ausweis, Gehaltsabrechnungen und weitere Nachweise „als ein PDF“ oder als einzelne Dateien unter einer Größengrenze. So bereitest du sie in ein paar Minuten auf deinem eigenen Gerät vor.",
+    example: "Mietbewerbung – Hausverwaltung Lindner – 18.11.2026",
+    body: [
+      { type: "h2", text: "Was meistens verlangt wird" },
+      {
+        type: "p",
+        text: "Zu einer Mietbewerbung gehören fast immer dieselben Unterlagen: Personalausweis oder Reisepass, die letzten drei Gehaltsabrechnungen, eine Schufa-Auskunft oder ein Steuerbescheid, und oft eine Mieterselbstauskunft. Manche Makler wollen alles in einem PDF. Andere, und die meisten Upload-Formulare, wollen eine Datei pro Art von Dokument, jede unter einer Grenze wie 2, 5 oder 10 MB.",
+      },
+      {
+        type: "p",
+        text: "Einige dieser Unterlagen sind PDFs, die du heruntergeladen hast. Die anderen sind oft Handyfotos: quer, mit dem Tisch rund um das Blatt und viel zu groß für das Formular.",
+      },
+      { type: "h2", text: "Warum nicht einfach eine Website zum PDF-Zusammenfügen?" },
+      {
+        type: "p",
+        text: "Die meisten Websites, die PDFs zusammenfügen oder verkleinern, arbeiten auf ihren Servern: Deine Dateien werden hochgeladen, dort verarbeitet und zurückgeschickt. Bei einer Mietbewerbung gibst du damit deine Identität, dein Einkommen und deine Adresse auf einen Schlag an ein weiteres Unternehmen. Cachety macht es andersherum. Dein Browser erledigt die Arbeit auf deinem Gerät, und die Seite kann deine Dateien technisch nirgendwohin schicken. Du kannst es prüfen: Lade die Seite, schalte den Flugmodus ein, und es funktioniert weiter.",
+      },
+      { type: "h2", text: "Schritt für Schritt" },
+      {
+        type: "steps",
+        items: [
+          "Öffne cachety.com und wähle „Dossier“. Nichts installieren, kein Konto.",
+          "Leg alle Dateien auf einmal ab: PDFs und Fotos, auch iPhone-Fotos (HEIC).",
+          "Sieh dir die Seiten an. Zieh sie in die Reihenfolge, die du willst, dreh die, die quer liegen, und entferne Seiten, nach denen niemand gefragt hat, etwa eine leere Rückseite.",
+          "Für das Foto eines Papierblatts nimm „Begradigen und zuschneiden“: Setz jede Ecke auf eine Ecke des Blatts. „Hintergrund weiß machen“ lässt es wie einen Scan aussehen und macht die Datei viel kleiner.",
+          "Wurden einzelne Dateien verlangt, wähle „In mehrere Dateien aufteilen“ und benenne jeden Abschnitt: Ausweis, Gehaltsabrechnungen, Steuerbescheid, Wohnsitznachweis.",
+          "Wähle die maximale Größe, zum Beispiel 5 MB. Cachety sagt dir vor dem Herunterladen, ob es passt.",
+          "Lade herunter. Du bekommst ein PDF oder ein PDF pro Abschnitt in einer ZIP-Datei.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Die Reihenfolge ist wichtig für die Person, die liest. Üblich ist: zuerst der Ausweis, dann die Einkommensnachweise, dann die übrigen Unterlagen.",
+      },
+      { type: "h2", text: "Wenn die Datei zu groß ist" },
+      {
+        type: "p",
+        text: "Wenn die Größenzeile sagt, dass die Datei nicht passt, ohne unleserlich zu werden, erzwing es nicht: Das Kleingedruckte auf einer Gehaltsabrechnung lässt sich dann nicht mehr lesen, und die Bewerbung wird vielleicht abgelehnt. Teile die Datei in Abschnitte auf, damit jede Datei ihre eigene Grenze hat, entferne Seiten, die du nicht brauchst, oder nimm die nächstgrößere Grenze, wenn das Formular es erlaubt.",
+      },
+      { type: "h2", text: "Ein Wasserzeichen, wenn du eins willst" },
+      {
+        type: "p",
+        text: "Makler erwarten oft eine saubere Kopie, deshalb ist das Wasserzeichen standardmäßig aus. Soll auf jeder Seite stehen, wofür und für wen die Kopie ist, schalte vor dem Herunterladen die Wasserzeichen-Option ein. Mit „Etwas schwärzen“ kannst du außerdem unkenntlich machen, was der Makler nicht braucht.",
+      },
+      { type: "h2", text: "Mieten in Frankreich: DossierFacile" },
+      {
+        type: "p",
+        text: "In Frankreich betreibt der Staat einen kostenlosen Dienst für Mietbewerbungen namens DossierFacile. Er hat eigene Grenzen: Als dieser Ratgeber geschrieben wurde, waren es 10 MB pro Datei und eine festgelegte Zahl von Seiten je Dokumentenkategorie. Cachety kann die Dateien vorbereiten, die du dann dort hochlädst: ein Abschnitt pro Kategorie, jeder unter der Grenze. Cachety ist ein unabhängiges Tool und hat keine Verbindung zu diesem Dienst.",
+      },
+      {
+        type: "warning",
+        text: "Die Seiten des PDF, das du herunterlädst, sind Bilder. Der Text lässt sich nicht mehr markieren oder durchsuchen, und die Datei kann größer sein als ein Original, das nur Text enthielt. Das ist der Preis dafür, dass versteckte Daten entfernt werden: Metadaten, versteckter Text und der GPS-Standort, der in Fotos gespeichert ist.",
+      },
+    ],
+    faq: [
+      {
+        q: "Wird meine Mietbewerbung irgendwohin hochgeladen?",
+        a: "Nein. Es gibt keinen Server, der sie empfangen könnte, und die Seite verbietet deinem Browser, Kontakt zu anderen Websites aufzunehmen. Alles passiert auf deinem Gerät.",
+      },
+      {
+        q: "Kann ich ein Word-Dokument hinzufügen?",
+        a: "Nicht direkt. Speichere es zuerst als PDF, aus Word oder auf dem Handy (Drucken, dann Als PDF speichern), und füge dann dieses PDF hinzu.",
+      },
+      {
+        q: "Ein PDF oder mehrere Dateien: Was soll ich schicken?",
+        a: "Schick, was verlangt wurde. Hat der Makler nichts gesagt, lässt sich ein PDF in sinnvoller Reihenfolge am leichtesten lesen. Upload-Formulare mit einem Feld pro Dokument brauchen eine Datei pro Abschnitt.",
+      },
+      {
+        q: "Kann der Makler die Datei öffnen?",
+        a: "Ja. Es ist ein gewöhnliches PDF, das sich auf jedem Handy und Computer öffnen lässt. Der Passwortschutz ist standardmäßig aus, es steht also nichts im Weg.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+  {
+    slug: "pdf-verkleinern-fuer-online-formular",
+    topic: "size",
+    tool: "dossier",
+    title: "Ein PDF für ein Online-Formular verkleinern, ohne es hochzuladen",
+    metaTitle: "PDF für ein Online-Formular verkleinern, kostenlos",
+    description:
+      "Ein Formular lehnt deine Datei ab, weil sie zu groß ist? Bring ein PDF oder Foto auf deinem eigenen Gerät unter 1, 2, 5 oder 10 MB. Kostenlos, ohne Upload.",
+    intro:
+      "Bewerbungsportale, Anträge bei Behörden, Schul- und Visaformulare lehnen Dateien über 1, 2, 5 oder 10 MB oft ab. So kommst du unter die Grenze, und das Dokument bleibt lesbar.",
+    example: "Bewerbung – Personalabteilung Brenner Logistik – 18.11.2026",
+    body: [
+      { type: "h2", text: "Warum Dateien zu groß sind" },
+      {
+        type: "p",
+        text: "Ein Handyfoto von einem einzigen Blatt Papier hat oft 3 bis 6 MB, weil die Kamera viel mehr Details aufnimmt, als ein Formular braucht. Bei einem gescannten PDF ist es dasselbe: ein großes Bild pro Seite. Ein PDF aus Word ist dagegen meist winzig, weil es Text statt Bilder enthält.",
+      },
+      { type: "h2", text: "Schritt für Schritt" },
+      {
+        type: "steps",
+        items: [
+          "Öffne cachety.com und wähle „Dossier“.",
+          "Leg dein PDF oder deine Fotos ab. Aus mehreren Dateien wird ein PDF.",
+          "Entferne die Seiten, nach denen das Formular nicht fragt. Weniger Seiten lassen mehr Platz für die, auf die es ankommt.",
+          "Wähle unter „Maximale Größe“ die Grenze des Formulars: 1, 2, 5 oder 10 MB, oder tippe eine andere ein.",
+          "Lies die Größenzeile. Sie sagt, ob die Datei so passt, ob sie mit etwas weniger scharfen Seiten passt oder ob sie nicht passt, ohne unleserlich zu werden.",
+          "Lade das PDF herunter und lade es im Formular hoch.",
+        ],
+      },
+      { type: "h2", text: "Was „lesbar“ heißt" },
+      {
+        type: "p",
+        text: "Um eine Datei kleiner zu machen, senkt Cachety zuerst die Bildqualität jeder Seite, dann ihre Auflösung. An einer Untergrenze ist Schluss: Darunter lässt sich Kleingedrucktes, etwa die Zeilen einer Gehaltsabrechnung, nicht mehr lesen, und eine Datei, die niemand lesen kann, nützt nichts. Seiten mit mehr Inhalt, etwa Fotos, bekommen einen größeren Anteil an der Größe als reine Textseiten.",
+      },
+      {
+        type: "tip",
+        text: "Für das Foto eines Papierblatts schalte „Hintergrund weiß machen“ oder „Schwarz-Weiß“ ein. Die Seite lässt sich besser lesen und wird viel kleiner.",
+      },
+      { type: "h2", text: "Wenn es nicht passt" },
+      {
+        type: "list",
+        items: [
+          "Teile die Datei in Abschnitte auf, wenn das Formular mehrere Dateien annimmt: Jede bekommt ihre eigene Grenze.",
+          "Entferne Seiten, nach denen nicht gefragt wurde.",
+          "Wähle eine höhere Grenze, wenn das Formular es erlaubt.",
+          "Als letzten Ausweg schalte „Geringere Qualität zulassen“ ein und prüf dann, ob du die kleinste Schrift noch lesen kannst, bevor du die Datei verschickst.",
+        ],
+      },
+      { type: "h2", text: "Warum eine Datei größer werden kann" },
+      {
+        type: "p",
+        text: "Cachety baut jede Seite als Bild neu auf. Dabei verschwinden versteckter Text, Metadaten und der GPS-Standort von Fotos, aber ein PDF, das nur Text enthielt, kann größer herauskommen, als es hineinging. Wähle eine maximale Größe, und die Seiten werden verkleinert, bis es passt.",
+      },
+      {
+        type: "warning",
+        text: "Der Text des PDF, das du herunterlädst, lässt sich nicht mehr markieren oder durchsuchen. Behalte dein Original.",
+      },
+    ],
+    faq: [
+      {
+        q: "Wird meine Datei zum Verkleinern hochgeladen?",
+        a: "Nein. Dein Browser erledigt die Arbeit auf deinem Gerät. Schalte nach dem Laden der Seite den Flugmodus ein: Es funktioniert weiter.",
+      },
+      {
+        q: "Das Formular will ein PDF, und ich habe nur ein Foto. Geht das?",
+        a: "Ja. Ein Foto, auch ein iPhone-Foto (HEIC), wird zu einer Seite des PDF.",
+      },
+      {
+        q: "Warum ist mein kleines PDF jetzt größer?",
+        a: "Weil aus seinem Text ein Bild der Seite geworden ist. Wähle eine maximale Größe, und Cachety verkleinert die Seiten, bis sie darunter passen.",
+      },
+      {
+        q: "Kann ich eine Größe wählen, die nicht in der Liste steht?",
+        a: "Ja. Wähle „Andere…“ und tippe eine Größe zwischen 0,5 und 50 MB ein.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

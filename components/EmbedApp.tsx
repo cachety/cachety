@@ -9,8 +9,8 @@
 // (le site lui-même et les partenaires) : postMessage ne la remet que si
 // l'origine du parent correspond, sinon elle est ignorée sans bruit.
 //
-// Outils : le filigrane par défaut, la signature seule, ou les deux avec un
-// sélecteur (« #tools=watermark,sign », lib/partners.ts). Un seul outil est
+// Outils : le filigrane par défaut, la signature ou le dossier seuls, ou
+// plusieurs avec un sélecteur (« #tools=watermark,sign,dossier », lib/partners.ts). Un seul outil est
 // monté à la fois : changer d'outil retire les documents, après confirmation.
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -57,8 +57,10 @@ export default function EmbedApp({ lang }: { lang: Lang }) {
     setHasDocs(false);
     setPending(null);
   };
-  const sign = active === "sign";
-  const toolLabel = (tool: EmbedTool) => (tool === "sign" ? site.nav.sign : site.nav.tool);
+  const toolLabel = (tool: EmbedTool) => (tool === "sign" ? site.nav.sign : tool === "dossier" ? site.nav.dossier : site.nav.tool);
+  // Titre et lien du bandeau : ceux de l'outil affiché.
+  const heading = active === "sign" ? site.sign.hero.title : active === "dossier" ? site.dossier.hero.title : site.hero.title;
+  const toolPath = active === "sign" ? "/sign" : active === "dossier" ? "/dossier" : "";
 
   // Hauteur automatique : seulement si la page est bien dans un cadre.
   useEffect(() => {
@@ -87,9 +89,9 @@ export default function EmbedApp({ lang }: { lang: Lang }) {
   return (
     <LangProvider forcedLang={lang}>
       <div ref={root} className="mx-auto w-full max-w-7xl">
-        <h1 className="sr-only">{sign ? site.sign.hero.title : site.hero.title}</h1>
+        <h1 className="sr-only">{heading}</h1>
         <a
-          href={`${SITE_URL}/${lang}${sign ? "/sign" : ""}`}
+          href={`${SITE_URL}/${lang}${toolPath}`}
           target="_blank"
           rel="noopener noreferrer"
           className="my-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-trait bg-feuille px-3 py-2 text-sm text-encre-2 hover:border-bleu"

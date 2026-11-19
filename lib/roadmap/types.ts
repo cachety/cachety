@@ -2,6 +2,7 @@ export type RoadmapStatus = "next" | "idea" | "shipped";
 
 /** Identifiants stables, repris tels quels dans ROADMAP.md. */
 export const ROADMAP_IDS = [
+  "dossier",
   "per-recipient-password",
   "suggested-areas",
   "more-languages",

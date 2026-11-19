@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { LANG_CODES } from "@/lib/site-meta";
-import { GUIDES, SIGN_TOPICS, guideAlternates, guideToolPath } from "./index";
+import { DOSSIER_TOPICS, GUIDES, HIDE_TOPICS, SIGN_TOPICS, guideAlternates, guideToolPath } from "./index";
 
 describe("guides (pages de contenu par pays)", () => {
   test("au moins six guides par langue, plus de vingt au total", () => {
@@ -59,10 +59,48 @@ describe("guides (pages de contenu par pays)", () => {
           expect(g!.tool, g!.slug).toBe("sign");
           expect(guideToolPath(lang, g!)).toBe(`/${lang}/sign`);
         }
-        for (const g of guides.filter((x) => !SIGN_TOPICS.includes(x.topic))) {
+        for (const g of guides.filter((x) => !SIGN_TOPICS.includes(x.topic) && !DOSSIER_TOPICS.includes(x.topic))) {
           expect(g.tool ?? "watermark", g.slug).toBe("watermark");
           expect(guideToolPath(lang, g)).toBe(`/${lang}`);
         }
+      });
+
+      test("zones suggérées : un guide par sujet, daté, lié aux dix autres langues", () => {
+        for (const topic of HIDE_TOPICS) {
+          const g = guides.find((x) => x.topic === topic);
+          expect(g, topic).toBeDefined();
+          expect(Object.keys(guideAlternates(lang, g!)).length, g!.slug).toBe(LANG_CODES.length);
+        }
+      });
+
+      test("dossier : un guide par sujet, qui mène à la page Dossier", () => {
+        for (const topic of DOSSIER_TOPICS) {
+          const g = guides.find((x) => x.topic === topic);
+          expect(g, topic).toBeDefined();
+          expect(g!.tool, g!.slug).toBe("dossier");
+          expect(guideToolPath(lang, g!)).toBe(`/${lang}/dossier`);
+          expect(Object.keys(guideAlternates(lang, g!)).length, g!.slug).toBe(LANG_CODES.length);
+        }
+      });
+
+      // docs/prd-dossier.md §4.6 et §5.9 : DossierFacile est le service de
+      // l'État, cité pour ses limites ; jamais présenté comme lié à Cachety.
+      test("dossier : DossierFacile cité une fois, dans le guide du dossier de location, avec la mention d'indépendance", () => {
+        const g = guides.find((x) => x.topic === "dossier");
+        const texts = (x: (typeof guides)[number]) =>
+          [x.title, x.metaTitle, x.description, x.intro, x.example, ...x.body.flatMap((b) => ("text" in b ? [b.text] : b.items)), ...x.faq.flatMap((f) => [f.q, f.a])];
+        // L'autre guide de l'outil Dossier (taille d'un fichier) n'en parle pas.
+        // (Le guide français du filigrane le citait déjà, pour une autre raison.)
+        for (const other of guides.filter((x) => x !== g && x.tool === "dossier")) {
+          for (const text of texts(other)) expect(text, other.slug).not.toContain("DossierFacile");
+        }
+        if (!g) return;
+        expect(`${g.title} ${g.metaTitle} ${g.description}`, g.slug).not.toContain("DossierFacile");
+        const mentions = texts(g).filter((text) => text.includes("DossierFacile"));
+        // Un intertitre et un paragraphe : ce dernier porte les limites (10 Mo) et l'indépendance.
+        expect(mentions.length, g.slug).toBeGreaterThanOrEqual(1);
+        expect(mentions.length, g.slug).toBeLessThanOrEqual(2);
+        expect(mentions.some((text) => /10|۱۰|١٠/.test(text)), g.slug).toBe(true);
       });
 
       test("hreflang : chaque alternative pointe vers un guide existant", () => {

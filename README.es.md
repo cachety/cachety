@@ -38,6 +38,7 @@ Alojarla por tu cuenta sigue siendo posible y está totalmente soportado (ver m�
 - **Tres pasos sencillos:** tu documento, para qué es y quién lo recibe, y luego vista previa y descarga. El texto de la marca de agua se escribe por ti («motivo, destinatario, fecha», con ejemplos ya hechos) y puedes editarlo libremente.
 - **Datos ocultos eliminados:** texto seleccionable, metadatos y ubicación GPS de las fotos. Cada página se reconstruye a partir de sus píxeles.
 - **Tachado:** oculta un IBAN, un número fiscal o una foto. El contenido se elimina de verdad, no solo se tapa.
+- **Zonas sugeridas:** en un PDF con texto, Cachety señala los IBAN, números de tarjeta, de la seguridad social, fiscales o de identidad que encuentra, en tu dispositivo, y oculta con un toque los que elijas. Nunca oculta nada por su cuenta, y puede pasar cosas por alto (fotos, documentos escaneados, códigos de barras): la página lo dice.
 - **Copias rastreables:** añade `{code}` al texto y cada copia recibe su propia referencia corta, que aparece en una lista después de la descarga para que la guardes.
 - **Varios destinatarios:** una copia para cada destinatario (hasta 20), cada una con su nombre, en una sola descarga.
 - **Contraseña:** cifrado de PDF AES-256 (PDF 2.0). Al marcar «Proteger con contraseña» se crea una contraseña fácil de leer de 12 palabras aleatorias (132 bits, lista de palabras BIP39); también puedes usar tu propia contraseña o una aleatoria de 256 bits. Borrado automático del portapapeles.
@@ -48,6 +49,7 @@ Alojarla por tu cuenta sigue siendo posible y está totalmente soportado (ver m�
 - **Recorrido guiado** para quien llega por primera vez, que se ofrece cuando alguien parece no saber por dónde empezar.
 - **92 guías prácticas** para situaciones cotidianas en Francia, el Reino Unido, Alemania, los Países Bajos, España y Latinoamérica, Brasil, Indonesia, el mundo árabe, Irán, Japón y China.
 - **Firmar documentos:** firma un PDF o una foto en tu navegador (dibuja, escribe o importa tu firma), sin que se suba nada. Es una firma electrónica simple, no una firma cualificada: [cachety.com/es/sign](https://cachety.com/es/sign).
+- **Un solo PDF para enviar (Dosier):** junta PDF y fotos, ordena, gira o quita páginas y descarga un PDF por debajo del tamaño que te piden, sin que se suba nada. Cada página se reconstruye como imagen, así que el texto ya no se puede seleccionar: [cachety.com/es/dossier](https://cachety.com/es/dossier).
 - **82 comparativas verificadas** con otras herramientas de marca de agua (FiligraneFacile, iLovePDF, Proton, Smallpdf, PDF24, Adobe Acrobat y más) y 55 con herramientas de firma (DocuSign, Youtrust, Adobe Acrobat, iLovePDF, Smallpdf), con sus fuentes, incluido cuándo otra herramienta es mejor opción.
 - **En sitios asociados:** los sitios aprobados pueden mostrar la herramienta en sus páginas (un iframe servido por cachety.com, así que el sitio anfitrión no ve los documentos). Consulta [docs/embed.md](docs/embed.md) y [cachety.com/es/partners](https://cachety.com/es/partners).
 

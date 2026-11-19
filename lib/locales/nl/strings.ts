@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/nl";
 
 // Nederlands (Nederland en Vlaanderen), overal "je", zoals bij de meeste
 // consumententools. Korte zinnen, geen vakjargon.
@@ -188,6 +189,7 @@ export const STRINGS_NL: Strings = {
     remove: (n: number) => `Afgedekt gebied ${n} verwijderen`,
     editHint: "Sleep een gebied om het te verplaatsen, sleep de hoek om het formaat te wijzigen, of tik op × om het te verwijderen.",
   },
+  suggest,
   shareReceived: (n: number) =>
     n === 1 ? `1 bestand ontvangen via Delen.` : `${n} bestanden ontvangen via Delen.`,
   dragHandle: (name: string) => `${name} verplaatsen (slepen, of pijltjestoetsen omhoog en omlaag)`,
@@ -337,6 +339,105 @@ export const STRINGS_NL: Strings = {
     source:
       "Cybermalveillance.gouv.fr, de Franse overheidsdienst voor hulp aan slachtoffers van cybercriminaliteit. Vergelijkbaar advies: Rijksoverheid.nl, over een veilige kopie van je identiteitsbewijs.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    defaultName: "documenten",
+    previewAlt: (name: string, p: number) => `${name}, voorbeeld van pagina ${p}`,
+    inputAria: "Documenten toevoegen aan het bestand (pdf's of afbeeldingen)",
+    step1: "Je documenten",
+    step2: "Pagina's",
+    step3: "Controleren en downloaden",
+    stepShort: ["Documenten", "Pagina's", "Download"],
+    next: { pages: "Bekijk de pagina's", check: "Controleren en downloaden" },
+    grid: {
+      label: "Pagina's, in de volgorde van het bestand",
+      total: (n: number) => plural(n, "pagina", "pagina's"),
+      hint: "Sleep een pagina om die te verplaatsen. Pagina's kunnen van het ene document naar het andere.",
+      keyboard: "Met het toetsenbord: Alt + pijltjes om te verplaatsen, R om te draaien, Delete om te verwijderen.",
+      waiting: "De pagina's verschijnen hier zodra een document klaar is.",
+      rotate: "Draaien",
+      remove: "Pagina verwijderen",
+      removed: (n: number) => `Pagina ${n} verwijderd.`,
+      undo: "Ongedaan maken",
+      reset: "Oorspronkelijke volgorde herstellen",
+      moveTo: "Verplaatsen naar…",
+      position: (n: number, total: number) => `Positie van pagina ${n}, van 1 tot ${total}`,
+      moved: (to: number, total: number) => `Pagina verplaatst: positie ${to} van ${total}.`,
+      rotated: (n: number) => `Pagina ${n} gedraaid.`,
+      restored: (n: number) => `Pagina ${n} teruggezet.`,
+      menu: (n: number) => `Acties voor pagina ${n}`,
+      pageOf: (p: number, name: string) => `Pagina ${p} van ${name}`,
+      noPages: "Geen pagina's over",
+      restore: "Pagina's terugzetten",
+      rotateClearsMasks: "De afgedekte gebieden van deze pagina zijn weggehaald: teken ze opnieuw.",
+    },
+    photo: {
+      fix: "Rechtzetten en bijsnijden",
+      fixHint: "Zet elke hoek op een hoek van het vel.",
+      keyboard: "Met het toetsenbord: Tab van hoek naar hoek, pijltjes om te verplaatsen, Shift om sneller te gaan.",
+      corner: (n: number) => `Hoek ${n} van 4`,
+      apply: "Toepassen",
+      reset: "Weer de hele foto gebruiken",
+      cleanUp: "Foto opschonen",
+      whiten: "Achtergrond wit maken",
+      gray: "Zwart-wit",
+      applyAll: "Toepassen op alle foto's",
+    },
+    sections: {
+      split: "Splitsen in meerdere bestanden",
+      add: "Nieuw onderdeel hier",
+      presets: ["Identiteitsbewijs", "Loonstroken", "Belastingaanslag", "Adresbewijs", "Overig"],
+      unnamed: (n: number) => `Onderdeel ${n}`,
+      name: (n: number) => `Naam van onderdeel ${n}`,
+      remove: "Dit onderdeel verwijderen",
+      moveTo: "Verplaatsen naar onderdeel…",
+      empty: "Geen pagina's in dit onderdeel: het levert geen bestand op.",
+    },
+    output: {
+      label: "Te maken bestand",
+      one: "Eén pdf",
+      sections: "Eén pdf per onderdeel",
+      separate: "Eén pdf per document (ZIP)",
+    },
+    size: {
+      title: "Maximale grootte",
+      other: "Anders…",
+      otherLabel: "Maximale grootte in MB, van 0,5 tot 50",
+      perFile: "per bestand",
+      fits: (s: string, t: string) => `Ongeveer ${s}, kleiner dan ${t}.`,
+      reduced: (s: string) => `Ongeveer ${s}: de pagina's worden iets minder scherp.`,
+      unreachable: (t: string) => `Kleiner dan ${t} lukt niet zonder dat het bestand onleesbaar wordt.`,
+      exits: ["Splitsen in meerdere bestanden", "Pagina's verwijderen", "Een hogere limiet kiezen"],
+      allowLow: "Lagere kwaliteit toestaan",
+      biggerWhy:
+        "Het bestand kan groter zijn dan je originelen: elke pagina wordt opnieuw opgebouwd als afbeelding, en daarbij verdwijnen verborgen gegevens.",
+      section: (name: string, s: string) => `${name}: ongeveer ${s}`,
+    },
+    fileName: "Bestandsnaam",
+    download: "Pdf downloaden",
+    downloadZip: "Bestanden downloaden (ZIP)",
+    needPages: "Houd minstens één pagina over.",
+    summaryOne: (n: number) => `${plural(n, "pagina", "pagina's")} in één pdf`,
+    summaryMany: (n: number, files: number) => `${plural(n, "pagina", "pagina's")} in ${files} bestanden`,
+    processingDoc: (name: string, p?: [number, number]) =>
+      `${name}: pagina's worden voorbereid…${p ? ` pagina ${p[0]} / ${p[1]}` : ""}`,
+    srProcessing: "Pagina's worden voorbereid.",
+    another: "Nog een bestand voorbereiden",
+    tour: [
+      {
+        title: "Voeg je documenten toe",
+        body: "Tik hier, of sleep je pdf's en foto's naar dit vak. Ze blijven op je apparaat.",
+      },
+      {
+        title: "Zet de pagina's op volgorde",
+        body: "Sleep een pagina om die te verplaatsen. Draai de pagina's die op hun kant staan en verwijder wat je niet nodig hebt.",
+      },
+      {
+        title: "Controleren en downloaden",
+        body: "Kies de maximale grootte als een website die oplegt, controleer het voorbeeld en download de pdf.",
+      },
+    ],
+  },
   sign: {
     suffix: "signed",
     zipName: "ondertekende-documenten",
@@ -445,6 +546,7 @@ export const STRINGS_NL: Strings = {
     pdf_empty: "Deze pdf heeft geen pagina's.",
     file_too_large: "Bestand te groot (maximaal 200 MB).",
     pdf_too_many_pages: "Pdf te lang (maximaal 500 pagina's). Splits hem in meerdere bestanden.",
+    dossier_too_many_pages: "Te veel pagina's (maximaal 1.000 in één bestand). Verwijder een paar documenten.",
     image_too_large: "Afbeelding te groot (maximaal 250 megapixel).",
     image_unreadable: "Deze afbeelding kan niet worden gelezen. Probeer een JPG of PNG.",
     canvas_unavailable: "Je browser kan dit document niet weergeven.",

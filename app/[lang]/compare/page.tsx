@@ -3,7 +3,7 @@ import Link from "next/link";
 import ContentPage from "@/components/ContentPage";
 import { ChevronIcon } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
-import { compareIndexPath, comparePath, COMPARISONS, compareTool, type Comparison } from "@/lib/compare";
+import { COMPARE_TOOLS, compareIndexPath, comparePath, COMPARISONS, compareTool, type Comparison } from "@/lib/compare";
 import { guidesIndexPath } from "@/lib/guides";
 import { SITE_COPY } from "@/lib/site-copy";
 import { displayTitle } from "@/lib/typography";
@@ -41,7 +41,7 @@ export default async function CompareIndex({ params }: Props) {
   const c = SITE_COPY[lang];
   const ui = c.compareUi;
   const links = Object.fromEntries(LANG_CODES.map((l) => [l, compareIndexPath(l)])) as Record<Lang, string>;
-  const groups = (["watermark", "sign"] as const)
+  const groups = COMPARE_TOOLS
     .map((tool) => ({ tool, list: COMPARISONS[lang].filter((x: Comparison) => compareTool(x) === tool) }))
     .filter((g) => g.list.length > 0);
   return (

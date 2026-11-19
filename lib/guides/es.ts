@@ -629,4 +629,168 @@ export const GUIDES_ES: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  // Guías del dosier (herramienta Dosier, /es/dossier).
+  {
+    slug: "solicitud-alquiler-en-un-solo-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "Cómo reunir tu solicitud de alquiler en un solo PDF, sin subirla a ningún sitio",
+    metaTitle: "Solicitud de alquiler en un solo PDF, dentro del límite",
+    description:
+      "DNI, nóminas, extractos bancarios y justificante de domicilio en un solo PDF, o un archivo por documento, por debajo de 5 MB. Gratis y sin subir nada.",
+    intro:
+      "Una inmobiliaria o un casero te pide el DNI, las nóminas y un justificante de domicilio «en un solo PDF», o en archivos separados que no superen cierto tamaño. Aquí tienes cómo prepararlos en tu propio dispositivo, en un par de minutos.",
+    example: "Solicitud de alquiler – Inmobiliaria Sol – 18/11/2026",
+    body: [
+      { type: "h2", text: "Lo que te suelen pedir" },
+      {
+        type: "p",
+        text: "Una solicitud de alquiler lleva casi siempre los mismos documentos: el DNI, el pasaporte u otro documento de identidad, tus tres últimas nóminas, extractos bancarios recientes o un documento fiscal, y un justificante de tu domicilio actual. Algunas inmobiliarias lo quieren todo en un solo PDF. Otras, y la mayoría de los formularios para subir archivos, quieren un archivo por tipo de documento, cada uno por debajo de un límite como 2, 5 o 10 MB.",
+      },
+      {
+        type: "p",
+        text: "Algunos de esos documentos son PDF que descargaste. Los demás suelen ser fotos hechas con el móvil: de lado, con la mesa asomando alrededor de la hoja y demasiado pesadas para el formulario.",
+      },
+      { type: "h2", text: "¿Por qué no usar una web para unir PDF?" },
+      {
+        type: "p",
+        text: "La mayoría de las webs que unen o comprimen PDF trabajan en sus servidores: tus archivos se suben, se procesan allí y te los devuelven. En una solicitud de alquiler, eso significa entregar tu identidad, tus ingresos y tu dirección, todo a la vez, a una empresa más. Cachety funciona al revés. El trabajo lo hace tu navegador, en tu dispositivo, y la página técnicamente no puede enviar tus archivos a ningún sitio. Puedes comprobarlo: carga la página, activa el modo avión y sigue funcionando.",
+      },
+      { type: "h2", text: "Paso a paso" },
+      {
+        type: "steps",
+        items: [
+          "Abre cachety.com y elige Dosier. No hay nada que instalar ni cuenta que crear.",
+          "Suelta todos tus archivos a la vez: PDF y fotos, incluidas las fotos del iPhone (HEIC).",
+          "Mira las páginas. Arrástralas hasta dejarlas en el orden que quieras, gira las que estén de lado y quita las que nadie te ha pedido, como un reverso en blanco.",
+          "Para la foto de una hoja de papel, usa «Enderezar y recortar»: pon cada esquina sobre una esquina de la hoja. «Blanquear el fondo» hace que parezca un escaneo y deja el archivo mucho más ligero.",
+          "Si te pidieron archivos separados, elige «Separar en varios archivos» y pon nombre a cada sección: Documento de identidad, Nóminas, Declaración de la renta, Justificante de domicilio.",
+          "Elige el tamaño máximo, por ejemplo 5 MB. Cachety te dice si cabe antes de que descargues.",
+          "Descarga. Obtienes un solo PDF, o un PDF por sección dentro de un archivo ZIP.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "El orden importa a quien lo lee. Uno habitual es: primero el documento de identidad, luego los justificantes de ingresos y después el justificante de domicilio.",
+      },
+      { type: "h2", text: "Cuando el archivo pesa demasiado" },
+      {
+        type: "p",
+        text: "Si la línea del tamaño dice que el archivo no cabe sin dejar de leerse bien, no lo fuerces: la letra pequeña de una nómina se vuelve imposible de leer y pueden rechazar la solicitud. Sepáralo en secciones para que cada archivo tenga su propio límite, quita las páginas que no necesitas o elige el tamaño siguiente si el formulario lo permite.",
+      },
+      { type: "h2", text: "Añade una marca de agua si quieres" },
+      {
+        type: "p",
+        text: "La inmobiliaria suele esperar una copia limpia, así que la marca de agua viene desactivada. Si quieres que cada página diga para qué es la copia y para quién, marca la opción de marca de agua antes de descargar. También puedes tachar lo que la inmobiliaria no necesita con «Ocultar algo».",
+      },
+      { type: "h2", text: "Alquilar en Francia: DossierFacile" },
+      {
+        type: "p",
+        text: "En Francia, el Estado ofrece un servicio gratuito para las solicitudes de alquiler llamado DossierFacile. Tiene sus propios límites: cuando se escribió esta guía, 10 MB por archivo y un número fijo de páginas por cada categoría de documento. Cachety puede preparar los archivos que luego subes allí: una sección por categoría, cada una por debajo del límite. Cachety es una herramienta independiente y no tiene ninguna relación con ese servicio.",
+      },
+      {
+        type: "warning",
+        text: "Las páginas del PDF que descargas son imágenes. El texto ya no se puede seleccionar ni buscar, y el archivo puede pesar más que un original que solo tenía texto. Es el precio de eliminar los datos ocultos: los metadatos, el texto oculto y la ubicación GPS guardada en las fotos.",
+      },
+    ],
+    faq: [
+      {
+        q: "¿Se sube mi solicitud de alquiler a algún sitio?",
+        a: "No. No hay ningún servidor que pueda recibirla, y la página prohíbe a tu navegador conectarse a cualquier otra web. Todo ocurre en tu dispositivo.",
+      },
+      {
+        q: "¿Puedo añadir un documento de Word?",
+        a: "Directamente, no. Guárdalo antes como PDF, desde Word o desde tu móvil (Imprimir y luego Guardar como PDF), y añade ese PDF.",
+      },
+      {
+        q: "Un solo PDF o varios archivos: ¿qué envío?",
+        a: "Envía lo que te hayan pedido. Si la inmobiliaria no dijo nada, un solo PDF en un orden lógico es lo más fácil de leer. Los formularios con una casilla por documento necesitan un archivo por sección.",
+      },
+      {
+        q: "¿Podrá abrirlo la inmobiliaria?",
+        a: "Sí. Es un PDF normal que se abre en cualquier móvil u ordenador. La protección con contraseña viene desactivada, así que nada lo impide.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+  {
+    slug: "reducir-tamano-pdf-formulario-online",
+    topic: "size",
+    tool: "dossier",
+    title: "Cómo reducir el tamaño de un PDF para un formulario online, sin subirlo",
+    metaTitle: "Reducir el tamaño de un PDF para un formulario, gratis",
+    description:
+      "¿Un formulario rechaza tu archivo porque pesa demasiado? Deja un PDF o una foto por debajo de 1, 2, 5 o 10 MB en tu propio dispositivo. Gratis, sin subir nada.",
+    intro:
+      "Las solicitudes de empleo, las solicitudes de ayudas y los formularios de colegios o de visados suelen rechazar un archivo de más de 1, 2, 5 o 10 MB. Aquí tienes cómo quedar por debajo del límite sin que el documento deje de leerse.",
+    example: "Solicitud de empleo – RR. HH. de Alimentos Valverde – 18/11/2026",
+    body: [
+      { type: "h2", text: "Por qué los archivos pesan tanto" },
+      {
+        type: "p",
+        text: "La foto de una sola hoja de papel hecha con el móvil suele pesar de 3 a 6 MB, porque la cámara recoge mucho más detalle del que necesita un formulario. Un PDF escaneado es lo mismo: una imagen grande por página. En cambio, un PDF creado desde Word suele ser muy pequeño, porque contiene texto y no imágenes.",
+      },
+      { type: "h2", text: "Paso a paso" },
+      {
+        type: "steps",
+        items: [
+          "Abre cachety.com y elige Dosier.",
+          "Suelta tu PDF o tus fotos. Varios archivos se convierten en un solo PDF.",
+          "Quita las páginas que el formulario no pide. Con menos páginas queda más espacio para las que importan.",
+          "En «Tamaño máximo», elige el límite del formulario: 1, 2, 5 o 10 MB, o escribe otro.",
+          "Lee la línea del tamaño. Te dice si el archivo cabe tal cual, si cabe con las páginas un poco menos nítidas o si no cabe sin dejar de leerse bien.",
+          "Descarga el PDF y súbelo al formulario.",
+        ],
+      },
+      { type: "h2", text: "Qué significa «legible»" },
+      {
+        type: "p",
+        text: "Para aligerar un archivo, Cachety primero baja la calidad de imagen de cada página y luego su resolución. Se detiene en un mínimo: por debajo, la letra pequeña, como las líneas de una nómina, ya no se puede leer, y un archivo que nadie puede leer no sirve de nada. Las páginas con más contenido, como las fotos, reciben una parte mayor del tamaño que las páginas de texto sencillo.",
+      },
+      {
+        type: "tip",
+        text: "Para la foto de una hoja de papel, activa «Blanquear el fondo» o «Blanco y negro». La página se lee mejor y pesa mucho menos.",
+      },
+      { type: "h2", text: "Cuando no cabe" },
+      {
+        type: "list",
+        items: [
+          "Separa el archivo en secciones, si el formulario admite varios archivos: cada uno tiene su propio límite.",
+          "Quita las páginas que no te han pedido.",
+          "Elige un tamaño mayor, si el formulario lo permite.",
+          "Como último recurso, marca «Permitir menos calidad» y comprueba que todavía puedes leer la letra más pequeña antes de enviar el archivo.",
+        ],
+      },
+      { type: "h2", text: "Por qué un archivo puede pesar más" },
+      {
+        type: "p",
+        text: "Cachety reconstruye cada página como imagen. Así se eliminan el texto oculto, los metadatos y la ubicación GPS de las fotos, pero un PDF que solo tenía texto puede salir más pesado de lo que entró. Elige un tamaño máximo y las páginas se reducen para que quepan.",
+      },
+      {
+        type: "warning",
+        text: "El texto del PDF que descargas ya no se puede seleccionar ni buscar. Guarda tu original.",
+      },
+    ],
+    faq: [
+      {
+        q: "¿Se sube mi archivo para comprimirlo?",
+        a: "No. Tu navegador hace el trabajo en tu dispositivo. Activa el modo avión cuando la página haya cargado y verás que sigue funcionando.",
+      },
+      {
+        q: "El formulario pide un PDF y solo tengo una foto. ¿Sirve?",
+        a: "Sí. Una foto, incluida una foto del iPhone (HEIC), se convierte en una página del PDF.",
+      },
+      {
+        q: "¿Por qué mi PDF pequeño ahora pesa más?",
+        a: "Porque su texto se convirtió en una imagen de la página. Elige un tamaño máximo y Cachety reduce las páginas para que quepan por debajo.",
+      },
+      {
+        q: "¿Puedo elegir un tamaño que no está en la lista?",
+        a: "Sí. Elige «Otro…» y escribe un tamaño entre 0,5 y 50 MB.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

@@ -1,6 +1,10 @@
 import type { RoadmapCopy, RoadmapId, Text } from "./types";
 
 const ITEMS: Record<RoadmapId, Text> = {
+  "dossier": {
+    title: "Berkas: satu file untuk dikirim",
+    body: "Masukkan PDF dan foto, urutkan halamannya, putar atau hapus yang tidak Anda inginkan, lalu unduh satu PDF, atau satu per bagian, di bawah ukuran yang diminta situs web. Tidak ada yang keluar dari perangkat Anda.",
+  },
   "per-recipient-password": {
     title: "Kata sandi berbeda untuk setiap penerima",
     body: "Salinan setiap penerima dikunci dengan kata sandinya sendiri, dicantumkan bersama kodenya setelah diunduh. Jadi, satu kata sandi yang bocor hanya membuka satu salinan.",

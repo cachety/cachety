@@ -25,6 +25,8 @@ export function SendOptions({
   sizeMb,
   onSize,
   estimate,
+  before,
+  sizePanel,
 }: {
   multiDoc: boolean;
   multiRecipient: boolean;
@@ -38,6 +40,10 @@ export function SendOptions({
   onSize: (mb: SizeTargetMb) => void;
   /** Taille du fichier produit (ou du plus gros, en ZIP), en octets. */
   estimate: number | null;
+  /** Mode « dossier » : choix du fichier à produire et de son nom, avant le verrou. */
+  before?: React.ReactNode;
+  /** Mode « dossier » : remplace le bloc « taille » (components/SizePanel.tsx). */
+  sizePanel?: React.ReactNode;
 }) {
   const t = useT();
   const s = t.send;
@@ -48,6 +54,7 @@ export function SendOptions({
 
   return (
     <div className="flex flex-col gap-4">
+      {before}
       {multiDoc && (
         <div>
           <p className="text-sm text-encre-2">{multiRecipient ? s.formatEach : s.format}</p>
@@ -72,6 +79,7 @@ export function SendOptions({
 
       {lock}
 
+      {sizePanel ?? (
       <div>
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <span className="text-sm">
@@ -124,6 +132,7 @@ export function SendOptions({
           </div>
         )}
       </div>
+      )}
 
       {zipLocked && <p className="text-sm text-encre-2">{t.bundlePassword}</p>}
     </div>

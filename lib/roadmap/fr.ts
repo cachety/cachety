@@ -1,6 +1,10 @@
 import type { RoadmapCopy, RoadmapId, Text } from "./types";
 
 const ITEMS: Record<RoadmapId, Text> = {
+  "dossier": {
+    title: "Dossier : un seul fichier à envoyer",
+    body: "Déposez des PDF et des photos, rangez les pages, tournez ou retirez celles dont vous ne voulez pas, et téléchargez un seul PDF, ou un par section, sous la taille qu'un site demande. Rien n'est envoyé.",
+  },
   "per-recipient-password": {
     title: "Un mot de passe différent par destinataire",
     body: "La copie de chaque destinataire verrouillée avec son propre mot de passe, listé avec les codes après le téléchargement. Un mot de passe divulgué n'ouvre alors qu'une seule copie.",

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { LANG_CODES } from "@/lib/site-meta";
-import { comparisonAlternates, COMPARISONS, compareTool, relatedComparisons } from "./index";
+import { comparisonAlternates, COMPARISONS, compareTool, compareToolPath, relatedComparisons } from "./index";
 import type { Comparison } from "./types";
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -78,6 +78,45 @@ describe("comparatifs (pages « Cachety ou X ? »)", () => {
         expect(c.slug, lang).toBe(`cachety-vs-${c.competitor}`);
         for (const r of relatedComparisons(lang, c)) expect(compareTool(r), c.slug).toBe("sign");
       }
+    }
+  });
+
+  test("dossier : les mêmes cinq outils comparés dans chaque langue, liés entre eux seulement", () => {
+    const DOSSIER_TOOLS = ["adobe-merge", "ilovepdf-merge", "pdf24-merge", "sejda-merge", "smallpdf-merge"];
+    for (const lang of LANG_CODES) {
+      const dossier = COMPARISONS[lang].filter((c) => compareTool(c) === "dossier");
+      expect(dossier.map((c) => c.competitor).sort(), lang).toEqual(DOSSIER_TOOLS);
+      for (const c of dossier) {
+        expect(c.slug, lang).toBe(`cachety-vs-${c.competitor}`);
+        expect(compareToolPath(lang, c), lang).toBe(`/${lang}/dossier`);
+        for (const r of relatedComparisons(lang, c)) expect(compareTool(r), c.slug).toBe("dossier");
+      }
+    }
+  });
+
+  // Publicité comparative : une langue ne doit pas en dire plus, ni moins,
+  // qu'une autre sur un concurrent. Le texte est localisé, mais la structure
+  // des faits est la même partout : mêmes lignes du tableau, même avantage
+  // accordé ligne par ligne, mêmes sources, même date de vérification.
+  describe("dossier : même tableau, mêmes avantages, mêmes sources et même date que l'anglais", () => {
+    const hosts = (c: Comparison) => [...new Set(c.sources.map((s) => new URL(s.url).host.replace(/^www\./, "")))].sort();
+    const en = COMPARISONS.en.filter((c) => compareTool(c) === "dossier");
+    // Un test par langue : une langue en retard ne masque pas les autres.
+    for (const lang of LANG_CODES) {
+      test(lang, () => {
+        for (const ref of en) {
+          const c = COMPARISONS[lang].find((x) => x.competitor === ref.competitor)!;
+          const at = `${lang} ${ref.competitor}`;
+          expect(c.table.length, at).toBe(ref.table.length);
+          expect(c.table.map((r) => r.edge ?? "none"), at).toEqual(ref.table.map((r) => r.edge ?? "none"));
+          expect(c.faq.length, at).toBe(ref.faq.length);
+          expect(c.chooseOther.length, at).toBe(ref.chooseOther.length);
+          expect(c.chooseCachety.length, at).toBe(ref.chooseCachety.length);
+          expect(c.sources.length, at).toBe(ref.sources.length);
+          expect(hosts(c), at).toEqual(hosts(ref));
+          expect(c.checked, at).toBe(ref.checked);
+        }
+      });
     }
   });
 

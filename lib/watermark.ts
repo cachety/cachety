@@ -5,8 +5,10 @@ import { decodeHeic, isHeic } from "@/lib/heic";
 import { imageSize, tooManyPixels } from "@/lib/image-size";
 import { paintMasks, type PageMasks } from "@/lib/masks";
 import { overlaysOnPage, paintOverlays, type OverlayImages, type PageOverlays } from "@/lib/overlays";
-import { ENCODE_LADDER, pageBudget } from "@/lib/size-budget";
+import { ladderFrom, pageBudget } from "@/lib/size-budget";
 import { fileKind, imageToPdf, newPdf } from "@/lib/files";
+import type { PageEdits } from "@/lib/pages";
+import { photoCanvas, thumbnailOf } from "@/lib/photo-page";
 import { fontCss, haloRgba, normalizeStyle, type WatermarkStyle } from "@/lib/watermark-style";
 import {
   NO_TILE_VARIATION,
@@ -22,6 +24,8 @@ import {
   type Shadow,
   type TileVariation,
 } from "@/lib/watermark-variation";
+import { textCollector } from "@/lib/text-extract";
+import type { Line } from "@/lib/text-lines";
 
 export type WatermarkResult = {
   blob: Blob;
@@ -31,9 +35,28 @@ export type WatermarkResult = {
   previews: string[];
   /** Page (index 0) de chaque aperçu, dans le même ordre que `previews`. */
   previewPageIndexes: number[];
+  /** Mode « dossier » : vignette JPEG de CHAQUE page (URL d'objet), si `thumbnails` est demandé. */
+  thumbs?: string[];
+  /** Mode « dossier » : taille (octets) de l'image encodée de chaque page, pour le budget pondéré. */
+  pageBytes?: number[];
+  /**
+   * Mode « dossier » : pour chaque plancher de `sizeProbes`, le poids mesuré
+   * de chaque page au barreau le plus compact que ce plancher permet.
+   */
+  probeBytes?: number[][];
+  /**
+   * Mode « dossier » : graine du pavage du filigrane de ce rendu. La redonner
+   * (RenderOptions.layoutSeed) au second rendu, sous budget, refait le même
+   * filigrane : les poids mesurés ici valent alors exactement pour lui.
+   */
+  layoutSeed?: number;
   pageCount: number;
   /** Taille cible demandée mais non atteinte, même à la compression maximale. */
   overBudget?: boolean;
+  /** Option `extractText` : lignes de texte de chaque page (index 0), pour les suggestions de masquage. */
+  lines?: Line[][];
+  /** Lecture du texte arrêtée avant la fin du document (plafond atteint ou page illisible). */
+  linesIncomplete?: boolean;
 };
 
 export type RenderOptions = {
@@ -41,6 +64,29 @@ export type RenderOptions = {
   masks?: PageMasks;
   /** Taille maximale du fichier produit, en octets. */
   maxBytes?: number;
+  /**
+   * Mode « dossier » : rotation, recadrage et nettoyage par page (index 0),
+   * appliqués aux pixels avant les masques (lib/pages.ts). Sans effet si absent.
+   */
+  edits?: PageEdits;
+  /** Largeur en pixels (320 au plus) d'une vignette de chaque page, rendue dans `thumbs`. */
+  thumbnails?: number;
+  /** Plancher de lisibilité : échelle la plus basse de ENCODE_LADDER permise sous une taille cible. */
+  minScale?: number;
+  /**
+   * Planchers (`minScale`) à mesurer pendant ce rendu : chaque page est aussi
+   * encodée au barreau le plus compact permis par chacun, et son poids rendu
+   * dans `probeBytes`. C'est ce que la page pèsera si son budget ne peut pas
+   * être tenu : la prédiction de taille part de cette mesure, pas d'un modèle.
+   */
+  sizeProbes?: readonly number[];
+  /**
+   * Budget (octets) de l'image de chaque page, à la place du partage égal de
+   * `maxBytes` (lib/assemble.ts). 0 ou absent pour une page : sans limite.
+   */
+  pageBudgets?: number[];
+  /** Image en entrée : une page comme celles d'un PDF (A4 au plus, JPEG), au lieu d'un PNG (mode « dossier »). */
+  photoPage?: boolean;
   /** Graine de variation du pavage ; absente : tirée au hasard à chaque rendu. */
   layoutSeed?: number;
   /** Signatures à peindre après les masques, avant le filigrane, par page (index 0). */
@@ -53,6 +99,8 @@ export type RenderOptions = {
   forcePdf?: boolean;
   /** Pages (index 0) à prévisualiser ; par défaut les PREVIEW_MAX_PAGES premières. */
   previewPages?: (pageCount: number) => number[];
+  /** PDF : lire aussi la couche texte de chaque page (suggestions de masquage). Rien n'est gardé dans la sortie. */
+  extractText?: boolean;
 };
 
 const randomSeed = () => crypto.getRandomValues(new Uint32Array(1))[0];
@@ -60,6 +108,7 @@ const randomSeed = () => crypto.getRandomValues(new Uint32Array(1))[0];
 export function releaseResult(result: WatermarkResult) {
   URL.revokeObjectURL(result.url);
   result.previews.forEach(URL.revokeObjectURL);
+  result.thumbs?.forEach(URL.revokeObjectURL);
 }
 
 type ProgressFn = (done: number, total: number) => void;
@@ -127,6 +176,16 @@ export async function watermarkFile(
 /** Alias pour le mode « signer » : même moteur, nom qui dit l'intention. */
 export const renderFile = watermarkFile;
 
+/**
+ * Budget (octets) de l'image de la page `index`, ou 0 : sans limite. Avec
+ * `pageBudgets` (mode « dossier »), chaque page a le sien, et une page à 0 ou
+ * absente de la liste n'est pas limitée ; sinon, partage égal de `maxBytes`.
+ */
+function budgetOf({ pageBudgets, maxBytes }: RenderOptions, index: number, pageCount: number) {
+  if (pageBudgets) return Math.max(0, pageBudgets[index] || 0);
+  return maxBytes ? pageBudget(maxBytes, pageCount) : 0;
+}
+
 async function watermarkPdf(
   file: File,
   text: string,
@@ -182,6 +241,11 @@ async function watermarkPdf(
   const previews: string[] = [];
   const previewPageIndexes: number[] = [];
   const toPreview = previewSet(pageCount, options.previewPages);
+  const pageText = options.extractText ? textCollector() : null;
+  // Mode « dossier » : vignettes de toutes les pages, poids de chaque page.
+  const thumbs: string[] = [];
+  const pageBytes: number[] = [];
+  const probeBytes: number[][] = (options.sizeProbes ?? []).map(() => []);
 
   try {
     for (let i = 1; i <= pageCount; i++) {
@@ -190,9 +254,12 @@ async function watermarkPdf(
       // rendus complets du même PDF peuvent tourner en parallèle.
       if (signal?.aborted) throw new Error("aborted");
       const page = await pdf.getPage(i);
-      const base = page.getViewport({ scale: 1 });
+      // Rotation demandée (mode « dossier »), ajoutée à celle du PDF (/Rotate) :
+      // pdf.js rend la page d'aplomb, la page produite en prend le format.
+      const rotation = (page.rotate + (options.edits?.[i - 1]?.rotate ?? 0)) % 360;
+      const base = page.getViewport({ scale: 1, rotation });
       const scale = fitScale(base.width, base.height, RENDER_SCALE);
-      const viewport = page.getViewport({ scale });
+      const viewport = page.getViewport({ scale, rotation });
 
       const canvas = document.createElement("canvas");
       canvas.width = Math.floor(viewport.width);
@@ -203,6 +270,11 @@ async function watermarkPdf(
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvas, viewport }).promise;
+      // WebKit : voir nextTask. Avant tout texte dessiné par nos soins (initiales, filigrane).
+      await nextTask();
+      // Lecture du texte lancée maintenant, attendue en fin de page : le worker
+      // pdf.js y travaille pendant que cette page est encodée.
+      const textRead = pageText?.add(page, viewport);
 
       // Ordre voulu : les masques retirent, la signature ajoute, le filigrane
       // recouvre le tout (pas plus facile à effacer que la signature).
@@ -215,10 +287,14 @@ async function watermarkPdf(
         overlayImages
       );
       drawWatermark(ctx, canvas.width, canvas.height, text, style, (seed + i) >>> 0);
+      if (options.thumbnails) thumbs.push(await thumbnailOf(canvas, options.thumbnails));
+      (await probeSizes(canvas, options.sizeProbes)).forEach((bytes, k) => probeBytes[k].push(bytes));
 
-      const pageBlob = maxBytes
-        ? await encodeWithin(canvas, pageBudget(maxBytes, pageCount))
+      const budget = budgetOf(options, i - 1, pageCount);
+      const pageBlob = budget
+        ? await encodeWithin(canvas, budget, options.minScale)
         : await canvasToBlob(canvas, "image/jpeg", JPEG_QUALITY);
+      pageBytes.push(pageBlob.size);
       const jpeg = await out.embedJpg(await pageBlob.arrayBuffer());
       const outPage = out.addPage([base.width, base.height]);
       outPage.drawImage(jpeg, {
@@ -232,6 +308,7 @@ async function watermarkPdf(
         previews.push(URL.createObjectURL(pageBlob));
         previewPageIndexes.push(i - 1);
       }
+      await textRead;
       canvas.width = 0;
       onProgress?.(i, pageCount);
     }
@@ -244,11 +321,17 @@ async function watermarkPdf(
       extension: "pdf",
       previews,
       previewPageIndexes,
+      thumbs,
+      pageBytes,
+      probeBytes,
+      layoutSeed: seed,
       pageCount,
       overBudget: !!maxBytes && blob.size > maxBytes,
+      ...(pageText ? { lines: pageText.lines, linesIncomplete: pageText.incomplete } : {}),
     };
   } catch (e) {
     previews.forEach(URL.revokeObjectURL);
+    thumbs.forEach(URL.revokeObjectURL);
     throw e;
   } finally {
     await loadingTask.destroy();
@@ -279,6 +362,8 @@ async function watermarkImage(
     if (e instanceof Error && (e.message === "image_too_large" || e.message === "aborted")) throw e;
     throw new Error("image_unreadable");
   }
+  // Mode « dossier » : la photo est une page comme les autres (voir watermarkPhotoPage).
+  if (options.photoPage) return watermarkPhotoPage(bitmap, text, style, options);
 
   const upscale = Math.max(1, MIN_IMAGE_SIDE / Math.max(bitmap.width, bitmap.height));
   const scale = fitScale(bitmap.width, bitmap.height, upscale);
@@ -322,6 +407,63 @@ async function watermarkImage(
     pageCount: 1,
     overBudget: !!maxBytes && blob.size > maxBytes,
   };
+}
+
+/**
+ * Mode « dossier » : la page d'une photo. Recadrage et redressement, rotation
+ * et nettoyage d'abord (lib/photo-page.ts), puis masques, signature et
+ * filigrane comme sur une page de PDF. Sortie : un PDF d'une page qui tient
+ * dans un A4, image JPEG (un PNG de photo pèserait dix fois plus), sous le
+ * budget de la page s'il y en a un, jamais sous le plancher `minScale`.
+ */
+async function watermarkPhotoPage(
+  bitmap: ImageBitmap,
+  text: string,
+  style: WatermarkStyle,
+  options: RenderOptions
+): Promise<WatermarkResult> {
+  const { masks, maxBytes, layoutSeed, overlays, overlayImages } = options;
+  let canvas: HTMLCanvasElement;
+  try {
+    canvas = photoCanvas(bitmap, options.edits?.[0], RENDER_SCALE);
+  } finally {
+    bitmap.close();
+  }
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("canvas_unavailable");
+  paintMasks(ctx, canvas.width, canvas.height, masks?.[0]);
+  paintOverlays(ctx, canvas.width, canvas.height, overlaysOnPage(overlays, 0, initialsFor(canvas, options)), overlayImages);
+  await ensureFont(style, text);
+  const seed = layoutSeed ?? randomSeed();
+  drawWatermark(ctx, canvas.width, canvas.height, text, style, seed);
+  const thumbs = options.thumbnails ? [await thumbnailOf(canvas, options.thumbnails)] : [];
+  const probeBytes = (await probeSizes(canvas, options.sizeProbes)).map((bytes) => [bytes]);
+  try {
+    const budget = budgetOf(options, 0, 1);
+    const image = budget
+      ? await encodeWithin(canvas, budget, options.minScale)
+      : await canvasToBlob(canvas, "image/jpeg", JPEG_QUALITY);
+    canvas.width = 0;
+    const blob = new Blob([(await imageToPdf(new Uint8Array(await image.arrayBuffer()), "jpg", "a4")) as BlobPart], {
+      type: "application/pdf",
+    });
+    return {
+      blob,
+      url: URL.createObjectURL(blob),
+      extension: "pdf",
+      previews: [URL.createObjectURL(image)],
+      previewPageIndexes: [0],
+      thumbs,
+      pageBytes: [image.size],
+      probeBytes,
+      layoutSeed: seed,
+      pageCount: 1,
+      overBudget: !!maxBytes && blob.size > maxBytes,
+    };
+  } catch (e) {
+    thumbs.forEach(URL.revokeObjectURL);
+    throw e;
+  }
 }
 
 /** Safari décode le HEIC nativement ; sinon libheif (WebAssembly, chargé à la demande). */
@@ -717,6 +859,34 @@ export function watermarkMaxLineWidth(width: number, height: number, lineHeight:
   return Math.SQRT2 * Math.min(width, height) * 0.9 - lineHeight;
 }
 
+/**
+ * Rend la main à la boucle d'événements, le temps d'une tâche.
+ *
+ * Contournement d'un défaut de WebKit (constaté le 2026-11-19 avec le WebKit
+ * de Playwright sous Linux) : juste après que pdf.js a dessiné une page qui
+ * contient du texte, un `fillText` sur un autre canevas reprend parfois la
+ * transformation des glyphes de pdf.js. Le filigrane sort alors retourné et
+ * deux fois trop grand, donc illisible : une fois sur deux sur un PDF de texte,
+ * jamais sur une photo ni sur un PDF sans texte. `getTransform()` et
+ * `measureText()` ne montrent rien d'anormal ; remettre la transformation à
+ * zéro ou changer de type de canevas n'y change rien. Une tâche plus tard,
+ * le défaut a disparu (0 rendu fautif sur 72, contre 18 sur 36 sans la pause).
+ *
+ * MessageChannel plutôt que setTimeout : pas de plancher de 4 ms par page
+ * (minuteries imbriquées), ni de ralentissement dans un onglet en arrière-plan.
+ */
+function nextTask(): Promise<void> {
+  if (typeof MessageChannel === "undefined") return new Promise((resolve) => setTimeout(resolve, 0));
+  return new Promise((resolve) => {
+    const { port1, port2 } = new MessageChannel();
+    port1.onmessage = () => {
+      port1.close();
+      resolve();
+    };
+    port2.postMessage(null);
+  });
+}
+
 async function ensureFont(style: WatermarkStyle, text: string) {
   // Sans texte (mode « signer » sans filigrane), rien ne sera écrit : aucune police à charger.
   if (!text.trim() || typeof document === "undefined" || !document.fonts?.load) return;
@@ -731,10 +901,12 @@ async function ensureFont(style: WatermarkStyle, text: string) {
 /**
  * JPEG sous `budget` octets : qualité dégressive, puis résolution réduite.
  * Rend le plus petit essai si aucun ne tient (le résultat le signale).
+ * `minScale` (mode « dossier ») : aucun essai sous cette échelle, pour que la
+ * page reste lisible même si le budget n'est pas tenu.
  */
-async function encodeWithin(canvas: HTMLCanvasElement, budget: number): Promise<Blob> {
+async function encodeWithin(canvas: HTMLCanvasElement, budget: number, minScale = 0): Promise<Blob> {
   let best: Blob | null = null;
-  for (const { scale, quality } of ENCODE_LADDER) {
+  for (const { scale, quality } of ladderFrom(minScale)) {
     const source = scale === 1 ? canvas : downscale(canvas, scale);
     const blob = await canvasToBlob(source, "image/jpeg", quality);
     if (source !== canvas) source.width = 0;
@@ -742,6 +914,21 @@ async function encodeWithin(canvas: HTMLCanvasElement, budget: number): Promise<
     if (blob.size <= budget) return blob;
   }
   return best!;
+}
+
+/**
+ * Poids (octets) de la page au barreau le plus compact permis par chaque
+ * plancher : exactement l'essai que ferait encodeWithin en dernier recours.
+ */
+async function probeSizes(canvas: HTMLCanvasElement, minScales: readonly number[] | undefined): Promise<number[]> {
+  const sizes: number[] = [];
+  for (const minScale of minScales ?? []) {
+    const { scale, quality } = ladderFrom(minScale).at(-1)!;
+    const source = scale === 1 ? canvas : downscale(canvas, scale);
+    sizes.push((await canvasToBlob(source, "image/jpeg", quality)).size);
+    if (source !== canvas) source.width = 0;
+  }
+  return sizes;
 }
 
 function downscale(canvas: HTMLCanvasElement, scale: number) {

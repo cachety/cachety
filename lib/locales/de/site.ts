@@ -8,10 +8,12 @@ export const SITE_DE: SiteCopy = {
   nav: {
     tool: "Wasserzeichen",
     sign: "Unterschreiben",
+    dossier: "Dossier",
     about: "Warum ein Wasserzeichen?",
     guides: "Ratgeber",
     privacy: "Datenschutz",
     menu: "Menü",
+    tools: "Werkzeuge",
     close: "Menü schließen",
     donate: "Spenden",
     compare: "Vergleiche",
@@ -67,7 +69,7 @@ export const SITE_DE: SiteCopy = {
       },
       {
         title: "Angaben schwärzen",
-        body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt.",
+        body: "Verdecke eine IBAN, eine Steuer-ID oder ein Foto. Der Inhalt wird wirklich entfernt, nicht nur überdeckt. In einem PDF zeigt dir Cachety Konto- und Kartennummern, und du entscheidest, was geschwärzt wird.",
       },
       {
         title: "Ein eigener Code auf jeder Kopie",
@@ -196,6 +198,60 @@ export const SITE_DE: SiteCopy = {
     },
     backToTop: "Dokument unterschreiben",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    hero: {
+      title: "Eine einzige Datei zum Verschicken, ohne etwas hochzuladen",
+      lead: "Ausweis, Gehaltsabrechnungen, Steuerbescheid, das Foto eines Papierformulars: Bring die Seiten in die richtige Reihenfolge, dreh die, die quer liegen, und du bekommst ein PDF unter der Größe, die von dir verlangt wurde.",
+      pills: ["Kostenlos", "Ohne Konto", "Kein Upload", "Made in France"],
+    },
+    howTitle: "So funktioniert’s",
+    how: [
+      {
+        title: "Dokumente ablegen",
+        body: "PDFs und Fotos, auch vom Handy: Ausweis, Gehaltsabrechnungen, Steuerbescheid. Mehrere auf einmal.",
+      },
+      {
+        title: "Seiten ordnen",
+        body: "Zieh sie in die Reihenfolge, die du willst, dreh die, die quer liegen, und entferne die, die du nicht brauchst.",
+      },
+      {
+        title: "Größe wählen und herunterladen",
+        body: "Ein PDF oder eins pro Abschnitt, unter der Größe, die die Website verlangt. Es wird auf deinem Gerät gespeichert.",
+      },
+    ],
+    airplaneTitle: "Prüf es selbst: der Flugmodus-Test",
+    airplaneBody:
+      "Öffne diese Seite und schalte dann das Internet ab (Flugmodus). Leg deine Dokumente ab und füg sie zusammen: Cachety funktioniert weiter. Der Beweis, dass nichts übers Internet geht.",
+    bigger: {
+      title: "Warum die Datei größer sein kann als deine Originale",
+      body: "Cachety kopiert deine Dateien nicht: Jede Seite wird als Bild neu aufgebaut. Dadurch verschwinden versteckter Text, Metadaten, Anhänge, Links und der GPS-Standort von Fotos. Dafür kann ein PDF, das nur Text enthielt, größer werden, und sein Text lässt sich nicht mehr markieren. Gibt eine Website eine Grenze vor, wähle eine maximale Größe: Cachety verkleinert die Seiten, bis es passt, und warnt dich, wenn sie unleserlich würden.",
+    },
+    faqTitle: "Häufige Fragen",
+    faq: [
+      {
+        q: "Werden meine Dokumente irgendwohin hochgeladen?",
+        a: "Nein. Die Website hat keinen Server, der sie empfangen könnte, und die Seite verbietet deinem Browser, Kontakt zu anderen Websites aufzunehmen. Der Flugmodus-Test beweist es in zehn Sekunden.",
+      },
+      {
+        q: "Warum ist meine Datei manchmal größer?",
+        a: "Jede Seite wird aus ihren Pixeln neu aufgebaut. Dabei verschwinden versteckter Text, Metadaten und der GPS-Standort von Fotos, aber ein PDF, das nur Text enthielt, kann größer werden. Wähle eine maximale Größe: Cachety verkleinert die Seiten, bis es passt.",
+      },
+      {
+        q: "Lässt sich der Text noch markieren?",
+        a: "Nein, die Seiten sind Bilder. Deine Originale bleiben unverändert auf deinem Gerät.",
+      },
+      {
+        q: "Kann ich eine Word- oder Excel-Datei hinzufügen?",
+        a: "Nicht direkt. Speichere sie zuerst als PDF, aus Word, Excel oder auf dem Handy (Drucken, dann Als PDF speichern).",
+      },
+      {
+        q: "Funktioniert das auf meinem Handy?",
+        a: "Ja. Fotografiere deine Unterlagen, begradige sie und ordne die Seiten mit dem Finger.",
+      },
+    ],
+    backToTop: "Meine Datei vorbereiten",
+  },
   privacy: {
     title: "Datenschutz und Sicherheit",
     lead: "Deine Dokumente sind privat. Hier steht in einfachen Worten, was Cachety tut und was nicht, und wie du es selbst überprüfen kannst.",
@@ -277,14 +333,15 @@ export const SITE_DE: SiteCopy = {
     related: "Weiterlesen",
     cta: "Wasserzeichen auf mein Dokument",
     ctaSign: "Mein Dokument unterschreiben",
+    ctaDossier: "Meine Dokumente zusammenfügen",
     ctaNote: "Kostenlos, ohne Konto. Das Dokument verlässt nie dein Gerät.",
     updated: (d) => `Aktualisiert am ${d}`,
     allGuides: "Alle Ratgeber",
   },
   compareUi: {
-    title: "Cachety im Vergleich mit anderen Wasserzeichen- und Unterschriften-Tools",
+    title: "Cachety im Vergleich mit anderen Tools für Wasserzeichen, Unterschriften, Zusammenfügen und Komprimieren von PDFs",
     lead: "Verständliche, geprüfte Vergleiche mit den meistgenutzten Tools: wohin deine Dateien gehen, was es kostet und wann ein anderes Tool die bessere Wahl ist.",
-    groups: { watermark: "Wasserzeichen", sign: "Unterschreiben" },
+    groups: { watermark: "Wasserzeichen", sign: "Unterschreiben", dossier: "Zusammenfügen und komprimieren" },
     read: "Vergleich lesen",
     verdictTitle: "Kurz gesagt",
     tableTitle: "Im direkten Vergleich",

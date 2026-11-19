@@ -27,13 +27,6 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 - **Tests:** each recipient's file opens only with its own password; the list
   matches the files.
 
-### `suggested-areas`: suggested areas to hide
-- **Status:** next
-- **Why:** people don't always know what to hide (account number, tax number,
-  card number).
-- **Scope:** detect IBANs, ID and tax numbers on the page (on the device, no
-  network) and show them as tappable areas in "Hide something".
-
 ### `more-languages`: Italian, Korean, Turkish
 - **Status:** next
 - **Constraint:** none left on headers: rules are grouped per language
@@ -88,6 +81,59 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   Also the partner page's tool choice and embed switch strings
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.
+  Dossier (2026-11-18): everything outside French and English is a draft
+  translated from the English and marked "Draft translation, awaiting native
+  review" where it lives: the tool strings (`dossier` block and
+  `dossier_too_many_pages` in `lib/i18n.tsx` for ja and zh, and in
+  `lib/locales/<lang>/strings.ts`), the page copy (`dossier` in
+  `lib/site-copy.ts` and `lib/locales/<lang>/site.ts`), the page title and
+  description (`lib/site-meta.ts`, `lib/locales/<lang>/meta.ts`), the nav
+  label (`nav.dossier`: translated in ja, zh, es, ar, fa and id), the two
+  guides (`dossier` and `size` topics), the `dossier` roadmap text, the
+  partner builder labels and the one-line README entries. First things to
+  check: the word chosen for "section", the five section presets (they become
+  file names), the size sentences, and in the rental guides the paragraph
+  about DossierFacile, which must say no more than the English one. The
+  German and Dutch rental guides were adapted to local paperwork (Schufa,
+  Mieterselbstauskunft; werkgeversverklaring, uittreksel BRP): check those too.
+- **Dossier, released without its manual pass:** v1.2.0 went out on
+  2026-11-19 on the automated suites only. Still to do by hand
+  (`docs/prd-dossier.md` §11.5): the aeroplane-mode test on an iPhone and an
+  Android phone, a real rental file uploaded to a real portal with a size
+  limit, a 300-page file on an iPhone, and the outputs opened in Acrobat,
+  Preview and a phone mail client. Also check on a real iPhone that a
+  watermark on a text PDF is never drawn upside down (`nextTask` in
+  `lib/watermark.ts`: seen with the test WebKit on Linux, not confirmed on
+  Safari), and run the two `curl` checks of `docs/deploy.md` for the
+  `/<lang>/:page` header rules.
+- **Suggested areas, released without its manual pass:** the manual pass on real documents
+  (`docs/prd-suggested-areas.md` §11.4): payslips from 3 French employers, a
+  French tax notice, a German Lohnabrechnung, a Spanish nómina, bank details
+  from 3 banks. Count detections and misses (counts only, no document), and
+  check that the tax-notice note reads well. Target (§12): at least 90 % of
+  IBANs and NIRs suggested, at most one false suggestion per 20 pages.
+- **Suggested areas, native review:** the suggestion wording (`t.suggest`,
+  `lib/suggest-copy/*`) in the nine languages other than French and English
+  is a draft translated from English; each file says so in a comment. Same
+  for the new README feature line in those languages.
+- **Guides and comparisons for suggested areas and Dossier (2026-11-19),
+  native review:** three guides on hiding numbers (`lib/guides/hide/*`), four
+  guides for the Dossier tool (`lib/guides/dossier/*`) and five comparisons
+  for merging and compressing (`lib/compare/dossier/*`). English and French
+  are written by hand; the nine other languages are drafts and say so in a
+  comment. They are localised, not literal: check first the local banking
+  statements in the "hide" guides (direct-debit refund rights, card rules),
+  which were checked against primary sources but not by a native speaker, and
+  the quoted button labels, which must match the interface. The comparisons
+  carry the same facts in every language (`lib/compare/compare.test.ts`
+  checks rows, edges, sources and the `checked` date against English): when a
+  vendor fact changes, change it in all 11 files and move the date.
+- **Suggested areas, later:** on-device OCR for photos and scans
+  (`ocr-suggestions`, about 5.8 MB of WebAssembly and model data for one
+  script, needs its own PRD), barcode and QR code hints (`barcode-hint`),
+  the machine-readable zone of passports (`mrz`), and more national numbers
+  as languages are added. Vertical text (Japanese, Chinese) is not read yet.
+  See `docs/prd-suggested-areas.md` §14.
 - **Sign, later (v1.1+):** several placements per page (`multi-placement`), a
   self-hosted handwriting font for the Type tab (`script-font`), and per-country mention presets
   reviewed by native speakers (`more-mentions`). See `docs/prd-sign.md` §14.
@@ -98,6 +144,37 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   letting agency with the bank details hidden".
 
 ## Shipped
+
+### `dossier`: one file to send (2026-11, v1.2.0)
+A third tool at `/<lang>/dossier`: drop PDFs and photos; reorder, rotate and
+remove single pages in a page grid; one PDF, one PDF per section or one per
+document (ZIP); a size target (1, 2, 5, 10 MB or any value from 0.5 to 50)
+with a readability floor and an estimate before download, measured on the
+person's own pages; straighten, crop and clean up a photo of a paper page;
+optional watermark, masks with suggested areas, password and fingerprint as
+in the other tools; `#tools=dossier` in the partner embed. Pages are rebuilt
+from pixels, as everywhere else. Six guides and five comparisons (iLovePDF,
+Smallpdf, Adobe Acrobat, PDF24, Sejda) in all 11 languages. The header now
+has two lines: the site, then the three tools.
+Spec: [docs/prd-dossier.md](docs/prd-dossier.md).
+Later: automatic corner detection, a `/compress` entry page, per-use-case
+checklists, and a preview of the first pages of the whole file across
+documents (today the preview is per document) (spec §14 and §5).
+
+### `suggested-areas`: suggested areas to hide (2026-11)
+On PDFs with a text layer, "Hide something" points out the IBANs, card
+numbers, French social security and tax numbers, and national numbers
+(Germany, Spain, the Netherlands, Belgium, Portugal, Brazil, Italy, China,
+Japan, Iran, Indonesia) found on every page, on the device. A banner above
+the preview says how many; each one is an outline on the page and a line in a
+panel, hidden with one tap, or all at once, in one document or in every
+document. Nothing is hidden automatically, and the panel always says that
+suggestions can miss things (photos and scans are not read, nor are barcodes
+and QR codes). A number is suggested only if its checksum passes or its label
+is next to it. IBANs are recognised for the 89 countries of the registry and
+22 more that use the format (Iran, Morocco, Algeria…). In the watermark, sign
+and Dossier tools, in all 11 languages.
+Spec: [docs/prd-suggested-areas.md](docs/prd-suggested-areas.md).
 
 ### `sign-embed`: signing on partner websites (2026-10)
 Partners choose the tools in the embed code: watermark (default), sign, or
