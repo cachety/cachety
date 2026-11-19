@@ -335,6 +335,7 @@ export const STRINGS_ID: Strings = {
   // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   dossier: {
     defaultName: "dokumen",
+    previewAlt: (name: string, p: number) => `${name}, pratinjau halaman ${p}`,
     inputAria: "Tambahkan dokumen ke berkas (PDF atau gambar)",
     step1: "Dokumen Anda",
     step2: "Halaman",

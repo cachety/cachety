@@ -56,6 +56,8 @@ import { DOSSIER_MIN_SCALE, mbToBytes, SIZE_TARGETS_MB } from "@/lib/size-budget
 import { readPref, writePref } from "@/lib/storage";
 import { releaseResult, type RenderOptions, type WatermarkResult } from "@/lib/watermark";
 
+const NO_PAGES: readonly number[] = [];
+
 /** Rotation de chaque page d'un document, en clé stable (les autres retouches n'y entrent pas). */
 const rotationsKey = (edits: PageEdits | undefined) =>
   Object.entries(edits ?? {})
@@ -526,6 +528,18 @@ export function useDossier({
     return new Set(Object.keys(state.known ?? {}).filter((id) => !kept.has(id)));
   }, [state.pages, state.known]);
 
+  /** Pages gardées de chaque document (index dans le document), dans l'ordre du fichier produit : ce que montre l'aperçu. */
+  const keptByDoc = useMemo(() => {
+    const map = new Map<string, number[]>();
+    for (const p of state.pages) {
+      const list = map.get(p.doc);
+      if (list) list.push(p.page);
+      else map.set(p.doc, [p.page]);
+    }
+    return map;
+  }, [state.pages]);
+  const keptOf = useCallback((doc: string): readonly number[] => keptByDoc.get(doc) ?? NO_PAGES, [keptByDoc]);
+
   // Photo en cours de redressement : la page (pour ses réglages actuels) et le fichier à afficher.
   const fixingRef = fixing ? state.pages.find((p) => p.doc === fixing.doc && p.page === fixing.page) : undefined;
   const fixingFile = fixing ? byId.get(fixing.doc)?.file : undefined;
@@ -551,6 +565,7 @@ export function useDossier({
     grid,
     total,
     emptied,
+    keptOf,
     announcement,
     notice,
     clearNotice: () => setNotice(""),

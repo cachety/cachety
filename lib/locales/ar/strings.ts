@@ -343,6 +343,7 @@ export const STRINGS_AR: Strings = {
   // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   dossier: {
     defaultName: "documents",
+    previewAlt: (name: string, p: number) => `${name}، معاينة الصفحة ${p}`,
     inputAria: "أضف مستندات إلى الملف (PDF أو صور)",
     step1: "مستنداتك",
     step2: "الصفحات",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useT } from "@/lib/i18n";
 import { signaturePage, type Doc } from "@/lib/doc";
 import { ChevronIcon, CloseIcon } from "@/components/icons";
@@ -31,6 +31,8 @@ export function Kiosk({
   signing,
   children,
   suggest,
+  kept,
+  previewAlt,
 }: {
   doc: Doc;
   onMasks: (masks: PageMasks) => void;
@@ -45,18 +47,33 @@ export function Kiosk({
   children?: React.ReactNode;
   /** Suggestions de masquage : ce qui dépasse ce document (autres documents du lot, suggestion écartée). */
   suggest?: KioskSuggest;
+  /**
+   * Mode « dossier » : pages de ce document gardées dans le fichier (index
+   * dans le document), dans l'ordre où elles y paraîtront. L'aperçu ne montre
+   * qu'elles, dans cet ordre : une page retirée n'est pas dans le fichier.
+   */
+  kept?: readonly number[];
+  /** Texte de remplacement de l'aperçu, quand ce n'est ni une page filigranée ni une page signée. */
+  previewAlt?: (name: string, page: number) => string;
 }) {
   const t = useT();
   const result = doc.result!;
-  const shownPages = result.previews.length;
-  // Page du document de chaque aperçu : en mode « signer », les 11 premières
-  // et la dernière (là où l'on signe), pas seulement les 12 premières.
-  const pageAt = (i: number) => result.previewPageIndexes?.[i] ?? i;
+  // Page du document de chaque aperçu rendu : en mode « signer », les 11
+  // premières et la dernière (là où l'on signe), pas seulement les 12 premières.
+  const renderedPage = (i: number) => result.previewPageIndexes?.[i] ?? i;
+  // Aperçus affichés, dans l'ordre : tous, ou (mode « dossier ») ceux des pages gardées.
+  const slots = useMemo(() => {
+    const rendered = result.previews.map((_, i) => result.previewPageIndexes?.[i] ?? i);
+    if (!kept) return rendered.map((_, i) => i);
+    return kept.map((p) => rendered.indexOf(p)).filter((i) => i >= 0);
+  }, [result.previews, result.previewPageIndexes, kept]);
+  const shownPages = slots.length;
+  const pageAt = (i: number) => renderedPage(slots[i]);
   const sigPage = signing ? signaturePage(doc.overlays) : null;
   const previewOf = (p: number | null) => {
     if (p === null) return -1;
     const i = (result.previewPageIndexes ?? []).indexOf(p);
-    return i >= 0 ? i : -1;
+    return i >= 0 ? slots.indexOf(i) : -1;
   };
   // Mode « signer » : on ouvre sur la page signée (la dernière, par défaut).
   const [page, setPage] = useState(() => {
@@ -72,8 +89,9 @@ export function Kiosk({
   }, [sigPage]);
   const current = Math.min(page, shownPages - 1);
   const pageIndex = pageAt(current);
+  const src = result.previews[slots[current]];
   const zoomRef = useRef<HTMLDialogElement>(null);
-  const alt = (p: number) => (signing ? t.sign.previewAlt(doc.file.name, p) : t.previewAlt(doc.file.name, p));
+  const alt = (p: number) => (previewAlt ?? (signing ? t.sign.previewAlt : t.previewAlt))(doc.file.name, p);
 
   // Pages non prévisualisées entre deux aperçus (mode « signer » : 12 à N−1).
   const gapAfter = (i: number) =>
@@ -87,6 +105,13 @@ export function Kiosk({
   // pages confondues : accepter une suggestion l'y ajoute, « Terminé »
   // applique le tout en un seul re-rendu, « Annuler » n'applique rien.
   const s = doc.suggestions;
+  // Une page retirée du dossier n'est pas dans le fichier : rien à y suggérer.
+  const dismissed = useMemo(() => {
+    if (!kept || !s) return doc.dismissed;
+    const keptPages = new Set(kept);
+    const gone = s.matches.flatMap((m, i) => (keptPages.has(m.page) ? [] : [i]));
+    return gone.length ? new Set([...(doc.dismissed ?? []), ...gone]) : doc.dismissed;
+  }, [kept, s, doc.dismissed]);
   const [pending, setPending] = useState<PageMasks | null>(null);
   const [bulk, setBulk] = useState<{ added: number[]; undoOthers?: () => void } | null>(null);
   const [announcement, setAnnouncement] = useState("");
@@ -97,7 +122,7 @@ export function Kiosk({
     setAnnouncement("");
   }, [maskEditing]);
   const staged = maskEditing ? (pending ?? doc.masks ?? {}) : doc.masks;
-  const openCount = maskEditing ? 0 : openMatches(s, doc.dismissed, doc.masks).length;
+  const openCount = maskEditing ? 0 : openMatches(s, dismissed, doc.masks).length;
   const toggleSuggestion = (i: number) => {
     if (!s) return;
     const m = s.matches[i];
@@ -110,7 +135,7 @@ export function Kiosk({
   };
   const hideEverything = (everyDocument: boolean) => {
     if (!s) return;
-    const all = hideAll(staged, s, doc.dismissed);
+    const all = hideAll(staged, s, dismissed);
     setPending(all.masks);
     setBulk({ added: all.added, undoOthers: everyDocument ? suggest?.onHideOthers() : undefined });
   };
@@ -122,14 +147,14 @@ export function Kiosk({
   };
   const review = () => {
     // On ouvre sur la première page de l'aperçu qui porte une suggestion à traiter.
-    const first = s ? openMatches(s, doc.dismissed, doc.masks).map((i) => previewOf(s.matches[i].page)).find((i) => i >= 0) : undefined;
+    const first = s ? openMatches(s, dismissed, doc.masks).map((i) => previewOf(s.matches[i].page)).find((i) => i >= 0) : undefined;
     if (first !== undefined) setPage(first);
     onMaskEditing(true);
   };
   // Contours sur la page affichée : les suggestions ni écartées ni déjà masquées.
   const outlines =
     s && maskEditing
-      ? shownMatches(s, doc.dismissed)
+      ? shownMatches(s, dismissed)
           .filter((i) => s.matches[i].page === pageIndex && !isHidden(s, i, staged))
           .flatMap((i) =>
             rectsOf(s, i).map((rect) => ({
@@ -183,7 +208,7 @@ export function Kiosk({
 
       <MaskEditor
         key={current}
-        src={result.previews[current]}
+        src={src}
         alt={alt(pageIndex + 1)}
         page={pageIndex}
         existing={doc.masks?.[pageIndex] ?? []}
@@ -199,9 +224,9 @@ export function Kiosk({
           s && (
             <SuggestionsPanel
               suggestions={s}
-              dismissed={doc.dismissed}
+              dismissed={dismissed}
               masks={staged}
-              previewPages={result.previewPageIndexes ?? Array.from({ length: shownPages }, (_, i) => i)}
+              previewPages={slots.map(renderedPage)}
               onToggle={toggleSuggestion}
               onDismiss={(i) => suggest?.onDismiss(i)}
               onHideAll={() => hideEverything(false)}
@@ -215,7 +240,7 @@ export function Kiosk({
       >
         {signing ? (
           <SignatureEditor
-            src={result.previews[current]}
+            src={src}
             alt={alt(pageIndex + 1)}
             page={pageIndex}
             rect={sigRect}
@@ -234,7 +259,7 @@ export function Kiosk({
             aria-label={t.zoomOpen(pageIndex + 1)}
           >
             <img
-              src={result.previews[current]}
+              src={src}
               alt={alt(pageIndex + 1)}
               className={`mx-auto max-h-[70vh] w-auto max-w-full rounded-lg border border-trait shadow-sm transition-opacity ${
                 updating ? "opacity-60" : ""
@@ -259,7 +284,7 @@ export function Kiosk({
             <CloseIcon className="h-5 w-5" />
           </button>
           <img
-            src={result.previews[current]}
+            src={src}
             alt={t.zoomAlt(doc.file.name, pageIndex + 1)}
             className="max-h-[95dvh] max-w-[95vw] rounded-xl object-contain"
           />
@@ -268,9 +293,11 @@ export function Kiosk({
 
       {children && <div className="mt-4 flex flex-col gap-3">{children}</div>}
 
-      {result.pageCount > shownPages && (
+      {(kept ? kept.length : result.pageCount) > shownPages && (
         <p className="mt-3 text-center text-sm text-encre-2">
-          {signing && firstGap ? firstGap : `${t.previewLimit(shownPages, result.pageCount)} ${t.mask.limit(shownPages)}`}
+          {signing && firstGap
+            ? firstGap
+            : `${t.previewLimit(result.previews.length, result.pageCount)} ${t.mask.limit(result.previews.length)}`}
           {s && s.matches.length > 0 && ` ${t.suggest.coverAll}`}
         </p>
       )}

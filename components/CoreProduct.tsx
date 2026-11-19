@@ -764,6 +764,19 @@ export default function CoreProduct({
   shownIdRef.current = shown?.id;
   // Suggestions de masquage : tous les modes qui affichent l'éditeur de masques.
   const suggest = useSuggestions(docs, setDocs, shown?.id);
+  // Mode « dossier » : l'aperçu ne montre que les pages gardées de ce document,
+  // dans l'ordre du fichier. `noPreview` : aucune n'a d'aperçu (toutes retirées,
+  // ou seules restent des pages au-delà des premières).
+  const shownKept = dossier && shown ? dossierApi.keptOf(shown.id) : undefined;
+  const noPreview =
+    !!shownKept &&
+    !!shown?.result &&
+    !shown.result.previews.some((_, i) => shownKept.includes(shown.result!.previewPageIndexes?.[i] ?? i));
+  // Plus rien à afficher pendant le tracé des masques : on en sort, sinon le
+  // téléchargement resterait bloqué sans bouton « Terminé ».
+  useEffect(() => {
+    if (noPreview) setTool((current) => (current === "hide" ? null : current));
+  }, [noPreview]);
 
   const [bundling, setBundling] = useState(false);
   // Quelle étape a échoué : le message doit nommer la bonne (assemblage ou
@@ -1340,6 +1353,17 @@ export default function CoreProduct({
               <div role="alert" className="rounded-2xl border border-sceau/40 bg-sceau/5 px-5 py-4 text-sceau-fonce">
                 {t.docError(shown.file.name, t.errors[shown.error])}
               </div>
+            ) : shown?.result && noPreview ? (
+              <div
+                data-testid="preview-none"
+                className="flex min-h-[240px] items-center justify-center rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2"
+              >
+                <p>
+                  {shownKept?.length
+                    ? t.previewLimit(shown.result.previews.length, shown.result.pageCount)
+                    : t.dossier.grid.noPages}
+                </p>
+              </div>
             ) : shown?.result ? (
               <>
                 {shown.result.overBudget && sizeMb > 0 && (
@@ -1358,6 +1382,8 @@ export default function CoreProduct({
                   onMaskEditing={(on) => setTool(on ? "hide" : null)}
                   updating={!fresh}
                   suggest={suggest}
+                  kept={shownKept}
+                  previewAlt={dossier ? t.dossier.previewAlt : undefined}
                   signing={
                     sign && sigReady
                       ? {

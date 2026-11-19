@@ -342,6 +342,7 @@ export const STRINGS_NL: Strings = {
   // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   dossier: {
     defaultName: "documenten",
+    previewAlt: (name: string, p: number) => `${name}, voorbeeld van pagina ${p}`,
     inputAria: "Documenten toevoegen aan het bestand (pdf's of afbeeldingen)",
     step1: "Je documenten",
     step2: "Pagina's",

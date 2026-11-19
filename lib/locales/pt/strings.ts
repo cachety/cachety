@@ -341,6 +341,7 @@ export const STRINGS_PT: Strings = {
   // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   dossier: {
     defaultName: "documentos",
+    previewAlt: (name: string, p: number) => `${name}, prévia da página ${p}`,
     inputAria: "Adicionar documentos ao arquivo (PDFs ou imagens)",
     step1: "Seus documentos",
     step2: "Páginas",

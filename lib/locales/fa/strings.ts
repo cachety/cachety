@@ -320,6 +320,7 @@ export const STRINGS_FA: Strings = {
   // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
   dossier: {
     defaultName: "documents",
+    previewAlt: (name: string, p: number) => `${name}، پیش‌نمایش صفحهٔ ${p}`,
     inputAria: "افزودن مدارک به پرونده (PDF یا عکس)",
     step1: "مدارک شما",
     step2: "صفحه‌ها",

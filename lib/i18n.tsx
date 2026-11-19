@@ -354,6 +354,7 @@ const BASE_STRINGS = {
     dossier: {
       // Nom du fichier proposé (« dossier.pdf ») : ASCII dans toutes les langues.
       defaultName: "dossier",
+      previewAlt: (name: string, p: number) => `${name}, aperçu de la page ${p}`,
       inputAria: "Ajouter des documents au dossier (PDF ou images)",
       step1: "Vos documents",
       step2: "Les pages",
@@ -871,6 +872,7 @@ const BASE_STRINGS = {
     // Dossier mode (/dossier): copy from docs/prd-dossier.md §10.
     dossier: {
       defaultName: "documents",
+      previewAlt: (name: string, p: number) => `${name}, preview of page ${p}`,
       inputAria: "Add documents to the file (PDFs or images)",
       step1: "Your documents",
       step2: "Pages",
@@ -1385,6 +1387,7 @@ const BASE_STRINGS = {
     // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
     dossier: {
       defaultName: "documents",
+      previewAlt: (name: string, p: number) => `${name}、${p} ページ目のプレビュー`,
       inputAria: "まとめる書類を追加（PDFまたは画像）",
       step1: "書類",
       step2: "ページ",
@@ -1895,6 +1898,7 @@ const BASE_STRINGS = {
     // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
     dossier: {
       defaultName: "documents",
+      previewAlt: (name: string, p: number) => `${name}，第 ${p} 页预览`,
       inputAria: "添加要合成的文件（PDF 或图片）",
       step1: "文件",
       step2: "页面",
