@@ -34,7 +34,8 @@ export default function PhotoFix({ d }: { d: Dossier }) {
   const surface = useRef<HTMLDivElement>(null);
   const [quad, setQuad] = useState<Quad>(target?.ref.crop ?? DEFAULT_QUAD);
   const [whiten, setWhiten] = useState(target?.ref.clean?.whiten ?? false);
-  const [gray, setGray] = useState(target?.ref.clean?.gray ?? false);
+  // Photo pas encore nettoyée : « Noir et blanc » part du dernier choix appliqué (préférence d'affichage).
+  const [gray, setGray] = useState(target?.ref.clean ? target.ref.clean.gray : d.grayDefault);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   /** Coin en cours de déplacement au pointeur : la loupe le suit. */
@@ -236,7 +237,10 @@ export default function PhotoFix({ d }: { d: Dossier }) {
         </label>
         <button
           type="button"
-          onClick={() => d.cleanAllPhotos({ whiten, gray })}
+          onClick={() => {
+            d.cleanAllPhotos({ whiten, gray });
+            d.setGrayDefault(gray);
+          }}
           className="w-fit py-1 text-sm font-medium text-bleu underline underline-offset-2 hover:no-underline"
         >
           {p.applyAll}
@@ -251,6 +255,7 @@ export default function PhotoFix({ d }: { d: Dossier }) {
             // Coins laissés à leur place par défaut : pas de recadrage, la photo entière.
             const moved = JSON.stringify(quad) !== JSON.stringify(DEFAULT_QUAD);
             d.setPhoto(target.ref, { crop: moved || target.ref.crop ? quad : null, clean: { whiten, gray } });
+            d.setGrayDefault(gray);
             dialog.current?.close();
           }}
           className="rounded-xl bg-bleu px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-bleu/90 disabled:opacity-40"

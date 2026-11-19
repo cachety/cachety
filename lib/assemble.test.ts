@@ -9,9 +9,11 @@ import {
   FLOOR_PAGE_BYTES,
   FLOOR_RATIO,
   floorEstimate,
+  floorWeights,
   LOWEST,
   LOWEST_PAGE_BYTES,
   LOWEST_RATIO,
+  MODEL_MARGIN,
   predictFit,
   weightedBudgets,
 } from "./assemble";
@@ -235,7 +237,7 @@ describe("budget pondéré par le poids du premier rendu", () => {
   });
 });
 
-describe("prédiction : la cible tient-elle en restant lisible ?", () => {
+describe("prédiction sans mesure (repli sur le modèle) : la cible tient-elle en restant lisible ?", () => {
   test("trois états, d'après les poids du premier rendu", () => {
     const pages = new Array(10).fill(500_000); // environ 5 Mo
     expect(predictFit(pages, mbToBytes(10))).toBe("fits");
@@ -243,10 +245,11 @@ describe("prédiction : la cible tient-elle en restant lisible ?", () => {
     expect(predictFit(pages, mbToBytes(0.5))).toBe("unreachable");
   });
 
-  test("les seuils suivent FLOOR_RATIO, avec la marge de la mesure", () => {
+  test("les seuils suivent FLOOR_RATIO, avec la marge du modèle", () => {
     const pages = [1_000_000];
-    const floor = 1_000_000 * FLOOR_RATIO * FIT_MARGIN + pdfOverhead(1);
-    expect(predictFit(pages, Math.ceil(floor))).toBe("reduced");
+    const floor = 1_000_000 * FLOOR_RATIO * MODEL_MARGIN + pdfOverhead(1);
+    // À un octet près (arrondis du calcul en virgule flottante).
+    expect(predictFit(pages, Math.ceil(floor) + 1)).toBe("reduced");
     expect(predictFit(pages, Math.floor(floor) - 1)).toBe("unreachable");
     expect(predictFit(pages, estimatePdfSize(pages))).toBe("fits");
     expect(predictFit(pages, estimatePdfSize(pages) - 1)).toBe("reduced");
@@ -255,7 +258,7 @@ describe("prédiction : la cible tient-elle en restant lisible ?", () => {
   test("qualité plus faible acceptée : une cible plus basse devient tenable", () => {
     expect(LOWEST_RATIO).toBeLessThan(FLOOR_RATIO);
     const pages = [1_000_000];
-    const target = Math.ceil(1_000_000 * LOWEST_RATIO * FIT_MARGIN + pdfOverhead(1));
+    const target = Math.ceil(1_000_000 * LOWEST_RATIO * MODEL_MARGIN + pdfOverhead(1)) + 1;
     expect(predictFit(pages, target)).toBe("unreachable");
     expect(predictFit(pages, target, LOWEST)).toBe("reduced");
     expect(LOWEST_PAGE_BYTES).toBeLessThan(FLOOR_PAGE_BYTES);
@@ -264,7 +267,7 @@ describe("prédiction : la cible tient-elle en restant lisible ?", () => {
   test("pages de texte : jamais estimées sous le poids d'une page de texte au plancher", () => {
     // 30 bulletins de paie (160 Ko chacun) sous 1 Mo : le rapport seul dirait « tient », à tort.
     const text = new Array(30).fill(160_000);
-    expect(text.length * 160_000 * FLOOR_RATIO * FIT_MARGIN + pdfOverhead(30)).toBeLessThan(mbToBytes(1));
+    expect(text.length * 160_000 * FLOOR_RATIO * MODEL_MARGIN + pdfOverhead(30)).toBeLessThan(mbToBytes(1));
     expect(floorEstimate(text)).toBe(30 * FLOOR_PAGE_BYTES);
     expect(predictFit(text, mbToBytes(1))).toBe("unreachable");
     expect(predictFit(text, mbToBytes(2))).toBe("reduced");
@@ -280,6 +283,106 @@ describe("prédiction : la cible tient-elle en restant lisible ?", () => {
     expect(predictFit([], mbToBytes(1))).toBe("fits");
     expect(predictFit([1_000_000], 0)).toBe("fits");
     expect(estimatePdfSize([])).toBe(0);
+  });
+});
+
+// Le mode dossier mesure, au premier rendu, le poids de chaque page au
+// plancher : la prédiction et les budgets partent de cette mesure.
+describe("prédiction d'après le poids mesuré de chaque page au plancher", () => {
+  // Mesures de Chromium sur le corpus (e2e/dossier.seam.e2e.ts) : octets par page A4.
+  const PHOTO = { natural: 291_561, floor: 18_260 };
+  const TEXT = { natural: 160_536, floor: 38_498 };
+  const pages = (kind: { natural: number; floor: number }, n: number) => ({
+    natural: new Array<number>(n).fill(kind.natural),
+    floors: new Array<number>(n).fill(kind.floor),
+  });
+
+  test("30 pages photo sous 1 Mo : tenable (le modèle seul, lui, dit non)", () => {
+    const { natural, floors } = pages(PHOTO, 30);
+    expect(predictFit(natural, mbToBytes(1), floors)).toBe("reduced");
+    expect(predictFit(natural, mbToBytes(1))).toBe("unreachable");
+  });
+
+  test("60 pages photo sous 1 Mo : intenable ; 30 pages de texte sous 1 Mo : intenable", () => {
+    const photo = pages(PHOTO, 60);
+    expect(predictFit(photo.natural, mbToBytes(1), photo.floors)).toBe("unreachable");
+    const text = pages(TEXT, 30);
+    expect(predictFit(text.natural, mbToBytes(1), text.floors)).toBe("unreachable");
+    expect(predictFit(text.natural, mbToBytes(2), text.floors)).toBe("reduced");
+  });
+
+  test("le seuil est la somme mesurée, augmentée de la marge, plus la structure du PDF", () => {
+    const { natural, floors } = pages(PHOTO, 10);
+    const threshold = 10 * PHOTO.floor * FIT_MARGIN + pdfOverhead(10);
+    expect(predictFit(natural, Math.ceil(threshold), floors)).toBe("reduced");
+    expect(predictFit(natural, Math.floor(threshold) - 1, floors)).toBe("unreachable");
+    expect(predictFit(natural, estimatePdfSize(natural), floors)).toBe("fits");
+    // La marge des mesures est plus étroite que celle du modèle.
+    expect(FIT_MARGIN).toBeGreaterThan(1);
+    expect(FIT_MARGIN).toBeLessThan(MODEL_MARGIN);
+  });
+
+  test("floorWeights : la mesure quand elle existe, sinon le modèle avec sa marge plus large", () => {
+    expect(floorWeights([291_561, 160_536], [18_260, 38_498])).toEqual([18_260, 38_498]);
+    // Jamais plus que le poids de la page elle-même.
+    expect(floorWeights([5_000], [9_000])).toEqual([5_000]);
+    // Page sans mesure : estimation du modèle, de sorte que sa marge totale soit MODEL_MARGIN.
+    const [measured, modelled] = floorWeights([291_561, 2_000_000], [18_260, undefined]);
+    expect(measured).toBe(18_260);
+    expect(modelled * FIT_MARGIN).toBeCloseTo(2_000_000 * FLOOR_RATIO * MODEL_MARGIN, 6);
+    expect(floorWeights([2_000_000], undefined, LOWEST)[0] * FIT_MARGIN).toBeCloseTo(2_000_000 * LOWEST_RATIO * MODEL_MARGIN, 6);
+  });
+
+  test("budgets : quand la prédiction dit « tenable », chaque page a de quoi tenir au plancher, et la somme tient", () => {
+    // Dossier mixte : 5 photos, 5 pages de texte, sous 1 Mo.
+    const natural = [PHOTO, TEXT, PHOTO, TEXT, PHOTO, TEXT, PHOTO, TEXT, PHOTO, TEXT].map((p) => p.natural);
+    const floors = [PHOTO, TEXT, PHOTO, TEXT, PHOTO, TEXT, PHOTO, TEXT, PHOTO, TEXT].map((p) => p.floor);
+    const max = mbToBytes(1);
+    expect(predictFit(natural, max, floors)).toBe("reduced");
+    const budgets = weightedBudgets(natural, max, floors);
+    budgets.forEach((b, i) => {
+      expect(b).toBeGreaterThanOrEqual(Math.ceil(floors[i] * FIT_MARGIN));
+      expect(b).toBeLessThanOrEqual(natural[i]);
+    });
+    expect(budgets.reduce((a, b) => a + b, 0) + pdfOverhead(10)).toBeLessThanOrEqual(max);
+    // La cible est réellement utilisée, et une photo reçoit plus qu'une page de texte.
+    expect(budgets.reduce((a, b) => a + b, 0)).toBeGreaterThan(max * 0.95);
+    expect(budgets[0]).toBeGreaterThan(budgets[1]);
+  });
+
+  test("budgets : la garantie tient pour n'importe quel dossier tenable", () => {
+    let seed = 12345;
+    const rand = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+    for (let round = 0; round < 300; round++) {
+      const n = 1 + Math.floor(rand() * 40);
+      const natural = Array.from({ length: n }, () => 5_000 + Math.floor(rand() * 600_000));
+      const floors = natural.map((b) => Math.max(1_000, Math.floor(b * (0.04 + rand() * 0.3))));
+      const max = 50_000 + Math.floor(rand() * 4_000_000);
+      const fit = predictFit(natural, max, floors);
+      const budgets = weightedBudgets(natural, max, floors);
+      expect(budgets).toHaveLength(n);
+      const available = Math.max(0, max - pdfOverhead(n));
+      if (fit === "fits") {
+        expect(budgets).toEqual(natural);
+        continue;
+      }
+      for (const b of budgets) expect(b).toBeGreaterThanOrEqual(1);
+      if (fit === "reduced") {
+        // Chaque page peut tenir au plancher (marge comprise) ; le total tient.
+        budgets.forEach((b, i) => expect(b).toBeGreaterThanOrEqual(Math.min(natural[i], Math.ceil(floors[i] * FIT_MARGIN))));
+        expect(budgets.reduce((a, b) => a + b, 0)).toBeLessThanOrEqual(available);
+      }
+    }
+  });
+
+  test("budgets d'une cible intenable : au prorata des poids au plancher, jamais nuls", () => {
+    const { natural, floors } = pages(PHOTO, 60);
+    const budgets = weightedBudgets(natural, mbToBytes(1), floors);
+    expect(new Set(budgets).size).toBe(1);
+    // Sous le poids au plancher : chaque page sortira au plancher, le fichier dépassera la cible.
+    expect(budgets[0]).toBeLessThan(PHOTO.floor);
+    expect(budgets[0]).toBeGreaterThan(0);
+    expect(weightedBudgets([100_000, 20_000], mbToBytes(5), [9_000, 4_000])).toEqual([100_000, 20_000]);
   });
 });
 
