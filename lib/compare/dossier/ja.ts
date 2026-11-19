@@ -8,15 +8,19 @@ import type { Comparison } from "../types";
 // Every claim about another tool is backed by a page listed in its `sources`,
 // read on the `checked` date. Prices change often, so none are quoted here.
 //
-// The Cachety column describes the Dossier tool as specified in
-// docs/prd-dossier.md (Must scope). Publish with the tool, not before, and
-// re-check the column against the shipped interface.
+// The Cachety column describes the Dossier tool as shipped (sections, photo
+// straightening and custom size included): limits from lib/watermark.ts and
+// lib/pages.ts, sizes from lib/size-budget.ts and the `dossier` block of
+// lib/i18n.tsx. Keep the column in step with them. The quoted labels
+// (「1つのPDF」「その他…」) were checked against that block on 2026-11-19.
+// The claims about the other tools say the same as the English file
+// (lib/compare/dossier/en.ts), re-checked on the same date.
 //
 // Dossierツールの比較ページ（日本の読者向け）。ほかのツールについての記述は
 // すべて `sources` の公開ページにもとづき、`checked` の日付に確認。料金は載せない。
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Address of the tool, written without a scheme. */
 const TOOL = "cachety.com/ja/dossier";
@@ -26,14 +30,17 @@ const CACHETY = {
   where: "あなたのスマホやパソコンの中（ブラウザ内）。何もアップロードされません",
   kept: "何も保管されません。ファイルを受け取るサーバーがありません",
   free: "無料で登録不要。有料プランも1日の上限もありません。1ファイル200 MBまで、PDFは1つ500ページまで、合計1,000ページまで",
-  pages: "すべてのファイルのすべてのページが1つの画面に並びます。ページを移動（別のファイルの中にも）、回転、削除できます",
-  size: "最大サイズを1・2・5・10 MBから選びます。ファイルが収まり、読める状態を保てるかどうかを、ダウンロードの前に知らせます",
+  pages: "すべてのファイルのすべてのページが1つの画面に並びます。ページを移動（別のファイルの中にも）、回転、削除できます。1つのPDFにするか、名前を付けたセクションごとに1つのPDFにします",
+  size: "最大サイズを1・2・5・10 MBから選ぶか、0.5〜50 MBの好きな上限を指定します。ファイルが収まり、読める状態を保てるかどうかを、ダウンロードの前に知らせます",
   output: "各ページを画像として作り直します。文字は選択も検索もできず、文字だけのPDFは元より大きくなることがあります",
   hidden: "すべてのファイルで取り除かれます：隠れた文字、作成者などのプロパティ、添付ファイル、リンク、写真の位置情報（GPS）",
-  inputs: "PDFと写真を一緒に。iPhoneのHEIC写真も使えます。Word、Excel、PowerPointのファイルは使えません",
+  inputs: "PDFと写真を一緒に。iPhoneのHEIC写真も使えます。紙を撮った写真は、傾きを直し、切り抜き、背景を白くできます。Word、Excel、PowerPointのファイルは使えません",
   offline: "インストール不要。ページを読み込んだあとは、スマホでもパソコンでも機内モードで動きます",
   ads: "広告もトラッカー（追跡ツール）もありません。コードは公開されています（オープンソース）",
 };
+
+/** Table row 「結合のオプション」, for the tools that have bookmarks and tables of contents. */
+const MERGE_OPTIONS = "ページの順番と、複数のファイルがほしいときのセクションごとのPDF。しおりも目次もありません";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "Cachetyで作ったファイルはどんなファイルか" },
@@ -55,7 +62,7 @@ const HOW_TO: Comparison["body"] = [
       `パソコンかスマホのブラウザで ${TOOL} を開きます。インストールも登録も不要です。`,
       "PDFと写真を追加します。写真は1枚が1ページになります。",
       "ページの画面に進みます。ドラッグして順番に並べ、横向きのページは回転させ、いらないページは外します。",
-      "1つのPDFにまとめる形式を選びます。サイズの上限を指定されているときは、1・2・5・10 MBから選びます。",
+      "「1つのPDF」を選びます。サイズの上限を指定されているときは、1・2・5・10 MBから選ぶか、「その他…」で別の上限を指定します。",
       "プレビューを確認し、相手に必要のない情報があれば隠してから、ファイルをダウンロードします。",
     ],
   },
@@ -108,8 +115,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "ページの並べ替え",
         cachety: CACHETY.pages,
-        other: "結合ツールではファイル単位で並べ替え。ページ単位の並べ替え、削除、回転は、別のツール（Organize PDF）で行う",
-        edge: "cachety",
+        other: "結合ツールではファイル単位で並べ替え。別のツール（Organize PDF）では、ページ単位の並べ替え、削除、回転ができ、ファイルを追加して結合することもできる（無料：5ファイル、100 MB）",
       },
       {
         criterion: "サイズの上限に収める",
@@ -161,7 +167,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
           "Word、Excel、PowerPointのファイルをPDFに変換できます。",
           "スキャンの文字を認識（OCR）するので、スキャンしたPDFを検索できるようにできます。",
           "大きな作業に対応しています。無料の結合で100ファイルまで扱えます。",
-          "有料のデスクトップアプリは、ウェブサイトと同じツールで、パソコンの中でファイルを処理します。",
+          "有料のデスクトップアプリは、ウェブサイトのツールのほとんどを備え、パソコンの中でファイルを処理します。",
         ],
       },
       { type: "h2", text: "Cachetyが役立つ点" },
@@ -185,7 +191,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     chooseCachety: [
       "ファイルが身分証、給与明細、取引明細などで、アップロードしたくないとき",
       "写真とPDFを同じファイルに、自分の決めた順番で入れたいとき",
-      "フォームが、1・2・5・10 MB以下の1つのファイルを求めているとき",
+      "フォームが、MBで示されたサイズの上限以下で、1つのファイル、または書類の種類ごとに1つのファイルを求めているとき",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -194,7 +200,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       ),
       {
         q: "iLovePDFで、PDFをぴったり指定したサイズに圧縮できますか？",
-        a: "できません。圧縮レベルが3段階あり、同社のガイドにも、出力サイズを正確に約束できるツールはないと書かれています。Cachetyでは1・2・5・10 MBから選び、読める状態のまま収められないときは、ダウンロードの前に知らされます。",
+        a: "できません。圧縮レベルが3段階あり、同社のガイドにも、出力サイズを正確に約束できるツールはないと書かれています。Cachetyでは最大サイズをMBで選び、読める状態のまま収められないときは、ダウンロードの前に知らされます。",
       },
       {
         q: "iLovePDFはオフラインで使えますか？",
@@ -218,6 +224,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "iLovePDF ブログ：iLovePDFの15年", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "iLovePDFについて", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -237,7 +244,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     intro:
       "Smallpdfは、スイスのよく知られたオンラインPDFツール群で、スマホ用とWindows用のアプリもあります。結合と圧縮のツールはクラウドで動きます。Cachetyは、あなたの端末の中で、もっと限られた仕事をします。PDFと写真を1つのファイルにまとめ、サイズの上限に収めます。アップロードはしません。",
     verdict:
-      "できることが多いのはSmallpdfです。Word、Excel、PowerPointのファイルを受け付け、スキャンの文字を認識でき、オフラインで動くWindowsアプリもあります。そうした用途なら、Smallpdfを選ぶべきです。Cachetyが向いているのは、ファイルがアップロードしたくない個人の書類であるとき、1日に2、3件を超えるファイルを用意するとき、フォームがサイズの上限をMBで決めているときです。",
+      "できることが多いのはSmallpdfです。Word、Excel、PowerPointのファイルを受け付け、スキャンの文字を認識でき、オフラインで動くWindowsアプリもあります。そうした用途なら、Smallpdfを選ぶべきです。Cachetyが向いているのは、ファイルがアップロードしたくない個人の書類であるとき、無料プランの1日の上限に達してしまうとき、フォームがサイズの上限をMBで決めているときです。",
     table: [
       {
         criterion: "ファイルを処理する場所",
@@ -248,7 +255,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "ファイルの保管期間",
         cachety: CACHETY.kept,
-        other: "アカウントに保存しない限り、1時間後にサーバーから削除",
+        other: "Smallpdfの製品ページによると、アカウントに保存しない限り、1時間後にサーバーから削除",
         edge: "cachety",
       },
       {
@@ -260,7 +267,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "ページの並べ替え",
         cachety: CACHETY.pages,
-        other: "結合ツールでページの並べ替え、回転、削除ができる。別のツール（Organize PDF）は、1つのPDFに対して同じことをする",
+        other: "結合ツールでは、すべてのファイルのページを表示して、並べ替え、回転、削除ができる。Smallpdfの料金ページでは、このページ表示は有料プランの欄に載っている。Organize PDFツールでは、ページの並べ替え、回転、削除、追加ができ、複数の文書を1つにまとめることもできる",
       },
       {
         criterion: "サイズの上限に収める",
@@ -282,7 +289,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "隠れたデータ",
         cachety: CACHETY.hidden,
-        other: "結合ツールについては、製品ページにもヘルプページにも記載なし",
+        other: "結合ツールについては説明なし。Smallpdfのブログによると、圧縮ツールとフラット化（Flatten）ツールがメタデータを取り除く。結合とは別の手順になる",
       },
       {
         criterion: "アプリとオフラインでの利用",
@@ -331,17 +338,17 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     ],
     chooseCachety: [
       "ファイルが身分証、給与明細、取引明細などで、アップロードしたくないとき",
-      "フォームが、1・2・5・10 MB以下の1つのファイルを求めているとき",
+      "フォームが、MBで示されたサイズの上限以下で、1つのファイル、または書類の種類ごとに1つのファイルを求めているとき",
       "スマホを使っていて、アプリのインストールもアカウントの作成もしたくないとき",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "Smallpdfのオンラインツールでは、されます。ファイルは同社のサーバーにアップロードされ、アカウントに保存しない限り1時間後に削除されます。Windows用のデスクトップアプリは、オフラインでファイルを扱います。"
+        "Smallpdfのオンラインツールでは、されます。ファイルは同社のサーバーにアップロードされ、製品ページによると、アカウントに保存しない限り1時間後に削除されます。Windows用のデスクトップアプリは、オフラインでファイルを扱います。"
       ),
       {
         q: "Smallpdfで、PDFをぴったり指定したサイズに圧縮できますか？",
-        a: "できません。Smallpdfにあるのは圧縮レベルで、同社のブログにも、このツールでは正確なサイズを入力できないと書かれています。Cachetyでは1・2・5・10 MBから選びます。",
+        a: "できません。Smallpdfにあるのは圧縮レベルで、同社のブログにも、このツールでは正確なサイズを入力できないと書かれています。Cachetyでは最大サイズをMBで選びます。読める状態を保てるかぎり、ファイルはそのサイズ以下に収められます。",
       },
       {
         q: "Smallpdfは無料ですか？",
@@ -359,6 +366,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       { label: "Smallpdf Trust Center", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf アプリと拡張機能", url: "https://smallpdf.com/download" },
       { label: "Smallpdf ブログ：PDFを選んだサイズに圧縮", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "Smallpdf ブログ：PDFのメタデータの削除", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "Smallpdfについて", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -379,7 +387,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     intro:
       "PDFを生み出したのはAdobeです。無料のAcrobatオンラインツールは、どのブラウザでもPDFを結合・圧縮できます。ファイルはAdobeのサーバーで扱われます。Cachetyは、あなたの端末の中で、もっと限られた仕事をします。PDFと写真を1つのファイルにまとめ、サイズの上限に収めます。アップロードはしません。",
     verdict:
-      "文字をそのまま残す必要があるPDFなら、Adobeの結合を選ぶべきです。画像、文字、書式の品質を落とさずにファイルを結合し、100ファイルまで扱えます。有料のデスクトップアプリは、Cachetyよりはるかに多くのことができます。Cachetyが向いているのは、アップロードしたくない個人の書類を扱うとき、写真とPDFを無料で一緒にまとめたいとき、MBで示されたサイズの上限に合わせたいときです。",
+      "文字をそのまま残す必要があるPDFなら、Adobeの結合を選ぶべきです。画像、文字、書式の品質を落とさずにファイルを結合し、100ファイルまで扱えます。有料のデスクトップアプリは、Cachetyよりはるかに多くのことができます。Cachetyが向いているのは、アップロードしたくない個人の書類を扱うとき、写真とPDFを一度の操作でまとめたいとき、MBで示されたサイズの上限に合わせたいときです。",
     table: [
       {
         criterion: "ファイルを処理する場所",
@@ -396,12 +404,12 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "登録、無料で使える範囲、上限",
         cachety: CACHETY.free,
-        other: "結合：1つ500ページまでのファイルを100個まで。透かしは入らない。圧縮：無料だが利用に制限あり。無制限に使うには有料プランが必要",
+        other: "結合：1つ500ページまでのファイルを100個まで、結合後のファイルは1,500ページまで。透かしは入らない。圧縮：無料だが利用に制限あり。無制限に使うには有料プランが必要",
       },
       {
         criterion: "ページの並べ替え",
         cachety: CACHETY.pages,
-        other: "結合の前にファイルを並べ替えられる。ページ単位の整理にはサインインが必要",
+        other: "結合の前にファイルを並べ替えられる。ページ単位の整理にはサインインが必要で、無料のアカウントで足りる",
         edge: "cachety",
       },
       {
@@ -412,7 +420,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "写真とほかのファイル形式",
         cachety: CACHETY.inputs,
-        other: "無料の結合で扱えるのはPDF。PDFとWord、Excel、PowerPoint、画像ファイルを組み合わせる機能は、Acrobat Proに含まれる。別のツールで画像をPDFにできるが、結果をダウンロードするにはサインインが必要",
+        other: "無料の結合で扱えるのはPDF。PDFとWord、Excel、PowerPoint、画像ファイルを組み合わせる機能は、Acrobat Proに含まれる。別の無料ツールで、HEIC写真を含む画像をPDFにできるが、変換できる回数には制限がある",
       },
       {
         criterion: "できあがるPDF",
@@ -458,7 +466,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
         items: [
           "ファイルがアップロードされることはなく、どの段階でもサインインはいりません。",
           "ページを1枚ずつ移動、回転、削除する操作は無料で、アカウントもいりません。",
-          "写真とPDFを無料で同じファイルにまとめられます。iPhoneのHEIC写真も使えます。",
+          "写真とPDFを一度の操作で同じファイルにまとめられます。Adobeの無料ツールでは、まず写真をPDFに変換し、それから結合します。",
           "すべてのファイルから隠れたデータが取り除かれます。Adobeでは、有料のProプランの機能です。",
           "サイズをMBで選べ、収められるかどうかがダウンロードの前に知らされます。",
         ],
@@ -474,7 +482,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     chooseCachety: [
       "ファイルが身分証、給与明細、取引明細などで、アップロードしたくないとき",
       "サインインせずに、ページの並べ替え、回転、削除をしたいとき",
-      "写真とPDFを一緒にまとめ、1・2・5・10 MB以下に収める必要があるとき",
+      "写真とPDFを一緒にまとめ、MBで示されたサイズの上限以下に収める必要があるとき",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -483,7 +491,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       ),
       {
         q: "PDFを結合するのにAdobeのアカウントは必要ですか？",
-        a: "結合してダウンロードするだけなら、必要ありません。ページ単位の整理、リンクでのファイルの共有、画像から作ったPDFのダウンロードには、サインインを求められます。Cachetyには、アカウントそのものがありません。",
+        a: "結合してダウンロードするだけなら、必要ありません。ページ単位の整理や、リンクでのファイルの共有には、サインインを求められます。Cachetyには、アカウントそのものがありません。",
       },
       {
         q: "Acrobatのオンラインツールで、PDFのメタデータを削除できますか？",
@@ -496,6 +504,8 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       { label: "Adobe Acrobat PDFの結合", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat PDFの圧縮", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat JPGをPDFに", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat 画像をPDFに", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat HEICをPDFに", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat PDFのページの並べ替え", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat PDFのページの削除", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -546,7 +556,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "ページの並べ替え",
         cachety: CACHETY.pages,
-        other: "ファイルはドラッグ＆ドロップで並べ替え。ページモードでは、すべてのファイルのページが表示される。ページの回転と削除は別のツール",
+        other: "ファイルはドラッグ＆ドロップで並べ替え。ページモードでは、すべてのファイルのページが表示され、使いたいページを選んで順番にドラッグする。選ばなかったページは入らない。ページの回転は別のツール",
       },
       {
         criterion: "サイズの上限に収める",
@@ -568,17 +578,23 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "隠れたデータ",
         cachety: CACHETY.hidden,
-        other: "別のツールでPDFのメタデータを削除できる",
+        other: "別のツールでPDFのメタデータを削除できる。PDFの圧縮ツールでも、メタデータ、添付ファイル、注釈を取り除ける",
+      },
+      {
+        criterion: "結合のオプション",
+        cachety: MERGE_OPTIONS,
+        other: "しおり、目次、各ファイルの前の表紙ページ、両面印刷用の白紙ページ、ページへのファイル名の印字",
+        edge: "other",
       },
       {
         criterion: "アプリとオフラインでの利用",
         cachety: CACHETY.offline,
-        other: "PDF24 Creatorで、すべてのツールをオフラインで使える。Windowsのみ。MacやLinux用はまだなく、スマホのアプリストアにもアプリはない",
+        other: "PDF24 Creatorで、すべてのツールをオフラインで使える。Windowsのみ。MacやLinux用はまだなく、スマホのアプリストアにもアプリはない。オンラインツールはスマホのホーム画面に追加できるが、使うには通信が必要",
       },
       {
         criterion: "広告とトラッカー",
         cachety: CACHETY.ads,
-        other: "オンラインツールは広告で運営されている。プライバシーポリシーには、Google AdSenseとGoogle Analyticsの記載あり",
+        other: "オンラインツールは広告で運営されている。プライバシーポリシーには、Google AdSenseやGoogle Analyticsなどの記載あり",
         edge: "cachety",
       },
     ],
@@ -596,7 +612,8 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         type: "list",
         items: [
-          "結合したPDFは元のページをそのまま保つので、文字は選択でき、ファイルも軽いままです。",
+          "結合したPDFは元のページをそのまま保ちます。文字、画像、フォントの品質は変わりません。",
+          "Cachetyにはない結合のオプションがあります。しおり、目次、表紙ページ、両面印刷用の白紙ページです。",
           "Word文書などのファイルも受け付け、文字認識（OCR）もあります。",
           "Windowsでは、PDF24 Creatorがこれらすべてをオフラインで、無料で行います。",
           "圧縮の解像度と画質を自分で設定できます。",
@@ -624,7 +641,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     ],
     chooseCachety: [
       "スマホ、Mac、ソフトをインストールできないパソコンを使っていて、書類をアップロードしたくないとき",
-      "フォームが、1・2・5・10 MB以下の1つのファイルを求めているとき",
+      "フォームが、MBで示されたサイズの上限以下で、1つのファイル、または書類の種類ごとに1つのファイルを求めているとき",
       "写真がiPhoneで撮ったものであるとき",
     ],
     faq: [
@@ -634,7 +651,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       ),
       {
         q: "PDF24で、PDFを指定したサイズに圧縮できますか？",
-        a: "直接はできません。解像度と画質を設定する方式で、PDF24のガイドにも「5 MBに圧縮」というオプションはないと書かれています。Cachetyでは1・2・5・10 MBから選びます。",
+        a: "直接はできません。解像度と画質を設定する方式で、PDF24のガイドにも「5 MBに圧縮」というオプションはないと書かれています。Cachetyでは最大サイズをMBで選びます。読める状態を保てるかぎり、ファイルはそのサイズ以下に収められます。",
       },
       {
         q: "PDF24は、Macやスマホでオフラインで使えますか？",
@@ -647,6 +664,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       { label: "PDF24 Tools PDFの圧縮", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools 画像をPDFに", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools PDFのメタデータを削除", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools PDFの回転", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools よくある質問", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "PDF24 ヘルプ：PDFファイルの結合", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -682,13 +700,13 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       {
         criterion: "ファイルの保管期間",
         cachety: CACHETY.kept,
-        other: "オンライン：2時間後に自動で削除。ボタンで、もっと早く削除できる",
+        other: "オンライン：2時間後に自動で削除。結果のページに、ファイルを削除するボタン（Delete files）がある",
         edge: "cachety",
       },
       {
         criterion: "登録、無料で使える範囲、上限",
         cachety: CACHETY.free,
-        other: "登録不要。無料のオンライン結合：50ページまたは50 MBまで、1時間に3回まで。無料の圧縮：200ページまたは100 MBまで。無料のデスクトップ版：1日3回まで。有料プランで上限がなくなる",
+        other: "登録不要。無料のオンライン結合：50ページまたは50 MBまで、1時間に3回まで。無料の圧縮：200ページまたは100 MBまで。無料のデスクトップ版：1日3回まで、50 MB・200ページまでの文書。有料プランではページ数と1時間あたりの上限がなくなり、アップロードは1ファイル500 MBまでになる",
         edge: "cachety",
       },
       {
@@ -709,14 +727,14 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       },
       {
         criterion: "結合のオプション",
-        cachety: "ページの順番以外にはありません。しおりも目次もありません",
+        cachety: MERGE_OPTIONS,
         other: "ファイルごとのしおりの保持や作成、目次、両面印刷用の白紙ページ、フッターへのファイル名",
         edge: "other",
       },
       {
         criterion: "隠れたデータ",
         cachety: CACHETY.hidden,
-        other: "別のツールでPDFのメタデータを編集できる",
+        other: "別のツールで、PDFのメタデータを編集するか、すべて削除できる",
       },
       {
         criterion: "アプリとオフラインでの利用",
@@ -732,7 +750,7 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       },
       {
         type: "p",
-        text: "Sejda Desktopは、Mac、Windows、Linuxで、アップロードなしにパソコンの中でファイルを処理します。無料版で使えるのは1日3回までです。個人の書類については、大事な点が一つあります。Sejdaの利用規約には、利用者は公的な身分証の番号などの機微な個人情報を、オンラインサービスに送信してはならないと書かれています。",
+        text: "Sejda Desktopは、Mac、Windows、Linuxで、アップロードなしにパソコンの中でファイルを処理します。無料版で使えるのは1日3回までで、50 MB・200ページまでの文書が対象です。結合は30ファイル、50ページまでです。個人の書類については、大事な点が一つあります。Sejdaの利用規約には、利用者は公的な身分証の番号などの機微な個人情報を、オンラインサービスに送信してはならないと書かれています。",
       },
       { type: "h2", text: "Sejdaが向いている点" },
       {
@@ -740,7 +758,8 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
         items: [
           "Cachetyにはない結合のオプションがあります。しおり、目次、両面印刷用の白紙ページです。",
           "Mac・Windows・Linux用のデスクトップアプリがあり、ファイルはパソコンの中にとどまります。",
-          "同じ場所にほかのツールが多くあります。文字認識（OCR）、切り抜き、スキャンの傾き補正、編集です。",
+          "同じ場所にほかのツールが多くあります。文字認識（OCR）、PDFのページの切り抜きと傾き補正、編集です。",
+          "Dropbox、Google Drive、OneDriveから、ファイルを直接取り込めます。",
           "画質と解像度の設定で、圧縮を細かく調整できます。",
         ],
       },
@@ -760,12 +779,12 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
     chooseOther: [
       "結合したPDFに、しおりや目次が必要なとき",
       "Sejda Desktopをインストールでき、作業が無料の上限に収まるとき、または有料プランを契約しているとき",
-      "文字認識、切り抜き、スキャンの傾き補正が必要なとき",
+      "文字認識が必要なとき、またはスキャンしたPDFのページを切り抜いたり、傾きを直したりしたいとき。Cachetyでそれができるのは写真だけです",
     ],
     chooseCachety: [
       "ファイルが身分証、給与明細、取引明細などで、スマホを使っているか、ソフトをインストールできないとき",
       "ファイルが50ページを超えるとき、または同じ1時間のうちに複数のファイルを用意するとき",
-      "フォームが、1・2・5・10 MB以下の1つのファイルを求めているとき",
+      "フォームが、MBで示されたサイズの上限以下で、1つのファイル、または書類の種類ごとに1つのファイルを求めているとき",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -774,11 +793,11 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       ),
       {
         q: "Sejdaの結合は、無料でどこまで使えますか？",
-        a: "オンラインでは、50ページまたは50 MBまでの書類を、1時間に3回まで。Sejda Desktopの無料版は、1日3回までです。Cachetyにはこうした上限がなく、1つのファイルに1,000ページまで入れられます。",
+        a: "オンラインでは、50ページまたは50 MBまでの書類を、1時間に3回まで。Sejda Desktopの無料版は、1日3回まで、50 MB・200ページまでの文書です。Cachetyにはこうした上限がなく、1つのファイルに1,000ページまで入れられます。",
       },
       {
         q: "Sejdaで、PDFを指定したサイズに圧縮できますか？",
-        a: "圧縮ツールにあるのは画質と解像度の設定で、目標のサイズを指定するものではありません。Cachetyでは1・2・5・10 MBから選びます。",
+        a: "圧縮ツールにあるのは画質と解像度の設定で、目標のサイズを指定するものではありません。Cachetyでは最大サイズをMBで選びます。読める状態を保てるかぎり、ファイルはそのサイズ以下に収められます。",
       },
       FAQ_TEXT,
     ],
@@ -788,7 +807,8 @@ export const DOSSIER_COMPARISONS_JA: Comparison[] = [
       { label: "Sejda JPGをPDFに", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda PDFのページの整理", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda PDFのメタデータの編集", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda 料金とよくある質問", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda プランとよくある質問", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda 結果のページ", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "Sejda セキュリティ", url: "https://www.sejda.com/security" },
       { label: "Sejda プライバシーポリシー", url: "https://www.sejda.com/privacy" },

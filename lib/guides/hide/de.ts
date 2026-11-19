@@ -6,14 +6,15 @@
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
 // Diese Ratgeber beschreiben die Funktion `suggested-areas`
-// (docs/prd-suggested-areas.md). Erst mit ihr veröffentlichen, nicht vorher.
-// Die Schaltflächen der neuen Funktion sind hier nur umschrieben, weil ihre
-// deutschen Beschriftungen noch nicht feststehen: beim Veröffentlichen mit
-// lib/locales/de/strings.ts abgleichen.
+// (docs/prd-suggested-areas.md), wie sie ausgeliefert ist. Die zitierten
+// Beschriftungen („Ansehen“, „Alle schwärzen“, „Diese nicht“, „Fertig“,
+// „Etwas schwärzen“) sind mit lib/suggest-copy/de.ts und
+// lib/locales/de/strings.ts abgeglichen, die Liste der Nummern mit
+// lib/sensitive.ts: bitte im Gleichschritt halten.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_DE: Guide[] = [
   // ------------------------------------------------------------------
@@ -47,7 +48,9 @@ export const HIDE_GUIDES_DE: Guide[] = [
         items: [
           "Kontonummern im IBAN-Format, aus jedem Land.",
           "Nummern von Zahlungskarten der großen Kartennetzwerke.",
+          "Deine Steuer-ID, die steuerliche Identifikationsnummer mit elf Ziffern.",
           "Französische Sozialversicherungsnummern, französische Steuernummern und die Referenzen französischer Steuerbescheide.",
+          "Ausweis- und Steuernummern aus anderen Ländern: die spanischen Nummern DNI und NIE, die niederländische BSN, die belgische Nationalregisternummer, die portugiesische NIF, die brasilianische CPF, die italienische Steuernummer (codice fiscale), die chinesische Personalausweisnummer, die japanische My Number, der iranische nationale Code und die indonesische NIK.",
         ],
       },
       {
@@ -60,14 +63,19 @@ export const HIDE_GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser, am Computer oder auf dem Handy. Ein Konto brauchst du nicht.",
           "Füge dein PDF hinzu. Gib an, wofür die Kopie ist, und dann, wer sie bekommt.",
-          "Hat Cachety etwas gefunden, steht über der Vorschau, wie viele Nummern es sind. Öffne dort die Liste der Vorschläge.",
-          "Jeder Vorschlag ist auf der Seite umrandet und mit seinem Namen aufgeführt, zum Beispiel als Kontonummer (IBAN). Tippe die an, die du schwärzen willst, oder wähle, alle zu schwärzen. Jede Schwärzung kannst du rückgängig machen.",
-          "Sieh dir jede Seite selbst an. Zieh ein Rechteck über alles, was sonst noch verschwinden soll, und lade dann deine Kopie herunter.",
+          "Hat Cachety etwas gefunden, steht über der Vorschau, wie viele Nummern es sind. Wähle „Ansehen“.",
+          "Jeder Vorschlag ist auf der Seite umrandet und mit seinem Namen aufgeführt, zum Beispiel „Kontonummer (IBAN)“. Tippe die an, die du schwärzen willst, oder wähle „Alle schwärzen“. Jede Schwärzung kannst du rückgängig machen, und einen falschen Vorschlag legst du mit „Diese nicht“ beiseite.",
+          "Sieh dir jede Seite selbst an und zieh ein Rechteck über alles, was sonst noch verschwinden soll. Wähle dann „Fertig“: Erst in diesem Moment werden die Bereiche aus der Datei entfernt.",
+          "Prüf die Vorschau und lade deine Kopie herunter.",
         ],
       },
       {
         type: "tip",
-        text: "Nichts wird geschwärzt, bevor du es sagst. Hat der Empfänger nach deiner Bankverbindung gefragt, lass die IBAN sichtbar: Genau die braucht er.",
+        text: "Nichts wird geschwärzt, bevor du es sagst. Hat der Empfänger nach deiner Bankverbindung gefragt, lass die IBAN sichtbar: Genau die braucht er. Dasselbe gilt für die Steuernummer und die Referenz auf einem französischen Steuerbescheid: Mit ihnen kann der Empfänger prüfen, ob der Bescheid echt ist.",
+      },
+      {
+        type: "p",
+        text: "Dieselben Vorschläge gibt es in den beiden anderen Tools von Cachety: wenn du ein PDF unterschreibst und wenn du mit Dossier mehrere Dokumente zu einer Datei zusammenfügst.",
       },
       { type: "h2", text: "Was Cachety nicht finden kann" },
       {
@@ -75,7 +83,8 @@ export const HIDE_GUIDES_DE: Guide[] = [
         items: [
           "Alles auf einem Foto oder Scan. In einem Bild gibt es keinen Text zum Lesen, also auch keine Vorschläge: Zieh die Rechtecke selbst.",
           "Barcodes und QR-Codes. Sie können dieselben Angaben enthalten wie der Text, der daneben gedruckt ist.",
-          "Nummern in Formaten, die Cachety nicht prüft, etwa eine Kunden- oder Vertragsnummer, eine Reisepass- oder Führerscheinnummer.",
+          "Nummern in Formaten, die Cachety nicht prüft, etwa eine Sozialversicherungsnummer, die Steuernummer vom Finanzamt (nicht die Steuer-ID), eine alte Kontonummer mit Bankleitzahl, eine Kunden- oder Vertragsnummer, eine Reisepass- oder Führerscheinnummer.",
+          "Eine Kartennummer, die schon teilweise unkenntlich gemacht ist, etwa die letzten vier Ziffern auf einem Beleg. Da gibt es nichts mehr zu schwärzen.",
           "Namen, Adressen, Geburtsdaten und Telefonnummern. Meist braucht der Empfänger genau diese Angaben, deshalb werden sie nicht vorgeschlagen.",
         ],
       },
@@ -133,7 +142,7 @@ export const HIDE_GUIDES_DE: Guide[] = [
       },
       {
         type: "p",
-        text: "Das eine echte Risiko ist eine Lastschrift, die ohne deine Zustimmung auf deinen Namen eingerichtet wird. Im Euroraum kannst du dir eine SEPA-Lastschrift innerhalb von acht Wochen von deiner Bank erstatten lassen, und innerhalb von 13 Monaten, wenn du sie nie autorisiert hast. Prüf also deine Kontoauszüge und melde deiner Bank jede Abbuchung, die du nicht kennst.",
+        text: "Das Hauptrisiko ist eine Lastschrift, die ohne deine Zustimmung auf deinen Namen eingerichtet wird. Bei einer SEPA-Basislastschrift, der üblichen Lastschrift für Privatkunden im ganzen Euroraum, kannst du dir eine Abbuchung innerhalb von acht Wochen nach der Belastung von deiner Bank erstatten lassen, ohne Gründe zu nennen, und innerhalb von 13 Monaten, wenn du sie nie autorisiert hast. Prüf also deine Kontoauszüge und melde deiner Bank jede Abbuchung, die du nicht kennst.",
       },
       { type: "h2", text: "Die eigentliche Gefahr ist das Gesamtpaket" },
       {
@@ -155,8 +164,8 @@ export const HIDE_GUIDES_DE: Guide[] = [
         items: [
           "Öffne cachety.com im Browser. Nichts installieren, kein Konto.",
           "Füge dein PDF oder Foto hinzu. Gib an, wofür die Kopie ist, und dann, wer sie bekommt.",
-          "In einem PDF sucht Cachety nach IBANs und sagt dir, wenn es eine findet. Öffne die Liste der Vorschläge über der Vorschau und tippe den Vorschlag an, um die IBAN zu schwärzen.",
-          "Eine Kontonummer, die nicht im IBAN-Format geschrieben ist, wird nicht vorgeschlagen, und auf einem Foto wird gar nichts vorgeschlagen: Tippe auf „Etwas schwärzen“ und zieh ein Rechteck darüber.",
+          "In einem PDF sucht Cachety nach IBANs und sagt dir, wenn es eine findet. Wähle „Ansehen“, tippe den Vorschlag an, um die IBAN zu schwärzen, und wähle dann „Fertig“.",
+          "Eine Kontonummer, die nicht im IBAN-Format geschrieben ist, etwa eine alte Kontonummer mit Bankleitzahl, wird nicht vorgeschlagen, und auf einem Foto wird gar nichts vorgeschlagen: Tippe auf „Etwas schwärzen“ und zieh ein Rechteck darüber.",
           "Prüf jede Seite und lade dann deine Kopie herunter.",
         ],
       },
@@ -185,7 +194,7 @@ export const HIDE_GUIDES_DE: Guide[] = [
       },
       {
         q: "Was tue ich, wenn ich eine Lastschrift sehe, der ich nie zugestimmt habe?",
-        a: "Melde dich sofort bei deiner Bank und verlange die Erstattung. Im Euroraum hast du 13 Monate Zeit, einer Lastschrift zu widersprechen, die du nicht autorisiert hast.",
+        a: "Melde dich sofort bei deiner Bank und verlange die Erstattung. Bei einer SEPA-Lastschrift hast du 13 Monate Zeit, eine Abbuchung zu beanstanden, die du nicht autorisiert hast.",
       },
     ],
     updated: UPDATED,
@@ -206,11 +215,11 @@ export const HIDE_GUIDES_DE: Guide[] = [
       { type: "h2", text: "Warum ein Foto deiner Karte riskant ist" },
       {
         type: "p",
-        text: "Auf der Vorderseite einer Karte stehen die lange Kartennummer, das Ablaufdatum und dein Name. Auf der Rückseite steht der dreistellige Sicherheitscode (CVC), oft auch Prüfziffer genannt. Zusammen ist das alles, was jemand braucht, um mit deiner Karte online zu bezahlen. Eine E-Mail oder Chatnachricht kann jahrelang in mehreren Postfächern liegen, weit außerhalb deiner Kontrolle.",
+        text: "Bei den meisten Karten stehen auf der Vorderseite die lange Kartennummer, das Ablaufdatum und dein Name, und auf der Rückseite steht der dreistellige Sicherheitscode (CVC), auch Kartenprüfnummer genannt. Bei manchen neueren Karten steht all das auf der Rückseite. Zusammen ist das alles, was jemand braucht, um mit deiner Karte online zu bezahlen. Eine E-Mail oder Chatnachricht kann jahrelang in mehreren Postfächern liegen, weit außerhalb deiner Kontrolle.",
       },
       {
         type: "warning",
-        text: "Schick nie den Sicherheitscode mit: die drei Ziffern auf der Rückseite der Karte oder die vier Ziffern auf der Vorderseite einer American-Express-Karte. Kein seriöses Unternehmen braucht ihn auf einem Foto. Die Sicherheitsregeln der Kartenbranche verbieten Unternehmen, ihn aufzubewahren, sobald eine Zahlung durchgeführt ist.",
+        text: "Schick nie den Sicherheitscode mit: die drei Ziffern auf der Rückseite der Karte oder die vier Ziffern auf der Vorderseite einer American-Express-Karte. Kein seriöses Unternehmen braucht ihn auf einem Foto. Die Sicherheitsregeln der Kartenbranche verbieten Unternehmen, ihn aufzubewahren, sobald die Zahlung autorisiert ist.",
       },
       { type: "h2", text: "Frag zuerst nach einem anderen Weg" },
       {
@@ -221,7 +230,7 @@ export const HIDE_GUIDES_DE: Guide[] = [
       {
         type: "list",
         items: [
-          "Schwärze die mittleren Ziffern der Kartennummer. Lass höchstens die letzten vier stehen, so wie auf Kassenbelegen.",
+          "Schwärze die mittleren Ziffern der Kartennummer. Lass höchstens die letzten vier stehen, so wie auf dem Kassenbeleg, den du selbst bekommst.",
           "Schwärze den Sicherheitscode. Auf der Rückseite schwärzt du den ganzen Streifen, auf dem er steht.",
           "Schwärze das Ablaufdatum, außer es wird aus gutem Grund verlangt.",
           "Lass deinen Namen und das Logo der Bank stehen, damit die Kopie weiter zeigt, dass die Karte dir gehört.",
@@ -255,7 +264,7 @@ export const HIDE_GUIDES_DE: Guide[] = [
     faq: [
       {
         q: "Welche Ziffern meiner Kartennummer darf ich zeigen?",
-        a: "Die letzten vier reichen für die meisten Prüfungen, und sie stehen auch auf Kassenbelegen. Nach den Sicherheitsregeln der Kartenbranche darf ein Unternehmen höchstens die ersten Ziffern, an denen man die Bank erkennt, und die letzten vier anzeigen. Den Rest schwärzt du.",
+        a: "Die letzten vier reichen für die meisten Prüfungen, und sie stehen auch auf dem Kassenbeleg, den du selbst bekommst. Nach den Sicherheitsregeln der Kartenbranche soll ein Unternehmen in der Regel nicht mehr anzeigen als die ersten Ziffern, an denen man die Bank erkennt, und die letzten vier. Den Rest schwärzt du.",
       },
       {
         q: "Ist es sicher, ein Foto meiner Karte per E-Mail oder WhatsApp zu schicken?",
@@ -263,7 +272,7 @@ export const HIDE_GUIDES_DE: Guide[] = [
       },
       {
         q: "Das Hotel will Vorder- und Rückseite. Was mache ich?",
-        a: "Frag nach dem Grund und schlag stattdessen einen sicheren Zahlungslink vor. Schickst du die Rückseite doch, schwärze den Sicherheitscode und den Streifen darum herum. Nach den Regeln der Kartenbranche darf ein Unternehmen diesen Code nicht aufbewahren, sobald die Zahlung durchgeführt ist.",
+        a: "Frag nach dem Grund und schlag stattdessen einen sicheren Zahlungslink vor. Schickst du die Rückseite doch, schwärze den Sicherheitscode und den Streifen darum herum. Nach den Regeln der Kartenbranche darf ein Unternehmen diesen Code nicht aufbewahren, sobald die Zahlung autorisiert ist.",
       },
       {
         q: "Ich habe schon ein vollständiges Foto meiner Karte geschickt. Was jetzt?",

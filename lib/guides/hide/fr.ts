@@ -3,13 +3,21 @@
 // Écrits pour un public en France. Texte brut uniquement : pas de lien, pas de
 // balise, pas de markdown.
 //
-// Ces guides décrivent la fonction « zones suggérées » (docs/prd-suggested-areas.md).
-// À publier avec elle, pas avant, en revérifiant alors les libellés cités
-// (« Voir », « Tout masquer », « Numéro de compte (IBAN) ») dans lib/i18n.tsx.
+// Ces guides décrivent la fonction « zones suggérées » (docs/prd-suggested-areas.md)
+// telle qu'elle est livrée. Les libellés cités (« Voir », « Tout masquer »,
+// « Pas celui-ci », « Numéro de compte (IBAN) », « Terminé », « Masquer quelque
+// chose ») sont ceux de lib/suggest-copy/fr.ts et de lib/i18n.tsx, vérifiés le
+// 2026-11-19, et la liste des numéros est celle de lib/sensitive.ts : à garder
+// en accord avec eux. Les règles françaises citées (RIB et mandat, remboursement
+// d'un prélèvement SEPA, listes noire et blanche, vérification d'un avis
+// d'impôt, contenu du code 2D-Doc) ont été relues le même jour auprès de la
+// Banque de France, de l'administration (service de vérification des avis) et
+// des spécifications 2D-Doc de l'ANTS. Les règles des cartes (PCI DSS, Visa)
+// sont celles qui ont été vérifiées pour le guide anglais.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_FR: Guide[] = [
   // ------------------------------------------------------------------
@@ -44,6 +52,7 @@ export const HIDE_GUIDES_FR: Guide[] = [
           "Les numéros de compte bancaire écrits sous forme d’IBAN, de n’importe quel pays.",
           "Les numéros de carte bancaire des principaux réseaux.",
           "Les numéros de sécurité sociale, les numéros fiscaux et les références d’avis d’impôt français.",
+          "Les numéros d’identité et les numéros fiscaux d’autres pays : l’identifiant fiscal allemand, le DNI et le NIE espagnols, le BSN néerlandais, le numéro national belge, le NIF portugais, le CPF brésilien, le code fiscal italien, la carte d’identité de résident chinoise, le My Number japonais, le code national iranien et le NIK indonésien.",
         ],
       },
       {
@@ -57,13 +66,18 @@ export const HIDE_GUIDES_FR: Guide[] = [
           "Ouvrez cachety.com dans votre navigateur, sur ordinateur ou sur téléphone. Aucun compte à créer.",
           "Ajoutez votre PDF. Indiquez à quoi sert la copie, puis qui va la recevoir.",
           "Si Cachety a trouvé quelque chose, un message au-dessus de l’aperçu vous dit combien de numéros il a repérés. Choisissez « Voir ».",
-          "Chaque suggestion est encadrée sur la page et listée avec son nom, par exemple « Numéro de compte (IBAN) ». Sélectionnez celles que vous voulez masquer, ou choisissez « Tout masquer ». Vous pouvez annuler chacune.",
-          "Relisez vous-même chaque page. Tracez un rectangle sur tout ce que vous voulez encore cacher, puis téléchargez votre copie.",
+          "Chaque suggestion est encadrée sur la page et listée avec son nom, par exemple « Numéro de compte (IBAN) ». Sélectionnez celles que vous voulez masquer, ou choisissez « Tout masquer ». Vous pouvez annuler chacune, et écarter avec « Pas celui-ci » une suggestion qui se trompe.",
+          "Relisez vous-même chaque page et tracez un rectangle sur tout ce que vous voulez encore cacher. Choisissez ensuite « Terminé » : c’est seulement à ce moment-là que les zones sont retirées du fichier.",
+          "Vérifiez l’aperçu et téléchargez votre copie.",
         ],
       },
       {
         type: "tip",
-        text: "Rien n’est masqué tant que vous ne l’avez pas décidé. Si le destinataire vous a demandé vos coordonnées bancaires, laissez l’IBAN visible : c’est justement ce dont il a besoin. Sur un avis d’impôt, il peut se servir du numéro fiscal et de la référence de l’avis pour vérifier que le document est authentique : ne les masquez que s’il n’en a pas besoin.",
+        text: "Rien n’est masqué tant que vous ne l’avez pas décidé. Si le destinataire vous a demandé vos coordonnées bancaires, laissez l’IBAN visible : c’est justement ce dont il a besoin. Sur un avis d’impôt, il peut se servir du numéro fiscal et de la référence de l’avis pour vérifier, sur le site des impôts, que le document est authentique : ne les masquez que s’il n’en a pas besoin.",
+      },
+      {
+        type: "p",
+        text: "Les mêmes suggestions apparaissent dans les deux autres outils de Cachety : quand vous signez un PDF, et quand vous réunissez plusieurs documents en un seul fichier avec Dossier.",
       },
       { type: "h2", text: "Ce qu’il ne peut pas trouver" },
       {
@@ -71,7 +85,8 @@ export const HIDE_GUIDES_FR: Guide[] = [
         items: [
           "Tout ce qui se trouve dans une photo ou un scan. Une image ne contient pas de texte à lire, donc aucune suggestion : tracez les zones vous-même.",
           "Les codes-barres et les QR codes. Ils peuvent contenir les mêmes informations que le texte imprimé à côté : le code 2D-Doc d’un avis d’impôt sur le revenu, par exemple, reprend des informations de l’avis, dont le numéro fiscal.",
-          "Les numéros dont Cachety ne vérifie pas le format, comme un numéro de client ou de contrat, un numéro de passeport ou de permis de conduire.",
+          "Les numéros dont Cachety ne vérifie pas le format, comme un numéro de compte écrit autrement qu’en IBAN, un numéro de client ou de contrat, un numéro de passeport ou de permis de conduire.",
+          "Un numéro de carte déjà en partie masqué, comme les quatre derniers chiffres imprimés sur un ticket. Il n’y a plus rien à masquer.",
           "Les noms, adresses, dates de naissance et numéros de téléphone. C’est en général ce dont le destinataire a besoin : ils ne sont donc pas proposés.",
         ],
       },
@@ -125,11 +140,11 @@ export const HIDE_GUIDES_FR: Guide[] = [
       { type: "h2", text: "Ce qu’on peut faire avec votre RIB" },
       {
         type: "p",
-        text: "Avec votre IBAN, on peut verser de l’argent sur votre compte. C’est à cela qu’il sert. À lui seul, il ne permet ni de retirer de l’argent ni de faire un virement : il faut pour cela votre carte, vos identifiants de banque en ligne ou votre accord. La Banque de France le dit : communiquer son RIB n’est pas risqué en soi, car un créancier a besoin d’un mandat de prélèvement signé pour débiter votre compte.",
+        text: "Avec votre IBAN, on peut verser de l’argent sur votre compte. C’est à cela qu’il sert. À lui seul, il ne permet ni de retirer de l’argent ni de faire un virement : il faut pour cela votre carte, vos identifiants de banque en ligne ou votre accord. La Banque de France le dit : communiquer son RIB n’est pas risqué en soi, car pour prélever votre compte, un créancier doit y être autorisé par un mandat de prélèvement que vous avez signé.",
       },
       {
         type: "p",
-        text: "Le vrai risque, c’est un prélèvement mis en place à votre nom sans votre accord : il arrive que des fraudeurs émettent des prélèvements non autorisés avec des mandats fictifs. Dans la zone euro, vous pouvez demander à votre banque le remboursement d’un prélèvement dans les huit semaines, et dans les treize mois si vous ne l’avez jamais autorisé. Vous pouvez aussi lui demander de bloquer les prélèvements des créanciers que vous désignez (liste noire), ou de n’accepter que ceux des créanciers que vous désignez (liste blanche) : elle doit s’y conformer. Surveillez donc vos relevés, et signalez à votre banque tout prélèvement que vous ne reconnaissez pas.",
+        text: "Le principal risque, c’est un prélèvement mis en place à votre nom sans votre accord : il arrive que des fraudeurs émettent des prélèvements non autorisés avec des mandats fictifs. Pour un prélèvement SEPA, celui qu’on utilise en France comme dans toute la zone euro, vous pouvez demander à votre banque le remboursement d’une opération dans les huit semaines qui suivent le débit, et dans les treize mois si vous ne l’avez jamais autorisée. Vous pouvez aussi lui demander de bloquer les prélèvements des créanciers que vous désignez (liste noire), ou de n’accepter que ceux des créanciers que vous désignez (liste blanche) : d’après la Banque de France, elle est tenue de répondre à cette demande. Surveillez donc vos relevés, et signalez à votre banque tout prélèvement que vous ne reconnaissez pas.",
       },
       { type: "h2", text: "Le vrai danger, c’est le lot complet" },
       {
@@ -151,7 +166,7 @@ export const HIDE_GUIDES_FR: Guide[] = [
         items: [
           "Ouvrez cachety.com dans votre navigateur. Rien à installer, aucun compte.",
           "Ajoutez votre PDF ou votre photo. Indiquez à quoi sert la copie, puis qui va la recevoir.",
-          "Dans un PDF, Cachety recherche les IBAN et vous prévient s’il en trouve un. Choisissez « Voir », puis sélectionnez la suggestion pour la masquer.",
+          "Dans un PDF, Cachety recherche les IBAN et vous prévient s’il en trouve un. Choisissez « Voir », sélectionnez la suggestion pour la masquer, puis choisissez « Terminé ».",
           "Un numéro de compte écrit autrement qu’en IBAN (code banque, code guichet, numéro de compte et clé RIB) n’est pas proposé, pas plus que ce qui figure sur une photo : cliquez sur « Masquer quelque chose » et tracez un rectangle par-dessus.",
           "Vérifiez chaque page, puis téléchargez votre copie.",
         ],
@@ -181,7 +196,7 @@ export const HIDE_GUIDES_FR: Guide[] = [
       },
       {
         q: "Que faire si je vois un prélèvement que je n’ai jamais autorisé ?",
-        a: "Contactez tout de suite votre banque et demandez le remboursement. Dans la zone euro, vous avez treize mois pour contester un prélèvement que vous n’avez pas autorisé. Vous pouvez aussi lui demander de bloquer les prélèvements de ce créancier.",
+        a: "Contactez tout de suite votre banque et demandez le remboursement. Pour un prélèvement SEPA, vous avez treize mois à compter du débit pour contester une opération que vous n’avez pas autorisée. Vous pouvez aussi lui demander de bloquer les prélèvements de ce créancier.",
       },
     ],
     updated: UPDATED,
@@ -202,11 +217,11 @@ export const HIDE_GUIDES_FR: Guide[] = [
       { type: "h2", text: "Pourquoi une photo de votre carte est risquée" },
       {
         type: "p",
-        text: "Le recto d’une carte bancaire montre le long numéro de carte, la date d’expiration et votre nom. Le verso montre le cryptogramme visuel, à trois chiffres. Réunis, ils suffisent pour payer en ligne avec votre carte. Or un e-mail ou un message peut rester des années dans plusieurs boîtes, bien loin de votre contrôle.",
+        text: "Sur la plupart des cartes bancaires, le recto montre le long numéro de carte, la date d’expiration et votre nom, et le verso le cryptogramme visuel, à trois chiffres. Sur certaines cartes récentes, tout cela est imprimé au verso. Réunis, ils suffisent pour payer en ligne avec votre carte. Or un e-mail ou un message peut rester des années dans plusieurs boîtes, bien loin de votre contrôle.",
       },
       {
         type: "warning",
-        text: "N’envoyez jamais le cryptogramme visuel : les trois chiffres au dos de la carte, ou les quatre chiffres au recto d’une carte American Express. Aucun commerçant honnête n’en a besoin en photo. Les règles de sécurité que le secteur des cartes s’est données interdisent aux commerçants de le conserver une fois le paiement effectué.",
+        text: "N’envoyez jamais le cryptogramme visuel : les trois chiffres au dos de la carte, ou les quatre chiffres au recto d’une carte American Express. Aucun commerçant honnête n’en a besoin en photo. Les règles de sécurité que le secteur des cartes s’est données interdisent aux commerçants de le conserver une fois le paiement autorisé.",
       },
       { type: "h2", text: "Demandez d’abord un autre moyen" },
       {
@@ -217,7 +232,7 @@ export const HIDE_GUIDES_FR: Guide[] = [
       {
         type: "list",
         items: [
-          "Masquez les chiffres du milieu du numéro de carte. Laissez au plus les quatre derniers : c’est ce qu’affichent les tickets de caisse.",
+          "Masquez les chiffres du milieu du numéro de carte. Laissez au plus les quatre derniers : c’est en général ce qu’affiche votre exemplaire du ticket de carte.",
           "Masquez le cryptogramme visuel. Au dos de la carte, masquez toute la bande sur laquelle il est imprimé.",
           "Masquez la date d’expiration, sauf si on vous la demande pour une bonne raison.",
           "Laissez votre nom et le logo de la banque : la copie prouve ainsi toujours que la carte est la vôtre.",
@@ -251,7 +266,7 @@ export const HIDE_GUIDES_FR: Guide[] = [
     faq: [
       {
         q: "Quels chiffres de mon numéro de carte puis-je montrer ?",
-        a: "Les quatre derniers suffisent pour la plupart des vérifications, et ce sont ceux que les commerces impriment sur les tickets. Les règles de sécurité des cartes autorisent un commerçant à afficher, au plus, les premiers chiffres, qui identifient la banque, et les quatre derniers. Masquez le reste.",
+        a: "Les quatre derniers suffisent pour la plupart des vérifications, et ce sont en général ceux que les commerces impriment sur votre exemplaire du ticket. Selon les règles de sécurité des cartes, un commerçant ne devrait normalement pas afficher plus que les premiers chiffres, qui identifient la banque, et les quatre derniers. Masquez le reste.",
       },
       {
         q: "Peut-on envoyer sans risque une photo de sa carte par e-mail ou par WhatsApp ?",
@@ -259,7 +274,7 @@ export const HIDE_GUIDES_FR: Guide[] = [
       },
       {
         q: "L’hôtel veut le recto et le verso. Que faire ?",
-        a: "Demandez pourquoi, et proposez plutôt un lien de paiement sécurisé. Si vous envoyez quand même le verso, masquez le cryptogramme visuel et la bande qui l’entoure. Les règles du secteur des cartes n’autorisent pas un commerçant à conserver ce code une fois le paiement effectué.",
+        a: "Demandez pourquoi, et proposez plutôt un lien de paiement sécurisé. Si vous envoyez quand même le verso, masquez le cryptogramme visuel et la bande qui l’entoure. Les règles du secteur des cartes n’autorisent pas un commerçant à conserver ce code une fois le paiement autorisé.",
       },
       {
         q: "J’ai déjà envoyé une photo complète de ma carte. Que faire ?",

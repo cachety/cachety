@@ -4,14 +4,16 @@
 // only: no link, no tag, no markdown.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// These guides describe the Dossier tool (docs/prd-dossier.md), Must scope only:
-// no sections, no photo straightening, no custom size. Publish them with the
-// tool, not before, and re-check the steps against the shipped interface. The
-// labels of the new tool are described, not quoted.
+// These guides describe the Dossier tool (docs/prd-dossier.md) as shipped,
+// sections, photo straightening and custom size included. The quoted labels
+// (「一个 PDF」「拆分成多个文件」「从这里开始新的分组」「每个分组一个 PDF」
+// 「拉正并裁剪」「应用」「背景变白」「黑白」「应用到所有照片」「其他…」「撤销」
+// 「放回它的页面」) were checked on 2026-11-19 against the `dossier` block of
+// lib/i18n.tsx: keep them in step.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Address of the tool, written without a scheme (guides carry no link). */
 const TOOL = "cachety.com/zh/dossier";
@@ -48,13 +50,18 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
           `用电脑或手机的浏览器打开 ${TOOL}。不用安装，也不用注册。`,
           "添加文件：PDF 和照片可以一起放（JPG、PNG、iPhone 的 HEIC 照片等）。每张照片会变成一页。",
           "进入整理页面这一步。每个文件的每一页都会显示成一张小图。拖动页面可以移动它，也可以从一个文件拖到另一个文件里。把横着的页面转正，把不要的页面移除。",
-          "选择保存为一个 PDF。如果接收文件的网站有大小限制，就选上：1、2、5 或 10 MB。下载之前，Cachety 会告诉您文件能不能控制在这个大小以内，同时保持清晰可读。",
+          "选择「一个 PDF」。如果接收文件的网站有大小限制，就选上：1、2、5 或 10 MB，或者点「其他…」，填 0.5 到 50 MB 之间的任意上限。下载之前，Cachety 会告诉您文件能不能控制在这个大小以内，同时保持清晰可读。",
           "检查预览，给文件起个名字，然后下载。",
         ],
       },
       {
         type: "tip",
-        text: "下载之前，您可以遮盖银行账号，或者其他对方不需要的信息。被遮盖的区域会从文件中删除，而不只是盖住。",
+        text: "下载之前，您可以遮盖银行账号，或者其他对方不需要的信息。如果 PDF 里含有文字，Cachety 会把它找到的银行卡卡号和 IBAN 账号标出来。被遮盖的区域会从文件中删除，而不只是盖住。",
+      },
+      { type: "h2", text: "每类材料一个文件" },
+      {
+        type: "p",
+        text: "有些网站要的不是一个大文件，而是每类材料一个文件：身份证件、工资条、住址证明。勾选「拆分成多个文件」，然后在每个新文件该开始的那一页上打开菜单，选择「从这里开始新的分组」。给每个分组起个名字：它就是对应文件的文件名。这时「每个分组一个 PDF」会被选中，所有文件打包成一个 ZIP，一次下载。大小限制这时按每个文件计算。",
       },
       { type: "h2", text: "您的文件会怎样" },
       { type: "p", text: NOT_UPLOADED },
@@ -75,6 +82,7 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
           "每个文件最大 200 MB，每个 PDF 最多 500 页，总共最多 1,000 页。",
           "不支持 Word 和 Excel 文件：请先把它们存为 PDF（先点打印，再选择保存为 PDF）。",
           "加密的 PDF 也可以添加：Cachety 会在您的设备上向您要密码。",
+          "新文件的水印和密码都是可选的：您不选，就不会加。",
         ],
       },
     ],
@@ -121,7 +129,7 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
         type: "list",
         items: [
           "把纸平放在颜色单一的深色桌面上，靠近窗户。不要开闪光灯，它会留下一块白斑。",
-          "手机拿在纸的正上方，让纸的四边看起来互相平行，并让纸占满画面。",
+          "手机拿在纸的正上方，让纸的四边看起来互相平行，并让纸占满画面。拍歪了的照片，之后还可以拉正。",
           "一页拍一张。拍下一张之前，先确认小字是清楚的。",
         ],
       },
@@ -132,7 +140,9 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
           `用手机浏览器打开 ${TOOL}。不用安装 App。`,
           "点添加文件的区域，选择您的照片。iPhone 的 HEIC 格式照片可以直接用。",
           "进入整理页面这一步。每张照片都变成了一页。把横着的转正，再拖动它们排好顺序。",
-          "选择保存为一个 PDF；如果表单有大小限制，就选 1、2、5 或 10 MB。",
+          "照片拍歪了，或者把纸周围的桌面也拍了进去，就点一下这一页，选择「拉正并裁剪」。把四个角点分别对准纸的四个角，然后点「应用」。",
+          "在同一个地方，「背景变白」能把发灰的纸变白，「黑白」能去掉颜色。页面更好认，文件也小得多。点「应用到所有照片」，可以一次处理全部照片。",
+          "选择「一个 PDF」；如果表单有大小限制，就选 1、2、5 或 10 MB，或者点「其他…」填别的上限。",
           "检查预览，下载 PDF。文件保存在您的手机上，可以直接当附件用。",
         ],
       },
@@ -153,7 +163,7 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
       },
       {
         type: "warning",
-        text: "很小的大小限制和很多页照片，并不总能兼顾。如果文件没法既控制在限制以内又保持清晰可读，Cachety 会在下载之前告诉您：请移除几页，或者分成两个文件发送。",
+        text: "很小的大小限制和很多页照片，并不总能兼顾。如果文件没法既控制在限制以内又保持清晰可读，Cachety 会在下载之前告诉您。先试试「黑白」，再考虑移除几页、拆分成多个文件，或者在网站允许的情况下选一个更大的上限。",
       },
     ],
     faq: [
@@ -197,8 +207,8 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
           `用电脑或手机的浏览器打开 ${TOOL}。`,
           "添加您的 PDF。可以添加好几个文件，也可以加照片。",
           "进入整理页面这一步。每一页都显示成一张小图，按最终文件里的顺序排列。",
-          "拖动页面可以移动它。用旋转按钮，每次把它转四分之一圈。用移除按钮把它拿掉。拿错了页面，撤销就能恢复。",
-          "选择保存为一个 PDF，检查预览，然后下载。",
+          "拖动页面可以移动它。用旋转按钮，每次把它转四分之一圈。用移除按钮把它拿掉。拿错了页面，点「撤销」就能恢复：这个按钮只显示几秒钟。在手机上，点一下页面，同样的操作会出现在菜单里。",
+          "选择「一个 PDF」，检查预览，然后下载。",
         ],
       },
       {
@@ -235,7 +245,7 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
       },
       {
         q: "移除的页面还能找回来吗？",
-        a: "可以，只要页面还开着：移除后马上撤销，或者恢复原来的顺序。您的原文件始终不会被改动。",
+        a: "可以，用「撤销」：移除页面之后，它会显示几秒钟。如果把一份文件的页面全部移除了，列表里这份文件旁边会出现「放回它的页面」。这两样都用不上了，就把文件重新添加一次：您的原文件始终不会被改动。",
       },
       {
         q: "我的 PDF 会被上传吗？",
@@ -278,7 +288,7 @@ export const DOSSIER_GUIDES_ZH: Guide[] = [
           `用浏览器打开 ${TOOL}。不用注册账号。`,
           "添加您的 PDF 或照片。",
           "进入整理页面这一步，检查顺序对不对。把不想发的页面移除。",
-          "选择保存为一个 PDF，然后下载。",
+          "选择「一个 PDF」，然后下载。",
           "发送新文件，不要发原文件。",
         ],
       },

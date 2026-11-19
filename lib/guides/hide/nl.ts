@@ -4,14 +4,15 @@
 // HTML, geen markdown. Bedrijfsnamen zijn verzonnen.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// Deze uitleg beschrijft de functie `suggested-areas` (docs/prd-suggested-areas.md).
-// Publiceer hem samen met die functie, niet eerder. De nieuwe knoppen hebben
-// nog geen Nederlandse naam: de stappen beschrijven de handeling. Controleer ze
-// bij publicatie tegen lib/locales/nl/strings.ts.
+// Deze uitleg beschrijft de functie `suggested-areas` (docs/prd-suggested-areas.md)
+// zoals die is uitgebracht. De aangehaalde knoppen (“Bekijken”, “Alles
+// afdekken”, “Deze niet”, “Klaar”, “Iets afdekken”) zijn gecontroleerd tegen
+// lib/suggest-copy/nl.ts en lib/locales/nl/strings.ts, en de lijst met nummers
+// tegen lib/sensitive.ts: houd ze gelijk.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_NL: Guide[] = [
   // ───────────────────────── Nummers vinden en afdekken ─────────────────────────
@@ -45,7 +46,9 @@ export const HIDE_GUIDES_NL: Guide[] = [
         items: [
           "Rekeningnummers die als IBAN zijn geschreven, uit elk land.",
           "Nummers van betaalkaarten van de grote kaartnetwerken.",
+          "Je burgerservicenummer (BSN), als erbij staat wat het is: BSN, burgerservicenummer of sofinummer.",
           "Franse socialezekerheidsnummers, Franse belastingnummers en kenmerken van Franse belastingaanslagen.",
+          "Identiteits- en belastingnummers uit andere landen: het Duitse fiscale identificatienummer (Steuer-ID), het Spaanse DNI en NIE, het Belgische rijksregisternummer, het Portugese NIF, het Braziliaanse CPF, de Italiaanse fiscale code, het Chinese identiteitskaartnummer, het Japanse My Number, de Iraanse nationale code en het Indonesische NIK.",
         ],
       },
       {
@@ -57,15 +60,20 @@ export const HIDE_GUIDES_NL: Guide[] = [
         type: "steps",
         items: [
           "Open cachety.com in je browser, op een computer of een telefoon. Je hoeft geen account aan te maken.",
-          "Voeg je pdf toe. Vul bij Waarvoor is deze kopie? het doel in en bij Wie krijgt hem? de ontvanger.",
-          "Heeft Cachety iets gevonden, dan zegt een melding boven het voorbeeld hoeveel nummers het zijn. Open de lijst met suggesties.",
-          "Elke suggestie is omlijnd op de pagina en staat in de lijst met een naam, bijvoorbeeld rekeningnummer (IBAN). Tik op de suggesties die je wilt afdekken, of kies ervoor om ze allemaal af te dekken. Elke afdekking kun je ongedaan maken.",
-          "Loop zelf elke pagina na. Teken een rechthoek over alles wat je verder wilt afdekken en download dan je kopie.",
+          "Voeg je pdf toe. Vul bij “Waarvoor is deze kopie?” het doel in en bij “Wie krijgt hem?” de ontvanger.",
+          "Heeft Cachety iets gevonden, dan zegt een melding boven het voorbeeld hoeveel nummers het zijn. Kies “Bekijken”.",
+          "Elke suggestie is omlijnd op de pagina en staat in de lijst met een naam, bijvoorbeeld “Rekeningnummer (IBAN)”. Tik op de suggesties die je wilt afdekken, of kies “Alles afdekken”. Elke afdekking kun je ongedaan maken, en een suggestie die niet klopt, zet je opzij met “Deze niet”.",
+          "Loop zelf elke pagina na en teken een rechthoek over alles wat je verder wilt afdekken. Kies dan “Klaar”: pas op dat moment worden de gebieden uit het bestand verwijderd.",
+          "Controleer het voorbeeld en download je kopie.",
         ],
       },
       {
         type: "tip",
-        text: "Er wordt niets afgedekt tot jij het zegt. Vroeg de ontvanger om je rekeningnummer, laat je IBAN dan zichtbaar: dat is juist wat hij nodig heeft.",
+        text: "Er wordt niets afgedekt tot jij het zegt. Vroeg de ontvanger om je rekeningnummer, laat je IBAN dan zichtbaar: dat is juist wat hij nodig heeft. Hetzelfde geldt voor het belastingnummer en het kenmerk op een Franse belastingaanslag: daarmee kan de ontvanger controleren of de aanslag echt is.",
+      },
+      {
+        type: "p",
+        text: "Dezelfde suggesties krijg je in de twee andere tools van Cachety: als je een pdf ondertekent, en als je met Dossier meerdere documenten in één bestand zet.",
       },
       { type: "h2", text: "Wat Cachety niet kan vinden" },
       {
@@ -73,7 +81,9 @@ export const HIDE_GUIDES_NL: Guide[] = [
         items: [
           "Alles op een foto of een scan. In een afbeelding staat geen tekst om te lezen, dus er komen geen suggesties: teken de rechthoeken zelf.",
           "Streepjescodes en QR-codes. Daarin kan dezelfde informatie zitten als in de tekst die ernaast staat.",
-          "Nummers met een opbouw die Cachety niet controleert, zoals een klant- of contractnummer, een paspoort- of rijbewijsnummer.",
+          "Een BSN waar niet bij staat wat het is. Negen cijfers kunnen van alles zijn, dus zonder een aanduiding als BSN of burgerservicenummer wordt het nummer niet voorgesteld.",
+          "Nummers met een opbouw die Cachety niet controleert, zoals een oud rekeningnummer zonder IBAN, een klant- of contractnummer, een paspoort- of rijbewijsnummer.",
+          "Een kaartnummer dat al deels is afgeschermd, zoals de laatste vier cijfers op een bon. Daar valt niets meer af te dekken.",
           "Namen, adressen, geboortedata en telefoonnummers. Die heeft de ontvanger meestal juist nodig, dus ze worden niet voorgesteld.",
         ],
       },
@@ -94,7 +104,7 @@ export const HIDE_GUIDES_NL: Guide[] = [
       },
       {
         q: "Werkt het op een foto of een gescand document?",
-        a: "Nee. Voor suggesties is een pdf met echte tekst nodig, zoals de loonstroken, rekeningen en afschriften die je van een website downloadt. Op een foto of een scan teken je de rechthoeken zelf met Iets afdekken.",
+        a: "Nee. Voor suggesties is een pdf met echte tekst nodig, zoals de loonstroken, rekeningen en afschriften die je van een website downloadt. Op een foto of een scan teken je de rechthoeken zelf met “Iets afdekken”.",
       },
       {
         q: "Wordt mijn document ergens heen gestuurd om het te analyseren?",
@@ -131,7 +141,7 @@ export const HIDE_GUIDES_NL: Guide[] = [
       },
       {
         type: "p",
-        text: "Het enige echte risico is een automatische incasso die zonder jouw toestemming op jouw naam wordt ingesteld. In het eurogebied kun je je bank vragen een incasso terug te boeken binnen acht weken, en binnen dertien maanden als je er nooit toestemming voor gaf. Controleer dus je afschriften, en meld elke afschrijving die je niet herkent bij je bank.",
+        text: "Het grootste risico is een automatische incasso die zonder jouw toestemming op jouw naam wordt ingesteld. Bij een Europese incasso (SEPA), de gewone incasso in het hele eurogebied, kun je elke afschrijving tot acht weken na de afboeking door je bank laten terugboeken, zonder reden op te geven. Gaf je er nooit toestemming voor, dan kun je dat tot dertien maanden na de afboeking bij je bank melden: je bank onderzoekt de melding en boekt het bedrag terug als de incasso onterecht was. Controleer dus je afschriften, en meld elke afschrijving die je niet herkent bij je bank.",
       },
       { type: "h2", text: "Het echte gevaar is het hele pakket" },
       {
@@ -152,15 +162,15 @@ export const HIDE_GUIDES_NL: Guide[] = [
         type: "steps",
         items: [
           "Open cachety.com in je browser. Er wordt niets geïnstalleerd en je hebt geen account nodig.",
-          "Voeg je pdf of foto toe. Vul bij Waarvoor is deze kopie? het doel in en bij Wie krijgt hem? de ontvanger.",
-          "In een pdf zoekt Cachety naar IBAN's en meldt het als het er een vindt. Open de lijst met suggesties boven het voorbeeld en tik op de suggestie om het nummer af te dekken.",
-          "Een rekeningnummer dat niet als IBAN is geschreven, wordt niet voorgesteld, en hetzelfde geldt voor alles op een foto: kies Iets afdekken en teken er een rechthoek overheen.",
+          "Voeg je pdf of foto toe. Vul bij “Waarvoor is deze kopie?” het doel in en bij “Wie krijgt hem?” de ontvanger.",
+          "In een pdf zoekt Cachety naar IBAN's en meldt het als het er een vindt. Kies “Bekijken”, tik op de suggestie om het nummer af te dekken en kies dan “Klaar”.",
+          "Een rekeningnummer dat niet als IBAN is geschreven, wordt niet voorgesteld, en hetzelfde geldt voor alles op een foto: kies “Iets afdekken” en teken er een rechthoek overheen.",
           "Controleer elke pagina en download dan je kopie.",
         ],
       },
       {
         type: "tip",
-        text: "Moet je je rekeningnummer wel versturen, zet er dan een watermerk op dat zegt voor wie en waarvoor het is, zoals Rekeningnummer voor salaris, Groenhof Logistiek, afdeling HR. Een kopie met zo'n vermelding is moeilijk ergens anders te hergebruiken.",
+        text: "Moet je je rekeningnummer wel versturen, zet er dan een watermerk op dat zegt voor wie en waarvoor het is, zoals “Rekeningnummer voor salaris, Groenhof Logistiek, afdeling HR”. Een kopie met zo'n vermelding is moeilijk ergens anders te hergebruiken.",
       },
       { type: "h2", text: "Je bestand blijft bij jou" },
       {
@@ -183,7 +193,7 @@ export const HIDE_GUIDES_NL: Guide[] = [
       },
       {
         q: "Wat doe ik als ik een incasso zie waarvoor ik nooit toestemming gaf?",
-        a: "Neem direct contact op met je bank en vraag om terugboeking. In het eurogebied heb je dertien maanden om een incasso te betwisten waarvoor je geen toestemming gaf.",
+        a: "Neem direct contact op met je bank en vraag om terugboeking. Bij een Europese incasso (SEPA) heb je dertien maanden om een afschrijving te melden waarvoor je geen toestemming gaf.",
       },
     ],
     updated: UPDATED,
@@ -204,11 +214,11 @@ export const HIDE_GUIDES_NL: Guide[] = [
       { type: "h2", text: "Waarom een foto van je kaart riskant is" },
       {
         type: "p",
-        text: "Op de voorkant van een kaart staan het lange kaartnummer, de vervaldatum en je naam. Op de achterkant staat de beveiligingscode (CVC) van drie cijfers. Samen is dat alles wat iemand nodig heeft om online met je kaart te betalen. Een e-mail of een chatbericht kan jarenlang in verschillende inboxen blijven staan, ver buiten jouw bereik.",
+        text: "Bij de meeste kaarten staan op de voorkant het lange kaartnummer, de vervaldatum en je naam, en staat op de achterkant de beveiligingscode (CVC) van drie cijfers. Bij sommige nieuwere kaarten staat dat allemaal op de achterkant. Samen is dat alles wat iemand nodig heeft om online met je kaart te betalen. Een e-mail of een chatbericht kan jarenlang in verschillende inboxen blijven staan, ver buiten jouw bereik.",
       },
       {
         type: "warning",
-        text: "Stuur nooit de beveiligingscode (CVC) mee: de drie cijfers op de achterkant van de kaart, of de vier cijfers op de voorkant van een American Express-kaart. Geen eerlijk bedrijf heeft die op een foto nodig. De eigen beveiligingsregels van de kaartsector verbieden bedrijven om de code te bewaren nadat een betaling is verwerkt.",
+        text: "Stuur nooit de beveiligingscode (CVC) mee: de drie cijfers op de achterkant van de kaart, of de vier cijfers op de voorkant van een American Express-kaart. Geen eerlijk bedrijf heeft die op een foto nodig. De eigen beveiligingsregels van de kaartsector verbieden bedrijven om de code te bewaren nadat de betaling is goedgekeurd.",
       },
       { type: "h2", text: "Vraag eerst om een andere manier" },
       {
@@ -219,7 +229,7 @@ export const HIDE_GUIDES_NL: Guide[] = [
       {
         type: "list",
         items: [
-          "Dek de middelste cijfers van het kaartnummer af. Laat hooguit de laatste vier cijfers staan: die staan ook op kassabonnen.",
+          "Dek de middelste cijfers van het kaartnummer af. Laat hooguit de laatste vier cijfers staan: die staan ook op de bon die je zelf meekrijgt.",
           "Dek de beveiligingscode af. Dek op de achterkant van de kaart de hele strook af waarop de code staat.",
           "Dek de vervaldatum af, tenzij er met een goede reden om wordt gevraagd.",
           "Laat je naam en het logo van de bank staan, zodat de kopie nog steeds laat zien dat de kaart van jou is.",
@@ -231,8 +241,8 @@ export const HIDE_GUIDES_NL: Guide[] = [
         items: [
           "Maak een foto van de voorkant van de kaart. Fotografeer de achterkant alleen als erom wordt gevraagd.",
           "Open cachety.com op je telefoon of computer en voeg de foto toe.",
-          "Vul bij Waarvoor is deze kopie? het doel in, bijvoorbeeld Reserveringsbevestiging, en bij Wie krijgt hem? de naam van het hotel.",
-          "Kies onder het voorbeeld Iets afdekken en teken een rechthoek over de middelste cijfers, de vervaldatum en de beveiligingscode.",
+          "Vul bij “Waarvoor is deze kopie?” het doel in, bijvoorbeeld “Reserveringsbevestiging”, en bij “Wie krijgt hem?” de naam van het hotel.",
+          "Kies onder het voorbeeld “Iets afdekken” en teken een rechthoek over de middelste cijfers, de vervaldatum en de beveiligingscode.",
           "Controleer het voorbeeld, download de kopie en verstuur die.",
         ],
       },
@@ -253,7 +263,7 @@ export const HIDE_GUIDES_NL: Guide[] = [
     faq: [
       {
         q: "Welke cijfers van mijn kaartnummer mag ik laten zien?",
-        a: "De laatste vier zijn voor de meeste controles genoeg, en die drukken winkels ook op kassabonnen af. Volgens de beveiligingsregels voor kaarten mag een bedrijf hooguit de eerste cijfers tonen, waaraan je de bank herkent, en de laatste vier. Dek de rest af.",
+        a: "De laatste vier zijn voor de meeste controles genoeg, en die drukken winkels ook af op de bon die je zelf meekrijgt. Volgens de beveiligingsregels voor kaarten hoort een bedrijf normaal niet meer te tonen dan de eerste cijfers, waaraan je de bank herkent, en de laatste vier. Dek de rest af.",
       },
       {
         q: "Is het veilig om een foto van mijn kaart te mailen of via WhatsApp te sturen?",
@@ -261,7 +271,7 @@ export const HIDE_GUIDES_NL: Guide[] = [
       },
       {
         q: "Het hotel wil de voorkant en de achterkant. Wat doe ik?",
-        a: "Vraag waarom, en stel een beveiligde betaallink voor. Stuur je de achterkant toch, dek dan de beveiligingscode en de strook eromheen af. De regels van de kaartsector staan een bedrijf niet toe die code te bewaren nadat de betaling is verwerkt.",
+        a: "Vraag waarom, en stel een beveiligde betaallink voor. Stuur je de achterkant toch, dek dan de beveiligingscode en de strook eromheen af. De regels van de kaartsector staan een bedrijf niet toe die code te bewaren nadat de betaling is goedgekeurd.",
       },
       {
         q: "Ik heb al een volledige foto van mijn kaart gestuurd. Wat nu?",

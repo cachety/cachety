@@ -8,12 +8,14 @@ import type { Comparison } from "../types";
 // gelezen op de datum `checked`. Prijzen veranderen vaak en worden niet genoemd.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// De kolom van Cachety beschrijft de Dossier-tool zoals vastgelegd in
-// docs/prd-dossier.md (Must-scope). Publiceer samen met de tool, niet eerder,
-// en controleer de kolom dan tegen de echte interface.
+// De kolom van Cachety beschrijft de Dossier-tool zoals die is uitgebracht
+// (met onderdelen, foto's rechtzetten en een eigen grootte): limieten uit
+// lib/watermark.ts en lib/pages.ts, groottes uit lib/size-budget.ts. De
+// aangehaalde knoppen (“Eén pdf”, “Anders…”) zijn gecontroleerd tegen het blok
+// `dossier` in lib/locales/nl/strings.ts: houd ze gelijk.
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Adres van de tool, zonder schema geschreven. */
 const TOOL = "cachety.com/nl/dossier";
@@ -23,15 +25,19 @@ const CACHETY = {
   where: "In je browser, op je eigen apparaat. Er wordt niets geüpload.",
   kept: "Er wordt niets bewaard: er is geen server die je bestanden ontvangt.",
   free: "Gratis, zonder account, zonder betaalde versie en zonder daglimiet. Tot 200 MB per bestand, 500 pagina's per pdf en 1.000 pagina's in totaal.",
-  pages: "Alle pagina's van alle bestanden in één raster: een pagina verplaatsen, ook van het ene bestand naar het andere, draaien of verwijderen.",
-  size: "Je kiest een maximale grootte: 1, 2, 5 of 10 MB. Cachety zegt vóór het downloaden of het bestand past en leesbaar blijft.",
+  pages: "Alle pagina's van alle bestanden in één raster: een pagina verplaatsen, ook van het ene bestand naar het andere, draaien of verwijderen. Eén pdf, of één pdf per onderdeel dat je een naam geeft.",
+  size: "Je kiest een maximale grootte: 1, 2, 5 of 10 MB, of een limiet van 0,5 tot 50 MB. Cachety zegt vóór het downloaden of het bestand past en leesbaar blijft.",
   output:
     "Elke pagina wordt opnieuw opgebouwd als afbeelding. De tekst is niet te selecteren of te doorzoeken, en een pdf met alleen tekst kan groter uitvallen.",
   hidden: "Uit elk bestand verwijderd: verborgen tekst, auteur en andere eigenschappen, bijlagen, links en de gps-locatie van foto's.",
-  inputs: "Pdf's en foto's door elkaar, ook HEIC-foto's van een iPhone. Geen Word-, Excel- of PowerPoint-bestanden.",
+  inputs: "Pdf's en foto's door elkaar, ook HEIC-foto's van een iPhone. Een foto van een vel kun je rechtzetten, bijsnijden en een witte achtergrond geven. Geen Word-, Excel- of PowerPoint-bestanden.",
   offline: "Niets te installeren. Na het laden blijft de pagina werken in vliegtuigmodus, op een telefoon of een computer.",
   ads: "Geen advertenties en geen trackers. De code is open source.",
 };
+
+/** Tabelrij “Opties bij het samenvoegen”, voor de tools met bladwijzers en een inhoudsopgave. */
+const MERGE_OPTIONS =
+  "De paginavolgorde, en één pdf per onderdeel als je meerdere bestanden wilt. Geen bladwijzers, geen inhoudsopgave.";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "Hoe een bestand van Cachety eruitziet" },
@@ -53,7 +59,7 @@ const HOW_TO: Comparison["body"] = [
       `Open ${TOOL} in je browser, op een computer of een telefoon. Er is niets te installeren en je hoeft geen account aan te maken.`,
       "Voeg je pdf's en foto's toe. Een foto wordt een pagina.",
       "Ga naar de pagina's: sleep ze in de goede volgorde, draai de pagina's die op hun kant liggen en verwijder de pagina's die je niet wilt.",
-      "Kies Eén pdf en kies, als er een maximale grootte geldt, 1, 2, 5 of 10 MB.",
+      "Kies “Eén pdf” en kies, als er een maximale grootte geldt, 1, 2, 5 of 10 MB, of “Anders…” voor een andere limiet.",
       "Controleer het voorbeeld, dek af wat de ontvanger niet nodig heeft en download het bestand.",
     ],
   },
@@ -106,8 +112,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Pagina's op volgorde zetten",
         cachety: CACHETY.pages,
-        other: "Bij samenvoegen verander je de volgorde van hele bestanden. Losse pagina's sorteren, verwijderen en draaien doe je in een aparte tool, Organize PDF.",
-        edge: "cachety",
+        other: "Bij samenvoegen verander je de volgorde van hele bestanden. Een aparte tool, Organize PDF, sorteert, verwijdert en draait losse pagina's, en kan meer bestanden toevoegen en samenvoegen (gratis: 5 bestanden, 100 MB).",
       },
       {
         criterion: "Onder een maximale grootte blijven",
@@ -159,7 +164,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
           "Het zet Word-, Excel- en PowerPoint-bestanden om naar pdf.",
           "Het herkent tekst in scans (OCR), zodat een gescande pdf doorzoekbaar kan worden.",
           "Het verwerkt grote taken: tot 100 bestanden bij gratis samenvoegen.",
-          "De betaalde desktopapp verwerkt bestanden op je computer, met dezelfde tools als de website.",
+          "De betaalde desktopapp verwerkt bestanden op je computer, met de meeste tools van de website.",
         ],
       },
       { type: "h2", text: "Waar Cachety beter is" },
@@ -183,7 +188,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     chooseCachety: [
       "Het gaat om identiteitsbewijzen, loonstroken of bankafschriften en je uploadt ze liever niet.",
       "Je hebt foto's en pdf's in hetzelfde bestand nodig, met de pagina's in jouw volgorde.",
-      "Een formulier vraagt om één bestand kleiner dan 1, 2, 5 of 10 MB.",
+      "Een formulier vraagt om één bestand, of één bestand per soort document, onder een maximale grootte in megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -192,7 +197,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       ),
       {
         q: "Kan iLovePDF een pdf tot een exacte grootte comprimeren?",
-        a: "Nee. Het biedt drie compressieniveaus, en de eigen uitleg van iLovePDF zegt dat geen enkele tool een exacte uitvoergrootte kan beloven. Bij Cachety kies je 1, 2, 5 of 10 MB, en je hoort vóór het downloaden als het bestand niet past zonder onleesbaar te worden.",
+        a: "Nee. Het biedt drie compressieniveaus, en de eigen uitleg van iLovePDF zegt dat geen enkele tool een exacte uitvoergrootte kan beloven. Bij Cachety kies je een maximale grootte in megabytes, en je hoort vóór het downloaden als het bestand niet past zonder onleesbaar te worden.",
       },
       {
         q: "Werkt iLovePDF offline?",
@@ -216,6 +221,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "iLovePDF-blog: 15 jaar iLovePDF", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "Over iLovePDF", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -235,7 +241,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     intro:
       "Smallpdf is een bekende verzameling online pdf-tools uit Zwitserland, met apps voor telefoons en Windows. De tools om samen te voegen en te comprimeren werken in de cloud. Cachety doet een smallere taak op je eigen apparaat: het zet pdf's en foto's in één bestand, onder een maximale grootte, zonder ze te uploaden.",
     verdict:
-      "Smallpdf kan meer: het accepteert Word-, Excel- en PowerPoint-bestanden, herkent tekst in scans en heeft een Windows-app die offline werkt. Daarvoor is het de betere keuze. Cachety is de betere keuze als het om persoonlijke documenten gaat die je liever niet uploadt, als je op één dag meer dan een paar bestanden moet klaarmaken, of als een formulier een maximale grootte in megabytes stelt.",
+      "Smallpdf kan meer: het accepteert Word-, Excel- en PowerPoint-bestanden, herkent tekst in scans en heeft een Windows-app die offline werkt. Daarvoor is het de betere keuze. Cachety is de betere keuze als het om persoonlijke documenten gaat die je liever niet uploadt, als je tegen de daglimiet van de gratis versie zou aanlopen, of als een formulier een maximale grootte in megabytes stelt.",
     table: [
       {
         criterion: "Waar de bestanden worden verwerkt",
@@ -246,7 +252,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Hoe lang bestanden worden bewaard",
         cachety: CACHETY.kept,
-        other: "Na een uur van de servers verwijderd, tenzij je ze in je account opslaat.",
+        other: "Volgens de productpagina's van Smallpdf na een uur van de servers verwijderd, tenzij je ze in je account opslaat.",
         edge: "cachety",
       },
       {
@@ -258,7 +264,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Pagina's op volgorde zetten",
         cachety: CACHETY.pages,
-        other: "Bij samenvoegen kun je pagina's verplaatsen, draaien en verwijderen. Een aparte tool, Organize, doet hetzelfde voor één pdf.",
+        other: "Bij samenvoegen kun je de pagina's van alle bestanden tonen om ze te verplaatsen, te draaien of te verwijderen; de prijspagina van Smallpdf noemt die paginaweergave bij het betaalde abonnement. De tool Organize verplaatst, draait en verwijdert pagina's, voegt pagina's toe en kan meerdere documenten combineren.",
       },
       {
         criterion: "Onder een maximale grootte blijven",
@@ -280,7 +286,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Verborgen gegevens",
         cachety: CACHETY.hidden,
-        other: "Niet gedocumenteerd voor samenvoegen op de product- of helppagina's.",
+        other: "Niet beschreven voor samenvoegen. Op het blog van Smallpdf staat dat de tools Compress en Flatten metadata verwijderen, als aparte stap.",
       },
       {
         criterion: "Apps en offline gebruik",
@@ -329,17 +335,17 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     ],
     chooseCachety: [
       "Het gaat om identiteitsbewijzen, loonstroken of bankafschriften en je uploadt ze liever niet.",
-      "Een formulier vraagt om één bestand kleiner dan 1, 2, 5 of 10 MB.",
+      "Een formulier vraagt om één bestand, of één bestand per soort document, onder een maximale grootte in megabytes.",
       "Je werkt op een telefoon en wilt geen app installeren of account aanmaken.",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "Bij de onlinetools van Smallpdf wel: bestanden worden naar de servers van Smallpdf geüpload en na een uur verwijderd, tenzij je ze in je account opslaat. De desktopapp voor Windows verwerkt bestanden offline."
+        "Bij de onlinetools van Smallpdf wel: bestanden worden naar de servers van Smallpdf geüpload en volgens de productpagina's na een uur verwijderd, tenzij je ze in je account opslaat. De desktopapp voor Windows verwerkt bestanden offline."
       ),
       {
         q: "Kan Smallpdf een pdf tot een exacte grootte comprimeren?",
-        a: "Nee. Smallpdf biedt compressieniveaus, en op het eigen blog staat dat je in de tool geen exacte grootte kunt invullen. Bij Cachety kies je 1, 2, 5 of 10 MB.",
+        a: "Nee. Smallpdf biedt compressieniveaus, en op het eigen blog staat dat je in de tool geen exacte grootte kunt invullen. Bij Cachety kies je een maximale grootte in megabytes, en het bestand blijft daaronder als dat kan zonder dat het onleesbaar wordt.",
       },
       {
         q: "Is Smallpdf gratis?",
@@ -357,6 +363,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       { label: "Smallpdf: Trust Center", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf: apps en extensies", url: "https://smallpdf.com/download" },
       { label: "Smallpdf-blog: een pdf tot een gekozen grootte comprimeren", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "Smallpdf-blog: pdf-metadata verwijderen", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "Over Smallpdf", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -377,7 +384,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     intro:
       "Adobe heeft de pdf uitgevonden, en met de gratis onlinetools van Acrobat voeg je in elke browser pdf's samen en comprimeer je ze. De bestanden worden op de servers van Adobe verwerkt. Cachety doet een smallere taak op je eigen apparaat: het zet pdf's en foto's in één bestand, onder een maximale grootte, zonder ze te uploaden.",
     verdict:
-      "Voor pdf's waarvan de tekst moet blijven zoals hij is, is samenvoegen bij Adobe de betere keuze: het combineert bestanden zonder de kwaliteit van afbeeldingen, tekst of opmaak te verlagen, en neemt tot 100 bestanden aan. De betaalde desktopapp kan veel meer dan Cachety. Cachety is de betere keuze voor persoonlijke documenten die je liever niet uploadt, om gratis foto's en pdf's te combineren, en om aan een maximale grootte in megabytes te voldoen.",
+      "Voor pdf's waarvan de tekst moet blijven zoals hij is, is samenvoegen bij Adobe de betere keuze: het combineert bestanden zonder de kwaliteit van afbeeldingen, tekst of opmaak te verlagen, en neemt tot 100 bestanden aan. De betaalde desktopapp kan veel meer dan Cachety. Cachety is de betere keuze voor persoonlijke documenten die je liever niet uploadt, om foto's en pdf's in één stap te combineren, en om aan een maximale grootte in megabytes te voldoen.",
     table: [
       {
         criterion: "Waar de bestanden worden verwerkt",
@@ -394,12 +401,12 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Account, gratis gebruik en limieten",
         cachety: CACHETY.free,
-        other: "Samenvoegen: tot 100 bestanden van elk 500 pagina's, zonder watermerk. Comprimeren: gratis met beperkt gebruik; voor onbeperkt gebruik is een betaald abonnement nodig.",
+        other: "Samenvoegen: tot 100 bestanden van elk 500 pagina's en 1.500 pagina's in het samengevoegde bestand, zonder watermerk. Comprimeren: gratis met beperkt gebruik; voor onbeperkt gebruik is een betaald abonnement nodig.",
       },
       {
         criterion: "Pagina's op volgorde zetten",
         cachety: CACHETY.pages,
-        other: "Bestanden kun je vóór het samenvoegen in een andere volgorde zetten. Om losse pagina's te herschikken moet je inloggen.",
+        other: "Bestanden kun je vóór het samenvoegen in een andere volgorde zetten. Om losse pagina's te herschikken moet je inloggen; een gratis account is genoeg.",
         edge: "cachety",
       },
       {
@@ -410,7 +417,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Foto's en andere bestandstypen",
         cachety: CACHETY.inputs,
-        other: "De gratis samenvoegtool neemt pdf's aan. Pdf's combineren met Word-, Excel-, PowerPoint- of afbeeldingsbestanden hoort bij Acrobat Pro. Een aparte tool zet afbeeldingen om in een pdf, en om het resultaat te downloaden moet je inloggen.",
+        other: "De gratis samenvoegtool neemt pdf's aan. Pdf's combineren met Word-, Excel-, PowerPoint- of afbeeldingsbestanden hoort bij Acrobat Pro. Aparte gratis tools zetten afbeeldingen, ook HEIC-foto's, om in een pdf, voor een beperkt aantal conversies.",
       },
       {
         criterion: "Hoe de nieuwe pdf eruitziet",
@@ -456,7 +463,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
         items: [
           "Je bestanden worden nooit geüpload, en je hoeft nergens in te loggen.",
           "Losse pagina's verplaatsen, draaien en verwijderen is gratis en kan zonder account.",
-          "Foto's en pdf's gaan gratis in hetzelfde bestand, ook HEIC-foto's van een iPhone.",
+          "Foto's en pdf's gaan in één stap in hetzelfde bestand. Met de gratis tools van Adobe zet je eerst de foto's om in een pdf en voeg je daarna samen.",
           "Verborgen gegevens worden uit elk bestand verwijderd, een functie die Adobe voor het betaalde Pro-abonnement houdt.",
           "Je kiest een grootte in megabytes en hoort vóór het downloaden of die haalbaar is.",
         ],
@@ -472,7 +479,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     chooseCachety: [
       "Het gaat om identiteitsbewijzen, loonstroken of bankafschriften en je uploadt ze liever niet.",
       "Je wilt pagina's verplaatsen, draaien of verwijderen zonder in te loggen.",
-      "Je moet foto's en pdf's combineren en het resultaat onder 1, 2, 5 of 10 MB houden.",
+      "Je moet foto's en pdf's combineren en het resultaat onder een maximale grootte in megabytes houden.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -481,7 +488,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       ),
       {
         q: "Heb ik een Adobe-account nodig om pdf's samen te voegen?",
-        a: "Niet om samen te voegen en te downloaden. Adobe vraagt je in te loggen om losse pagina's te herschikken, om het bestand met een link te delen, of om een pdf te downloaden die van afbeeldingen is gemaakt. Cachety heeft helemaal geen account.",
+        a: "Niet om samen te voegen en te downloaden. Adobe vraagt je in te loggen om losse pagina's te herschikken of om het bestand met een link te delen. Cachety heeft helemaal geen account.",
       },
       {
         q: "Kan Acrobat online metadata uit een pdf verwijderen?",
@@ -494,6 +501,8 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       { label: "Adobe Acrobat: pdf's samenvoegen", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat: pdf comprimeren", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat: JPG naar pdf", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat: afbeelding naar pdf", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat: HEIC naar pdf", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat: pdf-pagina's herschikken", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat: pdf-pagina's verwijderen", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -544,7 +553,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Pagina's op volgorde zetten",
         cachety: CACHETY.pages,
-        other: "Bestanden zet je met slepen in een andere volgorde. Een paginamodus toont de pagina's van alle bestanden. Pagina's draaien en verwijderen zijn aparte tools.",
+        other: "Bestanden zet je met slepen in een andere volgorde. Een paginamodus toont de pagina's van alle bestanden: je kiest de pagina's die je wilt, sleept ze in de goede volgorde en laat de rest weg. Pagina's draaien is een aparte tool.",
       },
       {
         criterion: "Onder een maximale grootte blijven",
@@ -566,17 +575,23 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Verborgen gegevens",
         cachety: CACHETY.hidden,
-        other: "Een aparte tool verwijdert de metadata van een pdf.",
+        other: "Een aparte tool verwijdert de metadata van een pdf. Ook de compressietool kan metadata, bijlagen en annotaties verwijderen.",
+      },
+      {
+        criterion: "Opties bij het samenvoegen",
+        cachety: MERGE_OPTIONS,
+        other: "Bladwijzers, een inhoudsopgave, een voorblad vóór elk bestand, lege pagina's voor dubbelzijdig afdrukken, de bestandsnaam op de pagina's.",
+        edge: "other",
       },
       {
         criterion: "Apps en offline gebruik",
         cachety: CACHETY.offline,
-        other: "PDF24 Creator brengt alle tools offline, alleen op Windows. Er is nog geen versie voor Mac of Linux, en geen app in de appwinkels voor telefoons.",
+        other: "PDF24 Creator brengt alle tools offline, alleen op Windows. Er is nog geen versie voor Mac of Linux, en geen app in de appwinkels voor telefoons: de onlinetools kun je op het beginscherm van een telefoon zetten, maar ze hebben nog steeds een verbinding nodig.",
       },
       {
         criterion: "Advertenties en trackers",
         cachety: CACHETY.ads,
-        other: "De onlinetools worden gefinancierd met advertenties. Het privacybeleid noemt Google AdSense en Google Analytics.",
+        other: "De onlinetools worden gefinancierd met advertenties. Het privacybeleid noemt onder meer Google AdSense en Google Analytics.",
         edge: "cachety",
       },
     ],
@@ -594,7 +609,8 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         type: "list",
         items: [
-          "De samengevoegde pdf behoudt de originele pagina's, dus de tekst blijft selecteerbaar en het bestand blijft licht.",
+          "De samengevoegde pdf behoudt de originele pagina's zoals ze zijn: tekst, afbeeldingen en lettertypen behouden hun kwaliteit.",
+          "Opties bij het samenvoegen die Cachety niet heeft: bladwijzers, een inhoudsopgave, voorbladen, lege pagina's voor dubbelzijdig afdrukken.",
           "Het accepteert Word-documenten en andere bestanden, en biedt tekstherkenning (OCR).",
           "Op Windows doet PDF24 Creator dit allemaal offline, gratis.",
           "Je kunt de resolutie en de beeldkwaliteit van de compressie zelf instellen.",
@@ -622,7 +638,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     ],
     chooseCachety: [
       "Je werkt op een telefoon, een Mac of een computer waarop je geen software kunt installeren, en je uploadt je documenten liever niet.",
-      "Een formulier vraagt om één bestand kleiner dan 1, 2, 5 of 10 MB.",
+      "Een formulier vraagt om één bestand, of één bestand per soort document, onder een maximale grootte in megabytes.",
       "Je foto's komen van een iPhone.",
     ],
     faq: [
@@ -632,7 +648,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       ),
       {
         q: "Kan PDF24 een pdf tot een bepaalde grootte comprimeren?",
-        a: "Niet rechtstreeks. Je stelt de resolutie en de beeldkwaliteit in, en de eigen uitleg van PDF24 zegt dat er geen optie “comprimeren tot 5 MB” is. Bij Cachety kies je 1, 2, 5 of 10 MB.",
+        a: "Niet rechtstreeks. Je stelt de resolutie en de beeldkwaliteit in, en de eigen uitleg van PDF24 zegt dat er geen optie “comprimeren tot 5 MB” is. Bij Cachety kies je een maximale grootte in megabytes, en het bestand blijft daaronder als dat kan zonder dat het onleesbaar wordt.",
       },
       {
         q: "Werkt PDF24 offline op een Mac of een telefoon?",
@@ -645,6 +661,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       { label: "PDF24 Tools: pdf comprimeren", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools: afbeeldingen naar pdf", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools: pdf-metadata verwijderen", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools: pdf draaien", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools: vragen en antwoorden", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "PDF24-hulp: pdf-bestanden samenvoegen", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -680,13 +697,13 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       {
         criterion: "Hoe lang bestanden worden bewaard",
         cachety: CACHETY.kept,
-        other: "Online: automatisch verwijderd na 2 uur. Met een knop verwijder je ze eerder.",
+        other: "Online: automatisch verwijderd na 2 uur. Op de resultaatpagina staat een knop om de bestanden te verwijderen.",
         edge: "cachety",
       },
       {
         criterion: "Account, gratis gebruik en limieten",
         cachety: CACHETY.free,
-        other: "Geen registratie. Gratis online samenvoegen: tot 50 pagina's of 50 MB, 3 taken per uur. Gratis comprimeren: tot 200 pagina's of 100 MB. Gratis desktop: 3 taken per dag. Een betaald abonnement haalt de limieten weg.",
+        other: "Geen registratie. Gratis online samenvoegen: tot 50 pagina's of 50 MB, 3 taken per uur. Gratis comprimeren: tot 200 pagina's of 100 MB. Gratis desktop: 3 taken per dag, voor documenten tot 50 MB en 200 pagina's. Een betaald abonnement haalt de limieten voor pagina's en taken per uur weg; uploads kunnen dan tot 500 MB per bestand.",
         edge: "cachety",
       },
       {
@@ -707,14 +724,14 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       },
       {
         criterion: "Opties bij het samenvoegen",
-        cachety: "Geen, behalve de paginavolgorde: geen bladwijzers, geen inhoudsopgave.",
+        cachety: MERGE_OPTIONS,
         other: "Bladwijzers per bestand behouden of aanmaken, een inhoudsopgave, lege pagina's voor dubbelzijdig afdrukken, de bestandsnaam in de voettekst.",
         edge: "other",
       },
       {
         criterion: "Verborgen gegevens",
         cachety: CACHETY.hidden,
-        other: "Een aparte tool bewerkt de metadata van een pdf.",
+        other: "Een aparte tool bewerkt de metadata van een pdf of verwijdert ze allemaal.",
       },
       {
         criterion: "Apps en offline gebruik",
@@ -730,7 +747,7 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       },
       {
         type: "p",
-        text: "Sejda Desktop verwerkt bestanden op je computer, zonder upload, op Mac, Windows en Linux. De gratis versie staat drie taken per dag toe. Eén detail telt voor persoonlijke documenten: in de servicevoorwaarden van Sejda staat dat gebruikers geen gevoelige persoonlijke informatie, zoals door de overheid uitgegeven identificatienummers, bij de onlinedienst mogen aanleveren.",
+        text: "Sejda Desktop verwerkt bestanden op je computer, zonder upload, op Mac, Windows en Linux. De gratis versie staat drie taken per dag toe, voor documenten tot 50 MB en 200 pagina's, en samenvoegen van hooguit 30 bestanden en 50 pagina's. Eén detail telt voor persoonlijke documenten: in de servicevoorwaarden van Sejda staat dat gebruikers geen gevoelige persoonlijke informatie, zoals door de overheid uitgegeven identificatienummers, bij de onlinedienst mogen aanleveren.",
       },
       { type: "h2", text: "Waar Sejda beter is" },
       {
@@ -738,7 +755,8 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
         items: [
           "Opties bij het samenvoegen die Cachety niet heeft: bladwijzers, een inhoudsopgave, lege pagina's voor dubbelzijdig afdrukken.",
           "Een desktopapp voor Mac, Windows en Linux die bestanden op je computer houdt.",
-          "Veel andere tools op dezelfde plek: tekstherkenning (OCR), bijsnijden, scans rechtzetten, bewerken.",
+          "Veel andere tools op dezelfde plek: tekstherkenning (OCR), de pagina's van een pdf bijsnijden en rechtzetten, bewerken.",
+          "Het kan bestanden rechtstreeks uit Dropbox, Google Drive of OneDrive halen.",
           "Nauwkeurige controle over de compressie, met instellingen voor beeldkwaliteit en resolutie.",
         ],
       },
@@ -758,12 +776,12 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
     chooseOther: [
       "Je hebt bladwijzers of een inhoudsopgave nodig in de samengevoegde pdf.",
       "Je kunt Sejda Desktop installeren en je taak past binnen de gratis limieten, of je hebt een betaald abonnement.",
-      "Je hebt tekstherkenning nodig, of je wilt scans bijsnijden of rechtzetten.",
+      "Je hebt tekstherkenning nodig, of je wilt de pagina's van een gescande pdf bijsnijden of rechtzetten: Cachety doet dat alleen voor foto's.",
     ],
     chooseCachety: [
       "Het gaat om identiteitsbewijzen, loonstroken of bankafschriften, en je werkt op een telefoon of kunt geen software installeren.",
       "Je bestand heeft meer dan 50 pagina's, of je moet in hetzelfde uur meerdere bestanden klaarmaken.",
-      "Een formulier vraagt om één bestand kleiner dan 1, 2, 5 of 10 MB.",
+      "Een formulier vraagt om één bestand, of één bestand per soort document, onder een maximale grootte in megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -772,11 +790,11 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       ),
       {
         q: "Wat zijn de gratis limieten van Sejda voor samenvoegen?",
-        a: "Online: documenten tot 50 pagina's of 50 MB en drie taken per uur. De gratis versie van Sejda Desktop staat drie taken per dag toe. Cachety heeft zulke limieten niet: tot 1.000 pagina's in één bestand.",
+        a: "Online: documenten tot 50 pagina's of 50 MB en drie taken per uur. De gratis versie van Sejda Desktop staat drie taken per dag toe, voor documenten tot 50 MB en 200 pagina's. Cachety heeft zulke limieten niet: tot 1.000 pagina's in één bestand.",
       },
       {
         q: "Kan Sejda een pdf tot een bepaalde grootte comprimeren?",
-        a: "De compressietool biedt instellingen voor beeldkwaliteit en resolutie, geen grootte om op te mikken. Bij Cachety kies je 1, 2, 5 of 10 MB.",
+        a: "De compressietool biedt instellingen voor beeldkwaliteit en resolutie, geen grootte om op te mikken. Bij Cachety kies je een maximale grootte in megabytes, en het bestand blijft daaronder als dat kan zonder dat het onleesbaar wordt.",
       },
       FAQ_TEXT,
     ],
@@ -786,7 +804,8 @@ export const DOSSIER_COMPARISONS_NL: Comparison[] = [
       { label: "Sejda: JPG naar pdf", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda: pdf-pagina's ordenen", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda: pdf-metadata bewerken", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda: prijzen en vragen", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda: abonnementen en vragen", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda: resultaatpagina", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "Sejda: beveiliging", url: "https://www.sejda.com/security" },
       { label: "Sejda: privacybeleid", url: "https://www.sejda.com/privacy" },

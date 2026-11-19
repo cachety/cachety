@@ -5,14 +5,15 @@
 // HTML, geen markdown. Bedrijfsnamen zijn verzonnen.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// Deze uitleg beschrijft de Dossier-tool (docs/prd-dossier.md), alleen de
-// Must-scope: geen secties, geen foto's rechtzetten, geen eigen grootte.
-// Publiceer hem samen met de tool, niet eerder, en controleer de stappen dan
-// tegen de echte interface.
+// Deze uitleg beschrijft de Dossier-tool (docs/prd-dossier.md) zoals die is
+// uitgebracht, met onderdelen, foto's rechtzetten en een eigen grootte. De
+// aangehaalde knoppen (“Eén pdf”, “Splitsen in meerdere bestanden”,
+// “Rechtzetten en bijsnijden”, “Anders…” en de overige) zijn gecontroleerd
+// tegen het blok `dossier` in lib/locales/nl/strings.ts: houd ze gelijk.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Adres van de tool, zonder schema geschreven (de uitleg bevat geen links). */
 const TOOL = "cachety.com/nl/dossier";
@@ -49,13 +50,18 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
           `Open ${TOOL} in je browser, op een computer of een telefoon. Er is niets te installeren en je hoeft geen account aan te maken.`,
           "Voeg je bestanden toe: pdf's en foto's door elkaar (JPG, PNG, HEIC-foto's van een iPhone en meer). Een foto wordt een pagina.",
           "Ga naar de pagina's. Elke pagina van elk bestand wordt als kleine afbeelding getoond. Sleep een pagina om die te verplaatsen, ook van het ene document naar het andere. Draai een pagina die op zijn kant ligt en verwijder de pagina's die je niet wilt.",
-          "Kies Eén pdf. Heeft de website waar je het bestand naartoe stuurt een maximale grootte, kies die dan: 1, 2, 5 of 10 MB. Cachety zegt vóór het downloaden of het bestand past en leesbaar blijft.",
+          "Kies “Eén pdf”. Heeft de website waar je het bestand naartoe stuurt een maximale grootte, kies die dan: 1, 2, 5 of 10 MB, of “Anders…” voor een limiet van 0,5 tot 50 MB. Cachety zegt vóór het downloaden of het bestand past en leesbaar blijft.",
           "Controleer het voorbeeld, geef het bestand een naam en download het.",
         ],
       },
       {
         type: "tip",
-        text: "Voordat je downloadt, kun je een rekeningnummer of iets anders afdekken dat de ontvanger niet nodig heeft. Het afgedekte gebied wordt uit het bestand verwijderd, niet alleen bedekt.",
+        text: "Voordat je downloadt, kun je een rekeningnummer of iets anders afdekken dat de ontvanger niet nodig heeft. In een pdf met tekst wijst Cachety de rekening- en kaartnummers aan die het vindt. Het afgedekte gebied wordt uit het bestand verwijderd, niet alleen bedekt.",
+      },
+      { type: "h2", text: "Eén bestand per soort document" },
+      {
+        type: "p",
+        text: "Sommige websites willen niet één groot bestand, maar één bestand per soort document: identiteitsbewijs, loonstroken, adresbewijs. Vink “Splitsen in meerdere bestanden” aan, open dan het menu van een pagina en kies “Nieuw onderdeel hier” op de plek waar een nieuw bestand moet beginnen. Geef elk onderdeel een naam: dat wordt de naam van het bestand. “Eén pdf per onderdeel” is dan geselecteerd, en je downloadt alle bestanden in één keer in een ZIP-archief. De maximale grootte geldt dan per bestand.",
       },
       { type: "h2", text: "Wat er met je bestanden gebeurt" },
       { type: "p", text: NOT_UPLOADED },
@@ -76,6 +82,7 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
           "Tot 200 MB per bestand, 500 pagina's per pdf en 1.000 pagina's in totaal.",
           "Word- en Excel-bestanden worden niet geaccepteerd: sla ze eerst op als pdf (Afdrukken, dan Opslaan als pdf).",
           "Een beveiligde pdf kun je toevoegen: Cachety vraagt om het wachtwoord, op je eigen apparaat.",
+          "Een watermerk en een wachtwoord op het nieuwe bestand zijn optioneel, en staan uit tot je ze aanzet.",
         ],
       },
     ],
@@ -122,7 +129,7 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
         type: "list",
         items: [
           "Leg het vel plat op een effen, donkere ondergrond, bij een raam. Gebruik geen flits: die geeft een witte vlek.",
-          "Houd de telefoon recht boven het vel, zodat de randen evenwijdig lopen, en vul het beeld met de pagina.",
+          "Houd de telefoon recht boven het vel, zodat de randen evenwijdig lopen, en vul het beeld met de pagina. Een scheef genomen foto kun je achteraf rechtzetten.",
           "Maak één foto per pagina. Controleer of de kleine letters scherp zijn voordat je verdergaat.",
         ],
       },
@@ -133,7 +140,9 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
           `Open ${TOOL} in de browser van je telefoon. Je hoeft geen app te installeren.`,
           "Tik op het vak en kies je foto's. iPhone-foto's in HEIC-formaat werken zoals ze zijn.",
           "Ga naar de pagina's. Elke foto is een pagina geworden. Draai de pagina's die op hun kant liggen en sleep ze in de goede volgorde.",
-          "Kies Eén pdf en kies, als het formulier een maximale grootte heeft, 1, 2, 5 of 10 MB.",
+          "Staat een foto scheef of zie je de tafel rond het vel, tik dan op de pagina en kies “Rechtzetten en bijsnijden”. Zet elke hoek op een hoek van het vel en kies dan “Toepassen”.",
+          "Op dezelfde plek maakt “Achtergrond wit maken” grijs papier wit en haalt “Zwart-wit” de kleur weg. De pagina leest beter en wordt veel lichter. Met “Toepassen op alle foto's” doe je dat voor alle foto's tegelijk.",
+          "Kies “Eén pdf” en kies, als het formulier een maximale grootte heeft, 1, 2, 5 of 10 MB, of “Anders…” voor een andere limiet.",
           "Controleer het voorbeeld en download de pdf. Die staat dan op je telefoon, klaar om mee te sturen.",
         ],
       },
@@ -154,7 +163,7 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
       },
       {
         type: "warning",
-        text: "Een heel kleine maximale grootte en veel fotopagina's gaan niet altijd samen. Past het bestand niet zonder onleesbaar te worden, dan zegt Cachety dat voordat je downloadt: haal pagina's weg, of verstuur twee bestanden.",
+        text: "Een heel kleine maximale grootte en veel fotopagina's gaan niet altijd samen. Past het bestand niet zonder onleesbaar te worden, dan zegt Cachety dat voordat je downloadt. Probeer eerst “Zwart-wit”, haal daarna pagina's weg, splits het bestand in meerdere bestanden, of kies een hogere limiet als de website dat toestaat.",
       },
     ],
     faq: [
@@ -198,8 +207,8 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
           `Open ${TOOL} in je browser, op een computer of een telefoon.`,
           "Voeg je pdf toe. Je kunt meerdere bestanden toevoegen, en ook foto's.",
           "Ga naar de pagina's. Elke pagina wordt als kleine afbeelding getoond, in de volgorde van het uiteindelijke bestand.",
-          "Sleep een pagina om die te verplaatsen. Met de draaiknop draai je een pagina een kwartslag per keer. Met de verwijderknop haal je een pagina weg. Verwijder je de verkeerde pagina, dan haal je die terug met ongedaan maken.",
-          "Kies Eén pdf, controleer het voorbeeld en download.",
+          "Sleep een pagina om die te verplaatsen. Met de draaiknop draai je een pagina een kwartslag per keer. Met de verwijderknop haal je een pagina weg. Verwijder je de verkeerde pagina, dan haal je die terug met “Ongedaan maken”: die knop is een paar seconden te zien. Op een telefoon tik je op een pagina en zie je dezelfde acties in een menu.",
+          "Kies “Eén pdf”, controleer het voorbeeld en download.",
         ],
       },
       {
@@ -236,7 +245,7 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
       },
       {
         q: "Kan ik een verwijderde pagina terughalen?",
-        a: "Ja, zolang de webpagina open is: maak het verwijderen meteen ongedaan, of herstel de oorspronkelijke volgorde. Je originele bestand wordt nooit gewijzigd.",
+        a: "Ja, met “Ongedaan maken”: die knop is na het verwijderen een paar seconden te zien. Heb je alle pagina's van een document verwijderd, dan staat in de lijst naast dat document “Pagina's terugzetten”. Daarna voeg je het bestand gewoon opnieuw toe: je originele bestand wordt nooit gewijzigd.",
       },
       {
         q: "Wordt mijn pdf geüpload?",
@@ -279,7 +288,7 @@ export const DOSSIER_GUIDES_NL: Guide[] = [
           `Open ${TOOL} in je browser. Je hebt geen account nodig.`,
           "Voeg je pdf of je foto's toe.",
           "Ga naar de pagina's en controleer of ze in de goede volgorde staan. Verwijder de pagina's die je niet wilt versturen.",
-          "Kies Eén pdf en download het bestand.",
+          "Kies “Eén pdf” en download het bestand.",
           "Verstuur het nieuwe bestand, niet het origineel.",
         ],
       },

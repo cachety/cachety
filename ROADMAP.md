@@ -126,6 +126,18 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   `lib/suggest-copy/*`) in the nine languages other than French and English
   is a draft translated from English; each file says so in a comment. Same
   for the new README feature line in those languages.
+- **Guides and comparisons for suggested areas and Dossier (2026-11-19),
+  native review:** three guides on hiding numbers (`lib/guides/hide/*`), four
+  guides for the Dossier tool (`lib/guides/dossier/*`) and five comparisons
+  for merging and compressing (`lib/compare/dossier/*`). English and French
+  are written by hand; the nine other languages are drafts and say so in a
+  comment. They are localised, not literal: check first the local banking
+  statements in the "hide" guides (direct-debit refund rights, card rules),
+  which were checked against primary sources but not by a native speaker, and
+  the quoted button labels, which must match the interface. The comparisons
+  carry the same facts in every language (`lib/compare/compare.test.ts`
+  checks rows, edges, sources and the `checked` date against English): when a
+  vendor fact changes, change it in all 11 files and move the date.
 - **Suggested areas, later:** on-device OCR for photos and scans
   (`ocr-suggestions`, about 5.8 MB of WebAssembly and model data for one
   script, needs its own PRD), barcode and QR code hints (`barcode-hint`),

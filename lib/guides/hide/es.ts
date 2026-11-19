@@ -4,14 +4,19 @@
 // sin markdown. Empresas y nombres de ejemplo inventados.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// Estas guías describen la función `suggested-areas` (docs/prd-suggested-areas.md).
-// Se publican con ella, no antes. Los botones nuevos de la función se describen
-// sin citar su nombre: cuando existan en lib/locales/es/strings.ts, conviene
-// citarlos tal cual.
+// Estas guías describen la función `suggested-areas` (docs/prd-suggested-areas.md)
+// tal como se ha publicado. Los botones citados («Revisar», «Ocultar todos»,
+// «Este no», «Número de cuenta (IBAN)», «Listo», «Ocultar algo») son los de
+// lib/suggest-copy/es.ts y lib/locales/es/strings.ts, comprobados el
+// 2026-11-19, y la lista de números es la de lib/sensitive.ts: hay que
+// mantenerlos al día. Los plazos de devolución de un adeudo SEPA se han
+// contrastado ese día con el Real Decreto-ley 19/2018 (arts. 43, 48 y 49) y
+// con el Portal del Cliente Bancario del Banco de España. Las normas de las
+// tarjetas (PCI DSS, Visa) son las comprobadas para la guía en inglés.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_ES: Guide[] = [
   // ------------------------------------------------------------------
@@ -45,7 +50,8 @@ export const HIDE_GUIDES_ES: Guide[] = [
         items: [
           "Números de cuenta bancaria escritos como IBAN, de cualquier país.",
           "Números de tarjeta de pago de las principales redes de tarjetas.",
-          "Números de la seguridad social de Francia, números fiscales franceses y referencias de avisos de impuestos franceses.",
+          "El DNI y el NIE españoles. Es el mismo número que suele figurar como NIF en una nómina.",
+          "Números de identidad y fiscales de otros países: el número de la seguridad social, el número fiscal y la referencia del aviso de impuestos de Francia, la identificación fiscal alemana, el BSN neerlandés, el número nacional belga, el NIF portugués, el CPF brasileño, el código fiscal italiano, el documento de identidad de residente chino, el My Number japonés, el código nacional iraní y el NIK indonesio.",
         ],
       },
       {
@@ -58,14 +64,19 @@ export const HIDE_GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en tu navegador, en el ordenador o en el móvil. No hay cuenta que crear.",
           "Añade tu PDF. Di para qué es la copia y luego quién la va a recibir.",
-          "Si Cachety ha encontrado algo, un mensaje encima de la vista previa te dice cuántos números ha encontrado. Abre desde ahí la lista de sugerencias.",
-          "Cada sugerencia aparece enmarcada en la página y figura en la lista con su nombre, por ejemplo número de cuenta bancaria (IBAN). Toca las que quieras ocultar, o elige ocultarlas todas. Puedes deshacer cada una.",
-          "Revisa tú mismo todas las páginas. Dibuja un rectángulo sobre cualquier otra cosa que quieras ocultar y descarga tu copia.",
+          "Si Cachety ha encontrado algo, un mensaje encima de la vista previa te dice cuántos números ha encontrado. Elige «Revisar».",
+          "Cada sugerencia aparece enmarcada en la página y figura en la lista con su nombre, por ejemplo «Número de cuenta (IBAN)». Toca las que quieras ocultar, o elige «Ocultar todos». Puedes deshacer cada una, y descartar con «Este no» una sugerencia equivocada.",
+          "Revisa tú mismo todas las páginas y dibuja un rectángulo sobre cualquier otra cosa que quieras ocultar. Después elige «Listo»: las zonas solo se eliminan del archivo en ese momento.",
+          "Revisa la vista previa y descarga tu copia.",
         ],
       },
       {
         type: "tip",
-        text: "Nada se oculta hasta que tú lo decides. Si el destinatario te ha pedido tus datos bancarios, deja el IBAN a la vista: es justo lo que necesita.",
+        text: "Nada se oculta hasta que tú lo decides. Si el destinatario te ha pedido tus datos bancarios, deja el IBAN a la vista: es justo lo que necesita. Lo mismo vale para tu DNI cuando el destinatario lo necesita para identificarte, y para el número fiscal y la referencia de un aviso de impuestos francés, que permiten al destinatario comprobar que el aviso es auténtico.",
+      },
+      {
+        type: "p",
+        text: "Las mismas sugerencias aparecen en las otras dos herramientas de Cachety: al firmar un PDF y al reunir varios documentos en un solo archivo con Dossier.",
       },
       { type: "h2", text: "Lo que no puede encontrar" },
       {
@@ -73,7 +84,8 @@ export const HIDE_GUIDES_ES: Guide[] = [
         items: [
           "Nada de lo que haya en una foto o en un escaneo. En una imagen no hay texto que leer, así que no hay sugerencias: dibuja tú los rectángulos.",
           "Los códigos de barras y los códigos QR. Pueden contener la misma información que el texto impreso a su lado.",
-          "Los números con formatos que Cachety no comprueba, como un número de cliente o de contrato, o un número de pasaporte o de permiso de conducir.",
+          "Los números con formatos que Cachety no comprueba, como un número de cuenta que no esté escrito como IBAN, el número de afiliación a la Seguridad Social, un número de cliente o de contrato, o un número de pasaporte.",
+          "Un número de tarjeta que ya está tapado en parte, como las cuatro últimas cifras de un tique. No queda nada que ocultar.",
           "Nombres, direcciones, fechas de nacimiento y teléfonos. Suelen ser lo que el destinatario necesita, así que no se proponen.",
         ],
       },
@@ -131,7 +143,7 @@ export const HIDE_GUIDES_ES: Guide[] = [
       },
       {
         type: "p",
-        text: "El único riesgo real es un recibo domiciliado a tu nombre sin tu consentimiento. En la zona euro, puedes pedir a tu banco la devolución de un recibo domiciliado en un plazo de ocho semanas, y de trece meses si nunca lo autorizaste. Así que revisa tus extractos y avisa a tu banco de cualquier cargo que no reconozcas.",
+        text: "El principal riesgo es un recibo domiciliado a tu nombre sin tu consentimiento. Con un adeudo directo SEPA, el tipo de domiciliación que se usa en España y en toda la zona euro, puedes pedir a tu banco la devolución de un recibo en un plazo de ocho semanas desde el cargo, y de trece meses si nunca lo autorizaste. Así que revisa tus extractos y avisa a tu banco de cualquier cargo que no reconozcas.",
       },
       { type: "h2", text: "El verdadero peligro es el conjunto" },
       {
@@ -153,8 +165,8 @@ export const HIDE_GUIDES_ES: Guide[] = [
         items: [
           "Abre cachety.com en tu navegador. No se instala nada y no hay cuenta.",
           "Añade tu PDF o tu foto. Di para qué es la copia y luego quién la va a recibir.",
-          "En un PDF, Cachety busca los IBAN y te avisa si encuentra alguno. Abre la lista de sugerencias y toca la sugerencia para ocultarla.",
-          "Un número de cuenta que no esté escrito como IBAN no se propone, y tampoco nada de lo que haya en una foto: pulsa «Ocultar algo» y dibuja un rectángulo encima.",
+          "En un PDF, Cachety busca los IBAN y te avisa si encuentra alguno. Elige «Revisar», toca la sugerencia para ocultarla y luego elige «Listo».",
+          "Un número de cuenta que no esté escrito como IBAN, como los veinte dígitos del antiguo código cuenta cliente (CCC), no se propone, y tampoco nada de lo que haya en una foto: pulsa «Ocultar algo» y dibuja un rectángulo encima.",
           "Revisa todas las páginas y descarga tu copia.",
         ],
       },
@@ -183,7 +195,7 @@ export const HIDE_GUIDES_ES: Guide[] = [
       },
       {
         q: "¿Qué hago si veo un recibo domiciliado que nunca autoricé?",
-        a: "Avisa a tu banco enseguida y pide la devolución. En la zona euro tienes trece meses para reclamar un recibo domiciliado que no autorizaste.",
+        a: "Avisa a tu banco enseguida y pide la devolución. Con un adeudo directo SEPA, tienes trece meses desde el cargo para reclamar un recibo que no autorizaste.",
       },
     ],
     updated: UPDATED,
@@ -204,11 +216,11 @@ export const HIDE_GUIDES_ES: Guide[] = [
       { type: "h2", text: "Por qué una foto de tu tarjeta es un riesgo" },
       {
         type: "p",
-        text: "El anverso de una tarjeta muestra el número largo, la fecha de caducidad y tu nombre. El reverso muestra el código de seguridad (CVV), de tres cifras. Juntos, son todo lo que hace falta para pagar por internet con tu tarjeta. Un correo o un mensaje de chat puede quedarse años en varias bandejas de entrada, muy lejos de tu control.",
+        text: "En la mayoría de las tarjetas, el anverso muestra el número largo, la fecha de caducidad y tu nombre, y el reverso el código de seguridad (CVV), de tres cifras. Algunas tarjetas más nuevas lo llevan todo impreso en el reverso. Juntos, son todo lo que hace falta para pagar por internet con tu tarjeta. Un correo o un mensaje de chat puede quedarse años en varias bandejas de entrada, muy lejos de tu control.",
       },
       {
         type: "warning",
-        text: "No envíes nunca el código de seguridad (CVV): las tres cifras del reverso de la tarjeta, o las cuatro del anverso en una American Express. Ningún negocio honrado lo necesita en una foto. Las propias normas de seguridad del sector de las tarjetas prohíben a los negocios conservarlo una vez hecho el pago.",
+        text: "No envíes nunca el código de seguridad (CVV): las tres cifras del reverso de la tarjeta, o las cuatro del anverso en una American Express. Ningún negocio honrado lo necesita en una foto. Las propias normas de seguridad del sector de las tarjetas prohíben a los negocios conservarlo una vez autorizado el pago.",
       },
       { type: "h2", text: "Pide antes otra forma" },
       {
@@ -219,7 +231,7 @@ export const HIDE_GUIDES_ES: Guide[] = [
       {
         type: "list",
         items: [
-          "Oculta las cifras centrales del número de la tarjeta. Deja como mucho las cuatro últimas, que es lo que muestran los tiques.",
+          "Oculta las cifras centrales del número de la tarjeta. Deja como mucho las cuatro últimas, que es lo que suele mostrar tu copia del tique.",
           "Oculta el código de seguridad. En el reverso, oculta toda la banda donde está impreso.",
           "Oculta la fecha de caducidad, salvo que te la pidan por un buen motivo.",
           "Deja tu nombre y el logotipo del banco, para que la copia siga demostrando que la tarjeta es tuya.",
@@ -253,7 +265,7 @@ export const HIDE_GUIDES_ES: Guide[] = [
     faq: [
       {
         q: "¿Qué cifras del número de mi tarjeta puedo enseñar?",
-        a: "Las cuatro últimas bastan para casi todas las comprobaciones, y son las que las tiendas imprimen en los tiques. Las normas de seguridad de las tarjetas permiten a un negocio mostrar, como mucho, las primeras cifras, que identifican al banco, y las cuatro últimas. Oculta el resto.",
+        a: "Las cuatro últimas bastan para casi todas las comprobaciones, y son las que las tiendas suelen imprimir en tu copia del tique. Según las normas de seguridad de las tarjetas, un negocio no debería mostrar normalmente más que las primeras cifras, que identifican al banco, y las cuatro últimas. Oculta el resto.",
       },
       {
         q: "¿Es seguro enviar una foto de mi tarjeta por correo o WhatsApp?",
@@ -261,7 +273,7 @@ export const HIDE_GUIDES_ES: Guide[] = [
       },
       {
         q: "El hotel quiere el anverso y el reverso. ¿Qué hago?",
-        a: "Pregunta por qué y propón a cambio un enlace de pago seguro. Si acabas enviando el reverso, oculta el código de seguridad y la banda que lo rodea. Las normas del sector de las tarjetas no permiten a un negocio conservar ese código una vez hecho el pago.",
+        a: "Pregunta por qué y propón a cambio un enlace de pago seguro. Si acabas enviando el reverso, oculta el código de seguridad y la banda que lo rodea. Las normas del sector de las tarjetas no permiten a un negocio conservar ese código una vez autorizado el pago.",
       },
       {
         q: "Ya he enviado una foto completa de mi tarjeta. ¿Y ahora?",

@@ -4,14 +4,18 @@
 // sin markdown. Empresas y nombres de ejemplo inventados.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// Estas guías describen la herramienta Dossier (docs/prd-dossier.md), solo el
-// alcance «Must»: sin secciones, sin enderezar fotos, sin tamaño a medida.
-// Se publican con la herramienta, no antes. Los botones nuevos se describen
-// sin citar su nombre: hay que repasar los pasos con la interfaz definitiva.
+// Estas guías describen la herramienta Dossier (docs/prd-dossier.md) tal como
+// se ha publicado, con secciones, enderezado de fotos y tamaño a medida. Los
+// textos citados («Un solo PDF», «Un PDF por sección», «Separar en varios
+// archivos», «Nueva sección aquí», «Enderezar y recortar», «Aplicar»,
+// «Blanquear el fondo», «Blanco y negro», «Aplicar a todas las fotos»,
+// «Otro…», «Deshacer», «Recuperar sus páginas») son los del bloque `dossier`
+// de lib/locales/es/strings.ts, comprobados el 2026-11-19: hay que mantenerlos
+// al día.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Dirección de la herramienta, escrita sin esquema (las guías no llevan enlaces). */
 const TOOL = "cachety.com/es/dossier";
@@ -48,13 +52,18 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
           `Abre ${TOOL} en tu navegador, en el ordenador o en el móvil. No hay nada que instalar ni cuenta que crear.`,
           "Añade tus archivos: PDF y fotos a la vez (JPG, PNG, fotos HEIC del iPhone y otros formatos). Cada foto se convierte en una página.",
           "Pasa a las páginas. Cada página de cada archivo se muestra como una imagen pequeña. Arrastra una página para moverla, incluso de un documento a otro. Gira las que estén de lado y quita las que no quieras.",
-          "Elige un solo PDF. Si la web a la que vas a enviarlo limita el tamaño, elige ese límite: 1, 2, 5 o 10 MB. Cachety te dice antes de descargar si el archivo cabrá y se seguirá leyendo bien.",
+          "Elige «Un solo PDF». Si la web a la que vas a enviarlo limita el tamaño, elige ese límite: 1, 2, 5 o 10 MB, u «Otro…» para cualquier límite de 0,5 a 50 MB. Cachety te dice antes de descargar si el archivo cabrá y se seguirá leyendo bien.",
           "Revisa la vista previa, pon un nombre al archivo y descárgalo.",
         ],
       },
       {
         type: "tip",
-        text: "Antes de descargar, puedes ocultar un número de cuenta o cualquier otro dato que el destinatario no necesite. La zona oculta se elimina del archivo, no solo se tapa.",
+        text: "Antes de descargar, puedes ocultar un número de cuenta o cualquier otro dato que el destinatario no necesite. En un PDF que contiene texto, Cachety te señala los números de cuenta y de tarjeta que encuentra. La zona oculta se elimina del archivo, no solo se tapa.",
+      },
+      { type: "h2", text: "Un archivo por tipo de documento" },
+      {
+        type: "p",
+        text: "Algunas webs no quieren un solo archivo grande, sino un archivo por tipo de documento: documento de identidad, nóminas, justificante de domicilio. Marca «Separar en varios archivos», luego abre el menú de una página y elige «Nueva sección aquí» donde deba empezar cada archivo nuevo. Pon un nombre a cada sección: será el nombre de su archivo. Entonces queda seleccionado «Un PDF por sección», y descargas todos los archivos a la vez en un archivo ZIP. El límite de tamaño se aplica entonces a cada archivo.",
       },
       { type: "h2", text: "Qué pasa con tus archivos" },
       { type: "p", text: NOT_UPLOADED },
@@ -75,6 +84,7 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
           "Hasta 200 MB por archivo, 500 páginas por PDF y 1.000 páginas en total.",
           "No se admiten archivos de Word ni de Excel: guárdalos antes como PDF (Imprimir y luego Guardar como PDF).",
           "Se puede añadir un PDF protegido: Cachety te pide su contraseña, en tu dispositivo.",
+          "La marca de agua y la contraseña del nuevo archivo son opcionales: no se añaden si no las pides.",
         ],
       },
     ],
@@ -121,7 +131,7 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
         type: "list",
         items: [
           "Pon la hoja plana sobre una superficie lisa y oscura, cerca de una ventana. Evita el flash, que deja una mancha blanca.",
-          "Sujeta el móvil recto, justo encima de la hoja, para que los bordes se vean paralelos, y llena el encuadre con la página.",
+          "Sujeta el móvil recto, justo encima de la hoja, para que los bordes se vean paralelos, y llena el encuadre con la página. Una foto hecha en ángulo se puede enderezar después.",
           "Haz una foto por página. Comprueba que la letra pequeña sale nítida antes de seguir.",
         ],
       },
@@ -132,7 +142,9 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
           `Abre ${TOOL} en el navegador del móvil. No hay ninguna app que instalar.`,
           "Toca la zona para añadir archivos y elige tus fotos. Las fotos del iPhone en formato HEIC valen tal cual.",
           "Pasa a las páginas. Cada foto se ha convertido en una página. Gira las que estén de lado y arrástralas hasta dejarlas en el orden correcto.",
-          "Elige un solo PDF y, si el formulario limita el tamaño, elige 1, 2, 5 o 10 MB.",
+          "Si una foto está torcida o se ve la mesa alrededor de la hoja, toca la página y elige «Enderezar y recortar». Pon cada esquina sobre una esquina de la hoja y elige «Aplicar».",
+          "En el mismo sitio, «Blanquear el fondo» deja blanco un papel que se ve gris y «Blanco y negro» quita el color. La página se lee mejor y pesa mucho menos. «Aplicar a todas las fotos» lo hace con todas las fotos a la vez.",
+          "Elige «Un solo PDF» y, si el formulario limita el tamaño, elige 1, 2, 5 o 10 MB, u «Otro…» para otro límite.",
           "Revisa la vista previa y descarga el PDF. Se guarda en tu móvil, listo para adjuntar.",
         ],
       },
@@ -153,7 +165,7 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
       },
       {
         type: "warning",
-        text: "Un límite de tamaño muy pequeño y muchas páginas de fotos no siempre son compatibles. Si el archivo no puede caber y seguir leyéndose bien, Cachety te lo dice antes de descargar: quita algunas páginas o envía dos archivos.",
+        text: "Un límite de tamaño muy pequeño y muchas páginas de fotos no siempre son compatibles. Si el archivo no puede caber y seguir leyéndose bien, Cachety te lo dice antes de descargar. Prueba primero con «Blanco y negro»; después quita algunas páginas, separa el archivo en varios archivos o elige un tamaño mayor si la web lo permite.",
       },
     ],
     faq: [
@@ -197,8 +209,8 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
           `Abre ${TOOL} en tu navegador, en el ordenador o en el móvil.`,
           "Añade tu PDF. Puedes añadir varios archivos, y también fotos.",
           "Pasa a las páginas. Cada página se muestra como una imagen pequeña, en el orden del archivo final.",
-          "Arrastra una página para moverla. Con el botón de girar, la giras un cuarto de vuelta cada vez. Con el botón de quitar, la sacas. Si quitas la página equivocada, deshaz y vuelve a su sitio.",
-          "Elige un solo PDF, revisa la vista previa y descarga.",
+          "Arrastra una página para moverla. Con el botón de girar, la giras un cuarto de vuelta cada vez. Con el botón de quitar, la sacas. Si quitas la página equivocada, «Deshacer» la devuelve a su sitio: el botón se muestra unos segundos. En el móvil, toca una página para ver las mismas acciones en un menú.",
+          "Elige «Un solo PDF», revisa la vista previa y descarga.",
         ],
       },
       {
@@ -235,7 +247,7 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
       },
       {
         q: "¿Puedo recuperar una página que he quitado?",
-        a: "Sí, mientras la página web siga abierta: deshaz justo después de quitarla, o restaura el orden original. Tu archivo original no se modifica nunca.",
+        a: "Sí, con «Deshacer», que se muestra unos segundos después de quitar una página. Si has quitado todas las páginas de un documento, aparece «Recuperar sus páginas» junto a él en la lista. Pasado ese momento, vuelve a añadir el archivo: tu archivo original no se modifica nunca.",
       },
       {
         q: "¿Se sube mi PDF?",
@@ -278,7 +290,7 @@ export const DOSSIER_GUIDES_ES: Guide[] = [
           `Abre ${TOOL} en tu navegador. No hace falta cuenta.`,
           "Añade tu PDF o tus fotos.",
           "Pasa a las páginas y comprueba que están en el orden correcto. Quita las que no quieras enviar.",
-          "Elige un solo PDF y descárgalo.",
+          "Elige «Un solo PDF» y descárgalo.",
           "Envía el archivo nuevo, no el original.",
         ],
       },

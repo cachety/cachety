@@ -9,12 +9,16 @@ import type { Comparison } from "../types";
 // read on the `checked` date. Prices change often, so none are quoted here.
 // Availability of the foreign tools in mainland China: not checked, so never stated.
 //
-// The Cachety column describes the Dossier tool as specified in
-// docs/prd-dossier.md (Must scope). Publish with the tool, not before, and
-// re-check the column against the shipped interface.
+// The Cachety column describes the Dossier tool as shipped (sections, photo
+// straightening and custom size included): limits from lib/watermark.ts and
+// lib/pages.ts, sizes from lib/size-budget.ts and the `dossier` block of
+// lib/i18n.tsx. Keep the column in step with them. The quoted labels
+// (「一个 PDF」「其他…」) were checked against that block on 2026-11-19.
+// The claims about the other tools say the same as the English file
+// (lib/compare/dossier/en.ts), re-checked on the same date.
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Address of the tool, written without a scheme. */
 const TOOL = "cachety.com/zh/dossier";
@@ -24,14 +28,17 @@ const CACHETY = {
   where: "在您自己设备的浏览器里完成。什么都不上传。",
   kept: "什么都不保存：没有接收文件的服务器。",
   free: "免费，不用注册，没有付费版，也没有每日限制。每个文件最大 200 MB，每个 PDF 最多 500 页，总共最多 1,000 页。",
-  pages: "所有文件的每一页都在同一个网格里：可以移动页面（包括从一个文件移到另一个文件）、旋转或移除。",
-  size: "您选一个最大大小：1、2、5 或 10 MB。下载之前，Cachety 会告诉您文件能不能控制在这个大小以内，同时保持清晰可读。",
+  pages: "所有文件的每一页都在同一个网格里：可以移动页面（包括从一个文件移到另一个文件）、旋转或移除。可以生成一个 PDF，也可以按您命名的分组，每组一个 PDF。",
+  size: "您选一个最大大小：1、2、5 或 10 MB，或者 0.5 到 50 MB 之间的任意上限。下载之前，Cachety 会告诉您文件能不能控制在这个大小以内，同时保持清晰可读。",
   output: "每一页都重新生成为图片。文字不能选中或搜索，只含文字的 PDF 生成后可能更大。",
   hidden: "每个文件都会去掉：隐藏的文字、作者等属性、附件、链接，以及照片的 GPS 位置。",
-  inputs: "PDF 和照片可以一起放，包括 iPhone 的 HEIC 照片。不支持 Word、Excel 和 PowerPoint 文件。",
+  inputs: "PDF 和照片可以一起放，包括 iPhone 的 HEIC 照片。拍纸质材料的照片可以拉正、裁剪，背景可以变白。不支持 Word、Excel 和 PowerPoint 文件。",
   offline: "不用安装。页面加载好以后，开启飞行模式也能照常使用，手机和电脑都可以。",
   ads: "没有广告，也没有跟踪工具。源代码公开。",
 };
+
+/** Table row 「合并选项」, for the tools that have bookmarks and tables of contents. */
+const MERGE_OPTIONS = "页面顺序，以及需要多个文件时每个分组一个 PDF。没有书签，没有目录。";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "Cachety 生成的文件是什么样的" },
@@ -53,7 +60,7 @@ const HOW_TO: Comparison["body"] = [
       `用电脑或手机的浏览器打开 ${TOOL}。不用安装，也不用注册。`,
       "添加您的 PDF 和照片。每张照片会变成一页。",
       "进入整理页面这一步：拖动页面排好顺序，把横着的转正，把不要的移除。",
-      "选择保存为一个 PDF；如果对方给了大小限制，就选 1、2、5 或 10 MB。",
+      "选择「一个 PDF」；如果对方给了大小限制，就选 1、2、5 或 10 MB，或者点「其他…」填别的上限。",
       "检查预览，遮盖对方不需要的信息，然后下载文件。",
     ],
   },
@@ -106,8 +113,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "调整页面顺序",
         cachety: CACHETY.pages,
-        other: "合并工具调整的是整个文件的顺序。对单独的页面排序、删除和旋转，要在另一个工具 Organize PDF 里进行。",
-        edge: "cachety",
+        other: "合并工具调整的是整个文件的顺序。另一个工具 Organize PDF 可以对单独的页面排序、删除和旋转，还可以再添加文件并合并（免费：5 个文件、100 MB）。",
       },
       {
         criterion: "控制在大小限制以内",
@@ -159,7 +165,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
           "它能把 Word、Excel 和 PowerPoint 文件转成 PDF。",
           "它能识别扫描件里的文字（OCR），让扫描的 PDF 可以搜索。",
           "它能处理大任务：免费合并一次最多 100 个文件。",
-          "它的付费桌面版在您的电脑上处理文件，工具和网站上的一样。",
+          "它的付费桌面版在您的电脑上处理文件，网站上的工具大部分都有。",
         ],
       },
       { type: "h2", text: "Cachety 更强的地方" },
@@ -183,7 +189,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     chooseCachety: [
       "文件是身份证件、工资单或银行流水，您不愿意上传。",
       "您需要把照片和 PDF 放进同一个文件，并按自己的顺序排列页面。",
-      "表单要求交一个小于 1、2、5 或 10 MB 的文件。",
+      "表单要求交一个文件，或者每类材料一个文件，并且有以 MB 计的大小限制。",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -192,7 +198,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       ),
       {
         q: "iLovePDF 能把 PDF 压缩到指定的大小吗？",
-        a: "不能。它提供三个压缩级别，它自己的指南也说，没有任何工具能保证精确的输出大小。用 Cachety，您可以选 1、2、5 或 10 MB；如果文件没法既控制在这个大小以内又保持清晰可读，下载之前就会告诉您。",
+        a: "不能。它提供三个压缩级别，它自己的指南也说，没有任何工具能保证精确的输出大小。用 Cachety，您选的是一个以 MB 计的最大大小；如果文件没法既控制在这个大小以内又保持清晰可读，下载之前就会告诉您。",
       },
       {
         q: "iLovePDF 能离线使用吗？",
@@ -216,6 +222,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "iLovePDF 博客：iLovePDF 15 周年", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "关于 iLovePDF", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -235,7 +242,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     intro:
       "Smallpdf 是来自瑞士的知名在线 PDF 工具集，有手机 App 和 Windows 版。它的合并和压缩工具在云端运行。Cachety 做的事范围更小，但在您自己的设备上完成：把 PDF 和照片合成一个文件，控制在大小限制以内，而且不上传。",
     verdict:
-      "Smallpdf 能做的更多：它接受 Word、Excel 和 PowerPoint 文件，能识别扫描件里的文字，还有可以离线使用的 Windows 版。需要这些时，它是更好的选择。如果文件是您不愿上传的个人材料，一天里要准备的文件不止一两个，或者表单规定了以 MB 计的大小限制，Cachety 是更好的选择。",
+      "Smallpdf 能做的更多：它接受 Word、Excel 和 PowerPoint 文件，能识别扫描件里的文字，还有可以离线使用的 Windows 版。需要这些时，它是更好的选择。如果文件是您不愿上传的个人材料，您会碰到免费版的每日限制，或者表单规定了以 MB 计的大小限制，Cachety 是更好的选择。",
     table: [
       {
         criterion: "文件在哪里处理",
@@ -246,7 +253,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "文件保存多久",
         cachety: CACHETY.kept,
-        other: "一小时后从服务器上删除，除非您把它们存到自己的账号里。",
+        other: "按照 Smallpdf 产品页面的说法，一小时后从服务器上删除，除非您把它们存到自己的账号里。",
         edge: "cachety",
       },
       {
@@ -258,7 +265,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "调整页面顺序",
         cachety: CACHETY.pages,
-        other: "合并工具可以重排、旋转和删除页面。另有一个 Organize 工具，对单个 PDF 做同样的事。",
+        other: "合并工具可以显示每个文件的页面，用来重排、旋转或删除；Smallpdf 的价格页面把这个页面视图列在付费方案里。Organize 工具可以重排、旋转、删除和添加页面，也可以合并多份文档。",
       },
       {
         criterion: "控制在大小限制以内",
@@ -280,7 +287,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "隐藏数据",
         cachety: CACHETY.hidden,
-        other: "产品页面和帮助页面上，没有关于合并工具的相关说明。",
+        other: "合并工具没有相关说明。Smallpdf 的博客说，它的压缩工具和拼合（Flatten）工具会去掉元数据，这是另外的一步。",
       },
       {
         criterion: "App 和离线使用",
@@ -329,17 +336,17 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     ],
     chooseCachety: [
       "文件是身份证件、工资单或银行流水，您不愿意上传。",
-      "表单要求交一个小于 1、2、5 或 10 MB 的文件。",
+      "表单要求交一个文件，或者每类材料一个文件，并且有以 MB 计的大小限制。",
       "您用的是手机，不想装 App，也不想注册账号。",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "用 Smallpdf 的在线工具会：文件会上传到它的服务器，一小时后删除，除非您把它们存到自己的账号里。它的 Windows 桌面版可以离线处理文件。"
+        "用 Smallpdf 的在线工具会：文件会上传到它的服务器，按照它产品页面的说法，一小时后删除，除非您把它们存到自己的账号里。它的 Windows 桌面版可以离线处理文件。"
       ),
       {
         q: "Smallpdf 能把 PDF 压缩到指定的大小吗？",
-        a: "不能。Smallpdf 提供的是压缩级别，它自己的博客也说，这个工具不能输入精确的大小。用 Cachety，您可以选 1、2、5 或 10 MB。",
+        a: "不能。Smallpdf 提供的是压缩级别，它自己的博客也说，这个工具不能输入精确的大小。用 Cachety，您选的是一个以 MB 计的最大大小；只要还能保持清晰可读，文件就会控制在这个大小以内。",
       },
       {
         q: "Smallpdf 免费吗？",
@@ -357,6 +364,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       { label: "Smallpdf 信任中心", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf App 和扩展程序", url: "https://smallpdf.com/download" },
       { label: "Smallpdf 博客：把 PDF 压缩到选定的大小", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "Smallpdf 博客：删除 PDF 元数据", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "关于 Smallpdf", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -377,7 +385,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     intro:
       "PDF 是 Adobe 发明的，它免费的 Acrobat 在线工具可以在任何浏览器里合并和压缩 PDF。文件在 Adobe 的服务器上处理。Cachety 做的事范围更小，但在您自己的设备上完成：把 PDF 和照片合成一个文件，控制在大小限制以内，而且不上传。",
     verdict:
-      "如果 PDF 的文字必须保持原样，Adobe 的合并工具是更好的选择：它合并文件时不降低图片、文字或格式的质量，一次最多 100 个文件。它的付费桌面版能做的事远比 Cachety 多。如果是您不愿上传的个人材料，想免费把照片和 PDF 混在一起，或者要满足以 MB 计的大小限制，Cachety 是更好的选择。",
+      "如果 PDF 的文字必须保持原样，Adobe 的合并工具是更好的选择：它合并文件时不降低图片、文字或格式的质量，一次最多 100 个文件。它的付费桌面版能做的事远比 Cachety 多。如果是您不愿上传的个人材料，想一步把照片和 PDF 混在一起，或者要满足以 MB 计的大小限制，Cachety 是更好的选择。",
     table: [
       {
         criterion: "文件在哪里处理",
@@ -394,12 +402,12 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "账号、免费使用和限制",
         cachety: CACHETY.free,
-        other: "合并：最多 100 个文件，每个最多 500 页，不加水印。压缩：免费，但使用次数有限；不限次数使用需要付费方案。",
+        other: "合并：最多 100 个文件，每个最多 500 页，合并后的文件最多 1,500 页，不加水印。压缩：免费，但使用次数有限；不限次数使用需要付费方案。",
       },
       {
         criterion: "调整页面顺序",
         cachety: CACHETY.pages,
-        other: "合并之前可以调整文件的顺序。重新整理单独的页面需要登录。",
+        other: "合并之前可以调整文件的顺序。重新整理单独的页面需要登录；免费账号就够了。",
         edge: "cachety",
       },
       {
@@ -410,7 +418,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "照片和其他文件类型",
         cachety: CACHETY.inputs,
-        other: "免费的合并工具接受的是 PDF。把 PDF 和 Word、Excel、PowerPoint 或图片文件合在一起，属于 Acrobat Pro 的功能。另有一个工具可以把图片转成 PDF，下载结果必须登录。",
+        other: "免费的合并工具接受的是 PDF。把 PDF 和 Word、Excel、PowerPoint 或图片文件合在一起，属于 Acrobat Pro 的功能。另有免费的工具可以把图片（包括 HEIC 照片）转成 PDF，但转换次数有限。",
       },
       {
         criterion: "新 PDF 是什么样的",
@@ -456,7 +464,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
         items: [
           "您的文件始终不上传，任何时候都不用登录。",
           "移动、旋转和移除单独的页面是免费的，不需要账号。",
-          "照片和 PDF 可以免费放进同一个文件，包括 iPhone 的 HEIC 照片。",
+          "照片和 PDF 一步就能放进同一个文件。用 Adobe 的免费工具，要先把照片转成 PDF，再合并。",
           "每个文件的隐藏数据都会去掉，而 Adobe 把这个功能留给了付费的 Pro 方案。",
           "您选的是以 MB 计的大小，下载之前就会知道能不能做到。",
         ],
@@ -472,7 +480,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     chooseCachety: [
       "文件是身份证件、工资单或银行流水，您不愿意上传。",
       "您想不登录就重排、旋转或移除页面。",
-      "您需要把照片和 PDF 混在一起，并把结果控制在 1、2、5 或 10 MB 以内。",
+      "您需要把照片和 PDF 混在一起，并把结果控制在以 MB 计的大小限制以内。",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -481,7 +489,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       ),
       {
         q: "合并 PDF 需要 Adobe 账号吗？",
-        a: "合并和下载不需要。重新整理单独的页面、用链接分享文件，或者下载由图片生成的 PDF 时，Adobe 会要求您登录。Cachety 根本没有账号。",
+        a: "合并和下载不需要。重新整理单独的页面，或者用链接分享文件时，Adobe 会要求您登录。Cachety 根本没有账号。",
       },
       {
         q: "Acrobat 在线工具能删除 PDF 的元数据吗？",
@@ -494,6 +502,8 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       { label: "Adobe Acrobat：合并 PDF", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat：压缩 PDF", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat：JPG 转 PDF", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat：图片转 PDF", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat：HEIC 转 PDF", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat：调整 PDF 页面顺序", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat：删除 PDF 页面", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -544,7 +554,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "调整页面顺序",
         cachety: CACHETY.pages,
-        other: "通过拖放调整文件的顺序。页面模式会显示所有文件的页面。旋转和移除页面是单独的工具。",
+        other: "通过拖放调整文件的顺序。页面模式会显示所有文件的页面：您选出要用的页面，拖动排好顺序，其余的不会放进去。旋转页面是单独的工具。",
       },
       {
         criterion: "控制在大小限制以内",
@@ -566,17 +576,23 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "隐藏数据",
         cachety: CACHETY.hidden,
-        other: "另有一个工具可以删除 PDF 的元数据。",
+        other: "另有一个工具可以删除 PDF 的元数据。压缩 PDF 的工具也可以去掉元数据、附件和批注。",
+      },
+      {
+        criterion: "合并选项",
+        cachety: MERGE_OPTIONS,
+        other: "书签、目录、每个文件前的封面页、用于双面打印的空白页、印在页面上的文件名。",
+        edge: "other",
       },
       {
         criterion: "App 和离线使用",
         cachety: CACHETY.offline,
-        other: "PDF24 Creator 让所有工具都能离线使用，但只有 Windows 版。目前还没有 Mac 或 Linux 版，手机应用商店里也没有 App。",
+        other: "PDF24 Creator 让所有工具都能离线使用，但只有 Windows 版。目前还没有 Mac 或 Linux 版，手机应用商店里也没有 App：在线工具可以添加到手机主屏幕，但仍然需要联网。",
       },
       {
         criterion: "广告和跟踪工具",
         cachety: CACHETY.ads,
-        other: "在线工具靠广告维持。隐私政策中提到了 Google AdSense 和 Google Analytics。",
+        other: "在线工具靠广告维持。隐私政策中提到了 Google AdSense 和 Google Analytics 等。",
         edge: "cachety",
       },
     ],
@@ -594,7 +610,8 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         type: "list",
         items: [
-          "合并后的 PDF 保留原始页面，所以文字仍然可以选中，文件也仍然很小。",
+          "合并后的 PDF 原样保留原始页面：文字、图片和字体保持原有质量。",
+          "Cachety 没有的合并选项：书签、目录、封面页、用于双面打印的空白页。",
           "它接受 Word 文档和其他文件，并提供文字识别（OCR）。",
           "在 Windows 上，PDF24 Creator 可以离线完成这一切，而且免费。",
           "压缩时的分辨率和图片质量可以自己设置。",
@@ -622,7 +639,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     ],
     chooseCachety: [
       "您用的是手机、Mac 或不能安装软件的电脑，又不愿意上传自己的材料。",
-      "表单要求交一个小于 1、2、5 或 10 MB 的文件。",
+      "表单要求交一个文件，或者每类材料一个文件，并且有以 MB 计的大小限制。",
       "您的照片是用 iPhone 拍的。",
     ],
     faq: [
@@ -632,7 +649,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       ),
       {
         q: "PDF24 能把 PDF 压缩到指定的大小吗？",
-        a: "不能直接做到。您要设置分辨率和图片质量，PDF24 自己的指南也说，没有“压缩到 5 MB”这样的选项。用 Cachety，您可以选 1、2、5 或 10 MB。",
+        a: "不能直接做到。您要设置分辨率和图片质量，PDF24 自己的指南也说，没有“压缩到 5 MB”这样的选项。用 Cachety，您选的是一个以 MB 计的最大大小；只要还能保持清晰可读，文件就会控制在这个大小以内。",
       },
       {
         q: "PDF24 能在 Mac 或手机上离线使用吗？",
@@ -645,6 +662,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       { label: "PDF24 Tools：压缩 PDF", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools：图片转 PDF", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools：删除 PDF 元数据", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools：旋转 PDF", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools：常见问题", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "PDF24 帮助：合并 PDF 文件", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -680,13 +698,13 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       {
         criterion: "文件保存多久",
         cachety: CACHETY.kept,
-        other: "在线：2 小时后自动删除。有一个按钮可以更早删除。",
+        other: "在线：2 小时后自动删除。结果页面上有一个删除文件的按钮（Delete files）。",
         edge: "cachety",
       },
       {
         criterion: "账号、免费使用和限制",
         cachety: CACHETY.free,
-        other: "不用注册。免费在线合并：最多 50 页或 50 MB，每小时 3 次任务。免费压缩：最多 200 页或 100 MB。免费桌面版：每天 3 次任务。付费方案取消这些限制。",
+        other: "不用注册。免费在线合并：最多 50 页或 50 MB，每小时 3 次任务。免费压缩：最多 200 页或 100 MB。免费桌面版：每天 3 次任务，文件最大 50 MB、最多 200 页。付费方案取消页数限制和每小时的限制；这时每个文件最大可以上传 500 MB。",
         edge: "cachety",
       },
       {
@@ -707,14 +725,14 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       },
       {
         criterion: "合并选项",
-        cachety: "除了页面顺序，没有其他选项：没有书签，没有目录。",
+        cachety: MERGE_OPTIONS,
         other: "按文件保留或创建书签、目录、用于双面打印的空白页、页脚中的文件名。",
         edge: "other",
       },
       {
         criterion: "隐藏数据",
         cachety: CACHETY.hidden,
-        other: "另有一个工具可以编辑 PDF 的元数据。",
+        other: "另有一个工具可以编辑 PDF 的元数据，或者把它全部删除。",
       },
       {
         criterion: "App 和离线使用",
@@ -730,7 +748,7 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       },
       {
         type: "p",
-        text: "Sejda Desktop 在您的电脑上处理文件，不上传，支持 Mac、Windows 和 Linux。它的免费版每天可以做三次任务。对个人材料来说，有一个细节值得注意：Sejda 的服务条款写明，用户不得向它的在线服务提交敏感的个人信息，例如政府签发的身份证件号码。",
+        text: "Sejda Desktop 在您的电脑上处理文件，不上传，支持 Mac、Windows 和 Linux。它的免费版每天可以做三次任务，文件最大 50 MB、最多 200 页，合并时最多 30 个文件、50 页。对个人材料来说，有一个细节值得注意：Sejda 的服务条款写明，用户不得向它的在线服务提交敏感的个人信息，例如政府签发的身份证件号码。",
       },
       { type: "h2", text: "Sejda 更强的地方" },
       {
@@ -738,7 +756,8 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
         items: [
           "Cachety 没有的合并选项：书签、目录、用于双面打印的空白页。",
           "适用于 Mac、Windows 和 Linux 的桌面版，把文件留在您的电脑上。",
-          "同一个地方还有很多其他工具：文字识别（OCR）、裁剪、扫描件纠偏、编辑。",
+          "同一个地方还有很多其他工具：文字识别（OCR）、裁剪和拉正 PDF 的页面、编辑。",
+          "它可以直接从 Dropbox、Google Drive 或 OneDrive 取文件。",
           "对压缩的精细控制：可以设置图片质量和分辨率。",
         ],
       },
@@ -758,12 +777,12 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
     chooseOther: [
       "您需要合并后的 PDF 带有书签或目录。",
       "您可以安装 Sejda Desktop，而且任务在它的免费限制以内，或者您有付费方案。",
-      "您需要文字识别、裁剪或扫描件纠偏。",
+      "您需要文字识别，或者要裁剪、拉正扫描版 PDF 的页面：Cachety 只能对照片这样做。",
     ],
     chooseCachety: [
       "文件是身份证件、工资单或银行流水，而您用的是手机，或者不能安装软件。",
       "您的文件超过 50 页，或者同一个小时里要准备好几个文件。",
-      "表单要求交一个小于 1、2、5 或 10 MB 的文件。",
+      "表单要求交一个文件，或者每类材料一个文件，并且有以 MB 计的大小限制。",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -772,11 +791,11 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       ),
       {
         q: "Sejda 免费合并有哪些限制？",
-        a: "在线使用时，文件最多 50 页或 50 MB，每小时三次任务。Sejda Desktop 的免费版每天可以做三次任务。Cachety 没有这类限制：一个文件最多可以有 1,000 页。",
+        a: "在线使用时，文件最多 50 页或 50 MB，每小时三次任务。Sejda Desktop 的免费版每天可以做三次任务，文件最大 50 MB、最多 200 页。Cachety 没有这类限制：一个文件最多可以有 1,000 页。",
       },
       {
         q: "Sejda 能把 PDF 压缩到指定的大小吗？",
-        a: "它的压缩工具提供的是图片质量和分辨率设置，而不是一个目标大小。用 Cachety，您可以选 1、2、5 或 10 MB。",
+        a: "它的压缩工具提供的是图片质量和分辨率设置，而不是一个目标大小。用 Cachety，您选的是一个以 MB 计的最大大小；只要还能保持清晰可读，文件就会控制在这个大小以内。",
       },
       FAQ_TEXT,
     ],
@@ -786,7 +805,8 @@ export const DOSSIER_COMPARISONS_ZH: Comparison[] = [
       { label: "Sejda：JPG 转 PDF", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda：整理 PDF 页面", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda：编辑 PDF 元数据", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda 价格方案和常见问题", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda 方案和常见问题", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda：结果页面", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "Sejda 的安全措施", url: "https://www.sejda.com/security" },
       { label: "Sejda 隐私政策", url: "https://www.sejda.com/privacy" },

@@ -5,15 +5,16 @@
 // Firmennamen in den Beispielen sind erfunden.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// Diese Ratgeber beschreiben das Dossier-Tool (docs/prd-dossier.md), nur den
-// Must-Umfang: keine Abschnitte, kein Begradigen von Fotos, keine frei
-// wählbare Größe. Erst mit dem Tool veröffentlichen, nicht vorher. Die
-// Schaltflächen des Tools sind hier nur umschrieben, weil ihre deutschen
-// Beschriftungen noch nicht feststehen: beim Veröffentlichen abgleichen.
+// Diese Ratgeber beschreiben das Dossier-Tool (docs/prd-dossier.md), wie es
+// ausgeliefert ist, mit Abschnitten, Begradigen von Fotos und frei wählbarer
+// Größe. Die zitierten Beschriftungen („Ein PDF“, „In mehrere Dateien
+// aufteilen“, „Begradigen und zuschneiden“, „Andere…“ und die übrigen) sind
+// mit dem Block `dossier` in lib/locales/de/strings.ts abgeglichen: bitte im
+// Gleichschritt halten.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Adresse des Tools, ohne Schema geschrieben (Ratgeber enthalten keine Links). */
 const TOOL = "cachety.com/de/dossier";
@@ -50,13 +51,18 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
           `Öffne ${TOOL} im Browser, am Computer oder auf dem Handy. Nichts installieren, kein Konto.`,
           "Füge deine Dateien hinzu: PDFs und Fotos gemischt (JPG, PNG, HEIC-Fotos vom iPhone und weitere). Ein Foto wird zu einer Seite.",
           "Geh zu den Seiten. Jede Seite jeder Datei wird als kleines Bild gezeigt. Zieh eine Seite, um sie zu verschieben, auch von einem Dokument in ein anderes. Dreh eine Seite, die quer liegt, und entferne die Seiten, die du nicht willst.",
-          "Wähle als Ergebnis ein einziges PDF. Hat die Website, an die du es schickst, eine Größengrenze, wähle sie aus: 1, 2, 5 oder 10 MB. Cachety sagt dir vor dem Download, ob die Datei darunter bleibt und lesbar ist.",
+          "Wähle „Ein PDF“. Hat die Website, an die du es schickst, eine Größengrenze, wähle sie aus: 1, 2, 5 oder 10 MB oder „Andere…“ für jede Grenze von 0,5 bis 50 MB. Cachety sagt dir vor dem Download, ob die Datei darunter bleibt und lesbar ist.",
           "Prüf die Vorschau, gib der Datei einen Namen und lade sie herunter.",
         ],
       },
       {
         type: "tip",
-        text: "Vor dem Download kannst du eine Kontonummer oder jede andere Angabe schwärzen, die der Empfänger nicht braucht. Der geschwärzte Bereich wird aus der Datei entfernt, nicht nur überdeckt.",
+        text: "Vor dem Download kannst du eine Kontonummer oder jede andere Angabe schwärzen, die der Empfänger nicht braucht. In einem PDF, das Text enthält, zeigt dir Cachety die Konto- und Kartennummern, die es findet. Der geschwärzte Bereich wird aus der Datei entfernt, nicht nur überdeckt.",
+      },
+      { type: "h2", text: "Eine Datei pro Art von Unterlage" },
+      {
+        type: "p",
+        text: "Manche Websites wollen keine große Datei, sondern eine Datei pro Art von Unterlage: Ausweis, Gehaltsabrechnungen, Wohnsitznachweis. Setz den Haken bei „In mehrere Dateien aufteilen“, öffne dann das Menü einer Seite und wähle „Neuer Abschnitt hier“, wo jeweils eine neue Datei beginnen soll. Gib jedem Abschnitt einen Namen: Er wird zum Namen seiner Datei. „Ein PDF pro Abschnitt“ ist dann ausgewählt, und du lädst alle Dateien auf einmal in einem ZIP-Archiv herunter. Die Größengrenze gilt dann für jede Datei einzeln.",
       },
       { type: "h2", text: "Was mit deinen Dateien passiert" },
       { type: "p", text: NOT_UPLOADED },
@@ -77,6 +83,7 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
           "Bis zu 200 MB pro Datei, 500 Seiten pro PDF und 1.000 Seiten insgesamt.",
           "Word- und Excel-Dateien werden nicht angenommen: Speichere sie erst als PDF (Drucken, dann als PDF speichern).",
           "Ein passwortgeschütztes PDF kannst du hinzufügen: Cachety fragt nach dem Passwort, auf deinem Gerät.",
+          "Ein Wasserzeichen und ein Passwort für die neue Datei sind optional und bleiben aus, solange du sie nicht einschaltest.",
         ],
       },
     ],
@@ -123,7 +130,7 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
         type: "list",
         items: [
           "Leg das Blatt flach auf eine einfarbige, dunkle Unterlage, nah an ein Fenster. Verzichte auf den Blitz, er hinterlässt einen weißen Fleck.",
-          "Halte das Handy gerade über das Blatt, sodass die Ränder parallel aussehen, und fülle das Bild mit der Seite aus.",
+          "Halte das Handy gerade über das Blatt, sodass die Ränder parallel aussehen, und fülle das Bild mit der Seite aus. Ein schräg aufgenommenes Foto lässt sich nachträglich begradigen.",
           "Mach ein Foto pro Seite. Prüf, ob das Kleingedruckte scharf ist, bevor du weitermachst.",
         ],
       },
@@ -134,7 +141,9 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
           `Öffne ${TOOL} im Browser deines Handys. Du musst keine App installieren.`,
           "Tippe auf die Ablagefläche und wähle deine Fotos. iPhone-Fotos im HEIC-Format funktionieren so, wie sie sind.",
           "Geh zu den Seiten. Jedes Foto ist zu einer Seite geworden. Dreh die Seiten, die quer liegen, und zieh sie in die richtige Reihenfolge.",
-          "Wähle als Ergebnis ein einziges PDF und, wenn das Formular eine Größengrenze hat, 1, 2, 5 oder 10 MB.",
+          "Ist ein Foto schief oder zeigt es den Tisch rund um das Blatt, tippe die Seite an und wähle „Begradigen und zuschneiden“. Setz jede Ecke auf eine Ecke des Blatts und wähle dann „Anwenden“.",
+          "An derselben Stelle macht „Hintergrund weiß machen“ graues Papier weiß, und „Schwarz-Weiß“ entfernt die Farbe. Die Seite liest sich besser und wiegt viel weniger. „Auf alle Fotos anwenden“ erledigt das für alle Fotos auf einmal.",
+          "Wähle „Ein PDF“ und, wenn das Formular eine Größengrenze hat, 1, 2, 5 oder 10 MB oder „Andere…“ für eine andere Grenze.",
           "Prüf die Vorschau und lade das PDF herunter. Es wird auf deinem Handy gespeichert und kann gleich angehängt werden.",
         ],
       },
@@ -155,7 +164,7 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
       },
       {
         type: "warning",
-        text: "Eine sehr kleine Größengrenze und viele Fotoseiten passen nicht immer zusammen. Kann die Datei nicht darunter bleiben und lesbar sein, sagt Cachety es dir vor dem Download: Entferne ein paar Seiten oder schick zwei Dateien.",
+        text: "Eine sehr kleine Größengrenze und viele Fotoseiten passen nicht immer zusammen. Kann die Datei nicht darunter bleiben und lesbar sein, sagt Cachety es dir vor dem Download. Probier zuerst „Schwarz-Weiß“, entferne dann ein paar Seiten, teil die Datei in mehrere Dateien auf oder wähle eine höhere Grenze, wenn die Website das erlaubt.",
       },
     ],
     faq: [
@@ -199,8 +208,8 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
           `Öffne ${TOOL} im Browser, am Computer oder auf dem Handy.`,
           "Füge dein PDF hinzu. Mehrere Dateien gehen auch, ebenso Fotos.",
           "Geh zu den Seiten. Jede Seite wird als kleines Bild gezeigt, in der Reihenfolge der fertigen Datei.",
-          "Zieh eine Seite, um sie zu verschieben. Mit der Schaltfläche zum Drehen drehst du sie jeweils um eine Vierteldrehung. Mit der Schaltfläche zum Entfernen nimmst du sie heraus. Hast du die falsche Seite entfernt, holst du sie mit Rückgängig zurück.",
-          "Wähle als Ergebnis ein einziges PDF, prüf die Vorschau und lade die Datei herunter.",
+          "Zieh eine Seite, um sie zu verschieben. Mit der Schaltfläche zum Drehen drehst du sie jeweils um eine Vierteldrehung. Mit der Schaltfläche zum Entfernen nimmst du sie heraus. Hast du die falsche Seite entfernt, holst du sie mit „Rückgängig“ zurück: Die Schaltfläche ist ein paar Sekunden lang zu sehen. Auf dem Handy tippst du eine Seite an und findest dieselben Aktionen in einem Menü.",
+          "Wähle „Ein PDF“, prüf die Vorschau und lade die Datei herunter.",
         ],
       },
       {
@@ -237,7 +246,7 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
       },
       {
         q: "Bekomme ich eine entfernte Seite zurück?",
-        a: "Ja, solange Cachety im Browser geöffnet ist: Mach das Entfernen gleich danach rückgängig oder stell die ursprüngliche Reihenfolge wieder her. Deine Originaldatei wird nie verändert.",
+        a: "Ja, mit „Rückgängig“: Die Schaltfläche ist nach dem Entfernen ein paar Sekunden lang zu sehen. Hast du alle Seiten eines Dokuments entfernt, erscheint daneben in der Liste „Seiten zurückholen“. Danach fügst du die Datei einfach noch einmal hinzu: Deine Originaldatei wird nie verändert.",
       },
       {
         q: "Wird mein PDF hochgeladen?",
@@ -280,7 +289,7 @@ export const DOSSIER_GUIDES_DE: Guide[] = [
           `Öffne ${TOOL} im Browser. Ein Konto brauchst du nicht.`,
           "Füge dein PDF oder deine Fotos hinzu.",
           "Geh zu den Seiten und prüf, ob die Reihenfolge stimmt. Entferne die Seiten, die du nicht verschicken willst.",
-          "Wähle als Ergebnis ein einziges PDF und lade es herunter.",
+          "Wähle „Ein PDF“ und lade es herunter.",
           "Verschick die neue Datei, nicht das Original.",
         ],
       },

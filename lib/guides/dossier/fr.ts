@@ -3,14 +3,17 @@
 // porte tool: "dossier". Écrits pour un public en France. Texte brut
 // uniquement : pas de lien, pas de balise, pas de markdown.
 //
-// Ces guides décrivent l'outil Dossier (docs/prd-dossier.md), périmètre « Must »
-// seulement : pas de sections, pas de redressement des photos, pas de taille
-// libre. À publier avec l'outil, pas avant, en revérifiant alors les étapes et
-// le libellé cité (« Un seul PDF ») dans l'interface livrée.
+// Ces guides décrivent l'outil Dossier (docs/prd-dossier.md) tel qu'il est
+// livré, sections, redressement des photos et taille libre compris. Les
+// libellés cités (« Un seul PDF », « Un PDF par section », « Séparer en
+// plusieurs fichiers », « Nouvelle section ici », « Redresser et recadrer »,
+// « Appliquer », « Blanchir le fond », « Noir et blanc », « Appliquer à toutes
+// les photos », « Autre… », « Annuler », « Remettre ses pages ») sont ceux du
+// bloc `dossier` de lib/i18n.tsx, vérifiés le 2026-11-19 : à garder en accord.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Adresse de l'outil, écrite sans schéma (les guides ne portent aucun lien). */
 const TOOL = "cachety.com/fr/dossier";
@@ -47,13 +50,18 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
           `Ouvrez ${TOOL} dans votre navigateur, sur ordinateur ou sur téléphone. Rien à installer, aucun compte à créer.`,
           "Ajoutez vos fichiers : PDF et photos ensemble (JPG, PNG, HEIC d’iPhone…). Une photo devient une page.",
           "Passez aux pages. Chaque page de chaque fichier s’affiche en miniature. Faites glisser une page pour la déplacer, même d’un document à l’autre. Tournez celles qui sont de travers et retirez celles dont vous ne voulez pas.",
-          "Choisissez « Un seul PDF ». Si le site auquel vous destinez le fichier limite sa taille, choisissez la taille maximale : 1, 2, 5 ou 10 Mo. Cachety vous dit avant le téléchargement si le fichier tiendra dessous en restant lisible.",
+          "Choisissez « Un seul PDF ». Si le site auquel vous destinez le fichier limite sa taille, choisissez la taille maximale : 1, 2, 5 ou 10 Mo, ou « Autre… » pour toute taille de 0,5 à 50 Mo. Cachety vous dit avant le téléchargement si le fichier tiendra dessous en restant lisible.",
           "Vérifiez l’aperçu, donnez un nom au fichier et téléchargez-le.",
         ],
       },
       {
         type: "tip",
-        text: "Avant de télécharger, vous pouvez masquer un numéro de compte ou toute autre information dont le destinataire n’a pas besoin. La zone masquée est retirée du fichier, pas seulement recouverte.",
+        text: "Avant de télécharger, vous pouvez masquer un numéro de compte ou toute autre information dont le destinataire n’a pas besoin. Dans un PDF qui contient du texte, Cachety vous signale les numéros de compte et de carte qu’il trouve. La zone masquée est retirée du fichier, pas seulement recouverte.",
+      },
+      { type: "h2", text: "Un fichier par type de document" },
+      {
+        type: "p",
+        text: "Certains sites ne veulent pas un seul gros fichier, mais un fichier par type de document : pièce d’identité, fiches de paie, justificatif de domicile. Cochez « Séparer en plusieurs fichiers », puis ouvrez le menu d’une page et choisissez « Nouvelle section ici » là où chaque nouveau fichier doit commencer. Donnez un nom à chaque section : il devient le nom de son fichier. « Un PDF par section » est alors sélectionné, et vous téléchargez tous les fichiers d’un coup, dans une archive ZIP. La taille maximale s’applique alors à chaque fichier.",
       },
       { type: "h2", text: "Ce que deviennent vos fichiers" },
       { type: "p", text: NOT_UPLOADED },
@@ -74,6 +82,7 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
           "Jusqu’à 200 Mo par fichier, 500 pages par PDF et 1 000 pages au total.",
           "Les fichiers Word et Excel ne sont pas acceptés : enregistrez-les d’abord en PDF (Imprimer, puis Enregistrer en PDF).",
           "Un PDF protégé par un mot de passe peut être ajouté : Cachety vous demande le mot de passe, sur votre appareil.",
+          "Le filigrane et le mot de passe sur le nouveau fichier sont facultatifs : rien n’est ajouté si vous ne le demandez pas.",
         ],
       },
     ],
@@ -120,7 +129,7 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
         type: "list",
         items: [
           "Posez la feuille à plat sur une surface unie et sombre, près d’une fenêtre. Évitez le flash, qui laisse une tache blanche.",
-          "Tenez le téléphone bien au-dessus de la feuille, pour que les bords paraissent parallèles, et remplissez le cadre avec la page.",
+          "Tenez le téléphone bien au-dessus de la feuille, pour que les bords paraissent parallèles, et remplissez le cadre avec la page. Une photo prise de biais peut être redressée ensuite.",
           "Prenez une photo par page. Vérifiez que les petits caractères sont nets avant de passer à la suivante.",
         ],
       },
@@ -131,7 +140,9 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
           `Ouvrez ${TOOL} dans le navigateur de votre téléphone. Aucune application à installer.`,
           "Touchez la zone de dépôt et choisissez vos photos. Les photos HEIC de l’iPhone passent telles quelles.",
           "Passez aux pages. Chaque photo est devenue une page. Tournez celles qui sont de travers et faites-les glisser dans le bon ordre.",
-          "Choisissez « Un seul PDF » et, si le formulaire limite la taille, choisissez 1, 2, 5 ou 10 Mo.",
+          "Pour une photo penchée, ou qui montre la table autour de la feuille, touchez la page et choisissez « Redresser et recadrer ». Placez chaque coin sur un coin de la feuille, puis choisissez « Appliquer ».",
+          "Au même endroit, « Blanchir le fond » rend blanc un papier qui paraît gris et « Noir et blanc » retire la couleur. La page se lit mieux et pèse beaucoup moins lourd. « Appliquer à toutes les photos » le fait pour toutes les photos d’un coup.",
+          "Choisissez « Un seul PDF » et, si le formulaire limite la taille, choisissez 1, 2, 5 ou 10 Mo, ou « Autre… » pour une autre taille.",
           "Vérifiez l’aperçu et téléchargez le PDF. Il est enregistré sur votre téléphone, prêt à être joint.",
         ],
       },
@@ -152,7 +163,7 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
       },
       {
         type: "warning",
-        text: "Une taille maximale très petite et beaucoup de pages en photo ne font pas toujours bon ménage. Si le fichier ne peut pas tenir dessous en restant lisible, Cachety le dit avant le téléchargement : retirez des pages, ou envoyez deux fichiers.",
+        text: "Une taille maximale très petite et beaucoup de pages en photo ne font pas toujours bon ménage. Si le fichier ne peut pas tenir dessous en restant lisible, Cachety le dit avant le téléchargement. Essayez d’abord « Noir et blanc », puis retirez des pages, séparez le dossier en plusieurs fichiers, ou choisissez une taille plus grande si le site l’accepte.",
       },
     ],
     faq: [
@@ -196,7 +207,7 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
           `Ouvrez ${TOOL} dans votre navigateur, sur ordinateur ou sur téléphone.`,
           "Ajoutez votre PDF. Vous pouvez ajouter plusieurs fichiers, et aussi des photos.",
           "Passez aux pages. Chaque page s’affiche en miniature, dans l’ordre du fichier final.",
-          "Faites glisser une page pour la déplacer. Le bouton pour tourner la fait pivoter d’un quart de tour à chaque fois. Le bouton pour retirer l’enlève du fichier. Si vous retirez la mauvaise page, annulez : elle revient.",
+          "Faites glisser une page pour la déplacer. Le bouton pour tourner la fait pivoter d’un quart de tour à chaque fois. Le bouton pour retirer l’enlève du fichier. Si vous retirez la mauvaise page, « Annuler » la fait revenir : ce bouton s’affiche pendant quelques secondes. Sur téléphone, touchez une page pour retrouver les mêmes actions dans un menu.",
           "Choisissez « Un seul PDF », vérifiez l’aperçu et téléchargez.",
         ],
       },
@@ -234,7 +245,7 @@ export const DOSSIER_GUIDES_FR: Guide[] = [
       },
       {
         q: "Peut-on récupérer une page retirée ?",
-        a: "Oui, tant que l’onglet reste ouvert : annulez juste après l’avoir retirée, ou rétablissez l’ordre d’origine. Votre fichier d’origine n’est jamais modifié.",
+        a: "Oui, avec « Annuler », qui s’affiche pendant quelques secondes après le retrait d’une page. Si vous avez retiré toutes les pages d’un document, « Remettre ses pages » apparaît à côté de lui dans la liste. Passé ce moment, ajoutez de nouveau le fichier : votre fichier d’origine n’est jamais modifié.",
       },
       {
         q: "Mon PDF est-il envoyé en ligne ?",
