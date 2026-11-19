@@ -7,12 +7,13 @@ import type { Comparison } from "../types";
 // Every claim about another tool is backed by a page listed in its `sources`,
 // read on the `checked` date. Prices change often, so none are quoted here.
 //
-// The Cachety column describes the Dossier tool as specified in
-// docs/prd-dossier.md (Must scope). Publish with the tool, not before, and
-// re-check the column against the shipped interface.
+// The Cachety column describes the Dossier tool as shipped (sections, photo
+// straightening and custom size included): limits from lib/watermark.ts and
+// lib/pages.ts, sizes from lib/size-budget.ts and the `dossier` block of
+// lib/i18n.tsx. Keep the column in step with them.
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Address of the tool, written without a scheme. */
 const TOOL = "cachety.com/en/dossier";
@@ -22,15 +23,18 @@ const CACHETY = {
   where: "In your browser, on your own device. Nothing is uploaded.",
   kept: "Nothing is kept: there is no server that receives your files.",
   free: "Free, with no account, no paid tier and no daily limit. Up to 200 MB per file, 500 pages per PDF and 1,000 pages in total.",
-  pages: "Every page of every file in one grid: move a page, even from one file to another, turn it or remove it.",
-  size: "You pick a maximum size: 1, 2, 5 or 10 MB. Cachety says before the download whether the file will fit and stay readable.",
+  pages: "Every page of every file in one grid: move a page, even from one file to another, turn it or remove it. One PDF, or one PDF per section that you name.",
+  size: "You pick a maximum size: 1, 2, 5 or 10 MB, or any limit from 0.5 to 50 MB. Cachety says before the download whether the file will fit and stay readable.",
   output:
     "Each page is rebuilt as a picture. The text cannot be selected or searched, and a text-only PDF can come out bigger.",
   hidden: "Removed in every file: hidden text, author and other properties, attachments, links, and the GPS location of photos.",
-  inputs: "PDFs and photos together, iPhone HEIC photos included. No Word, Excel or PowerPoint files.",
+  inputs: "PDFs and photos together, iPhone HEIC photos included. A photo of a sheet can be straightened, cropped and whitened. No Word, Excel or PowerPoint files.",
   offline: "Nothing to install. The page keeps working in aeroplane mode once it has loaded, on a phone or a computer.",
   ads: "No ads and no trackers. The code is open source.",
 };
+
+/** Table row ‘Merge options’, for the tools that have bookmarks and tables of contents. */
+const MERGE_OPTIONS = "The page order, and one PDF per section if you want several files. No bookmarks, no table of contents.";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "What a file made by Cachety is like" },
@@ -52,7 +56,7 @@ const HOW_TO: Comparison["body"] = [
       `Open ${TOOL} in your browser, on a computer or a phone. There is nothing to install and no account to create.`,
       "Add your PDFs and photos. A photo becomes a page.",
       "Go to the pages: drag them into order, turn the sideways ones and remove the ones you do not want.",
-      "Choose ‘One PDF’ and, if you were given a size limit, pick 1, 2, 5 or 10 MB.",
+      "Choose ‘One PDF’ and, if you were given a size limit, pick 1, 2, 5 or 10 MB, or ‘Other…’ for another limit.",
       "Check the preview, hide any detail the recipient does not need, then download the file.",
     ],
   },
@@ -105,8 +109,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Putting pages in order",
         cachety: CACHETY.pages,
-        other: "Merge reorders whole files. Sorting, deleting and rotating single pages is done in a separate tool, Organize PDF.",
-        edge: "cachety",
+        other: "Merge reorders whole files. A separate tool, Organize PDF, sorts, deletes and rotates single pages, and can add more files and merge them (free: 5 files, 100 MB).",
       },
       {
         criterion: "Getting under a size limit",
@@ -158,7 +161,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
           "It converts Word, Excel and PowerPoint files to PDF.",
           "It recognises text in scans (OCR), so a scanned PDF can become searchable.",
           "It takes large jobs: up to 100 files in a free merge.",
-          "Its paid desktop app processes files on your computer, with the same tools as the website.",
+          "Its paid desktop app processes files on your computer, with most of the website's tools.",
         ],
       },
       { type: "h2", text: "Where Cachety is better" },
@@ -182,7 +185,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     chooseCachety: [
       "The files are ID documents, payslips or bank statements and you would rather not upload them.",
       "You need photos and PDFs in the same file, with the pages in your order.",
-      "A form asks for one file under 1, 2, 5 or 10 MB.",
+      "A form asks for one file, or one file per kind of document, under a size limit given in megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -191,7 +194,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       ),
       {
         q: "Can iLovePDF compress a PDF to an exact size?",
-        a: "No. It offers three compression levels, and its own guide says no tool can promise an exact output size. With Cachety you pick 1, 2, 5 or 10 MB, and you are told before the download if the file cannot fit and stay readable.",
+        a: "No. It offers three compression levels, and its own guide says no tool can promise an exact output size. With Cachety you pick a maximum size in megabytes, and you are told before the download if the file cannot fit and stay readable.",
       },
       {
         q: "Does iLovePDF work offline?",
@@ -215,6 +218,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "iLovePDF blog: 15 years of iLovePDF", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "About iLovePDF", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -234,7 +238,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     intro:
       "Smallpdf is a well-known set of online PDF tools from Switzerland, with apps for phones and Windows. Its Merge and Compress tools work in the cloud. Cachety does a narrower job on your own device: it puts PDFs and photos into one file, under a size limit, without uploading them.",
     verdict:
-      "Smallpdf does more: it accepts Word, Excel and PowerPoint files, recognises text in scans and has a Windows app that works offline. For that, it is the better choice. Cachety is the better choice when the files are personal documents you would rather not upload, when you have more than a couple of files to prepare in a day, or when a form sets a size limit in megabytes.",
+      "Smallpdf does more: it accepts Word, Excel and PowerPoint files, recognises text in scans and has a Windows app that works offline. For that, it is the better choice. Cachety is the better choice when the files are personal documents you would rather not upload, when you would hit the daily limit of the free plan, or when a form sets a size limit in megabytes.",
     table: [
       {
         criterion: "Where the files are processed",
@@ -245,7 +249,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "How long files are kept",
         cachety: CACHETY.kept,
-        other: "Deleted from the servers after one hour, unless you save them to your account.",
+        other: "According to Smallpdf's product pages, deleted from the servers after one hour, unless you save them to your account.",
         edge: "cachety",
       },
       {
@@ -257,7 +261,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Putting pages in order",
         cachety: CACHETY.pages,
-        other: "Merge rearranges, rotates and deletes pages. A separate Organize tool does the same on one PDF.",
+        other: "Merge can show the pages of every file to rearrange, rotate or delete them; Smallpdf's pricing page lists this page view under the paid plan. The Organize tool reorders, rotates, deletes and adds pages, and can combine several documents.",
       },
       {
         criterion: "Getting under a size limit",
@@ -279,7 +283,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Hidden data",
         cachety: CACHETY.hidden,
-        other: "Not documented for Merge on the product or help pages.",
+        other: "Not described for Merge. Smallpdf's blog says its Compress and Flatten tools remove metadata, as a separate step.",
       },
       {
         criterion: "Apps and offline use",
@@ -328,17 +332,17 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     ],
     chooseCachety: [
       "The files are ID documents, payslips or bank statements and you would rather not upload them.",
-      "A form asks for one file under 1, 2, 5 or 10 MB.",
+      "A form asks for one file, or one file per kind of document, under a size limit given in megabytes.",
       "You are on a phone and do not want to install an app or create an account.",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "With Smallpdf's online tools, yes: files are uploaded to its servers and deleted after one hour unless you save them to your account. Its Windows desktop app handles files offline."
+        "With Smallpdf's online tools, yes: files are uploaded to its servers and, according to its product pages, deleted after one hour unless you save them to your account. Its Windows desktop app handles files offline."
       ),
       {
         q: "Can Smallpdf compress a PDF to an exact size?",
-        a: "No. Smallpdf offers compression levels, and its own blog says the tool does not let you enter an exact size. With Cachety you pick 1, 2, 5 or 10 MB.",
+        a: "No. Smallpdf offers compression levels, and its own blog says the tool does not let you enter an exact size. With Cachety you pick a maximum size in megabytes, and the file is kept under it when that can be done while staying readable.",
       },
       {
         q: "Is Smallpdf free?",
@@ -356,6 +360,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       { label: "Smallpdf Trust Center", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf apps and extensions", url: "https://smallpdf.com/download" },
       { label: "Smallpdf blog: compressing a PDF to a chosen size", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "Smallpdf blog: removing PDF metadata", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "About Smallpdf", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -376,7 +381,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     intro:
       "Adobe invented the PDF, and its free Acrobat online tools merge and compress PDFs in any browser. The files are handled on Adobe's servers. Cachety does a narrower job on your own device: it puts PDFs and photos into one file, under a size limit, without uploading them.",
     verdict:
-      "For PDFs whose text must stay as it is, Adobe's merge is the better choice: it combines files without reducing the quality of images, text or formatting, and takes up to 100 files. Its paid desktop app does far more than Cachety. Cachety is the better choice for personal documents you would rather not upload, for mixing photos and PDFs for free, and for meeting a size limit given in megabytes.",
+      "For PDFs whose text must stay as it is, Adobe's merge is the better choice: it combines files without reducing the quality of images, text or formatting, and takes up to 100 files. Its paid desktop app does far more than Cachety. Cachety is the better choice for personal documents you would rather not upload, for mixing photos and PDFs in one step, and for meeting a size limit given in megabytes.",
     table: [
       {
         criterion: "Where the files are processed",
@@ -393,12 +398,12 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Account, free use and limits",
         cachety: CACHETY.free,
-        other: "Merge: up to 100 files of 500 pages each, with no watermark. Compress: free with limited use; unlimited use needs a paid plan.",
+        other: "Merge: up to 100 files of 500 pages each and 1,500 pages in the merged file, with no watermark. Compress: free with limited use; unlimited use needs a paid plan.",
       },
       {
         criterion: "Putting pages in order",
         cachety: CACHETY.pages,
-        other: "Files can be reordered before merging. Reorganising individual pages requires signing in.",
+        other: "Files can be reordered before merging. Reorganising individual pages requires signing in; a free account is enough.",
         edge: "cachety",
       },
       {
@@ -409,7 +414,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Photos and other file types",
         cachety: CACHETY.inputs,
-        other: "The free merge takes PDFs. Combining PDFs with Word, Excel, PowerPoint or image files is part of Acrobat Pro. A separate tool turns images into a PDF, and you must sign in to download the result.",
+        other: "The free merge takes PDFs. Combining PDFs with Word, Excel, PowerPoint or image files is part of Acrobat Pro. Separate free tools turn images, HEIC photos included, into a PDF, for a limited number of conversions.",
       },
       {
         criterion: "What the new PDF is like",
@@ -455,7 +460,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
         items: [
           "Your files are never uploaded, and there is no sign-in at any point.",
           "Moving, turning and removing single pages is free and needs no account.",
-          "Photos and PDFs go into the same file for free, iPhone HEIC photos included.",
+          "Photos and PDFs go into the same file in one step. With Adobe's free tools, you convert the photos to a PDF first, then merge.",
           "Hidden data is removed from every file, a feature Adobe keeps for its paid Pro plan.",
           "You choose a size in megabytes and are told before the download whether it can be reached.",
         ],
@@ -471,7 +476,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     chooseCachety: [
       "The files are ID documents, payslips or bank statements and you would rather not upload them.",
       "You want to reorder, turn or remove pages without signing in.",
-      "You need to mix photos and PDFs, and keep the result under 1, 2, 5 or 10 MB.",
+      "You need to mix photos and PDFs, and keep the result under a size limit given in megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -480,7 +485,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       ),
       {
         q: "Do I need an Adobe account to merge PDFs?",
-        a: "Not to merge and download. Adobe asks you to sign in to reorganise individual pages, to share the file with a link, or to download a PDF made from images. Cachety has no account at all.",
+        a: "Not to merge and download. Adobe asks you to sign in to reorganise individual pages or to share the file with a link. Cachety has no account at all.",
       },
       {
         q: "Can Acrobat online remove metadata from a PDF?",
@@ -493,6 +498,8 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       { label: "Adobe Acrobat: Merge PDFs", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat: Compress PDF", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat: JPG to PDF", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat: image to PDF", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat: HEIC to PDF", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat: reorder PDF pages", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat: delete PDF pages", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -543,7 +550,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Putting pages in order",
         cachety: CACHETY.pages,
-        other: "Files are reordered by drag and drop. A page mode shows the pages of all files. Turning and removing pages are separate tools.",
+        other: "Files are reordered by drag and drop. A page mode shows the pages of all files: you pick the ones you want and drag them into order, leaving out the rest. Turning pages is a separate tool.",
       },
       {
         criterion: "Getting under a size limit",
@@ -565,17 +572,23 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "Hidden data",
         cachety: CACHETY.hidden,
-        other: "A separate tool removes the metadata of a PDF.",
+        other: "A separate tool removes the metadata of a PDF. Compress PDF can also strip metadata, attachments and annotations.",
+      },
+      {
+        criterion: "Merge options",
+        cachety: MERGE_OPTIONS,
+        other: "Bookmarks, a table of contents, a cover page before each file, blank pages for double-sided printing, the file name on the pages.",
+        edge: "other",
       },
       {
         criterion: "Apps and offline use",
         cachety: CACHETY.offline,
-        other: "PDF24 Creator brings all the tools offline, on Windows only. There is no Mac or Linux version yet, and no app in the phone app stores.",
+        other: "PDF24 Creator brings all the tools offline, on Windows only. There is no Mac or Linux version yet, and no app in the phone app stores: the online tools can be added to a phone's home screen, but still need a connection.",
       },
       {
         criterion: "Ads and trackers",
         cachety: CACHETY.ads,
-        other: "The online tools are financed by advertising. The privacy policy names Google AdSense and Google Analytics.",
+        other: "The online tools are financed by advertising. The privacy policy names Google AdSense and Google Analytics, among others.",
         edge: "cachety",
       },
     ],
@@ -593,7 +606,8 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         type: "list",
         items: [
-          "The merged PDF keeps the original pages, so the text stays selectable and the file stays light.",
+          "The merged PDF keeps the original pages as they are: text, images and fonts keep their quality.",
+          "Merge options that Cachety does not have: bookmarks, a table of contents, cover pages, blank pages for double-sided printing.",
           "It accepts Word documents and other files, and offers text recognition (OCR).",
           "On Windows, PDF24 Creator does all of this offline, for free.",
           "You can set the resolution and the image quality of the compression yourself.",
@@ -621,7 +635,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     ],
     chooseCachety: [
       "You are on a phone, a Mac or a computer where you cannot install software, and you would rather not upload your documents.",
-      "A form asks for one file under 1, 2, 5 or 10 MB.",
+      "A form asks for one file, or one file per kind of document, under a size limit given in megabytes.",
       "Your photos come from an iPhone.",
     ],
     faq: [
@@ -631,7 +645,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       ),
       {
         q: "Can PDF24 compress a PDF to a given size?",
-        a: "Not directly. You set the resolution and the image quality, and PDF24's own guide says there is no ‘compress to 5 MB’ option. With Cachety you pick 1, 2, 5 or 10 MB.",
+        a: "Not directly. You set the resolution and the image quality, and PDF24's own guide says there is no ‘compress to 5 MB’ option. With Cachety you pick a maximum size in megabytes, and the file is kept under it when that can be done while staying readable.",
       },
       {
         q: "Does PDF24 work offline on a Mac or a phone?",
@@ -644,6 +658,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       { label: "PDF24 Tools: Compress PDF", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools: Images to PDF", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools: Remove PDF metadata", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools: Rotate PDF", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools: questions and answers", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "PDF24 help: merging PDF files", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -679,13 +694,13 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       {
         criterion: "How long files are kept",
         cachety: CACHETY.kept,
-        other: "Online: deleted automatically after 2 hours. A button deletes them sooner.",
+        other: "Online: deleted automatically after 2 hours. The result page has a ‘Delete files’ button.",
         edge: "cachety",
       },
       {
         criterion: "Account, free use and limits",
         cachety: CACHETY.free,
-        other: "No sign-up. Free online merge: up to 50 pages or 50 MB, 3 tasks per hour. Free compress: up to 200 pages or 100 MB. Free desktop: 3 tasks per day. A paid plan removes the limits.",
+        other: "No sign-up. Free online merge: up to 50 pages or 50 MB, 3 tasks per hour. Free compress: up to 200 pages or 100 MB. Free desktop: 3 tasks per day, on documents up to 50 MB and 200 pages. A paid plan removes the page and hourly limits; uploads then go up to 500 MB per file.",
         edge: "cachety",
       },
       {
@@ -706,14 +721,14 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       },
       {
         criterion: "Merge options",
-        cachety: "None beyond the page order: no bookmarks, no table of contents.",
+        cachety: MERGE_OPTIONS,
         other: "Bookmarks kept or created per file, a table of contents, blank pages for double-sided printing, the file name in the footer.",
         edge: "other",
       },
       {
         criterion: "Hidden data",
         cachety: CACHETY.hidden,
-        other: "A separate tool edits a PDF's metadata.",
+        other: "A separate tool edits a PDF's metadata or removes all of it.",
       },
       {
         criterion: "Apps and offline use",
@@ -729,7 +744,7 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       },
       {
         type: "p",
-        text: "Sejda Desktop processes files on your computer, with no upload, on Mac, Windows and Linux. Its free version allows three tasks a day. One detail matters for personal documents: Sejda's terms of service say that users must not submit sensitive personal information, such as government ID numbers, to its online service.",
+        text: "Sejda Desktop processes files on your computer, with no upload, on Mac, Windows and Linux. Its free version allows three tasks a day, on documents up to 50 MB and 200 pages, and merges of up to 30 files and 50 pages. One detail matters for personal documents: Sejda's terms of service say that users must not submit sensitive personal information, such as government ID numbers, to its online service.",
       },
       { type: "h2", text: "Where Sejda is better" },
       {
@@ -737,7 +752,8 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
         items: [
           "Merge options that Cachety does not have: bookmarks, a table of contents, blank pages for double-sided printing.",
           "A desktop app for Mac, Windows and Linux that keeps files on your computer.",
-          "Many other tools in the same place: text recognition (OCR), cropping, straightening scans, editing.",
+          "Many other tools in the same place: text recognition (OCR), cropping and straightening the pages of a PDF, editing.",
+          "It can take files straight from Dropbox, Google Drive or OneDrive.",
           "Fine control over compression, with image quality and resolution settings.",
         ],
       },
@@ -757,12 +773,12 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
     chooseOther: [
       "You need bookmarks or a table of contents in the merged PDF.",
       "You can install Sejda Desktop and your job fits its free limits, or you have a paid plan.",
-      "You need text recognition, cropping or straightening of scans.",
+      "You need text recognition, or to crop or straighten the pages of a scanned PDF: Cachety only does that for photos.",
     ],
     chooseCachety: [
       "The files are ID documents, payslips or bank statements, and you are on a phone or cannot install software.",
       "Your file is over 50 pages, or you have several files to prepare in the same hour.",
-      "A form asks for one file under 1, 2, 5 or 10 MB.",
+      "A form asks for one file, or one file per kind of document, under a size limit given in megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -771,11 +787,11 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       ),
       {
         q: "What are Sejda's free limits for merging?",
-        a: "Online, documents up to 50 pages or 50 MB and three tasks per hour. Sejda Desktop's free version allows three tasks per day. Cachety has no such limits: up to 1,000 pages in one file.",
+        a: "Online, documents up to 50 pages or 50 MB and three tasks per hour. Sejda Desktop's free version allows three tasks per day, on documents up to 50 MB and 200 pages. Cachety has no such limits: up to 1,000 pages in one file.",
       },
       {
         q: "Can Sejda compress a PDF to a given size?",
-        a: "Its compress tool offers image quality and resolution settings, not a size to aim for. With Cachety you pick 1, 2, 5 or 10 MB.",
+        a: "Its compress tool offers image quality and resolution settings, not a size to aim for. With Cachety you pick a maximum size in megabytes, and the file is kept under it when that can be done while staying readable.",
       },
       FAQ_TEXT,
     ],
@@ -785,7 +801,8 @@ export const DOSSIER_COMPARISONS_EN: Comparison[] = [
       { label: "Sejda: JPG to PDF", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda: Organize PDF pages", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda: Edit PDF metadata", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda pricing and questions", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda plans and questions", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda: result page", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "Security at Sejda", url: "https://www.sejda.com/security" },
       { label: "Sejda privacy policy", url: "https://www.sejda.com/privacy" },

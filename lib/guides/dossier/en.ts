@@ -3,13 +3,14 @@
 // Written for readers in the United Kingdom (en-GB). Plain text only: no
 // link, no tag, no markdown.
 //
-// These guides describe the Dossier tool (docs/prd-dossier.md), Must scope only:
-// no sections, no photo straightening, no custom size. Publish them with the
-// tool, not before, and re-check the steps against the shipped interface.
+// These guides describe the Dossier tool (docs/prd-dossier.md) as shipped,
+// sections, photo straightening and custom size included. The quoted labels
+// (‘One PDF’, ‘Split into several files’, ‘Straighten and crop’, ‘Other…’)
+// are those of the `dossier` block of lib/i18n.tsx: keep them in step.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Address of the tool, written without a scheme (guides carry no link). */
 const TOOL = "cachety.com/en/dossier";
@@ -46,13 +47,18 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
           `Open ${TOOL} in your browser, on a computer or a phone. There is nothing to install and no account to create.`,
           "Add your files: PDFs and photos together (JPG, PNG, iPhone HEIC photos and more). A photo becomes a page.",
           "Go to the pages. Every page of every file is shown as a small picture. Drag a page to move it, even from one document to another. Turn a sideways page, and remove the pages you do not want.",
-          "Choose ‘One PDF’. If the website you are sending to has a size limit, pick it: 1, 2, 5 or 10 MB. Cachety tells you before you download whether the file will fit and stay readable.",
+          "Choose ‘One PDF’. If the website you are sending to has a size limit, pick it: 1, 2, 5 or 10 MB, or ‘Other…’ for any limit from 0.5 to 50 MB. Cachety tells you before you download whether the file will fit and stay readable.",
           "Check the preview, give the file a name and download it.",
         ],
       },
       {
         type: "tip",
-        text: "Before you download, you can hide an account number or any other detail the recipient does not need. The hidden area is removed from the file, not just covered.",
+        text: "Before you download, you can hide an account number or any other detail the recipient does not need. In a PDF that contains text, Cachety points out the account and card numbers it finds. The hidden area is removed from the file, not just covered.",
+      },
+      { type: "h2", text: "One file per kind of document" },
+      {
+        type: "p",
+        text: "Some websites do not want one big file but one file per kind of document: ID, payslips, proof of address. Tick ‘Split into several files’, then open a page's menu and choose ‘New section here’ where each new file should start. Give each section a name: it becomes the name of its file. ‘One PDF per section’ is then selected, and you download all the files at once in a ZIP archive. The size limit then applies to each file.",
       },
       { type: "h2", text: "What happens to your files" },
       { type: "p", text: NOT_UPLOADED },
@@ -73,6 +79,7 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
           "Up to 200 MB per file, 500 pages per PDF and 1,000 pages in total.",
           "Word and Excel files are not accepted: save them as a PDF first (Print, then Save as PDF).",
           "A locked PDF can be added: Cachety asks for its password, on your device.",
+          "A watermark and a password on the new file are optional, and off unless you ask for them.",
         ],
       },
     ],
@@ -119,7 +126,7 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
         type: "list",
         items: [
           "Lay the sheet flat on a plain, dark surface, near a window. Avoid the flash, which leaves a white patch.",
-          "Hold the phone straight above the sheet, so the edges look parallel, and fill the frame with the page.",
+          "Hold the phone straight above the sheet, so the edges look parallel, and fill the frame with the page. A photo taken at an angle can be straightened afterwards.",
           "Take one photo per page. Check that the small print is sharp before you move on.",
         ],
       },
@@ -130,7 +137,9 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
           `Open ${TOOL} in your phone's browser. There is no app to install.`,
           "Tap the drop area and choose your photos. iPhone photos in HEIC format work as they are.",
           "Go to the pages. Each photo has become a page. Turn the ones that are sideways and drag them into the right order.",
-          "Choose ‘One PDF’ and, if the form has a size limit, pick 1, 2, 5 or 10 MB.",
+          "For a photo that is tilted or shows the table around the sheet, tap the page and choose ‘Straighten and crop’. Put each corner on a corner of the sheet, then choose ‘Apply’.",
+          "In the same place, ‘Whiten the background’ turns grey paper white and ‘Black and white’ removes the colour. The page reads better and weighs much less. ‘Apply to all photos’ does it for every photo at once.",
+          "Choose ‘One PDF’ and, if the form has a size limit, pick 1, 2, 5 or 10 MB, or ‘Other…’ for another limit.",
           "Check the preview and download the PDF. It is saved on your phone, ready to attach.",
         ],
       },
@@ -151,7 +160,7 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
       },
       {
         type: "warning",
-        text: "A very small size limit and many photo pages do not always go together. If the file cannot fit and stay readable, Cachety says so before you download: remove some pages, or send two files.",
+        text: "A very small size limit and many photo pages do not always go together. If the file cannot fit and stay readable, Cachety says so before you download. Try ‘Black and white’ first, then remove some pages, split the file into several files, or choose a larger size if the website allows it.",
       },
     ],
     faq: [
@@ -195,7 +204,7 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
           `Open ${TOOL} in your browser, on a computer or a phone.`,
           "Add your PDF. You can add several files, and photos too.",
           "Go to the pages. Every page is shown as a small picture, in the order of the final file.",
-          "Drag a page to move it. Use the rotate button to turn it a quarter turn at a time. Use the remove button to take it out. If you remove the wrong page, undo brings it back.",
+          "Drag a page to move it. Use the rotate button to turn it a quarter turn at a time. Use the remove button to take it out. If you remove the wrong page, ‘Undo’ brings it back: it shows for a few seconds. On a phone, tap a page to see the same actions in a menu.",
           "Choose ‘One PDF’, check the preview and download.",
         ],
       },
@@ -233,7 +242,7 @@ export const DOSSIER_GUIDES_EN: Guide[] = [
       },
       {
         q: "Can I get a removed page back?",
-        a: "Yes, while the page is open: undo right after removing it, or restore the original order. Your original file is never changed.",
+        a: "Yes, with ‘Undo’, which shows for a few seconds after you remove a page. If you removed every page of a document, ‘Put its pages back’ appears next to it in the list. After that, add the file again: your original file is never changed.",
       },
       {
         q: "Is my PDF uploaded?",

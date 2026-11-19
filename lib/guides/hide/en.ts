@@ -3,13 +3,14 @@
 // Written for readers in the United Kingdom (en-GB). Plain text only: no
 // link, no tag, no markdown.
 //
-// These guides describe the `suggested-areas` feature (docs/prd-suggested-areas.md).
-// Publish them with it, not before, and re-check the quoted button labels
-// (‘Review’, ‘Hide them all’) against lib/i18n.tsx at that time.
+// These guides describe the `suggested-areas` feature (docs/prd-suggested-areas.md)
+// as shipped. The quoted button labels (‘Review’, ‘Hide them all’, ‘Done’,
+// ‘Hide something’) are those of lib/suggest-copy/en.ts and lib/i18n.tsx, and
+// the list of numbers is that of lib/sensitive.ts: keep them in step.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_EN: Guide[] = [
   // ------------------------------------------------------------------
@@ -44,6 +45,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
           "Bank account numbers written as an IBAN, from any country.",
           "Payment card numbers from the main card networks.",
           "French social security numbers, French tax numbers and French tax notice references.",
+          "National ID and tax numbers from other countries: the German tax ID, the Spanish DNI and NIE, the Dutch BSN, the Belgian national number, the Portuguese NIF, the Brazilian CPF, the Italian tax code, the Chinese resident ID, the Japanese My Number, the Iranian national code and the Indonesian NIK.",
         ],
       },
       {
@@ -57,13 +59,18 @@ export const HIDE_GUIDES_EN: Guide[] = [
           "Open cachety.com in your browser, on a computer or a phone. There is no account to create.",
           "Add your PDF. Say what the copy is for, then who will receive it.",
           "If Cachety has found something, a message above the preview tells you how many numbers it found. Choose ‘Review’.",
-          "Each suggestion is outlined on the page and listed with its name, for example ‘Bank account number (IBAN)’. Tap the ones you want to hide, or choose ‘Hide them all’. You can undo each one.",
-          "Look over every page yourself. Draw a box over anything else you want to hide, then download your copy.",
+          "Each suggestion is outlined on the page and listed with its name, for example ‘Bank account number (IBAN)’. Tap the ones you want to hide, or choose ‘Hide them all’. You can undo each one, and set aside a suggestion that is wrong with ‘Not this one’.",
+          "Look over every page yourself and draw a box over anything else you want to hide. Then choose ‘Done’: the areas are only removed from the file at that point.",
+          "Check the preview and download your copy.",
         ],
       },
       {
         type: "tip",
-        text: "Nothing is hidden until you say so. If the recipient asked for your bank details, leave the IBAN visible: it is the very thing they need.",
+        text: "Nothing is hidden until you say so. If the recipient asked for your bank details, leave the IBAN visible: it is the very thing they need. The same goes for the tax number and the notice reference on a French tax notice, which let the recipient check that the notice is genuine.",
+      },
+      {
+        type: "p",
+        text: "The same suggestions appear in Cachety's two other tools: when you sign a PDF, and when you put several documents into one file with Dossier.",
       },
       { type: "h2", text: "What it cannot find" },
       {
@@ -71,7 +78,8 @@ export const HIDE_GUIDES_EN: Guide[] = [
         items: [
           "Anything in a photo or a scan. There is no text to read in a picture, so there are no suggestions: draw the boxes yourself.",
           "Barcodes and QR codes. They can hold the same information as the text printed next to them.",
-          "Numbers in formats Cachety does not check, such as a UK sort code and account number, or a National Insurance number.",
+          "Numbers in formats Cachety does not check, such as a UK sort code and account number, a National Insurance number or an NHS number.",
+          "A card number that is already partly masked, such as the four last digits on a receipt. There is nothing left to hide.",
           "Names, addresses, dates of birth and phone numbers. They are usually what the recipient needs, so they are not suggested.",
         ],
       },
@@ -129,7 +137,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
       },
       {
         type: "p",
-        text: "The one real risk is a direct debit set up in your name without your agreement. In the UK, the Direct Debit Guarantee protects you: if a payment is taken in error, you are entitled to a full and immediate refund from your bank, and the Guarantee also covers money collected by fraud. In the euro area, you can ask your bank to refund a direct debit within eight weeks, and within thirteen months if you never agreed to it. So check your statements, and tell your bank about any debit you do not recognise.",
+        text: "The main risk is a direct debit set up in your name without your agreement. In the UK, the Direct Debit Guarantee protects you: if a payment is taken in error, you are entitled to a full and immediate refund from your bank, and the Guarantee also covers money collected by fraud. With a SEPA direct debit, the kind used across the euro area, you can ask your bank to refund a payment within eight weeks, and within thirteen months if you never agreed to it. So check your statements, and tell your bank about any debit you do not recognise.",
       },
       { type: "h2", text: "The real danger is the bundle" },
       {
@@ -151,7 +159,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
         items: [
           "Open cachety.com in your browser. Nothing is installed and there is no account.",
           "Add your PDF or photo. Say what the copy is for, then who will receive it.",
-          "On a PDF, Cachety looks for IBANs and tells you if it finds one. Choose ‘Review’, then tap the suggestion to hide it.",
+          "On a PDF, Cachety looks for IBANs and tells you if it finds one. Choose ‘Review’, tap the suggestion to hide it, then choose ‘Done’.",
           "A UK sort code and account number are not suggested, and neither is anything in a photo: click ‘Hide something’ and draw a box over them.",
           "Check every page, then download your copy.",
         ],
@@ -181,7 +189,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
       },
       {
         q: "What should I do if I see a direct debit I never agreed to?",
-        a: "Contact your bank at once and ask for a refund. In the UK the Direct Debit Guarantee applies. In the euro area you have thirteen months to dispute a direct debit you did not authorise.",
+        a: "Contact your bank at once and ask for a refund. In the UK the Direct Debit Guarantee applies. With a SEPA direct debit, you have thirteen months to dispute a payment you did not authorise.",
       },
     ],
     updated: UPDATED,
@@ -202,11 +210,11 @@ export const HIDE_GUIDES_EN: Guide[] = [
       { type: "h2", text: "Why a photo of your card is risky" },
       {
         type: "p",
-        text: "The front of a card shows the long card number, the expiry date and your name. The back shows the three-digit security code. Together, they are all someone needs to pay online with your card. An email or a chat message can sit in several inboxes for years, well out of your control.",
+        text: "On most cards, the front shows the long card number, the expiry date and your name, and the back shows the three-digit security code. Some newer cards print all of these on the back. Together, they are all someone needs to pay online with your card. An email or a chat message can sit in several inboxes for years, well out of your control.",
       },
       {
         type: "warning",
-        text: "Never send the security code, the three digits on the back of the card, or the four digits on the front of an American Express card. No honest business needs it in a photo. The card industry's own security rules forbid businesses from keeping it once a payment has gone through.",
+        text: "Never send the security code, the three digits on the back of the card, or the four digits on the front of an American Express card. No honest business needs it in a photo. The card industry's own security rules forbid businesses from keeping it once the payment has been authorised.",
       },
       { type: "h2", text: "Ask for another way first" },
       {
@@ -217,7 +225,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
       {
         type: "list",
         items: [
-          "Hide the middle digits of the card number. Leave the last four digits at most, which is what receipts show.",
+          "Hide the middle digits of the card number. Leave the last four digits at most, which is what your copy of a receipt shows.",
           "Hide the security code. On the back of the card, hide the whole strip it is printed on.",
           "Hide the expiry date, unless you are asked for it for a good reason.",
           "Leave your name and the bank's logo, so the copy still proves the card is yours.",
@@ -251,7 +259,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
     faq: [
       {
         q: "Which digits of my card number can I show?",
-        a: "The last four are enough for most checks, and they are what shops print on receipts. Card security rules let a business display, at most, the first digits, which identify the bank, and the last four. Hide the rest.",
+        a: "The last four are enough for most checks, and they are what shops print on your copy of a receipt. Card security rules say a business should normally display no more than the first digits, which identify the bank, and the last four. Hide the rest.",
       },
       {
         q: "Is it safe to send a photo of my card by email or WhatsApp?",
@@ -259,7 +267,7 @@ export const HIDE_GUIDES_EN: Guide[] = [
       },
       {
         q: "The hotel wants the front and the back. What should I do?",
-        a: "Ask why, and offer a secure payment link instead. If you do send the back, hide the security code and the strip around it. The card industry's rules do not allow a business to keep that code once the payment has gone through.",
+        a: "Ask why, and offer a secure payment link instead. If you do send the back, hide the security code and the strip around it. The card industry's rules do not allow a business to keep that code once the payment has been authorised.",
       },
       {
         q: "I already sent a full photo of my card. What now?",

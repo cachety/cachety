@@ -12,7 +12,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { headerRules, headersFor, parseCsp } from "../lib/http-headers";
-import { GUIDES, guidePath, guideToolPath } from "../lib/guides";
+import { DOSSIER_TOPICS, GUIDES, guidePath, guideToolPath } from "../lib/guides";
 import {
   DOSSIER_ALTERNATES,
   DOSSIER_META,
@@ -124,10 +124,10 @@ describe.skipIf(!built)("pages Dossier : métadonnées", () => {
     expect(list.some((u) => u.endsWith(".html"))).toBe(false);
   });
 
-  test("les deux guides de l'outil existent dans chaque langue et mènent à la page Dossier", () => {
+  test("les six guides de l'outil existent dans chaque langue et mènent à la page Dossier", () => {
     for (const lang of LANG_CODES) {
       const guides = GUIDES[lang].filter((g) => g.tool === "dossier");
-      expect(guides.map((g) => g.topic).sort(), lang).toEqual(["dossier", "size"]);
+      expect(guides.map((g) => g.topic).sort(), lang).toEqual([...DOSSIER_TOPICS].sort());
       for (const g of guides) {
         const file = join(OUT_DIR, `${guidePath(lang, g.slug).slice(1)}.html`);
         expect(existsSync(file), file).toBe(true);

@@ -97,6 +97,14 @@ export default function DossierLanding({ teasers }: { teasers: Record<Lang, Guid
 
       <GuideTeasers lang={lang} guides={teasers[lang]} />
 
+      {/* Comparatifs de l'outil (fusion, compression), comme sur la page Signer. */}
+      <p className="-mt-6 flex justify-center">
+        <a href={`/${lang}/compare#group-dossier`} className="inline-flex items-center gap-1 font-medium text-bleu hover:underline">
+          {c.nav.compare}
+          <ChevronIcon direction="right" className="h-4 w-4" />
+        </a>
+      </p>
+
       {/* Les deux autres outils : mêmes encarts que sur leurs pages (docs/prd-dossier.md §5.9). */}
       <ToolLink id="watermark-link" href={`/${lang}`} copy={c.sign.watermarkLink} Icon={ShieldIcon} />
       <ToolLink id="sign-link" href={`/${lang}/sign`} copy={c.landing.signLink} Icon={PencilIcon} />
