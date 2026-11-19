@@ -35,4 +35,10 @@ export const META_ID: LocaleMeta = {
     description:
       "Gambar, ketik, atau impor tanda tangan Anda dan tempatkan di PDF atau foto. Semua terjadi di browser Anda: tidak ada file yang di-upload. Gratis, tanpa akun.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "Gabungkan dokumen jadi satu PDF kecil, tanpa upload",
+    description:
+      "PDF dan foto dalam satu file, berurutan, di bawah ukuran yang diminta. Semua terjadi di browser Anda: tidak ada yang di-upload. Gratis dan open source.",
+  },
 };

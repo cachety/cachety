@@ -703,4 +703,171 @@ export const GUIDES_ID: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+
+  // ------------------------------------------------------------------ dossier
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  {
+    slug: "gabung-berkas-sewa-jadi-satu-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "Cara menggabungkan berkas sewa rumah menjadi satu PDF, tanpa upload ke mana pun",
+    metaTitle: "Berkas Sewa Rumah dalam Satu PDF, di Bawah Batas Ukuran",
+    description:
+      "KTP, slip gaji, rekening koran, dan bukti alamat dalam satu PDF, atau satu file per dokumen, di bawah 5 MB. Gratis, dan tidak ada yang di-upload.",
+    intro:
+      "Agen properti atau pemilik rumah meminta KTP, slip gaji, dan bukti alamat Anda \"dalam satu PDF\", atau sebagai file terpisah di bawah batas ukuran tertentu. Begini cara menyiapkannya di perangkat Anda sendiri, dalam beberapa menit.",
+    example: "Hanya untuk pengajuan sewa rumah, Agen Properti Melati, 18/11/2026",
+    body: [
+      { type: "h2", text: "Dokumen yang biasanya diminta" },
+      {
+        type: "p",
+        text: "Pengajuan sewa hampir selalu disertai beberapa dokumen yang sama: KTP atau identitas lain, tiga slip gaji terakhir, rekening koran terbaru atau dokumen pajak, dan bukti alamat Anda saat ini. Sebagian agen ingin semuanya dalam satu PDF. Yang lain, dan sebagian besar formulir upload, meminta satu file per jenis dokumen, masing-masing di bawah batas seperti 2, 5, atau 10 MB.",
+      },
+      {
+        type: "p",
+        text: "Sebagian dokumen itu berupa PDF yang Anda unduh. Sisanya sering berupa foto dari HP: miring, meja masih terlihat di sekeliling kertas, dan jauh terlalu besar untuk formulirnya.",
+      },
+      { type: "h2", text: "Kenapa tidak pakai situs penggabung PDF online?" },
+      {
+        type: "p",
+        text: "Kebanyakan situs yang menggabungkan atau mengompres PDF bekerja di server mereka: file Anda di-upload, diproses di sana, lalu dikirim kembali. Untuk pengajuan sewa, itu berarti menyerahkan identitas, penghasilan, dan alamat Anda sekaligus kepada satu perusahaan lagi. Cachety bekerja sebaliknya. Browser Anda yang mengerjakannya, di perangkat Anda, dan halaman ini secara teknis tidak bisa mengirim file Anda ke mana pun. Anda bisa memeriksanya: buka halamannya, nyalakan mode pesawat, dan semuanya tetap berjalan.",
+      },
+      { type: "h2", text: "Langkah demi langkah" },
+      {
+        type: "steps",
+        items: [
+          "Buka cachety.com dan pilih Berkas. Tidak perlu instal apa pun, tidak perlu akun.",
+          "Masukkan semua file Anda sekaligus: PDF dan foto, termasuk foto iPhone (HEIC).",
+          "Lihat halamannya. Seret ke urutan yang Anda inginkan, putar yang miring, dan hapus halaman yang tidak diminta, misalnya halaman belakang yang kosong.",
+          "Untuk foto dokumen kertas, pakai \"Luruskan dan pangkas\": taruh setiap sudut di sudut kertas. \"Putihkan latar\" membuatnya tampak seperti hasil scan dan membuat file jauh lebih ringan.",
+          "Jika yang diminta file terpisah, pilih \"Pisahkan menjadi beberapa file\" dan beri nama setiap bagian: KTP, Slip gaji, Bukti pajak, Bukti alamat.",
+          "Pilih ukuran maksimal, misalnya 5 MB. Cachety memberi tahu apakah file-nya muat sebelum Anda mengunduh.",
+          "Unduh. Anda mendapat satu PDF, atau satu PDF per bagian dalam file ZIP.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "Urutan penting bagi orang yang membacanya. Urutan yang umum: identitas dulu, lalu bukti penghasilan, lalu bukti alamat.",
+      },
+      { type: "h2", text: "Jika file terlalu besar" },
+      {
+        type: "p",
+        text: "Jika baris ukuran mengatakan file tidak bisa muat dan tetap terbaca, jangan dipaksakan: tulisan kecil di slip gaji jadi tidak terbaca, dan pengajuan Anda bisa ditolak. Pisahkan menjadi beberapa bagian supaya setiap file punya batasnya sendiri, hapus halaman yang tidak diperlukan, atau pilih ukuran yang lebih besar berikutnya jika formulirnya mengizinkan.",
+      },
+      { type: "h2", text: "Tambahkan watermark jika mau" },
+      {
+        type: "p",
+        text: "Agen biasanya mengharapkan salinan yang bersih, jadi watermark mati secara bawaan. Jika Anda ingin setiap halaman menyebutkan untuk apa dan untuk siapa salinan itu, aktifkan pilihan watermark sebelum mengunduh. Anda juga bisa menutup hitam bagian yang tidak diperlukan agen dengan \"Sensor sesuatu\".",
+      },
+      { type: "h2", text: "Menyewa di Prancis: DossierFacile" },
+      {
+        type: "p",
+        text: "Di Prancis, Negara menyediakan layanan gratis untuk berkas pengajuan sewa bernama DossierFacile. Layanan itu punya batasnya sendiri: saat panduan ini ditulis, 10 MB per file dan jumlah halaman tertentu untuk setiap kategori dokumen. Cachety bisa menyiapkan file yang kemudian Anda upload ke sana: satu bagian per kategori, masing-masing di bawah batas. Cachety adalah alat independen dan tidak punya hubungan dengan layanan tersebut.",
+      },
+      {
+        type: "warning",
+        text: "Halaman PDF yang Anda unduh berupa gambar. Teksnya tidak bisa lagi diseleksi atau dicari, dan file-nya bisa lebih besar daripada dokumen asli yang hanya berisi teks. Itulah harga dari penghapusan data tersembunyi: metadata, teks tersembunyi, dan lokasi GPS yang tersimpan di foto.",
+      },
+    ],
+    faq: [
+      {
+        q: "Apakah berkas sewa saya di-upload ke suatu tempat?",
+        a: "Tidak. Tidak ada server yang bisa menerimanya, dan halaman ini melarang browser Anda terhubung ke situs lain. Semuanya terjadi di perangkat Anda.",
+      },
+      {
+        q: "Bisakah saya menambahkan dokumen Word?",
+        a: "Tidak secara langsung. Simpan dulu sebagai PDF, dari Word atau dari HP Anda (Cetak, lalu Simpan sebagai PDF), lalu tambahkan PDF itu.",
+      },
+      {
+        q: "Satu PDF atau beberapa file: mana yang sebaiknya dikirim?",
+        a: "Kirim sesuai yang diminta. Jika agen tidak menyebutkan apa-apa, satu PDF dengan urutan yang masuk akal paling mudah dibaca. Formulir upload dengan satu kolom per dokumen memerlukan satu file per bagian.",
+      },
+      {
+        q: "Apakah agen bisa membukanya?",
+        a: "Bisa. Ini PDF biasa yang bisa dibuka di HP atau komputer mana pun. Kunci kata sandi mati secara bawaan, jadi tidak ada yang menghalangi.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+
+  // --------------------------------------------------------------------- size
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  {
+    slug: "perkecil-ukuran-pdf-formulir-online",
+    topic: "size",
+    tool: "dossier",
+    title: "Cara memperkecil ukuran PDF untuk formulir online, tanpa upload",
+    metaTitle: "Perkecil Ukuran PDF untuk Formulir Online, Gratis",
+    description:
+      "Formulir menolak file Anda karena terlalu besar? Kecilkan PDF atau foto hingga di bawah 1, 2, 5, atau 10 MB di perangkat Anda sendiri. Gratis, tanpa upload.",
+    intro:
+      "Lamaran kerja, pengajuan bantuan, formulir sekolah, dan pengajuan visa sering menolak file di atas 1, 2, 5, atau 10 MB. Begini cara membuatnya di bawah batas dan tetap terbaca.",
+    example: "Hanya untuk lamaran kerja, HRD PT Maju Bersama, 18/11/2026",
+    body: [
+      { type: "h2", text: "Kenapa file terlalu besar" },
+      {
+        type: "p",
+        text: "Foto selembar kertas dari HP sering berukuran 3 sampai 6 MB, karena kamera merekam detail jauh lebih banyak daripada yang dibutuhkan formulir. PDF hasil scan sama saja: satu gambar besar per halaman. Sebaliknya, PDF yang dibuat dari Word biasanya sangat kecil, karena isinya teks, bukan gambar.",
+      },
+      { type: "h2", text: "Langkah demi langkah" },
+      {
+        type: "steps",
+        items: [
+          "Buka cachety.com dan pilih Berkas.",
+          "Masukkan PDF atau foto Anda. Beberapa file menjadi satu PDF.",
+          "Hapus halaman yang tidak diminta formulir. Makin sedikit halaman, makin banyak ruang untuk halaman yang penting.",
+          "Di bawah \"Ukuran maksimal\", pilih batas formulirnya: 1, 2, 5, atau 10 MB, atau ketik ukuran lain.",
+          "Baca baris ukuran. Baris itu memberi tahu apakah file muat apa adanya, muat dengan halaman yang sedikit kurang tajam, atau tidak bisa muat dan tetap terbaca.",
+          "Unduh PDF-nya dan upload ke formulir.",
+        ],
+      },
+      { type: "h2", text: "Apa arti \"terbaca\"" },
+      {
+        type: "p",
+        text: "Untuk meringankan file, Cachety pertama-tama menurunkan kualitas gambar setiap halaman, lalu resolusinya. Cachety berhenti di batas bawah: di bawah itu, tulisan kecil seperti baris-baris slip gaji tidak bisa dibaca lagi, dan file yang tidak bisa dibaca siapa pun tidak ada gunanya. Halaman yang isinya lebih banyak, seperti foto, mendapat jatah ukuran lebih besar daripada halaman teks biasa.",
+      },
+      {
+        type: "tip",
+        text: "Untuk foto dokumen kertas, nyalakan \"Putihkan latar\" atau \"Hitam putih\". Halaman jadi lebih mudah dibaca dan jauh lebih ringan.",
+      },
+      { type: "h2", text: "Jika tidak muat" },
+      {
+        type: "list",
+        items: [
+          "Pisahkan file menjadi beberapa bagian, jika formulir menerima beberapa file: masing-masing punya batasnya sendiri.",
+          "Hapus halaman yang tidak diminta.",
+          "Pilih ukuran yang lebih besar, jika formulirnya mengizinkan.",
+          "Sebagai pilihan terakhir, centang \"Izinkan kualitas lebih rendah\", lalu pastikan tulisan terkecil masih bisa Anda baca sebelum mengirim file.",
+        ],
+      },
+      { type: "h2", text: "Kenapa file bisa menjadi lebih besar" },
+      {
+        type: "p",
+        text: "Cachety membuat ulang setiap halaman sebagai gambar. Cara ini menghapus teks tersembunyi, metadata, dan lokasi GPS foto, tetapi PDF yang tadinya hanya berisi teks bisa keluar lebih besar daripada aslinya. Pilih ukuran maksimal, dan halaman akan dikecilkan agar muat.",
+      },
+      {
+        type: "warning",
+        text: "Teks di PDF yang Anda unduh tidak bisa lagi diseleksi atau dicari. Simpan dokumen aslinya.",
+      },
+    ],
+    faq: [
+      {
+        q: "Apakah file saya di-upload untuk dikompres?",
+        a: "Tidak. Browser Anda yang mengerjakannya di perangkat Anda. Nyalakan mode pesawat setelah halaman terbuka, dan semuanya tetap berjalan.",
+      },
+      {
+        q: "Formulir meminta PDF, padahal saya hanya punya foto. Bisa?",
+        a: "Bisa. Foto, termasuk foto iPhone (HEIC), menjadi satu halaman PDF.",
+      },
+      {
+        q: "Kenapa PDF kecil saya sekarang lebih besar?",
+        a: "Karena teksnya berubah menjadi gambar halaman. Pilih ukuran maksimal, dan Cachety mengecilkan halaman agar muat di bawahnya.",
+      },
+      {
+        q: "Bisakah saya memilih ukuran yang tidak ada di daftar?",
+        a: "Bisa. Pilih \"Lainnya…\" lalu ketik ukuran antara 0,5 dan 50 MB.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

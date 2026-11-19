@@ -667,4 +667,166 @@ export const GUIDES_NL: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  {
+    slug: "huuraanvraag-in-een-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "Zo zet je je huuraanvraag in één pdf, zonder hem ergens te uploaden",
+    metaTitle: "Huuraanvraag in één pdf, onder de maximale grootte",
+    description:
+      "Identiteitsbewijs, loonstroken, werkgeversverklaring en bankafschrift in één pdf, of één bestand per document, onder 5 MB. Gratis, zonder upload.",
+    intro:
+      "Een makelaar of verhuurder vraagt je identiteitsbewijs, loonstroken en werkgeversverklaring in één pdf, of als losse bestanden onder een maximale grootte. Zo maak je ze klaar op je eigen apparaat, in een paar minuten.",
+    example: "Huuraanvraag Lindenlaan 12, Makelaardij De Linde, 18-11-2026",
+    body: [
+      { type: "h2", text: "Wat er meestal gevraagd wordt" },
+      {
+        type: "p",
+        text: "Bij een huuraanvraag horen bijna altijd dezelfde documenten: een kopie van je identiteitsbewijs, je laatste drie loonstroken, een werkgeversverklaring, en soms een recent bankafschrift of een uittreksel uit de BRP. Sommige makelaars willen alles in één pdf. Andere, en de meeste uploadformulieren, willen één bestand per soort document, elk onder een limiet zoals 2, 5 of 10 MB.",
+      },
+      {
+        type: "p",
+        text: "Een deel van die documenten zijn pdf's die je hebt gedownload. De rest zijn vaak foto's van je telefoon: op hun kant, met de tafel rond het vel, en veel te zwaar voor het formulier.",
+      },
+      { type: "h2", text: "Waarom geen website die pdf's samenvoegt?" },
+      {
+        type: "p",
+        text: "De meeste websites die pdf's samenvoegen of verkleinen, werken op hun servers: je bestanden worden geüpload, daar verwerkt en teruggestuurd. Bij een huuraanvraag geef je zo je identiteit, je inkomen en je adres in één keer aan nog een bedrijf. Cachety werkt andersom. Je browser doet het werk, op je apparaat, en de pagina kan je bestanden technisch gezien nergens heen sturen. Je kunt het controleren: laad de pagina, zet vliegtuigmodus aan, en het blijft werken.",
+      },
+      { type: "h2", text: "Stap voor stap" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com en kies Dossier. Er is niets te installeren en geen account nodig.",
+          "Sleep al je bestanden er in één keer in: pdf's en foto's, ook foto's van je iPhone (HEIC).",
+          "Bekijk de pagina's. Sleep ze in de volgorde die je wilt, draai de pagina's die op hun kant staan en verwijder pagina's waar niemand om vroeg, zoals een lege achterkant.",
+          "Gebruik voor een foto van een papieren pagina Rechtzetten en bijsnijden: zet elke hoek op een hoek van het vel. Achtergrond wit maken laat de foto op een scan lijken en maakt het bestand veel lichter.",
+          "Is er om losse bestanden gevraagd, kies dan Splitsen in meerdere bestanden en geef elk onderdeel een naam: Identiteitsbewijs, Loonstroken, Belastingaanslag, Adresbewijs.",
+          "Kies de maximale grootte, bijvoorbeeld 5 MB. Cachety zegt of het past voordat je downloadt.",
+          "Download. Je krijgt één pdf, of één pdf per onderdeel in een ZIP-bestand.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "De volgorde doet ertoe voor wie het leest. Een gebruikelijke volgorde is eerst je identiteitsbewijs, dan het bewijs van je inkomen, dan het bewijs van je adres.",
+      },
+      { type: "h2", text: "Als het bestand te groot is" },
+      {
+        type: "p",
+        text: "Zegt de regel over de grootte dat het bestand niet past zonder onleesbaar te worden, forceer het dan niet: de kleine lettertjes op een loonstrook zijn dan niet meer te lezen, en je aanvraag kan worden afgewezen. Splits het bestand in onderdelen, zodat elk bestand een eigen limiet heeft, verwijder de pagina's die je niet nodig hebt, of kies de eerstvolgende hogere limiet als het formulier dat toestaat.",
+      },
+      { type: "h2", text: "Een watermerk als je dat wilt" },
+      {
+        type: "p",
+        text: "Een makelaar verwacht vaak een schone kopie, dus het watermerk staat standaard uit. Wil je dat op elke pagina staat waarvoor de kopie is en voor wie, vink dan de watermerkoptie aan voordat je downloadt. Met Iets afdekken kun je ook zwartmaken wat de makelaar niet nodig heeft.",
+      },
+      { type: "h2", text: "Huren in Frankrijk: DossierFacile" },
+      {
+        type: "p",
+        text: "In Frankrijk biedt de staat een gratis dienst voor huuraanvragen aan, DossierFacile. Die heeft eigen limieten: toen deze uitleg werd geschreven, 10 MB per bestand en een vast aantal pagina's per categorie documenten. Cachety kan de bestanden klaarmaken die je daar vervolgens uploadt: één onderdeel per categorie, elk onder de limiet. Cachety is een onafhankelijke tool en heeft geen band met die dienst.",
+      },
+      {
+        type: "warning",
+        text: "De pagina's van de pdf die je downloadt, zijn afbeeldingen. De tekst is niet meer te selecteren of te doorzoeken, en het bestand kan groter zijn dan een origineel met alleen tekst. Dat is de prijs voor het verwijderen van verborgen gegevens: metadata, verborgen tekst en de gps-locatie die in foto's is opgeslagen.",
+      },
+    ],
+    faq: [
+      {
+        q: "Wordt mijn huuraanvraag ergens geüpload?",
+        a: "Nee. Er is geen server die hem zou kunnen ontvangen, en de pagina verbiedt je browser om contact te maken met een andere website. Alles gebeurt op je apparaat.",
+      },
+      {
+        q: "Kan ik een Word-document toevoegen?",
+        a: "Niet direct. Sla het eerst op als pdf, vanuit Word of vanaf je telefoon (Afdrukken, dan Opslaan als pdf), en voeg dan die pdf toe.",
+      },
+      {
+        q: "Eén pdf of meerdere bestanden: wat stuur ik?",
+        a: "Stuur wat er gevraagd is. Zei de makelaar niets, dan leest één pdf in een logische volgorde het makkelijkst. Uploadformulieren met één vak per document hebben één bestand per onderdeel nodig.",
+      },
+      {
+        q: "Kan de makelaar het bestand openen?",
+        a: "Ja. Het is een gewone pdf die op elke telefoon of computer opent. De wachtwoordbeveiliging staat standaard uit, dus niets staat in de weg.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+  {
+    slug: "pdf-verkleinen-voor-online-formulier",
+    topic: "size",
+    tool: "dossier",
+    title: "Zo maak je een pdf kleiner voor een online formulier, zonder hem te uploaden",
+    metaTitle: "Pdf verkleinen voor een online formulier, gratis",
+    description:
+      "Weigert een formulier je bestand omdat het te groot is? Breng een pdf of foto onder 1, 2, 5 of 10 MB op je eigen apparaat. Gratis, zonder upload.",
+    intro:
+      "Sollicitaties, aanvragen voor een uitkering, formulieren van school of voor een visum weigeren vaak een bestand boven 1, 2, 5 of 10 MB. Zo kom je onder de limiet en blijft het document leesbaar.",
+    example: "Sollicitatie, Groenhof Logistiek, afdeling HR, 18-11-2026",
+    body: [
+      { type: "h2", text: "Waarom bestanden te groot zijn" },
+      {
+        type: "p",
+        text: "Een telefoonfoto van één vel papier weegt vaak 3 tot 6 MB, omdat de camera veel meer detail vastlegt dan een formulier nodig heeft. Een gescande pdf is hetzelfde: één grote afbeelding per pagina. Een pdf die uit Word komt, is daarentegen meestal heel klein, omdat er tekst in zit en geen afbeeldingen.",
+      },
+      { type: "h2", text: "Stap voor stap" },
+      {
+        type: "steps",
+        items: [
+          "Open cachety.com en kies Dossier.",
+          "Sleep je pdf of je foto's erin. Meerdere bestanden worden één pdf.",
+          "Verwijder de pagina's waar het formulier niet om vraagt. Minder pagina's laten meer ruimte over voor de pagina's die ertoe doen.",
+          "Kies onder Maximale grootte de limiet van het formulier: 1, 2, 5 of 10 MB, of typ een andere.",
+          "Lees de regel over de grootte. Die zegt of het bestand zo past, past met iets minder scherpe pagina's, of niet past zonder onleesbaar te worden.",
+          "Download de pdf en upload hem in het formulier.",
+        ],
+      },
+      { type: "h2", text: "Wat leesbaar betekent" },
+      {
+        type: "p",
+        text: "Om een bestand lichter te maken, verlaagt Cachety eerst de beeldkwaliteit van elke pagina en daarna de resolutie. Het stopt bij een ondergrens: daaronder zijn kleine lettertjes, zoals de regels van een loonstrook, niet meer te lezen, en aan een bestand dat niemand kan lezen heb je niets. Pagina's waar meer op staat, zoals foto's, krijgen een groter deel van de grootte dan pagina's met alleen tekst.",
+      },
+      {
+        type: "tip",
+        text: "Zet voor een foto van een papieren pagina Achtergrond wit maken of Zwart-wit aan. De pagina leest beter en weegt veel minder.",
+      },
+      { type: "h2", text: "Als het niet past" },
+      {
+        type: "list",
+        items: [
+          "Splits het bestand in onderdelen, als het formulier meerdere bestanden aanneemt: elk onderdeel krijgt een eigen limiet.",
+          "Verwijder pagina's waar niet om gevraagd is.",
+          "Kies een hogere limiet, als het formulier dat toestaat.",
+          "Vink als laatste redmiddel Lagere kwaliteit toestaan aan, en controleer dan of je de kleinste lettertjes nog kunt lezen voordat je het bestand verstuurt.",
+        ],
+      },
+      { type: "h2", text: "Waarom een bestand groter kan worden" },
+      {
+        type: "p",
+        text: "Cachety bouwt elke pagina opnieuw op als afbeelding. Daarbij verdwijnen verborgen tekst, metadata en de gps-locatie van foto's, maar een pdf met alleen tekst kan er groter uitkomen dan hij erin ging. Kies een maximale grootte en de pagina's worden verkleind tot het past.",
+      },
+      {
+        type: "warning",
+        text: "De tekst van de pdf die je downloadt, is niet meer te selecteren of te doorzoeken. Bewaar je origineel.",
+      },
+    ],
+    faq: [
+      {
+        q: "Wordt mijn bestand geüpload om het te verkleinen?",
+        a: "Nee. Je browser doet het werk op je apparaat. Zet na het laden van de pagina vliegtuigmodus aan: het blijft werken.",
+      },
+      {
+        q: "Het formulier wil een pdf en ik heb alleen een foto. Werkt dat?",
+        a: "Ja. Een foto, ook een foto van je iPhone (HEIC), wordt een pagina van de pdf.",
+      },
+      {
+        q: "Waarom is mijn kleine pdf nu groter?",
+        a: "Omdat de tekst een afbeelding van de pagina is geworden. Kies een maximale grootte en Cachety verkleint de pagina's tot ze eronder passen.",
+      },
+      {
+        q: "Kan ik een grootte kiezen die niet in de lijst staat?",
+        a: "Ja. Kies Anders… en typ een grootte tussen 0,5 en 50 MB.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

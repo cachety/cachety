@@ -65,6 +65,9 @@ export const ABOUT_ALTERNATES: Record<string, string> = pageAlternates("/about",
 // Outil de signature : /sign détecte la langue (x-default), /<lang>/sign l'impose.
 export const SIGN_ALTERNATES: Record<string, string> = pageAlternates("/sign", true);
 
+// Outil Dossier : /dossier détecte la langue (x-default), /<lang>/dossier l'impose.
+export const DOSSIER_ALTERNATES: Record<string, string> = pageAlternates("/dossier", true);
+
 export type PageMeta = { title: string; description: string };
 
 /** Métadonnées d'une langue ajoutée dans lib/locales/<lang>/meta.ts. */
@@ -75,6 +78,7 @@ export type LocaleMeta = {
   guides: PageMeta;
   compare: PageMeta;
   sign: PageMeta;
+  dossier: PageMeta;
 };
 
 export const ABOUT_META: Record<Lang, PageMeta> = {
@@ -226,6 +230,39 @@ export const SIGN_META: Record<Lang, PageMeta> = {
   pt: META_PT.sign,
   id: META_ID.sign,
   nl: META_NL.sign,
+};
+
+// Page « Dossier » (docs/prd-dossier.md §10.1). Titres ≤ 60 caractères : le FR
+// et l'EN se passent de « | Cachety », qui les ferait déborder.
+export const DOSSIER_META: Record<Lang, PageMeta> = {
+  fr: {
+    title: "Assembler ses documents en un PDF léger, sans rien envoyer",
+    description:
+      "PDF et photos réunis en un seul fichier, dans l'ordre, sous la taille demandée. Tout se passe dans votre navigateur : rien n'est envoyé. Gratuit, open source.",
+  },
+  en: {
+    title: "Combine documents into one small PDF, without uploading",
+    description:
+      "PDFs and photos in one file, in order, under the size you need. Everything happens in your browser: nothing is uploaded. Free and open source.",
+  },
+  // ja, zh : draft translations from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  ja: {
+    title: `書類をひとつの軽い PDF に、アップロード不要 | ${BRAND}`,
+    description:
+      "PDF と写真を順番どおりにひとつのファイルにまとめ、指定されたサイズに収めます。処理はすべてブラウザの中で行われ、何も送信されません。無料、オープンソース。",
+  },
+  zh: {
+    title: `把多份文件合成一个小 PDF，无需上传 | ${BRAND}`,
+    description:
+      "把 PDF 和照片按顺序合成一个文件，并控制在要求的大小以内。全程在浏览器内完成，什么都不上传。免费，开源。",
+  },
+  es: META_ES.dossier,
+  ar: META_AR.dossier,
+  fa: META_FA.dossier,
+  de: META_DE.dossier,
+  pt: META_PT.dossier,
+  id: META_ID.dossier,
+  nl: META_NL.dossier,
 };
 
 export const SITE_META: Record<Lang, SiteMeta> = {

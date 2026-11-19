@@ -1,6 +1,10 @@
 import type { RoadmapCopy, RoadmapId, Text } from "./types";
 
 const ITEMS: Record<RoadmapId, Text> = {
+  "dossier": {
+    title: "合成一份：只发一个文件",
+    body: "拖入 PDF 和照片，排好页面顺序，旋转或移除不想要的页面，然后下载一个 PDF，或每个分组一个 PDF，不超过网站要求的大小。任何内容都不会离开您的设备。",
+  },
   "per-recipient-password": {
     title: "每个接收方一个密码",
     body: "每个接收方的副本用各自的密码加密，下载后与编号一起列出。即使一个密码泄露，也只能打开一份副本。",

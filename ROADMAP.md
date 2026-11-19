@@ -10,6 +10,26 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 
 ## Next
 
+### `dossier`: one file to send
+- **Status:** next (built on the `feat/dossier` branch, 2026-11-18; becomes
+  **shipped** on release day, planned as v1.2.0)
+- **Why:** before sending documents, people have to put them in one PDF, in
+  order, under the size a website accepts. The tools they use for that today
+  process the files on their servers.
+- **Scope:** a third mode at `/<lang>/dossier`: drop PDFs and photos; reorder,
+  rotate and remove single pages in a page grid; one PDF, one PDF per section
+  or one per document (ZIP); a size target with a readability floor and an
+  estimate before download; straighten, crop and clean up a photo of a paper
+  page; optional watermark, masks, password and fingerprint as in the other
+  tools; `#tools=dossier` in the partner embed. Pages are rebuilt from pixels,
+  as everywhere else. Two guides in all 11 languages.
+  Spec: [docs/prd-dossier.md](docs/prd-dossier.md).
+- **Before release:** the manual pass of the spec's §11.5 (real phones, a real
+  portal with a size limit, a 300-page file on an iPhone), and the native
+  review below.
+- **Later:** automatic corner detection, comparison pages for merge and
+  compress, a `/compress` entry page, per-use-case checklists (spec §14).
+
 ### `per-recipient-password`: a different password for each recipient
 - **Status:** next
 - **Why:** today one password locks every copy. If several copies travel
@@ -81,6 +101,21 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   Also the partner page's tool choice and embed switch strings
   (`lib/partners-copy/*`), the nav label "Watermark" and the `sign-embed`
   roadmap text, added in English and French first.
+  Dossier (2026-11-18): everything outside French and English is a draft
+  translated from the English and marked "Draft translation, awaiting native
+  review" where it lives: the tool strings (`dossier` block and
+  `dossier_too_many_pages` in `lib/i18n.tsx` for ja and zh, and in
+  `lib/locales/<lang>/strings.ts`), the page copy (`dossier` in
+  `lib/site-copy.ts` and `lib/locales/<lang>/site.ts`), the page title and
+  description (`lib/site-meta.ts`, `lib/locales/<lang>/meta.ts`), the nav
+  label (`nav.dossier`: translated in ja, zh, es, ar, fa and id), the two
+  guides (`dossier` and `size` topics), the `dossier` roadmap text, the
+  partner builder labels and the one-line README entries. First things to
+  check: the word chosen for "section", the five section presets (they become
+  file names), the size sentences, and in the rental guides the paragraph
+  about DossierFacile, which must say no more than the English one. The
+  German and Dutch rental guides were adapted to local paperwork (Schufa,
+  Mieterselbstauskunft; werkgeversverklaring, uittreksel BRP): check those too.
 - **Suggested areas, before release:** the manual pass on real documents
   (`docs/prd-suggested-areas.md` §11.4): payslips from 3 French employers, a
   French tax notice, a German Lohnabrechnung, a Spanish nómina, bank details

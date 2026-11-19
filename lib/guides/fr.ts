@@ -677,4 +677,167 @@ export const GUIDES_FR: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+  // ------------------------------------------------------------------
+  // Guides de l’outil Dossier (/fr/dossier) : docs/prd-dossier.md §5.9.
+  {
+    slug: "dossier-de-location-en-un-seul-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "Réunir son dossier de location en un seul PDF, sans rien mettre en ligne",
+    metaTitle: "Dossier de location en un seul PDF, sous la taille limite",
+    description:
+      "Pièce d’identité, fiches de paie, avis d’impôt et justificatif de domicile en un PDF, ou un fichier par pièce, sous 5 Mo. Gratuit, rien n’est envoyé.",
+    intro:
+      "L’agence ou le propriétaire demande vos justificatifs « en un seul PDF », ou une pièce par fichier sans dépasser une certaine taille. Voici comment les préparer sur votre appareil, en deux minutes.",
+    example: "Dossier de location – Agence Martin – 18/11/2026",
+    body: [
+      { type: "h2", text: "Ce qu’on vous demande d’habitude" },
+      {
+        type: "p",
+        text: "Un dossier de location réunit presque toujours les mêmes pièces : une pièce d’identité, les trois dernières fiches de paie, le dernier avis d’impôt et un justificatif de domicile. Certaines agences veulent tout dans un seul PDF. D’autres, et la plupart des formulaires en ligne, veulent un fichier par type de pièce, chacun sous une limite de 2, 5 ou 10 Mo.",
+      },
+      {
+        type: "p",
+        text: "Une partie de ces pièces sont des PDF que vous avez téléchargés. Les autres sont souvent des photos prises au téléphone : de travers, avec la table autour de la feuille, et bien trop lourdes pour le formulaire.",
+      },
+      { type: "h2", text: "Pourquoi ne pas utiliser un site qui fusionne les PDF ?" },
+      {
+        type: "p",
+        text: "La plupart des sites qui fusionnent ou compressent des PDF travaillent sur leurs serveurs : vos fichiers y sont envoyés, traités, puis renvoyés. Pour un dossier de location, cela revient à confier votre identité, vos revenus et votre adresse, d’un seul coup, à une entreprise de plus. Cachety fait l’inverse. C’est votre navigateur qui travaille, sur votre appareil, et la page ne peut techniquement rien envoyer. Vous pouvez le vérifier : chargez la page, passez en mode avion, elle fonctionne toujours.",
+      },
+      { type: "h2", text: "Pas à pas" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com et choisissez Dossier. Rien à installer, aucun compte à créer.",
+          "Déposez tous vos fichiers d’un coup : PDF et photos, y compris les photos d’iPhone (HEIC).",
+          "Regardez les pages. Faites-les glisser dans l’ordre voulu, tournez celles qui sont de travers et retirez celles qu’on ne vous demande pas, comme un verso blanc.",
+          "Pour la photo d’une feuille, utilisez « Redresser et recadrer » : placez chaque coin sur un coin de la feuille. « Blanchir le fond » lui donne l’aspect d’un scan et allège beaucoup le fichier.",
+          "Si on vous demande des fichiers séparés, choisissez « Séparer en plusieurs fichiers » et nommez chaque section : Pièce d’identité, Fiches de paie, Avis d’impôt, Justificatif de domicile.",
+          "Choisissez la taille maximale, par exemple 5 Mo. Cachety vous dit si cela tient avant le téléchargement.",
+          "Téléchargez. Vous obtenez un PDF, ou un PDF par section dans un fichier ZIP.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "L’ordre compte pour la personne qui lit. On met souvent la pièce d’identité d’abord, puis les revenus, puis le justificatif de domicile.",
+      },
+      { type: "h2", text: "Quand le fichier est trop lourd" },
+      {
+        type: "p",
+        text: "Si la ligne de taille indique qu’il est impossible de passer sous la limite en restant lisible, ne forcez pas : les petites lignes d’une fiche de paie deviennent illisibles et le dossier peut être refusé. Séparez-le en sections pour que chaque fichier ait sa propre limite, retirez les pages inutiles, ou choisissez la taille au-dessus si le formulaire l’accepte.",
+      },
+      { type: "h2", text: "Ajouter un filigrane, si vous le souhaitez" },
+      {
+        type: "p",
+        text: "Une copie nette est souvent ce que l’agence attend : le filigrane est donc désactivé par défaut. Pour que chaque page indique à quoi sert la copie et à qui elle est destinée, cochez l’option filigrane avant de télécharger. Vous pouvez aussi noircir ce que l’agence n’a pas à voir avec « Masquer quelque chose ».",
+      },
+      { type: "h2", text: "Et DossierFacile ?" },
+      {
+        type: "p",
+        text: "DossierFacile est le service gratuit de l’État pour constituer un dossier de location. Il a ses propres limites : à la date de ce guide, 10 Mo par fichier et un nombre de pages fixé pour chaque catégorie de pièces. Cachety peut préparer les fichiers que vous y déposez ensuite : une section par catégorie, chacune sous la limite. Cachety est un outil indépendant, sans lien avec ce service.",
+      },
+      {
+        type: "warning",
+        text: "Les pages du PDF téléchargé sont des images. Le texte n’est plus sélectionnable, et le fichier peut être plus lourd qu’un original qui ne contenait que du texte. C’est le prix du retrait des données cachées : métadonnées, texte caché et position GPS des photos.",
+      },
+    ],
+    faq: [
+      {
+        q: "Mon dossier est-il envoyé quelque part ?",
+        a: "Non. Aucun serveur ne peut le recevoir, et la page interdit à votre navigateur de contacter un autre site. Tout se passe sur votre appareil.",
+      },
+      {
+        q: "Puis-je ajouter un fichier Word ?",
+        a: "Pas directement. Enregistrez-le d’abord en PDF, depuis Word ou votre téléphone (Imprimer, puis Enregistrer en PDF), puis ajoutez ce PDF.",
+      },
+      {
+        q: "Un seul PDF ou plusieurs fichiers : que faut-il envoyer ?",
+        a: "Ce qu’on vous a demandé. Si l’agence n’a rien précisé, un seul PDF dans un ordre logique est le plus simple à lire. Les formulaires qui ont une case par pièce attendent un fichier par section.",
+      },
+      {
+        q: "L’agence pourra-t-elle l’ouvrir ?",
+        a: "Oui. C’est un PDF ordinaire, qui s’ouvre sur tous les téléphones et ordinateurs. Le verrouillage par mot de passe est désactivé par défaut : rien ne l’empêche de l’ouvrir.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+  {
+    slug: "reduire-la-taille-d-un-pdf-pour-un-formulaire",
+    topic: "size",
+    tool: "dossier",
+    title: "Réduire la taille d’un PDF pour un formulaire en ligne, sans l’envoyer nulle part",
+    metaTitle: "Réduire la taille d’un PDF pour un formulaire en ligne",
+    description:
+      "Un formulaire refuse votre fichier, trop lourd ? Passez un PDF ou une photo sous 1, 2, 5 ou 10 Mo sur votre appareil. Gratuit, rien n’est envoyé.",
+    intro:
+      "Candidature, CAF, inscription scolaire, demande de visa : beaucoup de formulaires refusent un fichier au-delà de 1, 2, 5 ou 10 Mo. Voici comment passer sous la limite en gardant un document lisible.",
+    example: "Candidature – Société Garnier – 18/11/2026",
+    body: [
+      { type: "h2", text: "Pourquoi les fichiers sont trop lourds" },
+      {
+        type: "p",
+        text: "La photo d’une seule feuille prise au téléphone pèse souvent 3 à 6 Mo : l’appareil enregistre bien plus de détails que le formulaire n’en a besoin. Un PDF scanné, c’est la même chose : une grande image par page. Un PDF créé depuis Word est au contraire très léger, car il contient du texte et non des images.",
+      },
+      { type: "h2", text: "Pas à pas" },
+      {
+        type: "steps",
+        items: [
+          "Ouvrez cachety.com et choisissez Dossier.",
+          "Déposez votre PDF ou vos photos. Plusieurs fichiers deviennent un seul PDF.",
+          "Retirez les pages que le formulaire ne demande pas. Moins il y a de pages, plus il reste de place pour celles qui comptent.",
+          "Sous « Taille maximale », choisissez la limite du formulaire : 1, 2, 5 ou 10 Mo, ou saisissez-en une autre.",
+          "Lisez la ligne de taille. Elle dit si le fichier tient tel quel, s’il tient avec des pages un peu moins nettes, ou s’il est impossible de passer sous la limite en restant lisible.",
+          "Téléchargez le PDF et déposez-le dans le formulaire.",
+        ],
+      },
+      { type: "h2", text: "Ce que « lisible » veut dire" },
+      {
+        type: "p",
+        text: "Pour alléger un fichier, Cachety réduit d’abord la qualité de l’image de chaque page, puis sa résolution. Il s’arrête à un plancher : en dessous, les petits caractères, comme les lignes d’une fiche de paie, ne se lisent plus, et un fichier illisible ne sert à rien. Les pages les plus chargées, comme les photos, reçoivent une plus grande part de la taille que les pages de texte.",
+      },
+      {
+        type: "tip",
+        text: "Pour la photo d’une feuille, activez « Blanchir le fond » ou « Noir et blanc ». La page se lit mieux et pèse beaucoup moins.",
+      },
+      { type: "h2", text: "Quand cela ne tient pas" },
+      {
+        type: "list",
+        items: [
+          "Séparez le fichier en sections, si le formulaire accepte plusieurs fichiers : chacun a alors sa propre limite.",
+          "Retirez les pages qu’on ne vous demande pas.",
+          "Choisissez une taille plus grande, si le formulaire l’accepte.",
+          "En dernier recours, cochez « Accepter une qualité plus faible », puis vérifiez que les plus petits caractères se lisent encore avant d’envoyer le fichier.",
+        ],
+      },
+      { type: "h2", text: "Pourquoi un fichier peut grossir" },
+      {
+        type: "p",
+        text: "Cachety reconstruit chaque page en image. Cela retire le texte caché, les métadonnées et la position GPS des photos, mais un PDF qui ne contenait que du texte peut ressortir plus lourd. Choisissez une taille maximale : les pages sont réduites pour tenir dedans.",
+      },
+      {
+        type: "warning",
+        text: "Le texte du PDF téléchargé n’est plus sélectionnable. Gardez votre original.",
+      },
+    ],
+    faq: [
+      {
+        q: "Mon fichier est-il envoyé pour être compressé ?",
+        a: "Non. Votre navigateur fait le travail sur votre appareil. Passez en mode avion une fois la page chargée : elle fonctionne toujours.",
+      },
+      {
+        q: "Le formulaire veut un PDF et je n’ai qu’une photo. Ça marche ?",
+        a: "Oui. Une photo, y compris une photo d’iPhone (HEIC), devient une page du PDF.",
+      },
+      {
+        q: "Pourquoi mon petit PDF est-il devenu plus lourd ?",
+        a: "Parce que son texte est devenu une image de la page. Choisissez une taille maximale : Cachety réduit les pages pour passer dessous.",
+      },
+      {
+        q: "Puis-je choisir une taille qui n’est pas dans la liste ?",
+        a: "Oui. Choisissez « Autre… » et saisissez une taille entre 0,5 et 50 Mo.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

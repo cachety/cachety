@@ -761,4 +761,166 @@ export const GUIDES_PT: Guide[] = [
     ],
     updated: "2026-10-17",
   },
+  // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
+  {
+    slug: "documentos-aluguel-em-um-pdf",
+    topic: "dossier",
+    tool: "dossier",
+    title: "Como juntar os documentos do aluguel em um único PDF, sem enviar para nenhum site",
+    metaTitle: "Documentos do aluguel em um PDF, dentro do limite",
+    description:
+      "RG ou CNH, holerites, Imposto de Renda e comprovante de residência em um único PDF, ou um arquivo por documento, abaixo de 5 MB. Grátis, sem upload.",
+    intro:
+      "A imobiliária ou o proprietário pede seu documento, os holerites e o comprovante de residência “em um único PDF”, ou em arquivos separados com limite de tamanho. Veja como preparar tudo no seu próprio aparelho, em poucos minutos.",
+    example: "Cadastro de aluguel, Imobiliária Horizonte, 18/11/2026",
+    body: [
+      { type: "h2", text: "O que costumam pedir" },
+      {
+        type: "p",
+        text: "O cadastro para alugar um imóvel vem quase sempre com os mesmos documentos: RG ou CNH, os três últimos holerites, a declaração do Imposto de Renda ou extratos bancários recentes, e um comprovante de residência. Algumas imobiliárias querem tudo em um único PDF. Outras, e a maioria dos formulários de envio, querem um arquivo por tipo de documento, cada um abaixo de um limite como 2, 5 ou 10 MB.",
+      },
+      {
+        type: "p",
+        text: "Alguns desses documentos são PDFs que você baixou. Os outros costumam ser fotos tiradas com o celular: de lado, com a mesa aparecendo em volta da folha e pesadas demais para o formulário.",
+      },
+      { type: "h2", text: "Por que não usar um site que junta PDFs?" },
+      {
+        type: "p",
+        text: "A maioria dos sites que juntam ou comprimem PDFs trabalha nos servidores deles: seus arquivos são enviados, processados lá e devolvidos. Num cadastro de aluguel, isso significa entregar sua identidade, sua renda e seu endereço, tudo de uma vez, a mais uma empresa. O Cachety faz o contrário. Seu navegador faz o trabalho, no seu aparelho, e a página tecnicamente não consegue enviar seus arquivos para lugar nenhum. Dá para conferir: carregue a página, ative o modo avião, e ela continua funcionando.",
+      },
+      { type: "h2", text: "Passo a passo" },
+      {
+        type: "steps",
+        items: [
+          "Abra cachety.com e escolha Dossier. Não precisa instalar nada nem criar conta.",
+          "Solte todos os seus arquivos de uma vez: PDFs e fotos, inclusive fotos de iPhone (HEIC).",
+          "Olhe as páginas. Arraste para a ordem que quiser, gire as que estão de lado e remova as páginas que ninguém pediu, como um verso em branco.",
+          "Para a foto de uma folha de papel, use “Endireitar e recortar”: coloque cada canto em um canto da folha. “Deixar o fundo branco” faz a foto parecer um documento escaneado e deixa o arquivo bem mais leve.",
+          "Se pediram arquivos separados, escolha “Dividir em vários arquivos” e dê um nome a cada seção: Documento de identidade, Holerites, Imposto de Renda, Comprovante de residência.",
+          "Escolha o tamanho máximo, por exemplo 5 MB. O Cachety avisa se cabe antes de você baixar.",
+          "Baixe. Você recebe um único PDF, ou um PDF por seção dentro de um arquivo ZIP.",
+        ],
+      },
+      {
+        type: "tip",
+        text: "A ordem faz diferença para quem vai ler. Uma ordem comum é: primeiro o documento de identidade, depois o comprovante de renda, depois o comprovante de residência.",
+      },
+      { type: "h2", text: "Quando o arquivo fica grande demais" },
+      {
+        type: "p",
+        text: "Se a linha do tamanho disser que o arquivo não cabe sem ficar ilegível, não force: as letras miúdas de um holerite ficam impossíveis de ler, e o cadastro pode ser recusado. Divida em seções, para que cada arquivo tenha o próprio limite, remova as páginas que você não precisa enviar, ou escolha o tamanho seguinte, se o formulário permitir.",
+      },
+      { type: "h2", text: "Coloque uma marca d'água, se quiser" },
+      {
+        type: "p",
+        text: "Muitas vezes a imobiliária espera uma cópia limpa, então a marca d'água vem desligada. Se você quer que cada página diga para que serve a cópia e para quem ela é, marque a opção de marca d'água antes de baixar. Você também pode cobrir o que a imobiliária não precisa ver com “Ocultar algo”.",
+      },
+      { type: "h2", text: "Aluguel na França: DossierFacile" },
+      {
+        type: "p",
+        text: "Na França, o Estado mantém um serviço gratuito para cadastros de aluguel chamado DossierFacile. Ele tem os próprios limites: quando este guia foi escrito, 10 MB por arquivo e um número definido de páginas para cada categoria de documento. O Cachety pode preparar os arquivos que você depois envia por lá: uma seção por categoria, cada uma abaixo do limite. O Cachety é uma ferramenta independente e não tem nenhuma ligação com esse serviço.",
+      },
+      {
+        type: "warning",
+        text: "As páginas do PDF que você baixa são imagens. O texto não pode mais ser selecionado nem pesquisado, e o arquivo pode ficar maior que um original que só tinha texto. É o preço de remover os dados ocultos: metadados, texto oculto e a localização GPS gravada nas fotos.",
+      },
+    ],
+    faq: [
+      {
+        q: "Meus documentos do aluguel são enviados para algum lugar?",
+        a: "Não. Não existe servidor capaz de recebê-los, e a página proíbe seu navegador de se conectar a qualquer outro site. Tudo acontece no seu aparelho.",
+      },
+      {
+        q: "Posso adicionar um documento do Word?",
+        a: "Não diretamente. Primeiro salve como PDF, pelo Word ou pelo celular (Imprimir, depois Salvar como PDF), e então adicione esse PDF.",
+      },
+      {
+        q: "Um único PDF ou vários arquivos: o que eu mando?",
+        a: "Mande o que pediram. Se a imobiliária não disse nada, um único PDF em uma ordem que faça sentido é o mais fácil de ler. Formulários com um campo por documento precisam de um arquivo por seção.",
+      },
+      {
+        q: "A imobiliária vai conseguir abrir o arquivo?",
+        a: "Sim. É um PDF comum, que abre em qualquer celular ou computador. A proteção com senha vem desligada, então nada atrapalha.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
+  {
+    slug: "diminuir-pdf-para-formulario-online",
+    topic: "size",
+    tool: "dossier",
+    title: "Como diminuir um PDF para um formulário online, sem enviar para nenhum site",
+    metaTitle: "Diminuir um PDF para formulário online, grátis",
+    description:
+      "O formulário recusa seu arquivo por ser grande demais? Deixe um PDF ou uma foto abaixo de 1, 2, 5 ou 10 MB no seu próprio aparelho. Grátis, sem upload.",
+    intro:
+      "Vagas de emprego, pedidos de benefício, matrículas e pedidos de visto costumam recusar arquivos acima de 1, 2, 5 ou 10 MB. Veja como ficar abaixo do limite e manter o documento legível.",
+    example: "Candidatura a vaga, RH da Construtora Ipê Amarelo, 18/11/2026",
+    body: [
+      { type: "h2", text: "Por que os arquivos ficam grandes demais" },
+      {
+        type: "p",
+        text: "A foto de uma única folha tirada com o celular costuma ter de 3 a 6 MB, porque a câmera grava muito mais detalhe do que um formulário precisa. Um PDF escaneado é a mesma coisa: uma imagem grande por página. Já um PDF feito no Word costuma ser bem pequeno, porque guarda texto em vez de imagens.",
+      },
+      { type: "h2", text: "Passo a passo" },
+      {
+        type: "steps",
+        items: [
+          "Abra cachety.com e escolha Dossier.",
+          "Solte seu PDF ou suas fotos. Vários arquivos viram um único PDF.",
+          "Remova as páginas que o formulário não pede. Menos páginas deixam mais espaço para as que importam.",
+          "Em “Tamanho máximo”, escolha o limite do formulário: 1, 2, 5 ou 10 MB, ou digite outro.",
+          "Leia a linha do tamanho. Ela diz se o arquivo cabe como está, se cabe com páginas um pouco menos nítidas ou se não cabe sem ficar ilegível.",
+          "Baixe o PDF e envie pelo formulário.",
+        ],
+      },
+      { type: "h2", text: "O que quer dizer “legível”" },
+      {
+        type: "p",
+        text: "Para deixar um arquivo mais leve, o Cachety primeiro reduz a qualidade da imagem de cada página e depois a resolução. Ele para em um piso: abaixo dele, letras miúdas como as linhas de um holerite não podem mais ser lidas, e um arquivo que ninguém consegue ler não serve para nada. Páginas com mais conteúdo, como fotos, recebem uma parte maior do tamanho do que páginas só de texto.",
+      },
+      {
+        type: "tip",
+        text: "Para a foto de uma folha de papel, ative “Deixar o fundo branco” ou “Preto e branco”. A página fica mais fácil de ler e bem mais leve.",
+      },
+      { type: "h2", text: "Quando não cabe" },
+      {
+        type: "list",
+        items: [
+          "Divida o arquivo em seções, se o formulário aceitar vários arquivos: cada um tem o próprio limite.",
+          "Remova as páginas que não foram pedidas.",
+          "Escolha um tamanho maior, se o formulário permitir.",
+          "Em último caso, marque “Aceitar qualidade mais baixa” e confira se ainda dá para ler as letras menores antes de enviar o arquivo.",
+        ],
+      },
+      { type: "h2", text: "Por que um arquivo pode ficar maior" },
+      {
+        type: "p",
+        text: "O Cachety refaz cada página como imagem. Isso remove texto oculto, metadados e a localização GPS das fotos, mas um PDF que só tinha texto pode sair maior do que entrou. Escolha um tamanho máximo e as páginas são reduzidas até caber.",
+      },
+      {
+        type: "warning",
+        text: "O texto do PDF que você baixa não pode mais ser selecionado nem pesquisado. Guarde o seu original.",
+      },
+    ],
+    faq: [
+      {
+        q: "Meu arquivo é enviado para algum servidor para ser comprimido?",
+        a: "Não. Seu navegador faz o trabalho no seu aparelho. Ative o modo avião depois que a página carregar e tudo continua funcionando.",
+      },
+      {
+        q: "O formulário pede um PDF e eu só tenho uma foto. Funciona?",
+        a: "Sim. Uma foto, inclusive de iPhone (HEIC), vira uma página do PDF.",
+      },
+      {
+        q: "Por que meu PDF pequeno ficou maior?",
+        a: "Porque o texto dele virou uma imagem da página. Escolha um tamanho máximo e o Cachety reduz as páginas até caber no limite.",
+      },
+      {
+        q: "Posso escolher um tamanho que não está na lista?",
+        a: "Sim. Escolha “Outro…” e digite um tamanho entre 0,5 e 50 MB.",
+      },
+    ],
+    updated: "2026-11-18",
+  },
 ];

@@ -7,6 +7,7 @@ export const SITE_ID: SiteCopy = {
   nav: {
     tool: "Watermark",
     sign: "Tanda tangan",
+    dossier: "Berkas",
     about: "Mengapa perlu watermark?",
     guides: "Panduan",
     privacy: "Privasi",
@@ -197,6 +198,54 @@ export const SITE_ID: SiteCopy = {
       cta: "Beri watermark pada dokumen",
     },
     backToTop: "Tanda tangani dokumen",
+  },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    hero: {
+      title: "Satu file untuk dikirim, tanpa meng-upload apa pun",
+      lead: "KTP, slip gaji, bukti pajak, foto formulir kertas: urutkan halamannya, putar yang miring, dan dapatkan satu PDF di bawah ukuran yang diminta.",
+      pills: ["Gratis", "Tanpa akun", "Tidak ada yang di-upload", "Buatan Prancis"],
+    },
+    howTitle: "Cara kerjanya",
+    how: [
+      { title: "Masukkan dokumen Anda", body: "PDF dan foto, termasuk yang difoto dengan ponsel: KTP, slip gaji, bukti pajak. Bisa beberapa sekaligus." },
+      { title: "Urutkan halamannya", body: "Seret ke urutan yang Anda inginkan, putar yang miring, hapus yang tidak diperlukan." },
+      {
+        title: "Pilih ukuran, lalu unduh",
+        body: "Satu PDF, atau satu per bagian, di bawah ukuran yang diminta situs web. File disimpan di perangkat Anda.",
+      },
+    ],
+    airplaneTitle: "Buktikan sendiri: tes mode pesawat",
+    airplaneBody:
+      "Buka halaman ini, lalu matikan internet (mode pesawat). Masukkan dokumen Anda dan gabungkan: Cachety tetap berjalan. Itu bukti bahwa tidak ada yang lewat internet.",
+    bigger: {
+      title: "Mengapa file bisa lebih besar daripada dokumen asli Anda",
+      body: "Cachety tidak menyalin file Anda: setiap halaman dibuat ulang sebagai gambar. Itulah yang menghapus teks tersembunyi, metadata, lampiran, tautan, dan lokasi GPS foto. Sebagai gantinya, PDF yang tadinya hanya berisi teks bisa menjadi lebih besar, dan teksnya tidak bisa lagi dipilih. Jika situs web menetapkan batas, pilih ukuran maksimal: Cachety mengecilkan halaman agar muat, dan memperingatkan Anda jika halaman akan menjadi tidak terbaca.",
+    },
+    faqTitle: "Pertanyaan umum",
+    faq: [
+      {
+        q: "Apakah dokumen saya di-upload ke suatu tempat?",
+        a: "Tidak. Situs ini tidak punya server yang bisa menerimanya, dan halaman ini melarang browser Anda terhubung ke situs lain. Tes mode pesawat membuktikannya dalam sepuluh detik.",
+      },
+      {
+        q: "Kenapa file saya kadang menjadi lebih besar?",
+        a: "Setiap halaman dibuat ulang dari pikselnya. Cara ini menghapus teks tersembunyi, metadata, dan lokasi GPS foto, tetapi PDF yang tadinya hanya berisi teks bisa menjadi lebih besar. Pilih ukuran maksimal: Cachety mengecilkan halaman agar muat.",
+      },
+      {
+        q: "Apakah teksnya masih bisa dipilih?",
+        a: "Tidak, halamannya berupa gambar. Dokumen asli Anda tetap utuh di perangkat Anda.",
+      },
+      {
+        q: "Bisakah saya menambahkan file Word atau Excel?",
+        a: "Tidak secara langsung. Simpan dulu sebagai PDF dari Word, Excel, atau ponsel Anda (Cetak, lalu Simpan sebagai PDF).",
+      },
+      {
+        q: "Apakah bisa dipakai di ponsel?",
+        a: "Ya. Foto dokumen kertas Anda, luruskan, lalu urutkan halamannya dengan jari.",
+      },
+    ],
+    backToTop: "Siapkan berkas saya",
   },
   privacy: {
     title: "Privasi dan keamanan",

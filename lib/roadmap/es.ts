@@ -1,6 +1,10 @@
 import type { RoadmapCopy, RoadmapId, Text } from "./types";
 
 const ITEMS: Record<RoadmapId, Text> = {
+  "dossier": {
+    title: "Dosier: un solo archivo para enviar",
+    body: "Suelta PDF y fotos, ordena las páginas, gira o quita las que no quieras y descarga un solo PDF, o uno por sección, por debajo del tamaño que pide una web. Nada sale de tu dispositivo.",
+  },
   "per-recipient-password": {
     title: "Una contraseña distinta para cada destinatario",
     body: "La copia de cada destinatario, protegida con su propia contraseña, que aparece en la lista junto a los códigos después de descargar. Así, una contraseña filtrada solo abre una copia.",

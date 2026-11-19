@@ -79,3 +79,40 @@ describe("page Signer : honnêteté (T11, valeur juridique)", () => {
     }
   });
 });
+
+// docs/prd-dossier.md §4.2, §4.6 et §10 : la page Dossier dit que les pages
+// deviennent des images (le fichier peut grossir, le texte n'est plus
+// sélectionnable), et ne laisse jamais croire à un lien avec DossierFacile.
+describe("page Dossier : honnêteté", () => {
+  test("FAQ en 5 questions, page en 3 étapes, quatre pastilles sous le titre", () => {
+    for (const l of LANG_CODES) {
+      const d = SITE_COPY[l].dossier;
+      expect(d.faq, l).toHaveLength(5);
+      expect(d.how, l).toHaveLength(3);
+      expect(d.hero.pills, l).toHaveLength(4);
+      expect(new Set(d.faq.map((f) => f.q)).size, l).toBe(5);
+    }
+  });
+
+  test("« DossierFacile » n'apparaît ni sur la page ni dans la navigation", () => {
+    for (const l of LANG_CODES) {
+      expect(JSON.stringify(SITE_COPY[l].dossier), l).not.toMatch(/dossier\s?facile/i);
+      expect(SITE_COPY[l].nav.dossier, l).not.toMatch(/facile/i);
+    }
+  });
+
+  test("français et anglais : le texte du cahier des charges, mot pour mot", () => {
+    expect(SITE_COPY.fr.dossier.hero.title).toBe("Un seul fichier à envoyer, sans rien mettre en ligne");
+    expect(SITE_COPY.en.dossier.hero.title).toBe("One file to send, without uploading anything");
+    expect(SITE_COPY.fr.dossier.faq[2]).toEqual({
+      q: "Le texte reste-t-il sélectionnable ?",
+      a: "Non, les pages sont des images. Vos originaux restent intacts sur votre appareil.",
+    });
+    expect(SITE_COPY.en.dossier.faq[2]).toEqual({
+      q: "Is the text still selectable?",
+      a: "No, the pages are images. Your originals stay untouched on your device.",
+    });
+    expect(SITE_COPY.fr.nav.dossier).toBe("Dossier");
+    expect(SITE_COPY.en.nav.dossier).toBe("Dossier");
+  });
+});

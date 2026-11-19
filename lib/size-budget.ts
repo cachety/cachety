@@ -23,6 +23,24 @@ export const ENCODE_LADDER: readonly { scale: number; quality: number }[] = [1, 
 );
 
 /**
+ * Plancher de lisibilité du mode « dossier » : 0,55 du rendu à 2×, soit
+ * environ 80 points par pouce sur une page A4. En dessous (0,4, environ
+ * 58 ppp), les petits caractères d'une fiche de paie ne se lisent plus.
+ * Doit rester un barreau de ENCODE_LADDER (vérifié par size-budget.test.ts).
+ */
+export const DOSSIER_MIN_SCALE = 0.55;
+
+/** Barreaux permis avec un plancher : ceux dont l'échelle ne descend pas sous `minScale` (0 : tous). */
+export function ladderFrom(minScale = 0): readonly { scale: number; quality: number }[] {
+  const kept = ENCODE_LADDER.filter((rung) => rung.scale >= minScale);
+  // Plancher au-dessus de tout barreau : au moins le plus fidèle, jamais une échelle vide.
+  return kept.length ? kept : ENCODE_LADDER.slice(0, 1);
+}
+
+/** Octets de structure d'un PDF de `pages` pages, hors images (même mesure que pageBudget). */
+export const pdfOverhead = (pages: number) => PDF_BASE_OVERHEAD + PDF_PAGE_OVERHEAD * Math.max(0, pages);
+
+/**
  * Part d'un budget global revenant à un document, proportionnelle à son
  * nombre de pages (PDF unique assemblé sous une taille cible).
  */

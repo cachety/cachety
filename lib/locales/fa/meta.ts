@@ -35,4 +35,10 @@ export const META_FA: LocaleMeta = {
     description:
       "امضایتان را بکشید، تایپ کنید یا وارد کنید و روی PDF یا عکس بگذارید. همه‌چیز در مرورگر شما انجام می‌شود: هیچ فایلی آپلود نمی‌شود. رایگان، بدون ثبت‌نام، متن‌باز.",
   },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    title: "مدارک را در یک PDF کم‌حجم یکی کنید، بدون آپلود",
+    description:
+      "PDFها و عکس‌ها در یک فایل، به ترتیب و زیر حجمی که از شما خواسته‌اند. همه‌چیز در مرورگر شما انجام می‌شود: چیزی آپلود نمی‌شود. رایگان و متن‌باز.",
+  },
 };

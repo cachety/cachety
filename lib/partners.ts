@@ -44,7 +44,7 @@ export const EMBED_PARENTS = (self: string) => [self, ...PARTNERS.map((p) => p.d
 export const heightMessage = (height: number) => ({ type: "cachety:height" as const, height: Math.ceil(height) });
 
 /** Outils que la page intégrée peut proposer, dans l'ordre choisi par le partenaire. */
-export const EMBED_TOOLS = ["watermark", "sign"] as const;
+export const EMBED_TOOLS = ["watermark", "sign", "dossier"] as const;
 export type EmbedTool = (typeof EMBED_TOOLS)[number];
 
 export type Prefill = {
@@ -56,6 +56,9 @@ export type Prefill = {
   /** Mode « signer » : lieu et mention sous la signature. */
   place?: string;
   note?: string;
+  /** Mode « dossier » : taille maximale par fichier (Mo) et noms des sections. */
+  size?: number;
+  sections?: string[];
 };
 
 /**
@@ -81,7 +84,44 @@ export function readPrefill(hash: string): Prefill {
     tools: tools.length ? tools : ["watermark"],
     place: text("place", 80),
     note: text("note", 80),
+    size: prefillSize(params.get("size")),
+    sections: prefillSections(params.get("sections")),
   };
+}
+
+/** Taille cible du mode « dossier » : de 0,5 à 50 Mo, par pas de 0,5. */
+export const PREFILL_SIZE = { min: 0.5, max: 50, step: 0.5 };
+/** Sections du mode « dossier » : 10 au plus, 40 caractères chacune. */
+export const PREFILL_SECTIONS = { max: 10, length: 40 };
+
+/**
+ * « #size=5 » : taille maximale par fichier, en Mo. Un nombre seul (virgule
+ * ou point), entre 0,5 et 50, arrondi au demi ; toute autre valeur est
+ * ignorée plutôt que devinée.
+ */
+function prefillSize(raw: string | null): number | undefined {
+  const v = raw?.trim().replace(",", ".");
+  if (!v || !/^\d{1,2}(\.\d{1,2})?$/.test(v)) return undefined;
+  const n = Math.round(Number(v) / PREFILL_SIZE.step) * PREFILL_SIZE.step;
+  return n >= PREFILL_SIZE.min && n <= PREFILL_SIZE.max ? n : undefined;
+}
+
+/**
+ * « #sections=ID,Payslips,Tax%20notice » : noms de sections séparés par des
+ * virgules (latine, arabe « ، » ou idéographique « 、 » « ， »). Chaque nom
+ * est coupé à 40 caractères entiers ; vides et doublons retirés ; 10 au plus.
+ * Ce sont des textes saisis par un tiers : affichés échappés par React, et
+ * réduits à un nom de fichier sûr au moment de produire les fichiers.
+ */
+function prefillSections(raw: string | null): string[] | undefined {
+  if (!raw) return undefined;
+  const names: string[] = [];
+  for (const part of raw.split(/[,،、，]/)) {
+    const name = Array.from(part.replace(/\s+/g, " ").trim()).slice(0, PREFILL_SECTIONS.length).join("").trim();
+    if (name && !names.includes(name)) names.push(name);
+    if (names.length === PREFILL_SECTIONS.max) break;
+  }
+  return names.length ? names : undefined;
 }
 
 /** Contraste WCAG entre une couleur #rrggbb et le blanc (texte des boutons). */

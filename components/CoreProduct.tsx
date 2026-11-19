@@ -11,6 +11,11 @@
 // l'étape 3 l'éditeur de placement (SignatureEditor) ; la sortie est toujours
 // un PDF « -signed ». Le filigrane n'est qu'une option (« Ajouter aussi un
 // filigrane »). Le mode filigrane, par défaut, ne change pas.
+//
+// Mode « dossier » (mode="dossier", page /<lang>/dossier) : l'étape 2 devient
+// la grille des pages (PageGrid), l'étape 3 choisit le fichier à produire et
+// sa taille. Ce qui lui est propre vit dans useDossier ; ce qui varie d'un
+// mode à l'autre sans logique (libellés, défauts) dans lib/mode-config.ts.
 
 import HelpTour from "@/components/HelpTour";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -77,6 +82,11 @@ import { Kiosk } from "@/components/Kiosk";
 import { readPrefill } from "@/lib/partners";
 import { takeSuggestions, withExtraction } from "@/lib/suggestions";
 import { useSuggestions } from "@/components/useSuggestions";
+import { modeConfig, type Mode } from "@/lib/mode-config";
+import { editsKey } from "@/lib/pages";
+import PageGrid from "@/components/PageGrid";
+import { DossierOutput, SizePanel } from "@/components/SizePanel";
+import { useDossier } from "@/components/useDossier";
 
 // Au-delà de ce nombre de documents, la liste passe en zone défilante bornée
 // avec résumé et filtres (sinon mille lignes poussent les étapes 2 et 3 à
@@ -103,15 +113,17 @@ export default function CoreProduct({
   onHasDocs,
 }: {
   embed?: boolean;
-  mode?: "watermark" | "sign";
+  mode?: Mode;
   /** Page intégrée : prévenir avant de changer d'outil, ce qui retirerait les documents. */
   onHasDocs?: (has: boolean) => void;
 } = {}) {
   const t = useT();
   const sign = mode === "sign";
   const ts = t.sign;
-  // Libellés communs aux deux modes (étapes, champ de dépôt).
-  const labels = sign ? ts : t;
+  const dossier = mode === "dossier";
+  const cfg = modeConfig(mode, t);
+  // Libellés communs aux trois modes (étapes, champ de dépôt).
+  const labels = cfg.labels;
   const [docs, setDocs] = useState<Doc[]>([]);
   // Étape 2 : motif, destinataires (un champ chacun), texte libre éventuel.
   const [purpose, setPurpose] = useState("");
@@ -179,7 +191,7 @@ export default function CoreProduct({
     if (prefill.recipient) setFields([prefill.recipient]);
     // Signer : un motif ou un destinataire fourni par le lien n'a de sens
     // qu'avec le filigrane, qui part donc coché (le visiteur peut le retirer).
-    if (sign && (prefill.purpose || prefill.recipient)) setWithWatermark(true);
+    if (cfg.optionalWatermark && (prefill.purpose || prefill.recipient)) setWithWatermark(true);
     // Une fois, au chargement.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -355,7 +367,8 @@ export default function CoreProduct({
     []
   );
 
-  const maxBytes = sizeMb ? mbToBytes(sizeMb) : undefined;
+  // Mode « dossier » : le premier rendu n'a pas de limite ; la taille cible s'applique à l'assemblage.
+  const maxBytes = sizeMb && !dossier ? mbToBytes(sizeMb) : undefined;
 
   // Références de traçabilité ({code}), une par destinataire (clé "" sans
   // destinataire). Tirées une fois puis stables : la même copie garde sa
@@ -368,12 +381,12 @@ export default function CoreProduct({
     return ref;
   };
   // Mode « signer » : un seul destinataire, et seulement avec l'option filigrane.
-  const recipients = sign ? (withWatermark ? cleanRecipients(fields).slice(0, 1) : []) : cleanRecipients(fields);
+  const recipients = cfg.optionalWatermark ? (withWatermark ? cleanRecipients(fields).slice(0, 1) : []) : cleanRecipients(fields);
   const tokens = t.stampCard.tokens;
   const trace = custom && hasToken(customText, "code", tokens);
   /** Texte réellement apposé pour un destinataire (ou sans destinataire). */
   const stampFor = (recipient?: string) =>
-    sign
+    cfg.optionalWatermark
       ? // Texte vide : pas de filigrane (le moteur ne charge même pas la police).
         withWatermark && (hasVisibleText(purpose) || recipient)
         ? composeSimple({ purpose, recipient, date: today() }, { sep: t.stampSep, onDate: t.onDate })
@@ -391,10 +404,15 @@ export default function CoreProduct({
   // du réglage commun ; son placement, propre à chaque document, est dans docStamp.
   const stamp = sign
     ? `${stampKey(previewText, liveStyle)}\0${sizeMb}\0${sigReady?.key ?? ""}\0${initials ? "i" : ""}`
-    : `${stampKey(previewText, liveStyle)}\0${sizeMb}`;
+    : dossier
+      ? // Ni la taille cible, ni l'ordre des pages : ils ne changent que l'assemblage.
+        stampKey(previewText, liveStyle)
+      : `${stampKey(previewText, liveStyle)}\0${sizeMb}`;
   // Le formulaire simple porte toujours la date : il faut un motif ou un destinataire.
-  // Mode « signer » : il faut une signature.
-  const meaningful = sign
+  // Mode « signer » : il faut une signature. Mode « dossier » : rien d'autre que des documents.
+  const meaningful = dossier
+    ? true
+    : sign
     ? !!sigReady
     : custom
       ? hasVisibleText(fillTemplate(customText, { date: "" }, tokens))
@@ -411,7 +429,9 @@ export default function CoreProduct({
           forcePdf: true,
           previewPages: signPreviewPages,
         }
-      : { masks: doc.masks, maxBytes: budget };
+      : dossier
+        ? dossierApi.renderOptions(doc)
+        : { masks: doc.masks, maxBytes: budget };
   const render = sign ? renderFile : watermarkFile;
   // Trié : réordonner la liste ne change pas la clé, donc ne relance pas
   // le filigrane. L'ordre n'intervient qu'au moment du PDF unique.
@@ -422,7 +442,7 @@ export default function CoreProduct({
   // Change à chaque déverrouillage soumis ou masque modifié : relance le
   // traitement sans toucher aux documents déjà prêts (protégés par stampedWith).
   const unlockKey = docs
-    .map((d) => `${d.id}:${d.tries ?? 0}:${masksKey(d.masks)}${sign ? `:${d.overlays ? overlaysKey(d.overlays) || "-" : ""}` : ""}`)
+    .map((d) => `${d.id}:${d.tries ?? 0}:${masksKey(d.masks)}${sign ? `:${d.overlays ? overlaysKey(d.overlays) || "-" : ""}` : ""}${d.edits ? `:e${editsKey(d.edits)}` : ""}`)
     .sort()
     .join("|");
   // Réglage courant, lu à la fin d'un assemblage long (si le texte a changé
@@ -677,6 +697,8 @@ export default function CoreProduct({
   const isReady = (d: Doc) => isFresh(d, stamp) && (!sign || isPlaced(d));
   const ready = docs.filter(isReady);
   const processing = docs.some((d) => d.status === "processing");
+  // Mode « dossier » : pages, sections, fichier à produire (inactif dans les autres modes).
+  const dossierApi = useDossier({ enabled: dossier, embed, docs, setDocs, t, stampRef, isReady });
 
   // Un lot volumineux ne doit pas repousser les étapes 2 et 3 hors de l'écran :
   // au-delà de LIST_COMPACT_FROM, la liste devient une zone à hauteur bornée,
@@ -756,7 +778,7 @@ export default function CoreProduct({
   // d'un assemblage long : la signature déplacée entre-temps rend le fichier périmé.
   const bundleKey = `${stamp}\0${format}\0${recipients.map((r) => `${r}:${trace ? refFor(r) : ""}`).join("|")}\0${ready
     .map((d) => `${d.id}\0${docStamp(d, "")}`)
-    .join("|")}`;
+    .join("|")}${dossier ? `\0${dossierApi.planKey}` : ""}`;
   const bundleKeyRef = useRef(bundleKey);
   bundleKeyRef.current = bundleKey;
   const [bundleProgress, setBundleProgress] = useState("");
@@ -822,7 +844,9 @@ export default function CoreProduct({
     setBundling(true);
     bundlingRef.current = true;
     setBundleError(null);
-    const zipName = sign ? ts.zipName : t.zipName;
+    const zipName = dossier ? dossierApi.safeName : sign ? ts.zipName : t.zipName;
+    // Mode « dossier » : la taille demandée n'a pas pu être tenue au plancher de lisibilité.
+    let overTarget = false;
     const suffix = sign ? ts.suffix : undefined;
     let step: "export" | "encrypt" = "export";
     const targets: (string | undefined)[] = recipients.length ? recipients : [undefined];
@@ -830,6 +854,26 @@ export default function CoreProduct({
     const entries: { name: string; bytes: Uint8Array; folder?: string }[] = [];
     let single: { name: string; bytes: Uint8Array; type: string } | null = null;
     try {
+      // Mode « dossier » : les pages gardées, dans leur ordre, en un PDF ou
+      // plusieurs (lib/dossier-build.ts) ; sous taille cible, second rendu
+      // des documents concernés avec un budget par page.
+      if (dossier) {
+        const built = await dossierApi.build(
+          (doc, options) => render(doc.file, previewText, undefined, doc.password, undefined, liveStyle, options),
+          (n, total) => setBundleProgress(`${t.processingGeneric} ${n} / ${total}`)
+        );
+        overTarget = built.some((f) => f.over);
+        for (const f of built) {
+          let bytes = f.bytes;
+          if (filePassword) {
+            step = "encrypt";
+            bytes = await encryptPdf(bytes, filePassword);
+            step = "export";
+          }
+          if (built.length === 1) single = { name: `${f.name}.pdf`, bytes, type: "application/pdf" };
+          else entries.push({ name: `${f.name}.pdf`, bytes });
+        }
+      } else
       for (const [i, recipient] of targets.entries()) {
         if (recipient && targets.length > 1) setBundleProgress(t.download.preparing(i + 1, targets.length, recipient));
         const text = stampFor(recipient);
@@ -892,7 +936,7 @@ export default function CoreProduct({
       lastFileUrl.current = url;
       // Mode « signer » : empreinte de chaque fichier produit (dans le ZIP, chaque PDF).
       let fingerprints: FingerprintItem[] | undefined;
-      if (sign) {
+      if (cfg.fingerprint) {
         // Noms tels qu'écrits dans le ZIP (doublons renommés) : une empreinte par fichier, sans ambiguïté.
         const paths = zipPaths(entries);
         const files = single ? [{ name: out.name, bytes: out.bytes }] : entries.map((e, i) => ({ name: paths[i], bytes: e.bytes }));
@@ -900,6 +944,7 @@ export default function CoreProduct({
       }
       setDone({
         fingerprints,
+        notice: overTarget ? t.dossier.size.unreachable(t.size.mb(dossierApi.sizeMb)) : undefined,
         file: { url, name: out.name },
         files: single ? [out.name] : zipPaths(entries).map((path) => `${out.name} › ${path}`),
         copies: targets.length,
@@ -938,12 +983,28 @@ export default function CoreProduct({
   // téléchargement : sinon le lot partirait sans lui, sans le dire.
   const unplaced = sign && docs.some(needsPlacement);
   const placing = sign && meaningful && docs.some((d) => d.overlays === undefined && !d.error && !needsPassword(d));
-  const canDownload = ready.length > 0 && !bundling && !processing && tool !== "hide" && !unplaced && !placing;
+  const canDownload =
+    ready.length > 0 && !bundling && !processing && tool !== "hide" && !unplaced && !placing && (!dossier || (dossierApi.keptPages > 0 && !dossierApi.waiting));
   const downloadLabel = bundling
     ? bundleProgress || (filePassword ? t.filePassword.encrypting : t.processingGeneric)
+    : dossier
+      ? dossierApi.files.length > 1
+        ? t.dossier.downloadZip
+        : t.dossier.download
     : recipients.length > 1
       ? t.download.copies(recipients.length)
       : t.download.one;
+  // Mode « dossier » : pages et fichiers produits, masques, verrou.
+  const dossierSummary =
+    ready.length > 0 && dossierApi.keptPages === 0
+      ? t.dossier.needPages
+      : [
+          dossierApi.files.length > 1
+            ? t.dossier.summaryMany(dossierApi.keptPages, dossierApi.files.length)
+            : t.dossier.summaryOne(dossierApi.keptPages),
+          t.summary.hidden(hiddenCount),
+          filePassword ? t.summary.locked : t.summary.notLocked,
+        ].join(" · ");
   const downloadHint = !docs.length
     ? t.needDoc
     : !meaningful
@@ -952,7 +1013,9 @@ export default function CoreProduct({
         : t.needText
       : unplaced
         ? ts.needPlacement
-        : summary;
+        : dossier
+          ? dossierSummary
+          : summary;
 
   const startOver = () => {
     clearAll();
@@ -968,6 +1031,10 @@ export default function CoreProduct({
       setSignature(null);
       setPadKey((k) => k + 1);
       setInitials(false);
+      setWithWatermark(false);
+    }
+    if (dossier) {
+      dossierApi.startOver();
       setWithWatermark(false);
     }
     window.scrollTo({ top: 0 });
@@ -1142,10 +1209,18 @@ export default function CoreProduct({
                       dragging={drag?.id === doc.id}
                       dropEdge={dropEdgeFor(index)}
                       placeMissing={sign && needsPlacement(doc)}
+                      noPages={dossier && dossierApi.emptied.has(doc.id)}
+                      onRestore={dossier ? dossierApi.restore : undefined}
                     />
                   );
                 })}
               </ul>
+            )}
+            {/* Mode « dossier » : total des pages gardées, tous documents confondus. */}
+            {dossier && dossierApi.total > 0 && (
+              <p data-testid="dossier-total" className="mt-3 text-sm font-medium text-encre-2">
+                {t.dossier.grid.total(dossierApi.total)}
+              </p>
             )}
           </section>
 
@@ -1155,7 +1230,9 @@ export default function CoreProduct({
             </StepLabel>
             {sign && !meaningful && <p className="mt-1 text-sm text-encre-2 max-lg:mb-3 lg:ms-10">{ts.pad.empty}</p>}
             <div className="lg:mt-4">
-              {sign ? (
+              {dossier ? (
+                <PageGrid d={dossierApi} hasDocs={docs.length > 0} />
+              ) : sign ? (
                 <SignaturePad key={padKey} onChange={setSignature} prefill={embed} />
               ) : (
               <StampDetails
@@ -1238,7 +1315,7 @@ export default function CoreProduct({
           )}
 
           <div>
-            {sign && (docs.length === 0 || !meaningful) ? (
+            {cfg.plainEmpty && (docs.length === 0 || !meaningful) ? (
               <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 rounded-2xl border border-trait bg-feuille px-6 text-center text-encre-2">
                 <p>{docs.length === 0 ? t.emptyStart : ts.pad.empty}</p>
               </div>
@@ -1299,7 +1376,7 @@ export default function CoreProduct({
                 {/* Pas d'aria-live ici : la région sr-only en fin de composant
                     annonce déjà le traitement, sans répéter chaque page. */}
                 {shown
-                  ? (sign ? ts : t).processingDoc(shown.file.name, shown.progress)
+                  ? cfg.processingDoc(shown.file.name, shown.progress)
                   : t.processingGeneric}
               </div>
             )}
@@ -1317,8 +1394,8 @@ export default function CoreProduct({
                   <HideIcon className="h-4 w-4 shrink-0" />
                   {hiddenCount ? t.tools.hidden(hiddenCount) : t.tools.hide}
                 </button>
-                {/* Mode « signer » : l'apparence ne concerne que le filigrane optionnel. */}
-                {(!sign || withWatermark) && (
+                {/* Modes « signer » et « dossier » : l'apparence ne concerne que le filigrane optionnel. */}
+                {(!cfg.optionalWatermark || withWatermark) && (
                 <button
                   type="button"
                   onClick={() => setTool(tool === "adjust" ? null : "adjust")}
@@ -1332,14 +1409,15 @@ export default function CoreProduct({
                 </button>
                 )}
               </div>
-              {tool === "adjust" && (!sign || withWatermark) && (
+              {tool === "adjust" && (!cfg.optionalWatermark || withWatermark) && (
                 <WatermarkAppearance style={style} sample={previewText || t.style.sample} onChange={updateStyle} />
               )}
             </div>
           )}
 
-          {sign && docs.length > 0 && meaningful && (
+          {cfg.optionalWatermark && docs.length > 0 && meaningful && (
             <div className="flex flex-col gap-3 rounded-2xl border border-trait bg-feuille p-4">
+              {sign && (
               <label className="flex cursor-pointer items-start gap-3">
                 <input
                   type="checkbox"
@@ -1349,6 +1427,7 @@ export default function CoreProduct({
                 />
                 <span className="font-semibold">{ts.place.initials}</span>
               </label>
+              )}
               <label className="flex cursor-pointer items-start gap-3">
                 <input
                   type="checkbox"
@@ -1395,7 +1474,9 @@ export default function CoreProduct({
                 {t.send.title} <span className="font-normal text-encre-2">{t.send.optional}</span>
               </h3>
               <SendOptions
-                multiDoc={ready.length > 1}
+                multiDoc={!dossier && ready.length > 1}
+                before={dossier ? <DossierOutput d={dossierApi} /> : undefined}
+                sizePanel={dossier ? <SizePanel d={dossierApi} onPages={() => goTo(2)} /> : undefined}
                 multiRecipient={recipients.length > 1}
                 format={format}
                 onFormat={setFormat}
@@ -1413,7 +1494,7 @@ export default function CoreProduct({
                     isWords={isWords && !ownPassword}
                   />
                 }
-                zipLocked={ready.length > 1 && format === "zip" && !!filePassword}
+                zipLocked={(dossier ? dossierApi.files.length > 1 : ready.length > 1 && format === "zip") && !!filePassword}
                 sizeMb={sizeMb}
                 onSize={updateSize}
                 estimate={estimate}
@@ -1449,14 +1530,14 @@ export default function CoreProduct({
               info={done}
               onClose={() => setDone(null)}
               onAnother={startOver}
-              anotherLabel={sign ? ts.another : undefined}
+              anotherLabel={cfg.another}
             />
           )}
         </section>
       </div>
 
       <p className="sr-only" role="status" aria-live="polite">
-        {processing ? (sign ? ts : t).srProcessing : ready.length > 0 ? t.srReady(ready.length) : ""}
+        {processing ? cfg.srProcessing : ready.length > 0 ? t.srReady(ready.length) : ""}
       </p>
 
       {!embed && (
@@ -1466,7 +1547,7 @@ export default function CoreProduct({
         revealed={step}
         hideOnPhone={step > 1}
         reveal={(i) => setStep((i + 1) as Step)}
-        strings={sign ? ts.tour : undefined}
+        strings={cfg.tour}
       />
       )}
 
@@ -1480,7 +1561,7 @@ export default function CoreProduct({
               disabled={!docs.length}
               className="w-full rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
             >
-              {sign ? ts.next.signature : t.next.details}
+              {cfg.next[0]}
             </button>
           )}
           {step === 2 && (
@@ -1491,7 +1572,7 @@ export default function CoreProduct({
                 disabled={!meaningful}
                 className="w-full rounded-xl bg-sceau px-6 py-3.5 font-semibold text-white transition-colors hover:bg-sceau-fonce disabled:opacity-40"
               >
-                {sign ? ts.next.place : t.next.preview}
+                {cfg.next[1]}
               </button>
               {!meaningful && <p className="text-center text-sm text-encre-2">{sign ? ts.pad.empty : t.needText}</p>}
             </>

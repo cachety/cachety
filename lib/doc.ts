@@ -5,6 +5,7 @@ import { outputName } from "@/lib/files";
 import type { ErrorKey, Strings } from "@/lib/i18n";
 import { masksKey, type PageMasks } from "@/lib/masks";
 import { clampToPage, overlaysKey, type OverlayRect, type PageOverlays } from "@/lib/overlays";
+import { editsKey, rotationsInKey, type PageEdits } from "@/lib/pages";
 import type { WatermarkResult } from "@/lib/watermark";
 import type { PageSuggestions } from "@/lib/suggestions";
 
@@ -30,6 +31,8 @@ export type Doc = {
   failedWith?: string;
   /** Zones à noircir avant le filigrane (caviardage), propres à ce document. */
   masks?: PageMasks;
+  /** Mode « dossier » : rotation, recadrage et nettoyage de ses pages (dérivés de la liste des pages, lib/pages.ts). */
+  edits?: PageEdits;
   /**
    * Mode « signer » : placement de la signature, propre à ce document.
    * Absent : jamais placée (la file la pose à sa place par défaut). Présent
@@ -112,10 +115,28 @@ export function refitOverlays(overlays: PageOverlays | undefined, oldAspect: num
  * et un PDF non signé serait téléchargeable.
  */
 export const docStamp = (d: Doc, stamp: string) => {
+  // Mode « dossier » : les retouches de ses pages (rotation, recadrage,
+  // nettoyage) font partie du réglage du document. L'ordre des pages et les
+  // pages retirées n'y sont pas : ils ne changent que l'assemblage.
+  const edits = editsKey(d.edits);
+  if (edits) stamp = `${stamp}\0${EDITS_PREFIX}${edits}`;
   const masks = masksKey(d.masks);
   const own = masks ? `${stamp}\0${masks}` : stamp;
   return d.overlays === undefined ? own : `${own}\0sig:${overlaysKey(d.overlays)}`;
 };
+
+/** Dans un réglage de document : ce qui suit est la clé de ses retouches de pages (editsKey). */
+const EDITS_PREFIX = "ed:";
+
+/**
+ * Mode « dossier » : rotation (0, 90, 180, 270) que montre le rendu actuel
+ * de la page, lue dans le réglage avec lequel il a été fait. Tant qu'un
+ * nouveau rendu est en cours, la vignette est encore celle d'avant.
+ */
+export function renderedRotation(d: Doc, page: number): number {
+  const part = d.stampedWith?.split("\0").find((s) => s.startsWith(EDITS_PREFIX));
+  return part ? (rotationsInKey(part.slice(EDITS_PREFIX.length))[page] ?? 0) : 0;
+}
 
 /** Prêt ET filigrané avec le réglage courant (texte, apparence ou masques modifiés : résultat périmé). */
 export const isFresh = (d: Doc, stamp: string) =>

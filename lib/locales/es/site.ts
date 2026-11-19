@@ -7,6 +7,7 @@ export const SITE_ES: SiteCopy = {
   nav: {
     tool: "Marca de agua",
     sign: "Firmar",
+    dossier: "Dosier",
     about: "¿Por qué una marca de agua?",
     guides: "Guías",
     privacy: "Privacidad",
@@ -191,6 +192,51 @@ export const SITE_ES: SiteCopy = {
       cta: "Poner una marca de agua",
     },
     backToTop: "Firmar un documento",
+  },
+  // Draft translation from the English wording, awaiting native review (ROADMAP.md, backlog: Native review).
+  dossier: {
+    hero: {
+      title: "Un solo archivo para enviar, sin subir nada",
+      lead: "DNI, nóminas, declaración de la renta, la foto de un formulario en papel: ordena las páginas, gira las que estén de lado y consigue un solo PDF por debajo del tamaño que te piden.",
+      pills: ["Gratis", "Sin cuenta", "Nada se sube", "Hecho en Francia"],
+    },
+    howTitle: "Cómo funciona",
+    how: [
+      { title: "Suelta tus documentos", body: "PDF y fotos, aunque estén hechas con el móvil: DNI, nóminas, declaración de la renta. Varios a la vez." },
+      { title: "Ordena las páginas", body: "Arrástralas hasta dejarlas en el orden que quieras, gira las que estén de lado y quita las que no necesites." },
+      { title: "Elige el tamaño y descarga", body: "Un solo PDF, o uno por sección, por debajo del tamaño que pide la web. Se guarda en tu dispositivo." },
+    ],
+    airplaneTitle: "Compruébalo tú mismo: la prueba del modo avión",
+    airplaneBody:
+      "Abre esta página y luego desconecta internet (modo avión). Suelta tus documentos y únelos: Cachety sigue funcionando. Es la prueba de que nada pasa por internet.",
+    bigger: {
+      title: "Por qué el archivo puede pesar más que tus originales",
+      body: "Cachety no copia tus archivos: cada página se reconstruye como imagen. Eso es lo que elimina el texto oculto, los metadatos, los archivos adjuntos, los enlaces y la ubicación GPS de las fotos. A cambio, un PDF que solo tenía texto puede pesar más, y su texto ya no se puede seleccionar. Si una web pone un límite, elige un tamaño máximo: Cachety reduce las páginas para que quepan y te avisa cuando dejarían de leerse.",
+    },
+    faqTitle: "Preguntas frecuentes",
+    faq: [
+      {
+        q: "¿Se suben mis documentos a algún sitio?",
+        a: "No. El sitio no tiene ningún servidor que pueda recibirlos, y la página prohíbe a tu navegador conectarse a cualquier otra web. La prueba del modo avión lo demuestra en diez segundos.",
+      },
+      {
+        q: "¿Por qué mi archivo a veces pesa más?",
+        a: "Cada página se reconstruye a partir de sus píxeles. Así se eliminan el texto oculto, los metadatos y la ubicación GPS de las fotos, pero un PDF que solo tenía texto puede pesar más. Elige un tamaño máximo: Cachety reduce las páginas para que quepan.",
+      },
+      {
+        q: "¿Se puede seguir seleccionando el texto?",
+        a: "No, las páginas son imágenes. Tus originales se quedan intactos en tu dispositivo.",
+      },
+      {
+        q: "¿Puedo añadir un archivo de Word o Excel?",
+        a: "Directamente, no. Guárdalo antes como PDF desde Word, Excel o tu móvil (Imprimir y luego Guardar como PDF).",
+      },
+      {
+        q: "¿Funciona en mi móvil?",
+        a: "Sí. Haz fotos de tus papeles, enderézalas y ordena las páginas con el dedo.",
+      },
+    ],
+    backToTop: "Preparar mi dosier",
   },
   privacy: {
     title: "Privacidad y seguridad",

@@ -3,7 +3,7 @@
 Status: **built** (2026-10). Code: `app/embed/[lang]/page.tsx`, `components/EmbedApp.tsx`,
 `app/[lang]/partners/page.tsx`, `components/EmbedBuilder.tsx`, `lib/partners.ts`, `partners.json`,
 `scripts/gen-sw.mjs` (headers). Tests: `lib/partners.test.ts`, `e2e/embed.e2e.ts`,
-`e2e/security.static.test.ts`.
+`e2e/security.static.test.ts`, and for the dossier tool `e2e/dossier.e2e.ts`.
 
 Partner websites (letting agencies, HR platforms, associations…) can show the
 Cachety tool inside their own pages, in an iframe served by cachety.com. The
@@ -17,7 +17,7 @@ and neither can we.
 | Who can embed | **Approved partners only**: an allow-list of domains in `frame-ancestors`. |
 | How to join | Partner opens a **GitHub issue** (template); approved domains live in a file in the repo (`partners.json`), reviewed and deployed with the site. |
 | Customisation | **Pre-filled purpose**, **pre-filled recipient** (both still editable by the visitor), **accent colour**. Cachety's name and a "Runs on cachety.com" link always stay visible. |
-| Tools | **Watermark** (default, so codes pasted before stay unchanged), **sign**, or **both** with a switch. Signing takes a **pre-filled place and note** under the signature. |
+| Tools | **Watermark** (default, so codes pasted before stay unchanged), **sign**, **dossier**, or several with a switch. Signing takes a **pre-filled place and note** under the signature. Dossier takes a **pre-selected size** and **section names** (2026-11). |
 | Scope | **Full tool**: documents, details, preview, hide, adjust, lock, download (and, for signing, the signature, its placement, initials and the optional watermark). Without the site menu, landing sections and footer. |
 | Terms | **Free**, with a gentle donation suggestion on the partner page. |
 | Height | **Auto-resize**: the frame sends its height (a number) to the parent page, nothing else. |
@@ -55,12 +55,27 @@ and neither can we.
 | none, or `tools=watermark` | The watermark tool, as before. |
 | `tools=sign` | The sign tool only. |
 | `tools=watermark,sign` | Both, with a switch; the first listed opens first. |
+| `tools=dossier` | The dossier tool only: pages in order, one PDF or one per section, under a size. |
+| `tools=watermark,sign,dossier` | The three, with a switch (any combination works, in the order listed). |
 
 - Unknown values are ignored; if nothing valid is left, the watermark tool
   shows (an old or mistyped code never breaks).
 - Signing reads `place` and `note` (80 characters each), shown under the
   signature and editable by the visitor. A pre-filled `for` or `to` also
   ticks "add a watermark" on the signed copy, since it only has a use there.
+- The dossier tool reads two more values, both editable by the visitor:
+  - `size`: the maximum size per file, in MB. A plain number from 0.5 to 50,
+    rounded to the half (`size=5`, `size=2.5`). Anything else is ignored: no
+    size is pre-selected.
+  - `sections`: section names separated by commas
+    (`sections=ID,Payslips,Tax%20notice`), each cut to 40 characters, at most
+    10, empty names and duplicates dropped. The sections are created in that
+    order, "One PDF per section" is selected, the pages land in the first
+    section and the visitor moves them. The names are text supplied by a third
+    party: React escapes them on screen, and they only become file names
+    after `safeFileName` and `zipPaths` (no path separator can get through).
+  A pre-filled `for` or `to` ticks "add a watermark", as for signing.
+  Example: `https://cachety.com/embed/en#tools=dossier&size=5&sections=ID,Payslips,Tax%20notice`.
 - One tool is mounted at a time (both register page-wide paste and drop
   handlers). Switching with documents loaded shows an inline warning first:
   the documents of the tool being left are dropped. No `confirm()`, which
@@ -104,7 +119,8 @@ and neither can we.
 
 - What the embed is and why it's private, in plain words.
 - Copy-paste code with the options (tools, language, purpose, recipient,
-  accent, and for signing: place and note) and a live preview.
+  accent, for signing: place and note, for the dossier: size and sections)
+  and a live preview. The builder writes only values `readPrefill` accepts.
 - Reusable wording, for example: "This tool runs on cachety.com. Your
   documents never leave your device: neither this site nor Cachety can see
   them."

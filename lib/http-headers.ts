@@ -50,16 +50,30 @@ export function headerRules(text: string): { pattern: string; headers: [string, 
 }
 
 /**
+ * Motif d'une règle en expression régulière, comme Cloudflare Pages : « * »
+ * correspond à n'importe quelle suite, « :nom » (deux-points puis une lettre,
+ * puis lettres, chiffres ou « _ ») à un segment de chemin, jamais à un « / ».
+ * « /fr/:page » vaut donc pour /fr/sign, pas pour /fr ni /fr/guides/x.
+ */
+export function rulePattern(pattern: string): RegExp {
+  const source = pattern
+    .split("*")
+    .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/:[A-Za-z]\w*/g, "[^/]+"))
+    .join(".*");
+  return new RegExp(`^${source}$`);
+}
+
+/**
  * En-têtes qu'appliquerait Cloudflare Pages à `path` : toutes les règles qui
- * correspondent (chemin exact, ou « * » pour n'importe quelle suite), un
- * même en-tête posé par deux règles est joint par une virgule, et « ! Nom »
- * retire un en-tête posé par une règle précédente.
+ * correspondent (chemin exact, « * » pour n'importe quelle suite, ou
+ * « :nom » pour un seul segment de chemin, sans « / »), un même en-tête posé
+ * par deux règles est joint par une virgule, et « ! Nom » retire un en-tête
+ * posé par une règle précédente.
  */
 export function headersFor(text: string, path: string): Record<string, string> {
   const out: Record<string, string> = {};
   for (const { pattern, headers } of headerRules(text)) {
-    const re = new RegExp(`^${pattern.split("*").map((p) => p.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*")}$`);
-    if (!re.test(path)) continue;
+    if (!rulePattern(pattern).test(path)) continue;
     for (const [name, value] of headers) {
       if (name.startsWith("!")) delete out[name.slice(1)];
       else out[name] = name in out ? `${out[name]}, ${value}` : value;

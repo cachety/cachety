@@ -2,6 +2,8 @@ import { describe, expect, test } from "bun:test";
 import {
   ABOUT_META,
   COMPARE_META,
+  DOSSIER_ALTERNATES,
+  DOSSIER_META,
   GUIDES_META,
   LANG_CODES,
   LANGUAGE_ALTERNATES,
@@ -42,7 +44,7 @@ describe("site-meta (liens partageables par langue)", () => {
   });
 
   test("titres et descriptions des pages : non vides, longueurs lisibles par les moteurs", () => {
-    const pages = { ABOUT_META, PRIVACY_META, GUIDES_META, COMPARE_META, SIGN_META };
+    const pages = { ABOUT_META, PRIVACY_META, GUIDES_META, COMPARE_META, SIGN_META, DOSSIER_META };
     for (const [name, meta] of Object.entries(pages)) {
       const titles = LANG_CODES.map((code) => meta[code].title);
       expect(new Set(titles).size, name).toBe(LANG_CODES.length);
@@ -54,6 +56,24 @@ describe("site-meta (liens partageables par langue)", () => {
         expect(description.length, `${name}.${code}`).toBeLessThanOrEqual(160);
       }
     }
+  });
+
+  test("page Dossier : /dossier détecte la langue, /<code>/dossier l'impose", () => {
+    expect(DOSSIER_ALTERNATES["x-default"]).toBe("/dossier");
+    for (const code of LANG_CODES) expect(DOSSIER_ALTERNATES[code]).toBe(`/${code}/dossier`);
+    expect(Object.keys(DOSSIER_ALTERNATES)).toHaveLength(LANG_CODES.length + 1);
+  });
+
+  // docs/prd-dossier.md §4.2 et §4.6 : le fichier peut grossir, donc jamais
+  // « compresser » comme promesse ; et aucun lien suggéré avec DossierFacile.
+  test("page Dossier : ni promesse de compression, ni nom du service de l'État", () => {
+    for (const code of LANG_CODES) {
+      const { title, description } = DOSSIER_META[code];
+      expect(`${title} ${description}`, code).not.toMatch(/dossier\s?facile/i);
+      expect(`${title} ${description}`, code).not.toMatch(/lossless|sans perte|compress/i);
+    }
+    expect(DOSSIER_META.fr.title).toBe("Assembler ses documents en un PDF léger, sans rien envoyer");
+    expect(DOSSIER_META.en.title).toBe("Combine documents into one small PDF, without uploading");
   });
 
   test("page Signer : jamais de promesse de signature qualifiée ou de certificat", () => {
