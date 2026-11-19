@@ -5,14 +5,17 @@
 // Só texto puro: sem links, sem HTML, sem markdown. Nomes de exemplo inventados.
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// Estes guias descrevem o recurso `suggested-areas` (docs/prd-suggested-areas.md).
-// Publicar junto com ele, não antes. Os botões novos (lista de sugestões,
-// ocultar todas) são descritos sem aspas, porque ainda não têm nome na
-// interface em português: conferir com lib/locales/pt/strings.ts na hora.
+// Estes guias descrevem o recurso `suggested-areas` (docs/prd-suggested-areas.md)
+// como foi entregue. Os rótulos entre aspas (“Revisar”, “Ocultar todos”,
+// “Este não”, “Concluir”, “Ocultar algo”, “Número da conta (IBAN)”) foram
+// conferidos com lib/suggest-copy/pt.ts e lib/locales/pt/strings.ts, e a lista
+// de números com lib/sensitive.ts: manter tudo em sincronia.
+// O que se diz do débito em conta vem da Resolução CMN nº 4.790/2020 (arts. 3º,
+// 6º e 12), lida em normativos.bcb.gov.br em 19/11/2026.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_PT: Guide[] = [
   // ------------------------------------------------------------------
@@ -22,9 +25,9 @@ export const HIDE_GUIDES_PT: Guide[] = [
     title: "Como encontrar e ocultar números de conta num PDF antes de enviar",
     metaTitle: "Encontrar e ocultar números de conta num PDF, grátis",
     description:
-      "O Cachety encontra IBANs e números de cartão no seu PDF e propõe ocultá-los, no seu aparelho. Nada é enviado e nada é ocultado sem você decidir.",
+      "O Cachety encontra CPF, números de cartão e IBANs no seu PDF e propõe ocultá-los, no seu aparelho. Nada é enviado e nada é ocultado sem você decidir.",
     intro:
-      "Um holerite, uma conta de luz ou um extrato bancário costuma trazer mais do que a pessoa que pediu precisa ver, como um número de conta ou um número de cartão. O Cachety aponta esses números na página e deixa você ocultá-los com um toque, sem que o arquivo saia do seu aparelho.",
+      "Um holerite, uma conta de luz ou um extrato bancário costuma trazer mais do que a pessoa que pediu precisa ver, como o CPF, um número de conta ou um número de cartão. O Cachety aponta na página os números cujo formato ele reconhece e deixa você ocultá-los com um toque, sem que o arquivo saia do seu aparelho.",
     example: "Comprovação de renda, Imobiliária Bela Vista, 18/11/2026",
     body: [
       { type: "h2", text: "Os números que você envia sem perceber" },
@@ -46,7 +49,9 @@ export const HIDE_GUIDES_PT: Guide[] = [
         items: [
           "Números de conta bancária escritos como IBAN, de qualquer país.",
           "Números de cartão de pagamento das principais bandeiras.",
-          "Números da previdência social da França, números fiscais franceses e referências de avisos de imposto franceses.",
+          "O CPF, quando vem escrito com os pontos e o traço de costume ou com a palavra CPF ao lado.",
+          "Números da seguridade social da França, números fiscais franceses e referências de avisos de imposto franceses.",
+          "Números de identidade e números fiscais de outros países: a identificação fiscal alemã (Steuer-ID), o DNI e o NIE espanhóis, o BSN holandês, o número nacional belga, o NIF português, o código fiscal italiano, o documento de identidade de residente chinês, o My Number japonês, o código nacional iraniano e o NIK indonésio.",
         ],
       },
       {
@@ -59,14 +64,19 @@ export const HIDE_GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com no navegador, no computador ou no celular. Não precisa criar conta.",
           "Adicione seu PDF. Diga para que serve a cópia e, depois, quem vai receber.",
-          "Se o Cachety encontrar alguma coisa, uma mensagem acima da prévia diz quantos números ele achou. Abra a lista de sugestões.",
-          "Cada sugestão aparece contornada na página e listada com o nome, por exemplo número de conta bancária (IBAN). Toque nas que você quer ocultar, ou escolha ocultar todas. Dá para desfazer cada uma.",
-          "Confira você mesmo todas as páginas. Desenhe um retângulo sobre qualquer outra coisa que queira ocultar e baixe sua cópia.",
+          "Se o Cachety encontrar alguma coisa, uma mensagem acima da prévia diz quantos números ele achou. Escolha “Revisar”.",
+          "Cada sugestão aparece contornada na página e listada com o nome, por exemplo “Número da conta (IBAN)”. Toque nas que você quer ocultar, ou escolha “Ocultar todos”. Dá para desfazer cada uma, e deixar de lado uma sugestão errada com “Este não”.",
+          "Confira você mesmo todas as páginas e desenhe um retângulo sobre qualquer outra coisa que queira ocultar. Depois escolha “Concluir”: é só nesse momento que as áreas são removidas do arquivo.",
+          "Confira a prévia e baixe sua cópia.",
         ],
       },
       {
         type: "tip",
-        text: "Nada é ocultado sem você mandar. Se o destinatário pediu seus dados bancários, deixe o IBAN visível: é justamente o que ele precisa.",
+        text: "Nada é ocultado sem você mandar. Se o destinatário pediu seus dados bancários, deixe o IBAN visível: é justamente o que ele precisa. O mesmo vale para o CPF, quando quem recebe precisa dele para identificar você, e para o número fiscal e a referência de um aviso de imposto francês, que permitem ao destinatário conferir se o aviso é autêntico.",
+      },
+      {
+        type: "p",
+        text: "As mesmas sugestões aparecem nas outras duas ferramentas do Cachety: quando você assina um PDF e quando reúne vários documentos num único arquivo com o Dossier.",
       },
       { type: "h2", text: "O que ele não consegue encontrar" },
       {
@@ -74,7 +84,8 @@ export const HIDE_GUIDES_PT: Guide[] = [
         items: [
           "Nada que esteja numa foto ou num documento escaneado. Numa imagem não há texto para ler, então não há sugestões: desenhe os retângulos você mesmo.",
           "Códigos de barras e QR Codes. Eles podem conter as mesmas informações do texto impresso ao lado.",
-          "Números em formatos que o Cachety não confere, como um número de cliente ou de contrato, o número da agência e da conta, o número do passaporte ou da CNH.",
+          "Números em formatos que o Cachety não confere, como o RG, o CNPJ, o número da agência e da conta, uma chave Pix aleatória, o número do passaporte ou da CNH, ou um número de cliente ou de contrato.",
+          "Um número de cartão que já está parcialmente oculto, como os quatro últimos dígitos num comprovante. Não sobra nada para ocultar.",
           "Nomes, endereços, datas de nascimento e telefones. Em geral são o que o destinatário precisa, por isso não são sugeridos.",
         ],
       },
@@ -128,11 +139,11 @@ export const HIDE_GUIDES_PT: Guide[] = [
       { type: "h2", text: "O que alguém pode fazer com seus dados bancários" },
       {
         type: "p",
-        text: "Com o banco, a agência e a conta, ou com o seu IBAN, alguém pode depositar dinheiro na sua conta. É para isso que eles servem. Sozinhos, não bastam para sacar nem para fazer uma transferência: para isso é preciso o seu cartão, o seu acesso ao aplicativo do banco ou a sua aprovação.",
+        text: "Com o banco, a agência e a conta, com a sua chave Pix ou com o seu IBAN, alguém pode depositar dinheiro na sua conta. É para isso que eles servem. Sozinhos, não bastam para sacar nem para fazer uma transferência: para isso é preciso o seu cartão, o seu acesso ao aplicativo do banco ou a sua aprovação.",
       },
       {
         type: "p",
-        text: "O único risco real é um débito automático cadastrado no seu nome sem a sua autorização. Por isso, confira seus extratos e avise o banco na hora se aparecer um débito que você não reconhece. As regras e os prazos para contestar dependem do banco e do país.",
+        text: "O principal risco é um débito automático cadastrado no seu nome sem a sua autorização. No Brasil, as regras do Banco Central dizem que um débito em conta depende da autorização prévia do titular, e que o titular tem o direito de cancelar essa autorização. O banco também deve mostrar a você a lista das autorizações de débito em vigor na sua conta. Por isso, confira seus extratos e essa lista, e avise o banco na hora se aparecer um débito que você não reconhece.",
       },
       { type: "h2", text: "O perigo de verdade é o conjunto" },
       {
@@ -154,8 +165,8 @@ export const HIDE_GUIDES_PT: Guide[] = [
         items: [
           "Abra cachety.com no navegador. Não precisa instalar nada nem criar conta.",
           "Adicione seu PDF ou sua foto. Diga para que serve a cópia e, depois, quem vai receber.",
-          "Num PDF, o Cachety procura números de conta escritos como IBAN, o formato usado em transferências internacionais, e avisa se encontrar algum. Abra a lista de sugestões e toque na sugestão para ocultá-la.",
-          "A agência e a conta não são sugeridas, nem nada que esteja numa foto: toque em “Ocultar algo” e desenhe um retângulo sobre elas.",
+          "Num PDF, o Cachety procura números de conta escritos como IBAN, o formato usado em transferências internacionais, e avisa se encontrar algum. Escolha “Revisar”, toque na sugestão para ocultá-la e depois escolha “Concluir”.",
+          "A agência e a conta não são sugeridas, nem uma chave Pix de telefone, de e-mail ou aleatória, nem nada que esteja numa foto: toque em “Ocultar algo” e desenhe um retângulo sobre esses dados.",
           "Confira todas as páginas e baixe sua cópia.",
         ],
       },
@@ -172,7 +183,7 @@ export const HIDE_GUIDES_PT: Guide[] = [
     faq: [
       {
         q: "Alguém consegue tirar dinheiro da minha conta com meus dados bancários?",
-        a: "Não diretamente. A agência e a conta, ou o IBAN, servem para depositar dinheiro. O risco é um débito automático cadastrado sem a sua autorização. Confira seus extratos e avise o banco na hora se vir algo que não reconhece.",
+        a: "Não diretamente. A agência e a conta, a chave Pix ou o IBAN servem para depositar dinheiro. O principal risco é um débito automático cadastrado sem a sua autorização. Confira seus extratos e avise o banco na hora se vir algo que não reconhece.",
       },
       {
         q: "Devo ocultar a conta no holerite?",
@@ -184,7 +195,7 @@ export const HIDE_GUIDES_PT: Guide[] = [
       },
       {
         q: "O que faço se vir um débito automático que nunca autorizei?",
-        a: "Fale com o seu banco na hora, conteste o débito e peça a devolução do valor. As regras e os prazos dependem do banco e do país.",
+        a: "Fale com o seu banco na hora, conteste o débito, peça o cancelamento da autorização e a devolução do valor. Pelas regras do Banco Central, um débito em conta depende da sua autorização prévia. Se o atendimento não resolver, procure a ouvidoria do banco; você também pode registrar uma reclamação no Banco Central.",
       },
     ],
     updated: UPDATED,
@@ -205,11 +216,11 @@ export const HIDE_GUIDES_PT: Guide[] = [
       { type: "h2", text: "Por que uma foto do cartão é arriscada" },
       {
         type: "p",
-        text: "A frente do cartão mostra o número longo do cartão, a validade e o seu nome. O verso mostra o código de segurança (CVV), de três dígitos. Juntos, são tudo de que alguém precisa para comprar pela internet com o seu cartão. Um e-mail ou uma mensagem de chat pode ficar anos em várias caixas de entrada, bem longe do seu controle.",
+        text: "Na maioria dos cartões, a frente mostra o número longo do cartão, a validade e o seu nome, e o verso mostra o código de segurança (CVV), de três dígitos. Alguns cartões mais novos trazem tudo isso no verso. Juntos, são tudo de que alguém precisa para comprar pela internet com o seu cartão. Um e-mail ou uma mensagem de chat pode ficar anos em várias caixas de entrada, bem longe do seu controle.",
       },
       {
         type: "warning",
-        text: "Nunca envie o código de segurança (CVV): os três dígitos do verso do cartão, ou os quatro dígitos da frente num cartão American Express. Nenhuma empresa honesta precisa dele numa foto. As próprias regras de segurança do setor de cartões proíbem as empresas de guardá-lo depois que o pagamento foi concluído.",
+        text: "Nunca envie o código de segurança (CVV): os três dígitos do verso do cartão, ou os quatro dígitos da frente num cartão American Express. Nenhuma empresa honesta precisa dele numa foto. As próprias regras de segurança do setor de cartões proíbem as empresas de guardá-lo depois que o pagamento foi autorizado.",
       },
       { type: "h2", text: "Primeiro, peça outra forma" },
       {
@@ -220,7 +231,7 @@ export const HIDE_GUIDES_PT: Guide[] = [
       {
         type: "list",
         items: [
-          "Oculte os dígitos do meio do número do cartão. Deixe no máximo os quatro últimos, que é o que os comprovantes mostram.",
+          "Oculte os dígitos do meio do número do cartão. Deixe no máximo os quatro últimos, que é o que a sua via do comprovante mostra.",
           "Oculte o código de segurança (CVV). No verso do cartão, oculte toda a faixa em que ele está impresso.",
           "Oculte a validade, a menos que peçam por um bom motivo.",
           "Deixe seu nome e o logotipo do banco, para a cópia continuar provando que o cartão é seu.",
@@ -254,7 +265,7 @@ export const HIDE_GUIDES_PT: Guide[] = [
     faq: [
       {
         q: "Quais dígitos do número do cartão posso mostrar?",
-        a: "Os quatro últimos bastam para a maioria das conferências, e são os que as lojas imprimem nos comprovantes. As regras de segurança dos cartões permitem que uma empresa exiba, no máximo, os primeiros dígitos, que identificam o banco, e os quatro últimos. Oculte o resto.",
+        a: "Os quatro últimos bastam para a maioria das conferências, e são os que as lojas imprimem na sua via do comprovante. As regras de segurança dos cartões dizem que uma empresa normalmente não deve exibir mais que os primeiros dígitos, que identificam o banco, e os quatro últimos. Oculte o resto.",
       },
       {
         q: "É seguro mandar foto do cartão por e-mail ou WhatsApp?",
@@ -262,7 +273,7 @@ export const HIDE_GUIDES_PT: Guide[] = [
       },
       {
         q: "O hotel quer a frente e o verso. O que faço?",
-        a: "Pergunte por quê e proponha um link de pagamento seguro. Se mandar o verso, oculte o código de segurança e a faixa em volta dele. As regras do setor de cartões não permitem que uma empresa guarde esse código depois que o pagamento foi concluído.",
+        a: "Pergunte por quê e proponha um link de pagamento seguro. Se mandar o verso, oculte o código de segurança e a faixa em volta dele. As regras do setor de cartões não permitem que uma empresa guarde esse código depois que o pagamento foi autorizado.",
       },
       {
         q: "Já mandei uma foto completa do meu cartão. E agora?",

@@ -6,15 +6,18 @@
 //
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// These guides describe the Dossier tool (docs/prd-dossier.md), Must scope only:
-// no sections, no photo straightening, no custom size. Publish them with the
-// tool, not before. The labels of the new tool are not quoted here (they do
-// not exist yet in lib/locales/id/strings.ts): the steps describe the action
-// instead. Re-check them against the shipped interface.
+// These guides describe the Dossier tool (docs/prd-dossier.md) as shipped,
+// sections, photo straightening and custom size included. The quoted labels
+// ("Satu PDF", "Satu PDF per bagian", "Pisahkan menjadi beberapa file",
+// "Bagian baru di sini", "Luruskan dan pangkas", "Terapkan", "Putihkan latar",
+// "Hitam putih", "Terapkan ke semua foto", "Lainnya…", "Batalkan",
+// "Kembalikan halamannya") were checked against the `dossier` block of
+// lib/locales/id/strings.ts: keep them in step. The tool is called "Berkas"
+// in the Indonesian navigation.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 /** Alamat alat, ditulis tanpa skema (panduan tidak memuat tautan). */
 const TOOL = "cachety.com/id/dossier";
@@ -51,13 +54,18 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
           `Buka ${TOOL} di browser, di komputer atau HP. Tidak perlu instal apa pun dan tidak perlu membuat akun.`,
           "Masukkan file Anda: PDF dan foto bisa dicampur (JPG, PNG, foto HEIC dari iPhone, dan lainnya). Satu foto menjadi satu halaman.",
           "Lanjut ke bagian halaman. Setiap halaman dari setiap file ditampilkan sebagai gambar kecil. Seret halaman untuk memindahkannya, bahkan dari satu dokumen ke dokumen lain. Putar halaman yang miring, dan buang halaman yang tidak Anda perlukan.",
-          "Pilih satu file PDF sebagai hasilnya. Jika situs tujuan punya batas ukuran, pilih batasnya: 1, 2, 5, atau 10 MB. Sebelum Anda mengunduh, Cachety memberi tahu apakah file akan muat dan tetap terbaca.",
+          "Pilih \"Satu PDF\". Jika situs tujuan punya batas ukuran, pilih batasnya: 1, 2, 5, atau 10 MB, atau \"Lainnya…\" untuk batas berapa pun dari 0,5 sampai 50 MB. Sebelum Anda mengunduh, Cachety memberi tahu apakah file akan muat dan tetap terbaca.",
           "Periksa pratinjau, beri nama file, lalu unduh.",
         ],
       },
       {
         type: "tip",
-        text: "Sebelum mengunduh, Anda bisa menyensor nomor rekening atau data lain yang tidak dibutuhkan penerima. Area yang disensor dihapus dari file, bukan sekadar ditutupi.",
+        text: "Sebelum mengunduh, Anda bisa menyensor nomor rekening atau data lain yang tidak dibutuhkan penerima. Pada PDF yang berisi teks, Cachety menunjukkan nomor kartu dan IBAN yang ditemukannya. Area yang disensor dihapus dari file, bukan sekadar ditutupi.",
+      },
+      { type: "h2", text: "Satu file untuk setiap jenis dokumen" },
+      {
+        type: "p",
+        text: "Sebagian situs tidak meminta satu file besar, melainkan satu file untuk setiap jenis dokumen: KTP, slip gaji, bukti alamat. Centang \"Pisahkan menjadi beberapa file\", lalu buka menu sebuah halaman dan pilih \"Bagian baru di sini\" di tempat setiap file baru harus dimulai. Beri nama setiap bagian: nama itu menjadi nama filenya. Pilihan \"Satu PDF per bagian\" lalu terpilih, dan Anda mengunduh semua file sekaligus dalam satu arsip ZIP. Batas ukuran lalu berlaku untuk setiap file.",
       },
       { type: "h2", text: "Apa yang terjadi dengan file Anda" },
       { type: "p", text: NOT_UPLOADED },
@@ -78,6 +86,7 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
           "Sampai 200 MB per file, 500 halaman per PDF, dan 1.000 halaman secara keseluruhan.",
           "File Word dan Excel tidak diterima: simpan dulu sebagai PDF (Cetak, lalu Simpan sebagai PDF).",
           "PDF yang dikunci bisa dimasukkan: Cachety meminta kata sandinya, di perangkat Anda.",
+          "Watermark dan kata sandi pada file baru bersifat opsional, dan tidak aktif kecuali Anda memintanya.",
         ],
       },
     ],
@@ -124,7 +133,7 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
         type: "list",
         items: [
           "Letakkan kertas rata di permukaan polos yang gelap, dekat jendela. Hindari flash, yang meninggalkan bercak putih.",
-          "Pegang HP lurus di atas kertas, supaya tepi-tepinya tampak sejajar, dan penuhi bingkai foto dengan halaman itu.",
+          "Pegang HP lurus di atas kertas, supaya tepi-tepinya tampak sejajar, dan penuhi bingkai foto dengan halaman itu. Foto yang diambil miring bisa diluruskan sesudahnya.",
           "Ambil satu foto per halaman. Pastikan tulisan kecilnya tajam sebelum lanjut.",
         ],
       },
@@ -135,7 +144,9 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
           `Buka ${TOOL} di browser HP Anda. Tidak ada aplikasi yang perlu diinstal.`,
           "Ketuk area dokumen dan pilih foto-foto Anda. Foto iPhone berformat HEIC bisa langsung dipakai.",
           "Lanjut ke bagian halaman. Setiap foto sudah menjadi satu halaman. Putar yang miring dan seret ke urutan yang benar.",
-          "Pilih satu file PDF dan, jika formulirnya punya batas ukuran, pilih 1, 2, 5, atau 10 MB.",
+          "Untuk foto yang miring atau yang memperlihatkan meja di sekeliling kertas, ketuk halamannya dan pilih \"Luruskan dan pangkas\". Taruh setiap sudut di sudut kertas, lalu pilih \"Terapkan\".",
+          "Di tempat yang sama, \"Putihkan latar\" mengubah kertas yang keabu-abuan menjadi putih dan \"Hitam putih\" menghilangkan warnanya. Halaman jadi lebih mudah dibaca dan jauh lebih ringan. \"Terapkan ke semua foto\" melakukannya untuk semua foto sekaligus.",
+          "Pilih \"Satu PDF\" dan, jika formulirnya punya batas ukuran, pilih 1, 2, 5, atau 10 MB, atau \"Lainnya…\" untuk batas lain.",
           "Periksa pratinjau dan unduh PDF-nya. File tersimpan di HP Anda, siap dilampirkan.",
         ],
       },
@@ -156,7 +167,7 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
       },
       {
         type: "warning",
-        text: "Batas ukuran yang sangat kecil dan banyak halaman foto tidak selalu bisa dipenuhi sekaligus. Jika file tidak bisa muat sambil tetap terbaca, Cachety mengatakannya sebelum Anda mengunduh: buang beberapa halaman, atau kirim dua file.",
+        text: "Batas ukuran yang sangat kecil dan banyak halaman foto tidak selalu bisa dipenuhi sekaligus. Jika file tidak bisa muat sambil tetap terbaca, Cachety mengatakannya sebelum Anda mengunduh. Coba dulu \"Hitam putih\", lalu buang beberapa halaman, pisahkan menjadi beberapa file, atau pilih ukuran yang lebih besar jika situsnya mengizinkan.",
       },
     ],
     faq: [
@@ -200,8 +211,8 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
           `Buka ${TOOL} di browser, di komputer atau HP.`,
           "Masukkan PDF Anda. Anda bisa menambahkan beberapa file, juga foto.",
           "Lanjut ke bagian halaman. Setiap halaman ditampilkan sebagai gambar kecil, sesuai urutan di file akhir.",
-          "Seret halaman untuk memindahkannya. Pakai tombol putar untuk memutarnya seperempat putaran setiap kali. Pakai tombol hapus untuk membuangnya. Jika salah membuang halaman, batalkan dan halaman itu kembali.",
-          "Pilih satu file PDF, periksa pratinjau, lalu unduh.",
+          "Seret halaman untuk memindahkannya. Pakai tombol putar untuk memutarnya seperempat putaran setiap kali. Pakai tombol hapus untuk membuangnya. Jika salah membuang halaman, \"Batalkan\" mengembalikannya: tombol itu tampil selama beberapa detik. Di HP, ketuk sebuah halaman untuk melihat tindakan yang sama dalam menu.",
+          "Pilih \"Satu PDF\", periksa pratinjau, lalu unduh.",
         ],
       },
       {
@@ -238,7 +249,7 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
       },
       {
         q: "Bisakah halaman yang sudah dibuang dikembalikan?",
-        a: "Bisa, selama halaman Cachety masih terbuka: batalkan tepat setelah membuangnya, atau kembalikan urutan aslinya. File asli Anda tidak pernah diubah.",
+        a: "Bisa, dengan \"Batalkan\", yang tampil selama beberapa detik setelah Anda membuang halaman. Jika Anda membuang semua halaman sebuah dokumen, \"Kembalikan halamannya\" muncul di sebelahnya dalam daftar. Setelah itu, masukkan lagi filenya: file asli Anda tidak pernah diubah.",
       },
       {
         q: "Apakah PDF saya di-upload?",
@@ -281,7 +292,7 @@ export const DOSSIER_GUIDES_ID: Guide[] = [
           `Buka ${TOOL} di browser. Tidak perlu akun.`,
           "Masukkan PDF atau foto Anda.",
           "Lanjut ke bagian halaman dan pastikan urutannya benar. Buang halaman yang tidak ingin Anda kirim.",
-          "Pilih satu file PDF dan unduh.",
+          "Pilih \"Satu PDF\" dan unduh.",
           "Kirim file yang baru, bukan file aslinya.",
         ],
       },

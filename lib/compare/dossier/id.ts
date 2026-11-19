@@ -11,12 +11,14 @@ import type { Comparison } from "../types";
 //
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// The Cachety column describes the Dossier tool as specified in
-// docs/prd-dossier.md (Must scope). Publish with the tool, not before, and
-// re-check the column against the shipped interface.
+// The Cachety column describes the Dossier tool as shipped (sections, photo
+// straightening and custom size included): limits from lib/watermark.ts and
+// lib/pages.ts, sizes from lib/size-budget.ts and the `dossier` block of
+// lib/locales/id/strings.ts, where the quoted labels ("Satu PDF", "Lainnya…")
+// were checked. Keep the column in step with them.
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Alamat alat, ditulis tanpa skema. */
 const TOOL = "cachety.com/id/dossier";
@@ -26,15 +28,18 @@ const CACHETY = {
   where: "Di browser Anda, di perangkat Anda sendiri. Tidak ada yang di-upload.",
   kept: "Tidak ada yang disimpan: tidak ada server yang menerima file Anda.",
   free: "Gratis, tanpa akun, tanpa paket berbayar, dan tanpa batas harian. Sampai 200 MB per file, 500 halaman per PDF, dan 1.000 halaman secara keseluruhan.",
-  pages: "Semua halaman dari semua file dalam satu tampilan: pindahkan halaman, bahkan dari satu file ke file lain, putar, atau buang.",
-  size: "Anda memilih ukuran maksimum: 1, 2, 5, atau 10 MB. Sebelum unduhan, Cachety memberi tahu apakah file akan muat dan tetap terbaca.",
+  pages: "Semua halaman dari semua file dalam satu tampilan: pindahkan halaman, bahkan dari satu file ke file lain, putar, atau buang. Satu PDF, atau satu PDF per bagian yang Anda beri nama.",
+  size: "Anda memilih ukuran maksimum: 1, 2, 5, atau 10 MB, atau batas berapa pun dari 0,5 sampai 50 MB. Sebelum unduhan, Cachety memberi tahu apakah file akan muat dan tetap terbaca.",
   output:
     "Setiap halaman dibuat ulang sebagai gambar. Teksnya tidak bisa diseleksi atau dicari, dan PDF yang hanya berisi teks bisa menjadi lebih besar.",
   hidden: "Dihapus di setiap file: teks tersembunyi, nama pembuat dan properti lain, lampiran, tautan, dan lokasi GPS foto.",
-  inputs: "PDF dan foto sekaligus, termasuk foto HEIC dari iPhone. File Word, Excel, atau PowerPoint tidak diterima.",
+  inputs: "PDF dan foto sekaligus, termasuk foto HEIC dari iPhone. Foto selembar kertas bisa diluruskan, dipangkas, dan diputihkan latarnya. File Word, Excel, atau PowerPoint tidak diterima.",
   offline: "Tidak perlu instal apa pun. Setelah terbuka, halaman ini tetap berjalan dalam mode pesawat, di HP maupun komputer.",
   ads: "Tanpa iklan dan tanpa pelacak. Kodenya terbuka (open source).",
 };
+
+/** Baris tabel "Pilihan penggabungan", untuk alat yang punya bookmark dan daftar isi. */
+const MERGE_OPTIONS = "Urutan halaman, dan satu PDF per bagian jika Anda ingin beberapa file. Tanpa bookmark, tanpa daftar isi.";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "Seperti apa file buatan Cachety" },
@@ -56,7 +61,7 @@ const HOW_TO: Comparison["body"] = [
       `Buka ${TOOL} di browser, di komputer atau HP. Tidak perlu instal apa pun dan tidak perlu membuat akun.`,
       "Masukkan PDF dan foto Anda. Satu foto menjadi satu halaman.",
       "Lanjut ke bagian halaman: seret ke urutan yang benar, putar yang miring, dan buang yang tidak Anda perlukan.",
-      "Pilih satu file PDF dan, jika Anda diberi batas ukuran, pilih 1, 2, 5, atau 10 MB.",
+      "Pilih \"Satu PDF\" dan, jika Anda diberi batas ukuran, pilih 1, 2, 5, atau 10 MB, atau \"Lainnya…\" untuk batas lain.",
       "Periksa pratinjau, sensor data yang tidak dibutuhkan penerima, lalu unduh filenya.",
     ],
   },
@@ -109,8 +114,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Mengatur urutan halaman",
         cachety: CACHETY.pages,
-        other: "Alat gabung mengurutkan ulang file utuh. Mengurutkan, menghapus, dan memutar halaman satu per satu dilakukan di alat terpisah, Organize PDF.",
-        edge: "cachety",
+        other: "Alat gabung mengurutkan ulang file utuh. Alat terpisah, Organize PDF, mengurutkan, menghapus, dan memutar halaman satu per satu, dan bisa menerima file tambahan lalu menggabungkannya (gratis: 5 file, 100 MB).",
       },
       {
         criterion: "Memenuhi batas ukuran",
@@ -162,7 +166,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
           "Mengubah file Word, Excel, dan PowerPoint menjadi PDF.",
           "Mengenali teks pada hasil scan (OCR), sehingga PDF hasil scan bisa dicari.",
           "Menerima pekerjaan besar: sampai 100 file dalam satu penggabungan gratis.",
-          "Aplikasi desktop berbayarnya memproses file di komputer Anda, dengan alat yang sama seperti di situs webnya.",
+          "Aplikasi desktop berbayarnya memproses file di komputer Anda, dengan sebagian besar alat yang ada di situs webnya.",
         ],
       },
       { type: "h2", text: "Kelebihan Cachety" },
@@ -186,7 +190,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     chooseCachety: [
       "Filenya berupa dokumen identitas, slip gaji, atau rekening koran, dan Anda tidak ingin meng-upload file itu.",
       "Anda perlu foto dan PDF dalam satu file, dengan urutan halaman yang Anda tentukan.",
-      "Formulir meminta satu file di bawah 1, 2, 5, atau 10 MB.",
+      "Formulir meminta satu file, atau satu file untuk setiap jenis dokumen, di bawah batas ukuran yang disebut dalam megabyte.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -195,7 +199,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       ),
       {
         q: "Bisakah iLovePDF mengompres PDF ke ukuran yang persis?",
-        a: "Tidak. iLovePDF menawarkan tiga tingkat kompresi, dan panduannya sendiri menyebut tidak ada alat yang bisa menjanjikan ukuran hasil yang persis. Dengan Cachety Anda memilih 1, 2, 5, atau 10 MB, dan Anda diberi tahu sebelum unduhan jika file tidak bisa muat sambil tetap terbaca.",
+        a: "Tidak. iLovePDF menawarkan tiga tingkat kompresi, dan panduannya sendiri menyebut tidak ada alat yang bisa menjanjikan ukuran hasil yang persis. Dengan Cachety Anda memilih ukuran maksimum dalam megabyte, dan Anda diberi tahu sebelum unduhan jika file tidak bisa muat sambil tetap terbaca.",
       },
       {
         q: "Apakah iLovePDF bisa dipakai offline?",
@@ -219,6 +223,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "Blog iLovePDF: 15 tahun iLovePDF", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "Tentang iLovePDF", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -238,7 +243,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     intro:
       "Smallpdf adalah kumpulan alat PDF online yang terkenal dari Swiss, dengan aplikasi untuk HP dan Windows. Alat gabung dan kompresnya bekerja di cloud. Cachety mengerjakan hal yang lebih sempit di perangkat Anda sendiri: menyatukan PDF dan foto menjadi satu file, di bawah batas ukuran, tanpa upload.",
     verdict:
-      "Smallpdf bisa lebih banyak: menerima file Word, Excel, dan PowerPoint, mengenali teks pada hasil scan, dan punya aplikasi Windows yang bekerja offline. Untuk itu, Smallpdf pilihan yang lebih tepat. Cachety lebih tepat jika filenya dokumen pribadi yang tidak ingin Anda upload, jika Anda harus menyiapkan lebih dari satu atau dua file dalam sehari, atau jika formulir menetapkan batas ukuran dalam megabyte.",
+      "Smallpdf bisa lebih banyak: menerima file Word, Excel, dan PowerPoint, mengenali teks pada hasil scan, dan punya aplikasi Windows yang bekerja offline. Untuk itu, Smallpdf pilihan yang lebih tepat. Cachety lebih tepat jika filenya dokumen pribadi yang tidak ingin Anda upload, jika Anda akan terbentur batas harian paket gratis, atau jika formulir menetapkan batas ukuran dalam megabyte.",
     table: [
       {
         criterion: "Di mana file diproses",
@@ -249,7 +254,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Berapa lama file disimpan",
         cachety: CACHETY.kept,
-        other: "Dihapus dari server setelah satu jam, kecuali Anda menyimpannya ke akun Anda.",
+        other: "Menurut halaman produk Smallpdf, dihapus dari server setelah satu jam, kecuali Anda menyimpannya ke akun Anda.",
         edge: "cachety",
       },
       {
@@ -261,7 +266,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Mengatur urutan halaman",
         cachety: CACHETY.pages,
-        other: "Alat gabung menyusun ulang, memutar, dan menghapus halaman. Alat Organize yang terpisah melakukan hal yang sama pada satu PDF.",
+        other: "Alat gabung bisa menampilkan halaman dari semua file untuk disusun ulang, diputar, atau dihapus; halaman harga Smallpdf mencantumkan tampilan halaman ini di paket berbayar. Alat Organize mengurutkan ulang, memutar, menghapus, dan menambah halaman, dan bisa menggabungkan beberapa dokumen.",
       },
       {
         criterion: "Memenuhi batas ukuran",
@@ -283,7 +288,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Data tersembunyi",
         cachety: CACHETY.hidden,
-        other: "Tidak didokumentasikan untuk alat gabung di halaman produk maupun halaman bantuan.",
+        other: "Tidak dijelaskan untuk alat gabung. Blog Smallpdf menyebut alat Compress dan Flatten-nya menghapus metadata, sebagai langkah terpisah.",
       },
       {
         criterion: "Aplikasi dan pemakaian offline",
@@ -332,17 +337,17 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     ],
     chooseCachety: [
       "Filenya berupa dokumen identitas, slip gaji, atau rekening koran, dan Anda tidak ingin meng-upload file itu.",
-      "Formulir meminta satu file di bawah 1, 2, 5, atau 10 MB.",
+      "Formulir meminta satu file, atau satu file untuk setiap jenis dokumen, di bawah batas ukuran yang disebut dalam megabyte.",
       "Anda memakai HP dan tidak ingin menginstal aplikasi atau membuat akun.",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "Dengan alat online Smallpdf, ya: file di-upload ke servernya dan dihapus setelah satu jam kecuali Anda menyimpannya ke akun Anda. Aplikasi desktop Windows-nya menangani file secara offline."
+        "Dengan alat online Smallpdf, ya: file di-upload ke servernya dan, menurut halaman produknya, dihapus setelah satu jam kecuali Anda menyimpannya ke akun Anda. Aplikasi desktop Windows-nya menangani file secara offline."
       ),
       {
         q: "Bisakah Smallpdf mengompres PDF ke ukuran yang persis?",
-        a: "Tidak. Smallpdf menawarkan tingkat kompresi, dan blognya sendiri menyebut alat itu tidak memungkinkan Anda memasukkan ukuran yang persis. Dengan Cachety Anda memilih 1, 2, 5, atau 10 MB.",
+        a: "Tidak. Smallpdf menawarkan tingkat kompresi, dan blognya sendiri menyebut alat itu tidak memungkinkan Anda memasukkan ukuran yang persis. Dengan Cachety Anda memilih ukuran maksimum dalam megabyte, dan file dijaga di bawah ukuran itu jika hal itu bisa dilakukan sambil tetap terbaca.",
       },
       {
         q: "Apakah Smallpdf gratis?",
@@ -360,6 +365,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       { label: "Smallpdf Trust Center", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf: aplikasi dan ekstensi", url: "https://smallpdf.com/download" },
       { label: "Blog Smallpdf: mengompres PDF ke ukuran pilihan", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "Blog Smallpdf: menghapus metadata PDF", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "Tentang Smallpdf", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -380,7 +386,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     intro:
       "Adobe menciptakan format PDF, dan alat online gratis Acrobat-nya menggabungkan dan mengompres PDF di browser apa pun. File ditangani di server Adobe. Cachety mengerjakan hal yang lebih sempit di perangkat Anda sendiri: menyatukan PDF dan foto menjadi satu file, di bawah batas ukuran, tanpa upload.",
     verdict:
-      "Untuk PDF yang teksnya harus tetap seperti semula, alat gabung Adobe pilihan yang lebih tepat: file digabungkan tanpa menurunkan kualitas gambar, teks, atau format, dan bisa sampai 100 file. Aplikasi desktop berbayarnya bisa jauh lebih banyak daripada Cachety. Cachety lebih tepat untuk dokumen pribadi yang tidak ingin Anda upload, untuk mencampur foto dan PDF secara gratis, dan untuk memenuhi batas ukuran yang disebut dalam megabyte.",
+      "Untuk PDF yang teksnya harus tetap seperti semula, alat gabung Adobe pilihan yang lebih tepat: file digabungkan tanpa menurunkan kualitas gambar, teks, atau format, dan bisa sampai 100 file. Aplikasi desktop berbayarnya bisa jauh lebih banyak daripada Cachety. Cachety lebih tepat untuk dokumen pribadi yang tidak ingin Anda upload, untuk mencampur foto dan PDF dalam satu langkah, dan untuk memenuhi batas ukuran yang disebut dalam megabyte.",
     table: [
       {
         criterion: "Di mana file diproses",
@@ -397,12 +403,12 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Akun, pemakaian gratis, dan batasnya",
         cachety: CACHETY.free,
-        other: "Gabung: sampai 100 file, masing-masing 500 halaman, tanpa watermark. Kompres: gratis dengan pemakaian terbatas; pemakaian tanpa batas memerlukan paket berbayar.",
+        other: "Gabung: sampai 100 file, masing-masing 500 halaman, dan 1.500 halaman di file gabungan, tanpa watermark. Kompres: gratis dengan pemakaian terbatas; pemakaian tanpa batas memerlukan paket berbayar.",
       },
       {
         criterion: "Mengatur urutan halaman",
         cachety: CACHETY.pages,
-        other: "File bisa diurutkan ulang sebelum digabung. Mengatur ulang halaman satu per satu mengharuskan login.",
+        other: "File bisa diurutkan ulang sebelum digabung. Mengatur ulang halaman satu per satu mengharuskan login; akun gratis sudah cukup.",
         edge: "cachety",
       },
       {
@@ -413,7 +419,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Foto dan jenis file lain",
         cachety: CACHETY.inputs,
-        other: "Alat gabung gratis menerima PDF. Menggabungkan PDF dengan file Word, Excel, PowerPoint, atau gambar adalah bagian dari Acrobat Pro. Alat terpisah mengubah gambar menjadi PDF, dan Anda harus login untuk mengunduh hasilnya.",
+        other: "Alat gabung gratis menerima PDF. Menggabungkan PDF dengan file Word, Excel, PowerPoint, atau gambar adalah bagian dari Acrobat Pro. Alat gratis terpisah mengubah gambar, termasuk foto HEIC, menjadi PDF, untuk jumlah konversi yang terbatas.",
       },
       {
         criterion: "Seperti apa PDF yang baru",
@@ -459,7 +465,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
         items: [
           "File Anda tidak pernah di-upload, dan tidak ada login di tahap mana pun.",
           "Memindahkan, memutar, dan membuang halaman satu per satu gratis dan tidak memerlukan akun.",
-          "Foto dan PDF masuk ke file yang sama secara gratis, termasuk foto HEIC dari iPhone.",
+          "Foto dan PDF masuk ke file yang sama dalam satu langkah. Dengan alat gratis Adobe, Anda mengubah dulu foto menjadi PDF, lalu menggabungkannya.",
           "Data tersembunyi dihapus dari setiap file, fitur yang oleh Adobe disediakan di paket Pro berbayar.",
           "Anda memilih ukuran dalam megabyte dan diberi tahu sebelum unduhan apakah ukuran itu bisa dicapai.",
         ],
@@ -475,7 +481,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     chooseCachety: [
       "Filenya berupa dokumen identitas, slip gaji, atau rekening koran, dan Anda tidak ingin meng-upload file itu.",
       "Anda ingin mengurutkan ulang, memutar, atau membuang halaman tanpa login.",
-      "Anda perlu mencampur foto dan PDF, dan menjaga hasilnya di bawah 1, 2, 5, atau 10 MB.",
+      "Anda perlu mencampur foto dan PDF, dan menjaga hasilnya di bawah batas ukuran yang disebut dalam megabyte.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -484,7 +490,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       ),
       {
         q: "Apakah perlu akun Adobe untuk menggabungkan PDF?",
-        a: "Tidak untuk menggabungkan dan mengunduh. Adobe meminta Anda login untuk mengatur ulang halaman satu per satu, membagikan file lewat tautan, atau mengunduh PDF yang dibuat dari gambar. Cachety sama sekali tidak memakai akun.",
+        a: "Tidak untuk menggabungkan dan mengunduh. Adobe meminta Anda login untuk mengatur ulang halaman satu per satu atau membagikan file lewat tautan. Cachety sama sekali tidak memakai akun.",
       },
       {
         q: "Bisakah Acrobat online menghapus metadata dari PDF?",
@@ -497,6 +503,8 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       { label: "Adobe Acrobat: gabungkan PDF", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat: kompres PDF", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat: JPG ke PDF", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat: gambar ke PDF", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat: HEIC ke PDF", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat: mengurutkan ulang halaman PDF", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat: menghapus halaman PDF", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -547,7 +555,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Mengatur urutan halaman",
         cachety: CACHETY.pages,
-        other: "File diurutkan ulang dengan seret dan lepas. Mode halaman menampilkan halaman dari semua file. Memutar dan menghapus halaman adalah alat terpisah.",
+        other: "File diurutkan ulang dengan seret dan lepas. Mode halaman menampilkan halaman dari semua file: Anda memilih halaman yang diinginkan dan menyeretnya ke urutan yang benar, tanpa menyertakan sisanya. Memutar halaman adalah alat terpisah.",
       },
       {
         criterion: "Memenuhi batas ukuran",
@@ -569,17 +577,23 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Data tersembunyi",
         cachety: CACHETY.hidden,
-        other: "Alat terpisah menghapus metadata PDF.",
+        other: "Alat terpisah menghapus metadata PDF. Alat kompres PDF juga bisa membuang metadata, lampiran, dan anotasi.",
+      },
+      {
+        criterion: "Pilihan penggabungan",
+        cachety: MERGE_OPTIONS,
+        other: "Bookmark, daftar isi, halaman sampul sebelum setiap file, halaman kosong untuk cetak bolak-balik, nama file di halaman.",
+        edge: "other",
       },
       {
         criterion: "Aplikasi dan pemakaian offline",
         cachety: CACHETY.offline,
-        other: "PDF24 Creator menghadirkan semua alat secara offline, hanya di Windows. Belum ada versi Mac atau Linux, dan tidak ada aplikasi di toko aplikasi HP.",
+        other: "PDF24 Creator menghadirkan semua alat secara offline, hanya di Windows. Belum ada versi Mac atau Linux, dan tidak ada aplikasi di toko aplikasi HP: alat online-nya bisa ditambahkan ke layar utama HP, tetapi tetap memerlukan koneksi.",
       },
       {
         criterion: "Iklan dan pelacak",
         cachety: CACHETY.ads,
-        other: "Alat online dibiayai iklan. Kebijakan privasinya menyebut Google AdSense dan Google Analytics.",
+        other: "Alat online dibiayai iklan. Kebijakan privasinya menyebut antara lain Google AdSense dan Google Analytics.",
         edge: "cachety",
       },
     ],
@@ -597,7 +611,8 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         type: "list",
         items: [
-          "PDF gabungan mempertahankan halaman aslinya, sehingga teks tetap bisa diseleksi dan file tetap ringan.",
+          "PDF gabungan mempertahankan halaman asli apa adanya: teks, gambar, dan font mempertahankan kualitasnya.",
+          "Pilihan penggabungan yang tidak dimiliki Cachety: bookmark, daftar isi, halaman sampul, halaman kosong untuk cetak bolak-balik.",
           "Menerima dokumen Word dan file lain, dan menawarkan pengenalan teks (OCR).",
           "Di Windows, PDF24 Creator mengerjakan semua ini secara offline, gratis.",
           "Anda bisa mengatur sendiri resolusi dan kualitas gambar kompresinya.",
@@ -625,7 +640,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     ],
     chooseCachety: [
       "Anda memakai HP, Mac, atau komputer yang tidak bisa dipasangi perangkat lunak, dan Anda tidak ingin meng-upload dokumen Anda.",
-      "Formulir meminta satu file di bawah 1, 2, 5, atau 10 MB.",
+      "Formulir meminta satu file, atau satu file untuk setiap jenis dokumen, di bawah batas ukuran yang disebut dalam megabyte.",
       "Foto Anda berasal dari iPhone.",
     ],
     faq: [
@@ -635,7 +650,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       ),
       {
         q: "Bisakah PDF24 mengompres PDF ke ukuran tertentu?",
-        a: "Tidak secara langsung. Anda mengatur resolusi dan kualitas gambar, dan panduan PDF24 sendiri menyebut tidak ada pilihan \"kompres ke 5 MB\". Dengan Cachety Anda memilih 1, 2, 5, atau 10 MB.",
+        a: "Tidak secara langsung. Anda mengatur resolusi dan kualitas gambar, dan panduan PDF24 sendiri menyebut tidak ada pilihan \"kompres ke 5 MB\". Dengan Cachety Anda memilih ukuran maksimum dalam megabyte, dan file dijaga di bawah ukuran itu jika hal itu bisa dilakukan sambil tetap terbaca.",
       },
       {
         q: "Apakah PDF24 bisa dipakai offline di Mac atau HP?",
@@ -648,6 +663,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       { label: "PDF24 Tools: kompres PDF", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools: gambar ke PDF", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools: hapus metadata PDF", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools: putar PDF", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools: tanya jawab", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "Bantuan PDF24: menggabungkan file PDF", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -683,13 +699,13 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       {
         criterion: "Berapa lama file disimpan",
         cachety: CACHETY.kept,
-        other: "Online: dihapus otomatis setelah 2 jam. Ada tombol untuk menghapusnya lebih cepat.",
+        other: "Online: dihapus otomatis setelah 2 jam. Halaman hasilnya punya tombol untuk menghapus file.",
         edge: "cachety",
       },
       {
         criterion: "Akun, pemakaian gratis, dan batasnya",
         cachety: CACHETY.free,
-        other: "Tanpa mendaftar. Gabung online gratis: sampai 50 halaman atau 50 MB, 3 tugas per jam. Kompres gratis: sampai 200 halaman atau 100 MB. Desktop gratis: 3 tugas per hari. Paket berbayar menghilangkan batas itu.",
+        other: "Tanpa mendaftar. Gabung online gratis: sampai 50 halaman atau 50 MB, 3 tugas per jam. Kompres gratis: sampai 200 halaman atau 100 MB. Desktop gratis: 3 tugas per hari, untuk dokumen sampai 50 MB dan 200 halaman. Paket berbayar menghilangkan batas halaman dan batas per jam; upload lalu bisa sampai 500 MB per file.",
         edge: "cachety",
       },
       {
@@ -710,14 +726,14 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       },
       {
         criterion: "Pilihan penggabungan",
-        cachety: "Tidak ada selain urutan halaman: tanpa bookmark, tanpa daftar isi.",
+        cachety: MERGE_OPTIONS,
         other: "Bookmark dipertahankan atau dibuat per file, daftar isi, halaman kosong untuk cetak bolak-balik, nama file di kaki halaman.",
         edge: "other",
       },
       {
         criterion: "Data tersembunyi",
         cachety: CACHETY.hidden,
-        other: "Alat terpisah mengedit metadata PDF.",
+        other: "Alat terpisah mengedit metadata PDF atau menghapus semuanya.",
       },
       {
         criterion: "Aplikasi dan pemakaian offline",
@@ -733,7 +749,7 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       },
       {
         type: "p",
-        text: "Sejda Desktop memproses file di komputer Anda, tanpa upload, di Mac, Windows, dan Linux. Versi gratisnya mengizinkan tiga tugas sehari. Ada satu hal yang penting untuk dokumen pribadi: ketentuan layanan Sejda menyebut pengguna tidak boleh mengirimkan informasi pribadi yang sensitif, seperti nomor identitas yang diterbitkan pemerintah, ke layanan online-nya.",
+        text: "Sejda Desktop memproses file di komputer Anda, tanpa upload, di Mac, Windows, dan Linux. Versi gratisnya mengizinkan tiga tugas sehari, untuk dokumen sampai 50 MB dan 200 halaman, dan penggabungan sampai 30 file dan 50 halaman. Ada satu hal yang penting untuk dokumen pribadi: ketentuan layanan Sejda menyebut pengguna tidak boleh mengirimkan informasi pribadi yang sensitif, seperti nomor identitas yang diterbitkan pemerintah, ke layanan online-nya.",
       },
       { type: "h2", text: "Kelebihan Sejda" },
       {
@@ -741,7 +757,8 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
         items: [
           "Pilihan penggabungan yang tidak dimiliki Cachety: bookmark, daftar isi, halaman kosong untuk cetak bolak-balik.",
           "Aplikasi desktop untuk Mac, Windows, dan Linux yang menjaga file tetap di komputer Anda.",
-          "Banyak alat lain di tempat yang sama: pengenalan teks (OCR), pemotongan, pelurusan hasil scan, pengeditan.",
+          "Banyak alat lain di tempat yang sama: pengenalan teks (OCR), pemotongan dan pelurusan halaman PDF, pengeditan.",
+          "Bisa mengambil file langsung dari Dropbox, Google Drive, atau OneDrive.",
           "Kendali yang rinci atas kompresi, dengan pengaturan kualitas gambar dan resolusi.",
         ],
       },
@@ -761,12 +778,12 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
     chooseOther: [
       "Anda memerlukan bookmark atau daftar isi di PDF gabungan.",
       "Anda bisa menginstal Sejda Desktop dan pekerjaan Anda masuk dalam batas gratisnya, atau Anda punya paket berbayar.",
-      "Anda memerlukan pengenalan teks, pemotongan, atau pelurusan hasil scan.",
+      "Anda memerlukan pengenalan teks, atau perlu memotong atau meluruskan halaman PDF hasil scan: Cachety hanya melakukannya untuk foto.",
     ],
     chooseCachety: [
       "Filenya berupa dokumen identitas, slip gaji, atau rekening koran, dan Anda memakai HP atau tidak bisa menginstal perangkat lunak.",
       "File Anda lebih dari 50 halaman, atau Anda harus menyiapkan beberapa file dalam jam yang sama.",
-      "Formulir meminta satu file di bawah 1, 2, 5, atau 10 MB.",
+      "Formulir meminta satu file, atau satu file untuk setiap jenis dokumen, di bawah batas ukuran yang disebut dalam megabyte.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -775,11 +792,11 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       ),
       {
         q: "Apa batas gratis Sejda untuk menggabungkan PDF?",
-        a: "Secara online, dokumen sampai 50 halaman atau 50 MB dan tiga tugas per jam. Versi gratis Sejda Desktop mengizinkan tiga tugas per hari. Cachety tidak punya batas seperti itu: sampai 1.000 halaman dalam satu file.",
+        a: "Secara online, dokumen sampai 50 halaman atau 50 MB dan tiga tugas per jam. Versi gratis Sejda Desktop mengizinkan tiga tugas per hari, untuk dokumen sampai 50 MB dan 200 halaman. Cachety tidak punya batas seperti itu: sampai 1.000 halaman dalam satu file.",
       },
       {
         q: "Bisakah Sejda mengompres PDF ke ukuran tertentu?",
-        a: "Alat kompresnya menawarkan pengaturan kualitas gambar dan resolusi, bukan ukuran yang bisa dituju. Dengan Cachety Anda memilih 1, 2, 5, atau 10 MB.",
+        a: "Alat kompresnya menawarkan pengaturan kualitas gambar dan resolusi, bukan ukuran yang bisa dituju. Dengan Cachety Anda memilih ukuran maksimum dalam megabyte, dan file dijaga di bawah ukuran itu jika hal itu bisa dilakukan sambil tetap terbaca.",
       },
       FAQ_TEXT,
     ],
@@ -789,7 +806,8 @@ export const DOSSIER_COMPARISONS_ID: Comparison[] = [
       { label: "Sejda: JPG ke PDF", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda: mengatur halaman PDF", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda: mengedit metadata PDF", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda: harga dan tanya jawab", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda: paket dan tanya jawab", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda: halaman hasil", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "Keamanan di Sejda", url: "https://www.sejda.com/security" },
       { label: "Sejda: kebijakan privasi", url: "https://www.sejda.com/privacy" },

@@ -8,12 +8,14 @@ import type { Comparison } from "../types";
 // Cada informação sobre outra ferramenta vem de uma página listada em `sources`,
 // lida na data `checked`. Os preços mudam muito, por isso nenhum é citado.
 //
-// A coluna do Cachety descreve a ferramenta Dossier como especificada em
-// docs/prd-dossier.md (escopo Must). Publicar junto com a ferramenta, não
-// antes, e conferir a coluna com a interface entregue.
+// A coluna do Cachety descreve a ferramenta Dossier como foi entregue (com
+// seções, endireitamento de fotos e tamanho personalizado): limites de
+// lib/watermark.ts e lib/pages.ts, tamanhos de lib/size-budget.ts e do bloco
+// `dossier` de lib/locales/pt/strings.ts, de onde vêm os rótulos entre aspas
+// (“Um único PDF”, “Outro…”), já conferidos. Manter a coluna em sincronia.
 
-const CHECKED = "2026-11-18";
-const UPDATED = "2026-11-18";
+const CHECKED = "2026-11-19";
+const UPDATED = "2026-11-19";
 
 /** Endereço da ferramenta, escrito sem esquema. */
 const TOOL = "cachety.com/pt/dossier";
@@ -23,15 +25,18 @@ const CACHETY = {
   where: "No seu próprio aparelho, dentro do navegador. Nada é enviado.",
   kept: "Nada fica guardado: não existe servidor que receba seus arquivos.",
   free: "Grátis, sem conta, sem plano pago e sem limite diário. Até 200 MB por arquivo, 500 páginas por PDF e 1.000 páginas no total.",
-  pages: "Todas as páginas de todos os arquivos numa só grade: mova uma página, até de um arquivo para outro, gire ou remova.",
-  size: "Você escolhe um tamanho máximo: 1, 2, 5 ou 10 MB. Antes do download, o Cachety avisa se o arquivo vai caber e continuar legível.",
+  pages: "Todas as páginas de todos os arquivos numa só grade: mova uma página, até de um arquivo para outro, gire ou remova. Um único PDF, ou um PDF por seção, com o nome que você der.",
+  size: "Você escolhe um tamanho máximo: 1, 2, 5 ou 10 MB, ou qualquer limite de 0,5 a 50 MB. Antes do download, o Cachety avisa se o arquivo vai caber e continuar legível.",
   output:
     "Cada página é refeita como imagem. O texto não pode ser selecionado nem pesquisado, e um PDF só de texto pode sair maior.",
   hidden: "Removidos em todo arquivo: texto oculto, autor e outras propriedades, anexos, links e a localização GPS das fotos.",
-  inputs: "PDFs e fotos juntos, inclusive fotos HEIC do iPhone. Não aceita arquivos do Word, do Excel nem do PowerPoint.",
+  inputs: "PDFs e fotos juntos, inclusive fotos HEIC do iPhone. A foto de uma folha pode ser endireitada e recortada, e o fundo pode ficar branco. Não aceita arquivos do Word, do Excel nem do PowerPoint.",
   offline: "Nada para instalar. Depois de carregada, a página continua funcionando no modo avião, no celular ou no computador.",
   ads: "Sem anúncios e sem rastreadores. O código é aberto.",
 };
+
+/** Linha “Opções ao juntar” da tabela, para as ferramentas que têm marcadores e sumário. */
+const MERGE_OPTIONS = "A ordem das páginas e, se você quiser vários arquivos, um PDF por seção. Sem marcadores, sem sumário.";
 
 const PIXELS: Comparison["body"] = [
   { type: "h2", text: "Como é um arquivo feito pelo Cachety" },
@@ -53,7 +58,7 @@ const HOW_TO: Comparison["body"] = [
       `Abra ${TOOL} no navegador, no computador ou no celular. Não precisa instalar nada nem criar conta.`,
       "Adicione seus PDFs e suas fotos. Cada foto vira uma página.",
       "Passe para as páginas: arraste para colocar em ordem, gire as que estiverem de lado e remova as que você não quer.",
-      "Escolha a opção de um único PDF e, se deram um limite de tamanho, escolha 1, 2, 5 ou 10 MB.",
+      "Escolha “Um único PDF” e, se deram um limite de tamanho, escolha 1, 2, 5 ou 10 MB, ou “Outro…” para outro limite.",
       "Confira a prévia, oculte qualquer dado de que o destinatário não precise e baixe o arquivo.",
     ],
   },
@@ -106,8 +111,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Colocar as páginas em ordem",
         cachety: CACHETY.pages,
-        other: "A ferramenta de juntar reordena arquivos inteiros. Ordenar, excluir e girar páginas avulsas é feito numa ferramenta separada, a de organizar PDF.",
-        edge: "cachety",
+        other: "A ferramenta de juntar reordena arquivos inteiros. Uma ferramenta separada, a de organizar PDF, ordena, exclui e gira páginas avulsas, e pode receber mais arquivos e juntá-los (grátis: 5 arquivos, 100 MB).",
       },
       {
         criterion: "Ficar abaixo de um limite de tamanho",
@@ -159,7 +163,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
           "Converte arquivos do Word, do Excel e do PowerPoint em PDF.",
           "Reconhece o texto de documentos escaneados (OCR), e assim um PDF escaneado pode se tornar pesquisável.",
           "Aceita trabalhos grandes: até 100 arquivos de uma vez ao juntar de graça.",
-          "O aplicativo de computador pago processa os arquivos no seu computador, com as mesmas ferramentas do site.",
+          "O aplicativo de computador pago processa os arquivos no seu computador, com a maioria das ferramentas do site.",
         ],
       },
       { type: "h2", text: "Em que o Cachety é melhor" },
@@ -183,7 +187,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     chooseCachety: [
       "Os arquivos são documentos de identidade, holerites ou extratos bancários e você prefere não enviá-los.",
       "Você precisa de fotos e PDFs no mesmo arquivo, com as páginas na sua ordem.",
-      "Um formulário pede um único arquivo com menos de 1, 2, 5 ou 10 MB.",
+      "Um formulário pede um único arquivo, ou um arquivo por tipo de documento, abaixo de um limite de tamanho dado em megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -192,7 +196,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       ),
       {
         q: "O iLovePDF consegue comprimir um PDF para um tamanho exato?",
-        a: "Não. Ele oferece três níveis de compressão, e o próprio guia dele diz que nenhuma ferramenta pode prometer um tamanho final exato. Com o Cachety você escolhe 1, 2, 5 ou 10 MB, e ele avisa antes do download se o arquivo não puder caber e continuar legível.",
+        a: "Não. Ele oferece três níveis de compressão, e o próprio guia dele diz que nenhuma ferramenta pode prometer um tamanho final exato. Com o Cachety você escolhe um tamanho máximo em megabytes, e ele avisa antes do download se o arquivo não puder caber e continuar legível.",
       },
       {
         q: "O iLovePDF funciona offline?",
@@ -216,6 +220,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
         url: "https://www.ilovepdf.com/blog/edit-or-remove-pdf-metadata-windows-mac",
       },
       { label: "Blog do iLovePDF: 15 anos do iLovePDF", url: "https://www.ilovepdf.com/blog/ilovepdf-15-years-anniversary-milestones" },
+      { label: "Sobre o iLovePDF", url: "https://www.ilovepdf.com/help/about" },
     ],
     checked: CHECKED,
     updated: UPDATED,
@@ -235,7 +240,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     intro:
       "O Smallpdf é um conjunto conhecido de ferramentas de PDF online, da Suíça, com apps para celular e para Windows. As ferramentas dele para juntar e comprimir PDF funcionam na nuvem. O Cachety faz um trabalho mais restrito, no seu próprio aparelho: reúne PDFs e fotos num único arquivo, abaixo de um limite de tamanho, sem enviá-los.",
     verdict:
-      "O Smallpdf faz mais: aceita arquivos do Word, do Excel e do PowerPoint, reconhece o texto de documentos escaneados e tem um aplicativo para Windows que funciona offline. Para isso, ele é a melhor escolha. O Cachety é a melhor escolha quando os arquivos são documentos pessoais que você prefere não enviar, quando você tem mais de um ou dois arquivos para preparar no mesmo dia ou quando um formulário impõe um limite de tamanho em megabytes.",
+      "O Smallpdf faz mais: aceita arquivos do Word, do Excel e do PowerPoint, reconhece o texto de documentos escaneados e tem um aplicativo para Windows que funciona offline. Para isso, ele é a melhor escolha. O Cachety é a melhor escolha quando os arquivos são documentos pessoais que você prefere não enviar, quando você esbarraria no limite diário do plano grátis ou quando um formulário impõe um limite de tamanho em megabytes.",
     table: [
       {
         criterion: "Onde os arquivos são processados",
@@ -246,7 +251,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Por quanto tempo os arquivos ficam guardados",
         cachety: CACHETY.kept,
-        other: "Apagados dos servidores depois de uma hora, a menos que você os salve na sua conta.",
+        other: "Segundo as páginas de produto do Smallpdf, apagados dos servidores depois de uma hora, a menos que você os salve na sua conta.",
         edge: "cachety",
       },
       {
@@ -258,7 +263,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Colocar as páginas em ordem",
         cachety: CACHETY.pages,
-        other: "A ferramenta de juntar reorganiza, gira e exclui páginas. Uma ferramenta separada, a de organizar, faz o mesmo num único PDF.",
+        other: "A ferramenta de juntar pode mostrar as páginas de todos os arquivos para reorganizar, girar ou excluir; a página de preços do Smallpdf lista essa visualização de páginas no plano pago. A ferramenta de organizar reordena, gira, exclui e acrescenta páginas, e pode combinar vários documentos.",
       },
       {
         criterion: "Ficar abaixo de um limite de tamanho",
@@ -280,7 +285,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Dados ocultos",
         cachety: CACHETY.hidden,
-        other: "Não documentado para a ferramenta de juntar nas páginas do produto nem nas de ajuda.",
+        other: "Não descrito para a ferramenta de juntar. O blog do Smallpdf diz que as ferramentas de comprimir e de achatar (Flatten) removem os metadados, numa etapa separada.",
       },
       {
         criterion: "Aplicativos e uso offline",
@@ -329,17 +334,17 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     ],
     chooseCachety: [
       "Os arquivos são documentos de identidade, holerites ou extratos bancários e você prefere não enviá-los.",
-      "Um formulário pede um único arquivo com menos de 1, 2, 5 ou 10 MB.",
+      "Um formulário pede um único arquivo, ou um arquivo por tipo de documento, abaixo de um limite de tamanho dado em megabytes.",
       "Você está no celular e não quer instalar um app nem criar uma conta.",
     ],
     faq: [
       FAQ_UPLOADED(
         "Smallpdf",
-        "Com as ferramentas online do Smallpdf, sim: os arquivos são enviados para os servidores dele e apagados depois de uma hora, a menos que você os salve na sua conta. O aplicativo de computador dele para Windows trabalha com os arquivos offline."
+        "Com as ferramentas online do Smallpdf, sim: os arquivos são enviados para os servidores dele e, segundo as páginas de produto dele, apagados depois de uma hora, a menos que você os salve na sua conta. O aplicativo de computador dele para Windows trabalha com os arquivos offline."
       ),
       {
         q: "O Smallpdf consegue comprimir um PDF para um tamanho exato?",
-        a: "Não. O Smallpdf oferece níveis de compressão, e o próprio blog dele diz que a ferramenta não deixa digitar um tamanho exato. Com o Cachety você escolhe 1, 2, 5 ou 10 MB.",
+        a: "Não. O Smallpdf oferece níveis de compressão, e o próprio blog dele diz que a ferramenta não deixa digitar um tamanho exato. Com o Cachety você escolhe um tamanho máximo em megabytes, e o arquivo fica abaixo dele quando isso é possível sem deixá-lo ilegível.",
       },
       {
         q: "O Smallpdf é grátis?",
@@ -357,6 +362,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       { label: "Smallpdf: central de confiança (Trust Center)", url: "https://smallpdf.com/trust-center" },
       { label: "Smallpdf: apps e extensões", url: "https://smallpdf.com/download" },
       { label: "Blog do Smallpdf: comprimir um PDF para um tamanho escolhido", url: "https://smallpdf.com/blog/compress-pdf-to-chosen-size" },
+      { label: "Blog do Smallpdf: remover os metadados de um PDF", url: "https://smallpdf.com/blog/ways-to-remove-pdf-metadata" },
       { label: "Sobre o Smallpdf", url: "https://smallpdf.com/about" },
     ],
     checked: CHECKED,
@@ -377,7 +383,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     intro:
       "A Adobe inventou o PDF, e as ferramentas online grátis do Acrobat juntam e comprimem PDFs em qualquer navegador. Os arquivos são tratados nos servidores da Adobe. O Cachety faz um trabalho mais restrito, no seu próprio aparelho: reúne PDFs e fotos num único arquivo, abaixo de um limite de tamanho, sem enviá-los.",
     verdict:
-      "Para PDFs cujo texto precisa ficar como está, a ferramenta de juntar da Adobe é a melhor escolha: ela combina os arquivos sem reduzir a qualidade das imagens, do texto ou da formatação, e aceita até 100 arquivos. O aplicativo de computador pago faz muito mais que o Cachety. O Cachety é a melhor escolha para documentos pessoais que você prefere não enviar, para misturar fotos e PDFs de graça e para respeitar um limite de tamanho dado em megabytes.",
+      "Para PDFs cujo texto precisa ficar como está, a ferramenta de juntar da Adobe é a melhor escolha: ela combina os arquivos sem reduzir a qualidade das imagens, do texto ou da formatação, e aceita até 100 arquivos. O aplicativo de computador pago faz muito mais que o Cachety. O Cachety é a melhor escolha para documentos pessoais que você prefere não enviar, para misturar fotos e PDFs numa única etapa e para respeitar um limite de tamanho dado em megabytes.",
     table: [
       {
         criterion: "Onde os arquivos são processados",
@@ -394,12 +400,12 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Conta, uso grátis e limites",
         cachety: CACHETY.free,
-        other: "Juntar: até 100 arquivos de 500 páginas cada, sem marca d'água. Comprimir: grátis com uso limitado; o uso ilimitado exige um plano pago.",
+        other: "Juntar: até 100 arquivos de 500 páginas cada e 1.500 páginas no arquivo final, sem marca d'água. Comprimir: grátis com uso limitado; o uso ilimitado exige um plano pago.",
       },
       {
         criterion: "Colocar as páginas em ordem",
         cachety: CACHETY.pages,
-        other: "Os arquivos podem ser reordenados antes de juntar. Reorganizar páginas avulsas exige login.",
+        other: "Os arquivos podem ser reordenados antes de juntar. Reorganizar páginas avulsas exige login; uma conta grátis basta.",
         edge: "cachety",
       },
       {
@@ -410,7 +416,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Fotos e outros tipos de arquivo",
         cachety: CACHETY.inputs,
-        other: "A ferramenta grátis de juntar aceita PDFs. Combinar PDFs com arquivos do Word, do Excel, do PowerPoint ou de imagem faz parte do Acrobat Pro. Uma ferramenta separada transforma imagens em PDF, e é preciso fazer login para baixar o resultado.",
+        other: "A ferramenta grátis de juntar aceita PDFs. Combinar PDFs com arquivos do Word, do Excel, do PowerPoint ou de imagem faz parte do Acrobat Pro. Ferramentas grátis separadas transformam imagens, inclusive fotos HEIC, em PDF, para um número limitado de conversões.",
       },
       {
         criterion: "Como é o novo PDF",
@@ -456,7 +462,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
         items: [
           "Seus arquivos nunca são enviados, e não há login em nenhum momento.",
           "Mover, girar e remover páginas avulsas é grátis e não exige conta.",
-          "Fotos e PDFs vão para o mesmo arquivo de graça, inclusive fotos HEIC do iPhone.",
+          "Fotos e PDFs vão para o mesmo arquivo numa única etapa. Com as ferramentas grátis da Adobe, você primeiro converte as fotos em PDF e depois junta.",
           "Os dados ocultos são removidos de todo arquivo, um recurso que a Adobe reserva ao plano Pro, pago.",
           "Você escolhe um tamanho em megabytes e o Cachety avisa antes do download se dá para chegar a ele.",
         ],
@@ -472,7 +478,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     chooseCachety: [
       "Os arquivos são documentos de identidade, holerites ou extratos bancários e você prefere não enviá-los.",
       "Você quer reordenar, girar ou remover páginas sem fazer login.",
-      "Você precisa misturar fotos e PDFs e manter o resultado abaixo de 1, 2, 5 ou 10 MB.",
+      "Você precisa misturar fotos e PDFs e manter o resultado abaixo de um limite de tamanho dado em megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -481,7 +487,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       ),
       {
         q: "Preciso de uma conta Adobe para juntar PDFs?",
-        a: "Para juntar e baixar, não. A Adobe pede login para reorganizar páginas avulsas, para compartilhar o arquivo por link ou para baixar um PDF feito a partir de imagens. O Cachety não tem conta nenhuma.",
+        a: "Para juntar e baixar, não. A Adobe pede login para reorganizar páginas avulsas ou para compartilhar o arquivo por link. O Cachety não tem conta nenhuma.",
       },
       {
         q: "O Acrobat online consegue remover os metadados de um PDF?",
@@ -494,6 +500,8 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       { label: "Adobe Acrobat: juntar PDFs", url: "https://www.adobe.com/acrobat/online/merge-pdf.html" },
       { label: "Adobe Acrobat: comprimir PDF", url: "https://www.adobe.com/acrobat/online/compress-pdf.html" },
       { label: "Adobe Acrobat: JPG para PDF", url: "https://www.adobe.com/acrobat/online/jpg-to-pdf.html" },
+      { label: "Adobe Acrobat: imagem para PDF", url: "https://www.adobe.com/acrobat/online/image-to-pdf.html" },
+      { label: "Adobe Acrobat: HEIC para PDF", url: "https://acrobat.adobe.com/heic-to-pdf" },
       { label: "Adobe Acrobat: reordenar páginas de PDF", url: "https://www.adobe.com/acrobat/online/rearrange-pdf.html" },
       { label: "Adobe Acrobat: excluir páginas de PDF", url: "https://www.adobe.com/acrobat/online/delete-pdf-pages.html" },
       { label: "Adobe Acrobat Reader", url: "https://www.adobe.com/acrobat/pdf-reader.html" },
@@ -544,7 +552,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Colocar as páginas em ordem",
         cachety: CACHETY.pages,
-        other: "Os arquivos são reordenados arrastando e soltando. Um modo de páginas mostra as páginas de todos os arquivos. Girar e remover páginas são ferramentas separadas.",
+        other: "Os arquivos são reordenados arrastando e soltando. Um modo de páginas mostra as páginas de todos os arquivos: você escolhe as que quer e arrasta para colocá-las em ordem, deixando as outras de fora. Girar páginas é uma ferramenta separada.",
       },
       {
         criterion: "Ficar abaixo de um limite de tamanho",
@@ -566,17 +574,23 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Dados ocultos",
         cachety: CACHETY.hidden,
-        other: "Uma ferramenta separada remove os metadados de um PDF.",
+        other: "Uma ferramenta separada remove os metadados de um PDF. A ferramenta de comprimir PDF também pode retirar metadados, anexos e anotações.",
+      },
+      {
+        criterion: "Opções ao juntar",
+        cachety: MERGE_OPTIONS,
+        other: "Marcadores, um sumário, uma folha de rosto antes de cada arquivo, páginas em branco para impressão frente e verso, o nome do arquivo nas páginas.",
+        edge: "other",
       },
       {
         criterion: "Aplicativos e uso offline",
         cachety: CACHETY.offline,
-        other: "O PDF24 Creator leva todas as ferramentas para o uso offline, só no Windows. Ainda não há versão para Mac nem para Linux, nem app nas lojas de aplicativos de celular.",
+        other: "O PDF24 Creator leva todas as ferramentas para o uso offline, só no Windows. Ainda não há versão para Mac nem para Linux, nem app nas lojas de aplicativos de celular: as ferramentas online podem ser adicionadas à tela inicial do celular, mas continuam precisando de conexão.",
       },
       {
         criterion: "Anúncios e rastreadores",
         cachety: CACHETY.ads,
-        other: "As ferramentas online são financiadas por publicidade. A política de privacidade cita o Google AdSense e o Google Analytics.",
+        other: "As ferramentas online são financiadas por publicidade. A política de privacidade cita o Google AdSense e o Google Analytics, entre outros.",
         edge: "cachety",
       },
     ],
@@ -594,7 +608,8 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         type: "list",
         items: [
-          "O PDF final mantém as páginas originais, então o texto continua selecionável e o arquivo continua leve.",
+          "O PDF final mantém as páginas originais como elas são: texto, imagens e fontes mantêm a qualidade.",
+          "Opções ao juntar que o Cachety não tem: marcadores, sumário, folhas de rosto, páginas em branco para impressão frente e verso.",
           "Aceita documentos do Word e outros arquivos, e oferece reconhecimento de texto (OCR).",
           "No Windows, o PDF24 Creator faz tudo isso offline, de graça.",
           "Você mesmo pode definir a resolução e a qualidade de imagem da compressão.",
@@ -622,7 +637,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     ],
     chooseCachety: [
       "Você está no celular, no Mac ou num computador em que não pode instalar programas, e prefere não enviar seus documentos.",
-      "Um formulário pede um único arquivo com menos de 1, 2, 5 ou 10 MB.",
+      "Um formulário pede um único arquivo, ou um arquivo por tipo de documento, abaixo de um limite de tamanho dado em megabytes.",
       "Suas fotos vêm de um iPhone.",
     ],
     faq: [
@@ -632,7 +647,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       ),
       {
         q: "O PDF24 consegue comprimir um PDF para um tamanho determinado?",
-        a: "Não diretamente. Você define a resolução e a qualidade da imagem, e o próprio guia do PDF24 diz que não existe uma opção “comprimir para 5 MB”. Com o Cachety você escolhe 1, 2, 5 ou 10 MB.",
+        a: "Não diretamente. Você define a resolução e a qualidade da imagem, e o próprio guia do PDF24 diz que não existe uma opção “comprimir para 5 MB”. Com o Cachety você escolhe um tamanho máximo em megabytes, e o arquivo fica abaixo dele quando isso é possível sem deixá-lo ilegível.",
       },
       {
         q: "O PDF24 funciona offline no Mac ou no celular?",
@@ -645,6 +660,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       { label: "PDF24 Tools: comprimir PDF", url: "https://tools.pdf24.org/en/compress-pdf" },
       { label: "PDF24 Tools: imagens para PDF", url: "https://tools.pdf24.org/en/images-to-pdf" },
       { label: "PDF24 Tools: remover metadados de PDF", url: "https://tools.pdf24.org/en/remove-pdf-metadata" },
+      { label: "PDF24 Tools: girar PDF", url: "https://tools.pdf24.org/en/rotate-pdf" },
       { label: "PDF24 Tools: perguntas e respostas", url: "https://tools.pdf24.org/en/faq" },
       { label: "PDF24 Creator", url: "https://tools.pdf24.org/en/creator" },
       { label: "Ajuda do PDF24: juntar arquivos PDF", url: "https://help.pdf24.org/en/how-to-merge-pdf-files-with-pdf24/" },
@@ -680,13 +696,13 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       {
         criterion: "Por quanto tempo os arquivos ficam guardados",
         cachety: CACHETY.kept,
-        other: "Online: apagados automaticamente depois de 2 horas. Um botão apaga antes.",
+        other: "Online: apagados automaticamente depois de 2 horas. A página de resultado tem um botão para apagar os arquivos.",
         edge: "cachety",
       },
       {
         criterion: "Conta, uso grátis e limites",
         cachety: CACHETY.free,
-        other: "Sem cadastro. Juntar online grátis: até 50 páginas ou 50 MB, 3 tarefas por hora. Comprimir grátis: até 200 páginas ou 100 MB. Sejda Desktop grátis: 3 tarefas por dia. Um plano pago remove os limites.",
+        other: "Sem cadastro. Juntar online grátis: até 50 páginas ou 50 MB, 3 tarefas por hora. Comprimir grátis: até 200 páginas ou 100 MB. Sejda Desktop grátis: 3 tarefas por dia, em documentos de até 50 MB e 200 páginas. Um plano pago remove os limites de páginas e de tarefas por hora; os envios passam então a aceitar até 500 MB por arquivo.",
         edge: "cachety",
       },
       {
@@ -707,14 +723,14 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       },
       {
         criterion: "Opções ao juntar",
-        cachety: "Nenhuma além da ordem das páginas: sem marcadores, sem sumário.",
+        cachety: MERGE_OPTIONS,
         other: "Marcadores mantidos ou criados por arquivo, um sumário, páginas em branco para impressão frente e verso, o nome do arquivo no rodapé.",
         edge: "other",
       },
       {
         criterion: "Dados ocultos",
         cachety: CACHETY.hidden,
-        other: "Uma ferramenta separada edita os metadados de um PDF.",
+        other: "Uma ferramenta separada edita os metadados de um PDF ou remove todos eles.",
       },
       {
         criterion: "Aplicativos e uso offline",
@@ -730,7 +746,7 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       },
       {
         type: "p",
-        text: "O Sejda Desktop processa os arquivos no seu computador, sem envio, no Mac, no Windows e no Linux. A versão grátis permite três tarefas por dia. Um detalhe importa para documentos pessoais: os termos de serviço do Sejda dizem que os usuários não devem enviar ao serviço online informações pessoais sensíveis, como números de documentos de identificação emitidos pelo governo.",
+        text: "O Sejda Desktop processa os arquivos no seu computador, sem envio, no Mac, no Windows e no Linux. A versão grátis permite três tarefas por dia, em documentos de até 50 MB e 200 páginas, e junções de até 30 arquivos e 50 páginas. Um detalhe importa para documentos pessoais: os termos de serviço do Sejda dizem que os usuários não devem enviar ao serviço online informações pessoais sensíveis, como números de documentos de identificação emitidos pelo governo.",
       },
       { type: "h2", text: "Em que o Sejda é melhor" },
       {
@@ -738,7 +754,8 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
         items: [
           "Opções ao juntar que o Cachety não tem: marcadores, sumário, páginas em branco para impressão frente e verso.",
           "Um aplicativo para Mac, Windows e Linux que mantém os arquivos no seu computador.",
-          "Muitas outras ferramentas no mesmo lugar: reconhecimento de texto (OCR), recorte, endireitamento de documentos escaneados, edição.",
+          "Muitas outras ferramentas no mesmo lugar: reconhecimento de texto (OCR), recorte e endireitamento das páginas de um PDF, edição.",
+          "Pode receber arquivos direto do Dropbox, do Google Drive ou do OneDrive.",
           "Controle fino da compressão, com ajustes de qualidade de imagem e de resolução.",
         ],
       },
@@ -758,12 +775,12 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
     chooseOther: [
       "Você precisa de marcadores ou de um sumário no PDF final.",
       "Você pode instalar o Sejda Desktop e seu trabalho cabe nos limites grátis, ou você tem um plano pago.",
-      "Você precisa de reconhecimento de texto, recorte ou endireitamento de documentos escaneados.",
+      "Você precisa de reconhecimento de texto, ou de recortar ou endireitar as páginas de um PDF escaneado: o Cachety só faz isso com fotos.",
     ],
     chooseCachety: [
       "Os arquivos são documentos de identidade, holerites ou extratos bancários, e você está no celular ou não pode instalar programas.",
       "Seu arquivo tem mais de 50 páginas, ou você tem vários arquivos para preparar na mesma hora.",
-      "Um formulário pede um único arquivo com menos de 1, 2, 5 ou 10 MB.",
+      "Um formulário pede um único arquivo, ou um arquivo por tipo de documento, abaixo de um limite de tamanho dado em megabytes.",
     ],
     faq: [
       FAQ_UPLOADED(
@@ -772,11 +789,11 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       ),
       {
         q: "Quais são os limites grátis do Sejda para juntar PDFs?",
-        a: "Online, documentos de até 50 páginas ou 50 MB e três tarefas por hora. A versão grátis do Sejda Desktop permite três tarefas por dia. O Cachety não tem esses limites: até 1.000 páginas num só arquivo.",
+        a: "Online, documentos de até 50 páginas ou 50 MB e três tarefas por hora. A versão grátis do Sejda Desktop permite três tarefas por dia, em documentos de até 50 MB e 200 páginas. O Cachety não tem esses limites: até 1.000 páginas num só arquivo.",
       },
       {
         q: "O Sejda consegue comprimir um PDF para um tamanho determinado?",
-        a: "A ferramenta de comprimir dele oferece ajustes de qualidade de imagem e de resolução, não um tamanho para atingir. Com o Cachety você escolhe 1, 2, 5 ou 10 MB.",
+        a: "A ferramenta de comprimir dele oferece ajustes de qualidade de imagem e de resolução, não um tamanho para atingir. Com o Cachety você escolhe um tamanho máximo em megabytes, e o arquivo fica abaixo dele quando isso é possível sem deixá-lo ilegível.",
       },
       FAQ_TEXT,
     ],
@@ -786,7 +803,8 @@ export const DOSSIER_COMPARISONS_PT: Comparison[] = [
       { label: "Sejda: JPG para PDF", url: "https://www.sejda.com/jpg-to-pdf" },
       { label: "Sejda: organizar páginas de PDF", url: "https://www.sejda.com/organize-pdf" },
       { label: "Sejda: editar metadados de PDF", url: "https://www.sejda.com/edit-pdf-metadata" },
-      { label: "Sejda: preços e perguntas", url: "https://www.sejda.com/pricing" },
+      { label: "Sejda: planos e perguntas", url: "https://www.sejda.com/upgrade" },
+      { label: "Sejda: página de resultado", url: "https://www.sejda.com/result" },
       { label: "Sejda Desktop", url: "https://www.sejda.com/desktop" },
       { label: "Segurança no Sejda", url: "https://www.sejda.com/security" },
       { label: "Sejda: política de privacidade", url: "https://www.sejda.com/privacy" },

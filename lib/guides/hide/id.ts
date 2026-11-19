@@ -1,4 +1,4 @@
-// Panduan tentang area yang diusulkan untuk disensor (id): menemukan dan
+// Panduan tentang area yang disarankan untuk disensor (id): menemukan dan
 // menyensor nomor kartu dan IBAN, memberikan nomor rekening, mengirim foto
 // kartu debit atau kartu kredit. Ditulis untuk pembaca di Indonesia.
 // Hanya teks biasa: tanpa tautan, HTML, atau markdown.
@@ -6,14 +6,19 @@
 //
 // Draft translation from the English guide, awaiting native review (ROADMAP.md, backlog: Native review).
 //
-// These guides describe the `suggested-areas` feature (docs/prd-suggested-areas.md).
-// Publish them with it, not before. The labels of the new feature are not
-// quoted here (they do not exist yet in lib/locales/id/strings.ts): the steps
-// describe the action instead. Re-check them against the interface at that time.
+// These guides describe the `suggested-areas` feature (docs/prd-suggested-areas.md)
+// as shipped. The quoted labels ("Tinjau", "Sensor semua", "Bukan yang ini",
+// "Selesai", "Sensor sesuatu", "Nomor rekening (IBAN)") were checked against
+// lib/suggest-copy/id.ts and lib/locales/id/strings.ts, and the list of
+// numbers against lib/sensitive.ts: keep them in step. The interface calls
+// the feature "Saran", so the guides say "saran" too.
+// Indonesian accounts have no IBAN: the guides must never imply that a
+// domestic account number is found. The NIK is found only with its label.
+// Complaint route (bank first, then OJK) read on ojk.go.id on 2026-11-19.
 
 import type { Guide } from "../types";
 
-const UPDATED = "2026-11-18";
+const UPDATED = "2026-11-19";
 
 export const HIDE_GUIDES_ID: Guide[] = [
   // ------------------------------------------------------------------
@@ -45,14 +50,16 @@ export const HIDE_GUIDES_ID: Guide[] = [
       {
         type: "list",
         items: [
-          "Nomor rekening yang ditulis sebagai IBAN, format yang dipakai untuk transfer internasional, dari negara mana pun.",
+          "Nomor rekening yang ditulis sebagai IBAN, format yang dipakai untuk transfer internasional, dari negara mana pun. Rekening bank di Indonesia tidak memakai IBAN.",
           "Nomor kartu pembayaran dari jaringan kartu utama.",
+          "NIK, jika label \"NIK\" atau \"Nomor Induk Kependudukan\" tertulis di sebelahnya.",
           "Nomor jaminan sosial Prancis, nomor pajak Prancis, dan nomor referensi surat pajak Prancis.",
+          "Nomor identitas dan nomor pajak dari negara lain: nomor pajak Jerman (Steuer-ID), DNI dan NIE Spanyol, BSN Belanda, nomor nasional Belgia, NIF Portugal, CPF Brasil, kode pajak Italia, nomor identitas penduduk Tiongkok, My Number Jepang, dan kode nasional Iran.",
         ],
       },
       {
         type: "p",
-        text: "Sebuah nomor hanya diusulkan jika lolos pemeriksaan yang ada di dalam formatnya, misalnya digit kontrol pada IBAN, atau jika label di sebelahnya menyebut nomor apa itu. Nomor telepon, tanggal, atau total tagihan tidak ditandai hanya karena berupa deretan angka.",
+        text: "Sebuah nomor hanya disarankan jika lolos pemeriksaan yang ada di dalam formatnya, misalnya digit kontrol pada IBAN, atau jika label di sebelahnya menyebut nomor apa itu. Nomor telepon, tanggal, atau total tagihan tidak ditandai hanya karena berupa deretan angka.",
       },
       { type: "h2", text: "Cara menyensornya, langkah demi langkah" },
       {
@@ -60,28 +67,34 @@ export const HIDE_GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di browser, di komputer atau HP. Tidak perlu membuat akun.",
           "Masukkan PDF Anda. Tulis untuk apa salinan ini, lalu siapa penerimanya.",
-          "Jika Cachety menemukan sesuatu, pesan di atas pratinjau menyebut berapa nomor yang ditemukan. Buka daftar usulan dari pesan itu.",
-          "Setiap usulan diberi garis tepi di halaman dan tercantum dengan namanya, misalnya nomor rekening (IBAN). Ketuk yang ingin Anda sensor, atau pilih untuk menyensor semuanya. Setiap sensor bisa dibatalkan.",
-          "Periksa sendiri setiap halaman. Gambar kotak di atas bagian lain yang ingin Anda sensor, lalu unduh salinan Anda.",
+          "Jika Cachety menemukan sesuatu, pesan di atas pratinjau menyebut berapa nomor yang ditemukan. Pilih \"Tinjau\".",
+          "Setiap saran diberi garis tepi di halaman dan tercantum dengan namanya, misalnya \"Nomor rekening (IBAN)\". Ketuk yang ingin Anda sensor, atau pilih \"Sensor semua\". Setiap sensor bisa diurungkan, dan saran yang keliru bisa disisihkan dengan \"Bukan yang ini\".",
+          "Periksa sendiri setiap halaman dan gambar kotak di atas bagian lain yang ingin Anda sensor. Lalu pilih \"Selesai\": baru pada saat itulah area-area itu dihapus dari file.",
+          "Periksa pratinjau, lalu unduh salinan Anda.",
         ],
       },
       {
         type: "tip",
-        text: "Tidak ada yang disensor sebelum Anda memutuskannya. Jika penerima memang meminta data rekening Anda, biarkan nomornya terlihat: justru itulah yang mereka butuhkan.",
+        text: "Tidak ada yang disensor sebelum Anda memutuskannya. Jika penerima memang meminta data rekening Anda, biarkan nomornya terlihat: justru itulah yang mereka butuhkan. Begitu juga NIK, jika penerima memang memerlukannya, serta nomor pajak dan nomor referensi pada surat pajak Prancis, yang dipakai penerima untuk memeriksa keaslian surat itu.",
+      },
+      {
+        type: "p",
+        text: "Saran yang sama muncul di dua alat Cachety lainnya: saat Anda menandatangani PDF, dan saat Anda menyatukan beberapa dokumen menjadi satu file dengan alat Berkas.",
       },
       { type: "h2", text: "Apa yang tidak bisa ditemukan" },
       {
         type: "list",
         items: [
-          "Apa pun yang ada di foto atau hasil scan. Gambar tidak berisi teks yang bisa dibaca, jadi tidak ada usulan: gambar sendiri kotaknya.",
+          "Apa pun yang ada di foto atau hasil scan, termasuk foto KTP. Gambar tidak berisi teks yang bisa dibaca, jadi tidak ada saran: gambar sendiri kotaknya.",
           "Barcode dan kode QR. Isinya bisa sama dengan teks yang tercetak di sebelahnya.",
-          "Nomor dalam format yang tidak diperiksa Cachety, misalnya nomor pelanggan atau nomor kontrak, nomor rekening dalam negeri, nomor paspor atau nomor SIM.",
-          "Nama, alamat, tanggal lahir, dan nomor telepon. Biasanya itulah yang dibutuhkan penerima, jadi tidak diusulkan.",
+          "Nomor dalam format yang tidak diperiksa Cachety, misalnya nomor rekening bank di Indonesia, NPWP, nomor Kartu Keluarga, nomor BPJS, nomor paspor, nomor SIM, nomor pelanggan atau nomor kontrak. NIK yang tertulis tanpa labelnya juga tidak disarankan.",
+          "Nomor kartu yang sebagian sudah disamarkan, misalnya empat digit terakhir di struk. Tidak ada lagi yang perlu disensor.",
+          "Nama, alamat, tanggal lahir, dan nomor telepon. Biasanya itulah yang dibutuhkan penerima, jadi tidak disarankan.",
         ],
       },
       {
         type: "warning",
-        text: "Usulan ini adalah bantuan, bukan jaminan. Bisa saja ada yang terlewat. Selalu periksa sendiri seluruh halaman sebelum mengirimnya.",
+        text: "Saran ini adalah bantuan, bukan jaminan. Bisa saja ada yang terlewat. Selalu periksa sendiri seluruh halaman sebelum mengirimnya.",
       },
       { type: "h2", text: "Benar-benar dihapus, dan tidak pernah di-upload" },
       {
@@ -96,7 +109,7 @@ export const HIDE_GUIDES_ID: Guide[] = [
       },
       {
         q: "Apakah bisa dipakai untuk foto atau dokumen hasil scan?",
-        a: "Tidak. Usulan memerlukan PDF yang berisi teks sungguhan, seperti slip gaji, tagihan, dan rekening koran yang Anda unduh dari situs web. Pada foto atau hasil scan, gambar sendiri kotaknya dengan \"Sensor sesuatu\".",
+        a: "Tidak. Saran memerlukan PDF yang berisi teks sungguhan, seperti slip gaji, tagihan, dan rekening koran yang Anda unduh dari situs web. Pada foto atau hasil scan, gambar sendiri kotaknya dengan \"Sensor sesuatu\".",
       },
       {
         q: "Apakah dokumen saya dikirim ke suatu tempat untuk dianalisis?",
@@ -104,11 +117,11 @@ export const HIDE_GUIDES_ID: Guide[] = [
       },
       {
         q: "Apakah ada nomor yang bisa terlewat?",
-        a: "Ya. Nomor di dalam gambar, di dalam barcode, atau dalam format yang tidak diperiksa Cachety tidak akan diusulkan. Karena itulah halaman ini selalu meminta Anda memeriksa sendiri.",
+        a: "Ya. Nomor di dalam gambar, di dalam barcode, atau dalam format yang tidak diperiksa Cachety tidak akan disarankan. Karena itulah halaman ini selalu meminta Anda memeriksa sendiri.",
       },
       {
         q: "Apakah semua halaman PDF yang panjang ikut diperiksa?",
-        a: "Ya. Usulan mencakup semua halaman, termasuk halaman yang tidak ditampilkan di pratinjau. Untuk halaman itu, daftar menampilkan karakter pertama dan terakhir setiap nomor supaya Anda tahu apa yang Anda sensor.",
+        a: "Ya. Saran mencakup semua halaman, termasuk halaman yang tidak ditampilkan di pratinjau. Untuk halaman itu, daftar menampilkan karakter pertama dan terakhir setiap nomor supaya Anda tahu apa yang Anda sensor.",
       },
     ],
     updated: UPDATED,
@@ -133,7 +146,7 @@ export const HIDE_GUIDES_ID: Guide[] = [
       },
       {
         type: "p",
-        text: "Risiko yang nyata adalah pendebetan otomatis (autodebet) yang didaftarkan atas nama Anda tanpa persetujuan Anda. Karena itu, periksa mutasi rekening Anda. Jika ada pendebetan yang tidak Anda kenali, segera laporkan ke bank Anda. Cara penanganannya bergantung pada aturan bank masing-masing.",
+        text: "Risiko utama yang perlu diwaspadai adalah pendebetan otomatis (autodebet) yang tidak pernah Anda setujui. Karena itu, periksa mutasi rekening Anda. Jika ada pendebetan yang tidak Anda kenali, segera laporkan ke bank Anda: bank wajib menyediakan layanan pengaduan. Jika tidak tercapai kesepakatan dengan bank, Anda bisa mengadu ke Kontak OJK 157.",
       },
       { type: "h2", text: "Bahaya sebenarnya: data yang terkumpul jadi satu" },
       {
@@ -155,8 +168,8 @@ export const HIDE_GUIDES_ID: Guide[] = [
         items: [
           "Buka cachety.com di browser. Tidak ada yang perlu diinstal dan tidak perlu akun.",
           "Masukkan PDF atau foto Anda. Tulis untuk apa salinan ini, lalu siapa penerimanya.",
-          "Pada PDF, Cachety mencari nomor rekening yang ditulis sebagai IBAN, format yang dipakai untuk transfer internasional, dan memberi tahu jika menemukannya. Buka daftar usulan, lalu ketuk usulan itu untuk menyensornya.",
-          "Nomor rekening bank di Indonesia tidak diusulkan, begitu juga apa pun yang ada di foto: tekan \"Sensor sesuatu\" dan gambar kotak di atasnya.",
+          "Pada PDF, Cachety mencari nomor rekening yang ditulis sebagai IBAN, format yang dipakai untuk transfer internasional, dan memberi tahu jika menemukannya. Pilih \"Tinjau\", ketuk saran itu untuk menyensornya, lalu pilih \"Selesai\".",
+          "Nomor rekening bank di Indonesia tidak memakai format IBAN, jadi tidak disarankan, begitu juga apa pun yang ada di foto: tekan \"Sensor sesuatu\" dan gambar kotak di atasnya.",
           "Periksa setiap halaman, lalu unduh salinan Anda.",
         ],
       },
@@ -167,13 +180,13 @@ export const HIDE_GUIDES_ID: Guide[] = [
       { type: "h2", text: "File Anda tetap di tangan Anda" },
       {
         type: "p",
-        text: "Cachety bekerja di browser Anda. Rekening koran atau slip gaji Anda tidak pernah di-upload, dan nomor yang disensor dihapus dari file itu sendiri, bukan sekadar ditutupi. Ingat bahwa usulan bisa melewatkan sesuatu: periksa setiap halaman sebelum mengirimnya.",
+        text: "Cachety bekerja di browser Anda. Rekening koran atau slip gaji Anda tidak pernah di-upload, dan nomor yang disensor dihapus dari file itu sendiri, bukan sekadar ditutupi. Ingat bahwa saran bisa melewatkan sesuatu: periksa setiap halaman sebelum mengirimnya.",
       },
     ],
     faq: [
       {
         q: "Bisakah orang mengambil uang saya hanya dengan nomor rekening?",
-        a: "Tidak secara langsung. Nomor rekening dipakai orang untuk mengirim uang ke Anda. Risikonya adalah autodebet yang didaftarkan tanpa persetujuan Anda. Periksa mutasi rekening dan laporkan ke bank apa pun yang tidak Anda kenali.",
+        a: "Tidak secara langsung. Nomor rekening dipakai orang untuk mengirim uang ke Anda. Risiko utamanya adalah autodebet yang tidak pernah Anda setujui. Periksa mutasi rekening dan laporkan ke bank apa pun yang tidak Anda kenali.",
       },
       {
         q: "Perlukah nomor rekening di slip gaji disensor?",
@@ -185,7 +198,7 @@ export const HIDE_GUIDES_ID: Guide[] = [
       },
       {
         q: "Apa yang harus saya lakukan jika ada autodebet yang tidak pernah saya setujui?",
-        a: "Segera hubungi bank Anda dan laporkan pendebetan itu. Cara penanganannya bergantung pada aturan bank masing-masing, jadi jangan menunda.",
+        a: "Segera hubungi bank Anda dan laporkan pendebetan itu. Cara dan lamanya penanganan bergantung pada bank masing-masing, jadi jangan menunda. Jika tidak tercapai kesepakatan dengan bank, Anda bisa mengadu ke Kontak OJK 157.",
       },
     ],
     updated: UPDATED,
@@ -206,11 +219,11 @@ export const HIDE_GUIDES_ID: Guide[] = [
       { type: "h2", text: "Mengapa foto kartu berisiko" },
       {
         type: "p",
-        text: "Bagian depan kartu memuat nomor kartu yang panjang, tanggal kedaluwarsa, dan nama Anda. Bagian belakang memuat kode keamanan (CVV) tiga digit. Digabung, itu sudah cukup bagi seseorang untuk membayar secara online dengan kartu Anda. Email atau pesan chat bisa tersimpan bertahun-tahun di beberapa kotak masuk, jauh di luar kendali Anda.",
+        text: "Pada sebagian besar kartu, bagian depan memuat nomor kartu yang panjang, tanggal kedaluwarsa, dan nama Anda, dan bagian belakang memuat kode keamanan (CVV) tiga digit. Sebagian kartu keluaran baru mencetak semuanya di bagian belakang. Digabung, itu sudah cukup bagi seseorang untuk membayar secara online dengan kartu Anda. Email atau pesan chat bisa tersimpan bertahun-tahun di beberapa kotak masuk, jauh di luar kendali Anda.",
       },
       {
         type: "warning",
-        text: "Jangan pernah mengirim kode keamanan (CVV), yaitu tiga digit di belakang kartu, atau empat digit di depan kartu American Express. Tidak ada usaha yang jujur membutuhkannya dalam bentuk foto. Aturan keamanan industri kartu sendiri melarang pelaku usaha menyimpannya setelah pembayaran selesai.",
+        text: "Jangan pernah mengirim kode keamanan (CVV), yaitu tiga digit di belakang kartu, atau empat digit di depan kartu American Express. Tidak ada usaha yang jujur membutuhkannya dalam bentuk foto. Aturan keamanan industri kartu sendiri melarang pelaku usaha menyimpannya setelah pembayaran diotorisasi.",
       },
       { type: "h2", text: "Minta cara lain dulu" },
       {
@@ -221,7 +234,7 @@ export const HIDE_GUIDES_ID: Guide[] = [
       {
         type: "list",
         items: [
-          "Sensor digit tengah nomor kartu. Biarkan paling banyak empat digit terakhir, seperti yang tercetak di struk.",
+          "Sensor digit tengah nomor kartu. Biarkan paling banyak empat digit terakhir, seperti yang tercetak di struk untuk pelanggan.",
           "Sensor kode keamanan (CVV). Di belakang kartu, sensor seluruh strip tempat kode itu tercetak.",
           "Sensor tanggal kedaluwarsa, kecuali diminta dengan alasan yang jelas.",
           "Biarkan nama Anda dan logo bank, supaya salinan itu tetap membuktikan bahwa kartu itu milik Anda.",
@@ -255,7 +268,7 @@ export const HIDE_GUIDES_ID: Guide[] = [
     faq: [
       {
         q: "Digit nomor kartu mana yang boleh terlihat?",
-        a: "Empat digit terakhir cukup untuk sebagian besar pemeriksaan, dan itulah yang dicetak toko di struk. Aturan keamanan kartu mengizinkan pelaku usaha menampilkan paling banyak digit-digit pertama, yang menunjukkan banknya, dan empat digit terakhir. Sensor sisanya.",
+        a: "Empat digit terakhir cukup untuk sebagian besar pemeriksaan, dan itulah yang dicetak toko di struk untuk pelanggan. Aturan keamanan kartu menyebut pelaku usaha pada umumnya tidak boleh menampilkan lebih dari digit-digit pertama, yang menunjukkan banknya, dan empat digit terakhir. Sensor sisanya.",
       },
       {
         q: "Amankah mengirim foto kartu lewat email atau WhatsApp?",
@@ -263,7 +276,7 @@ export const HIDE_GUIDES_ID: Guide[] = [
       },
       {
         q: "Hotel meminta bagian depan dan belakang. Apa yang harus saya lakukan?",
-        a: "Tanyakan alasannya, dan tawarkan tautan pembayaran yang aman sebagai gantinya. Jika Anda tetap mengirim bagian belakang, sensor kode keamanan dan strip di sekitarnya. Aturan industri kartu tidak mengizinkan pelaku usaha menyimpan kode itu setelah pembayaran selesai.",
+        a: "Tanyakan alasannya, dan tawarkan tautan pembayaran yang aman sebagai gantinya. Jika Anda tetap mengirim bagian belakang, sensor kode keamanan dan strip di sekitarnya. Aturan industri kartu tidak mengizinkan pelaku usaha menyimpan kode itu setelah pembayaran diotorisasi.",
       },
       {
         q: "Saya sudah telanjur mengirim foto kartu yang lengkap. Sekarang bagaimana?",
