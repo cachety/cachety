@@ -38,6 +38,7 @@ Selbst hosten ist weiterhin möglich und vollständig unterstützt (siehe unten)
 - **Drei einfache Schritte:** dein Dokument, wofür es ist und wer es bekommt, dann Vorschau und Download. Der Wasserzeichentext wird für dich geschrieben („Zweck, Empfänger, Datum“, mit fertigen Beispielen) und lässt sich frei bearbeiten.
 - **Versteckte Daten entfernt:** markierbarer Text, Metadaten und der GPS-Standort von Fotos. Jede Seite wird aus Pixeln neu aufgebaut.
 - **Schwärzen:** IBAN, Steuer-ID oder Foto unkenntlich machen. Der Inhalt wird wirklich entfernt, nicht nur abgedeckt.
+- **Vorschläge zum Schwärzen:** In einem PDF mit Text zeigt Cachety die IBANs, Kartennummern, Sozialversicherungs-, Steuer- und Ausweisnummern an, die es findet, direkt auf deinem Gerät, und schwärzt mit einem Tipp die, die du auswählst. Von selbst wird nie etwas geschwärzt, und es kann etwas übersehen (Fotos, Scans, Barcodes): Das steht auch auf der Seite.
 - **Nachverfolgbare Kopien:** Füge `{code}` in den Text ein, und jede Kopie bekommt eine eigene kurze Referenz, die nach dem Download zum Aufbewahren aufgelistet wird.
 - **Mehrere Empfänger:** eine Kopie pro Empfänger (bis zu 20), jeweils mit dessen Namen, in einem einzigen Download.
 - **Passwort:** AES-256-Verschlüsselung für PDFs (PDF 2.0). Ein Häkchen bei „Mit Passwort schützen“ erzeugt ein gut lesbares Passwort aus 12 zufälligen Wörtern (132 Bit, BIP39-Wortliste); ein eigenes Passwort oder ein zufälliges 256-Bit-Passwort sind weiterhin möglich. Automatisches Leeren der Zwischenablage.

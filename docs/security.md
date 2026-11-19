@@ -22,6 +22,7 @@ critical documents. The assets to protect are therefore:
 | Output file | **Integrity** of the watermark: it cannot be removed by simply editing the PDF. |
 | Passwords (opening a locked PDF, encrypting the output) | **Confidentiality**: in memory only, never persisted or transmitted. |
 | Signature image (drawn, typed or uploaded), and the name, place and note typed with it | **Confidentiality**: in memory only, never persisted or transmitted (§4.4 quater, §4.10). |
+| Text extracted from the documents (for suggested areas to hide) | **Confidentiality**: in memory only, never stored, never sent, dropped when the document is removed or the tab is closed; the interface shows only a partly masked form of each number (§4.4 quinquies). |
 | Served code | **Integrity**: no third-party script, no unapproved inline script. |
 
 ## 2. Architecture and attack surface
@@ -50,6 +51,10 @@ The remaining attack surface is therefore:
    image, which goes through the same header pre-check, the same
    `createImageBitmap`/libheif decoding and the same pixel cap as document
    images (§4.3).
+   Suggested areas to hide (§4.4 quinquies) add **no decoder**: the text is
+   read with pdf.js `streamTextContent`, code already loaded to render the
+   page. What is new is the text itself as an input: very long lines,
+   millions of text items, odd Unicode. It is bounded (§4.3).
 2. **Script injection** (XSS) that could read the files and exfiltrate them.
 3. **The supply chain**: npm dependencies, CI actions, host.
 4. **Leakage through the output file**: original data that would survive processing.
@@ -70,6 +75,7 @@ The remaining attack surface is therefore:
 | T9 | Vulnerable or compromised dependency | Supply chain | Frozen lockfile, `bun audit` in CI + weekly, Dependabot, actions pinned by SHA (§4.8) | CI |
 | T10 | Poisoned or stale service worker | Network, old deployment | Same origin, GET only, revalidation of `sw.js` (§4.9) | `security-headers.test.ts` |
 | T11 | Reuse of the signature by a recipient (cut out of the signed copy and pasted elsewhere) | Recipient | **Not prevented technically**, as with a scanned paper signature: the legal section and the FAQ of the sign page say so; the "Also add a watermark" option ties the copy to a purpose and a recipient; initials on every page make page substitution visible (§4.4 quater, §6) | `site-copy.test.ts` (the FAQ says it in all 11 languages); no technical verification, since nothing technical is claimed |
+| T12 | False sense of completeness: the person relies on the suggested areas and sends a page with a sensitive number that was not detected (text inside an image, barcode or QR code, unknown format) | The limits of detection | **Not prevented technically.** Nothing is ever hidden automatically; the suggestions panel always ends with "Suggestions can miss things. Check the whole page yourself. Barcodes and QR codes can contain the same information."; a document without a text layer says "No text to read on this document: draw the areas yourself." (§4.4 quinquies, §6) | `lib/suggest-copy/suggest-copy.test.ts` (the footer exists in all 11 languages and names QR codes), `e2e/suggest.e2e.ts` (the footer is shown with the suggestions); no technical verification, since nothing technical is claimed |
 
 ## 4. Controls in place
 
@@ -222,6 +228,18 @@ the server (see §6).
   `image/*` type is left to the browser's decoder (see §6). Errors are
   neutral codes (`unsupported`, `file_too_large`, `image_too_large`,
   `image_unreadable`).
+- **Hostile text** (suggested areas, §4.4 quinquies): a PDF's text layer is
+  read by chunks (`lib/text-extract.ts`), and reading stops after
+  **200,000 text items or 2 million characters per document**; the
+  suggestions are then marked incomplete ("Suggestions stopped before the
+  end of this document") and the render itself is unaffected. A page whose
+  text cannot be read counts as empty. Lines are cut at **2,000 characters**
+  (`lib/text-lines.ts`), and the search stops after 2,000 matches per
+  document. Detection (`lib/sensitive.ts`) is linear: each word start
+  triggers one bounded read (34 characters at most), and **no regular
+  expression has an unbounded quantifier** (`+`, `*`, `{n,}`), so there is
+  no catastrophic backtracking. Looking for a label next to a number
+  examines a bounded number of neighbouring lines.
 - Read errors are converted to neutral codes (`pdf_unreadable`,
   `image_unreadable`…): no internal message is displayed.
 
@@ -334,6 +352,46 @@ identifies the copy.
   keyboard-only type, upload, phone, right-to-left, initials, watermark, the
   fingerprint equals the SHA-256 of the downloaded bytes) and
   `e2e/signature.seam.e2e.ts` (upload guards, §4.3).
+
+### 4.4 quinquies Suggested areas to hide
+
+"Hide something" can point out the numbers it finds in a PDF's text layer:
+IBANs, card numbers, French social security and tax numbers, and national
+numbers of the countries Cachety serves (`lib/sensitive.ts`). This adds
+**detection**, not a new way of removing content.
+
+- **Suggestions never hide anything.** They are dashed outlines and a list.
+  One becomes a mask only when the person taps it or taps "Hide them all".
+  An accepted suggestion is an ordinary mask (`lib/masks.ts`): everything
+  §4.4 says about masks applies unchanged, and it can be moved, resized or
+  removed like one drawn by hand.
+- **Validated numbers only.** A number is suggested only if its checksum
+  passes (IBAN mod 97 and country length, Luhn and a known card prefix, the
+  key of the French NIR, and so on) or, for formats without a checksum, if
+  its label is next to it ("Numéro fiscal", "BSN", "NIK"…). A bare run of
+  digits is never suggested.
+- **On the device, in memory.** The text is read during the render pass
+  that already runs (`RenderOptions.extractText`, once per document), on the
+  main thread and in the pdf.js worker, with no request. The lines and the
+  suggestions live in component state; they are never written to
+  `localStorage`, the URL, logs or the service worker, and none of it goes
+  into the output file. After detection, character positions are kept only
+  for the lines that carry a suggestion. The panel shows a partly masked
+  form (`FR76 •••• •••• 0189`): at most 4 characters at each end, and never
+  more than half of a short number.
+- **Text layer only.** Photos and scanned PDFs get no suggestions: there is
+  no OCR. Barcodes, QR codes, faces, signatures, names, addresses and dates
+  are not looked for (§6).
+- Verified by `lib/sensitive.test.ts` (published examples and wrong
+  variants for each number, labels, overlaps, time bounds on random and
+  pathological text, no unbounded regular expression),
+  `lib/text-lines.test.ts`, `lib/text-extract.test.ts` (caps, unreadable
+  page), `lib/suggestions.test.ts` (suggestions stay out of the render key;
+  undo removes exactly the suggested rectangles) and
+  `e2e/suggest.seam.e2e.ts` (on generated PDFs, the suggested rectangle
+  covers the number; once accepted, that area is black in the output, which
+  has no text layer left; rotated page; page 30 of 40; a right-to-left
+  page), then `e2e/suggest.e2e.ts` in the interface.
 
 ### 4.5 Encryption of the output file
 
@@ -462,7 +520,8 @@ service worker: it is neither a request nor a `blob:` URL.
 automatic application, target size, and for the sign tool the ink colour,
 the last tab used and whether the date is added (`signInk`, `signTab`,
 `signDate`). **No file, no watermark text, no password, no signature, no
-typed name, place or note.** Previews are `blob:` URLs revoked as soon as
+typed name, place or note, no extracted text, no suggestion and no
+dismissed suggestion.** Previews are `blob:` URLs revoked as soon as
 they are no longer needed.
 
 ## 5. Security tests
@@ -494,6 +553,11 @@ replays `out/_headers` ([e2e/helpers/server.ts](../e2e/helpers/server.ts)).
 | `e2e/signature.seam.e2e.ts` (`fromFile`) | Header announcing 40,000 × 40,000 px → `image_too_large` without decoding; junk bytes → `image_unreadable`; a PDF → `unsupported`; real HEIC decoded locally by libheif |
 | `e2e/sign.e2e.ts` | Full signing runs (draw, keyboard-only type, upload, phone, right-to-left, initials, watermark); fingerprint equal to the SHA-256 of the downloaded bytes |
 | `lib/site-copy.test.ts` (T11) | The sign page's FAQ says, in all 11 languages, that a signature can be cut out and pasted elsewhere; the legal section cites eIDAS art. 25 and Civil Code art. 1367 everywhere |
+| `lib/sensitive.test.ts` | Suggested areas: checksums on published examples and on altered ones; a label is required where there is no checksum; no suggestion on dates, phone numbers, amounts; 500 pages of text under 100 ms, pathological lines under 50 ms; no regular expression with an unbounded quantifier |
+| `lib/text-extract.test.ts`, `lib/text-lines.test.ts` | Reading stops at the caps (items, characters) and cancels the stream; an unreadable page does not fail the render; forged items are ignored; a line longer than 2,000 characters is cut |
+| `e2e/suggest.seam.e2e.ts` | Real pipeline: suggested rectangles cover the numbers of generated PDFs (rotated page, page 30 of 40, right-to-left page); accepted, the area is black in the output, which has no text layer; no suggestion on a photo or before a locked PDF is unlocked; reading the text adds at most 10 % to the render of 500 pages |
+| `e2e/suggest.e2e.ts` | Nothing is hidden before the person acts; a full run (banner, review, hide, download) only contacts the origin, with no CSP violation; only the partly masked number is displayed; watermark and sign tools, keyboard only, right-to-left, phone |
+| `lib/suggest-copy/suggest-copy.test.ts` (T12) | The "Suggestions can miss things" footer exists in all 11 languages and names barcodes and QR codes |
 | `bun audit` (CI) | No known CVE in the dependency tree |
 
 Run everything:
@@ -541,6 +605,18 @@ What the application **does not guarantee**, stated plainly:
 - **The signature can be reused** (T11): a recipient can cut it out of the
   signed copy and paste it elsewhere, as with a scanned paper signature. A
   watermark and initials limit the damage; nothing prevents it.
+- **Suggestions can miss things** (T12). Suggested areas come from the
+  PDF's text layer and from a fixed list of number formats. A number inside
+  an image, a scan or a photo is not seen (no OCR); nor is one in a format
+  that is not on the list, or one whose text layer is broken. **Barcodes and
+  QR codes are not read**: the 2D-Doc on a French tax notice, for example,
+  encodes data from the notice, and stays visible unless the person masks it
+  by hand. A suggestion can also be wrong (a reference number that passes
+  the Luhn check), or point at something the recipient needs (the IBAN on
+  bank details). This is why nothing is hidden automatically and why the
+  panel always says to check the whole page. Positions are estimated from
+  the width of each text run, with a margin: on an unusual font the box can
+  be slightly off, and the person sees it on the preview before accepting.
 - **Signed copies are flattened.** Each page is rebuilt from its pixels
   (§4.4 quater): the text of the signed copy can no longer be selected,
   searched or copied, and the file is usually larger than the original text

@@ -38,6 +38,7 @@ Self-hosting is still possible and fully supported (see below), for organisation
 - **Three simple steps:** your document, what it's for and who gets it, then preview and download. The watermark text is written for you ("purpose, recipient, date", with ready-made examples) and can be edited freely.
 - **Hidden data stripped:** selectable text, metadata and the GPS location of photos. Each page is rebuilt from pixels.
 - **Masking:** black out an IBAN, a tax number or a photo. The content is really removed, not just covered.
+- **Suggested areas to hide:** on a PDF with text, Cachety points out the IBANs, card numbers and social security, tax or ID numbers it finds, on your device, and hides the ones you pick with one tap. It never hides anything on its own, and it can miss things (photos, scans, barcodes): the page says so.
 - **Traceable copies:** add `{code}` to the text and every copy gets its own short reference, listed after download for you to keep.
 - **Several recipients:** one copy per recipient (up to 20), each with their name on it, in a single download.
 - **Password:** AES-256 PDF encryption (PDF 2.0). Ticking "Lock with a password" makes an easy-to-read password of 12 random words (132 bits, BIP39 word list); your own password or a random 256-bit one stay available. Automatic clipboard clearing.

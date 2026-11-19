@@ -6,6 +6,7 @@ import type { ErrorKey, Strings } from "@/lib/i18n";
 import { masksKey, type PageMasks } from "@/lib/masks";
 import { clampToPage, overlaysKey, type OverlayRect, type PageOverlays } from "@/lib/overlays";
 import type { WatermarkResult } from "@/lib/watermark";
+import type { PageSuggestions } from "@/lib/suggestions";
 
 export type Status = "pending" | "processing" | "ready" | "error";
 export type Filter = "all" | "attention" | "ready";
@@ -35,6 +36,14 @@ export type Doc = {
    * mais sans signature : retirée par l'utilisateur, à replacer.
    */
   overlays?: PageOverlays;
+  /**
+   * Suggestions de masquage (numéros repérés dans la couche texte). Absent :
+   * pas encore cherchées (la file les demande au prochain rendu). Elles
+   * n'entrent pas dans docStamp : seuls les masques acceptés y sont.
+   */
+  suggestions?: PageSuggestions;
+  /** Suggestions écartées (« Pas celui-ci »), par index dans `suggestions.matches`. Jamais enregistrées. */
+  dismissed?: Set<number>;
 };
 
 export const docId = (f: File) => `${f.name}:${f.size}:${f.lastModified}`;

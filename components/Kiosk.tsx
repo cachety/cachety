@@ -6,8 +6,11 @@ import { signaturePage, type Doc } from "@/lib/doc";
 import { ChevronIcon, CloseIcon } from "@/components/icons";
 import { MaskEditor } from "@/components/MaskEditor";
 import { SignatureEditor } from "@/components/SignatureEditor";
-import { setPageMasks, type PageMasks } from "@/lib/masks";
+import { masksKey, setPageMasks, type PageMasks } from "@/lib/masks";
 import type { OverlayRect } from "@/lib/overlays";
+import { SuggestionsBanner, SuggestionsPanel } from "@/components/SuggestionsPanel";
+import type { KioskSuggest } from "@/components/useSuggestions";
+import { hideAll, hideMatch, isHidden, openMatches, pagesOf, rectsOf, showAll, showMatch, shownMatches } from "@/lib/suggestions";
 
 /** Mode « signer » : placement de la signature sur l'aperçu. */
 export type KioskSigning = {
@@ -27,6 +30,7 @@ export function Kiosk({
   updating = false,
   signing,
   children,
+  suggest,
 }: {
   doc: Doc;
   onMasks: (masks: PageMasks) => void;
@@ -39,6 +43,8 @@ export function Kiosk({
   signing?: KioskSigning;
   /** Outils sous l'aperçu (masquer, ajuster) et leurs panneaux. */
   children?: React.ReactNode;
+  /** Suggestions de masquage : ce qui dépasse ce document (autres documents du lot, suggestion écartée). */
+  suggest?: KioskSuggest;
 }) {
   const t = useT();
   const result = doc.result!;
@@ -76,6 +82,65 @@ export function Kiosk({
   const firstGap = Array.from({ length: shownPages }, (_, i) => gapAfter(i)).find(Boolean) ?? null;
   const isLast = !!signing && result.pageCount > 1 && pageIndex === result.pageCount - 1;
 
+  // Suggestions de masquage (docs/prd-suggested-areas.md §5). En mode tracé,
+  // les masques du document sont travaillés sur une copie (`pending`), toutes
+  // pages confondues : accepter une suggestion l'y ajoute, « Terminé »
+  // applique le tout en un seul re-rendu, « Annuler » n'applique rien.
+  const s = doc.suggestions;
+  const [pending, setPending] = useState<PageMasks | null>(null);
+  const [bulk, setBulk] = useState<{ added: number[]; undoOthers?: () => void } | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  useEffect(() => {
+    if (maskEditing) return;
+    setPending(null);
+    setBulk(null);
+    setAnnouncement("");
+  }, [maskEditing]);
+  const staged = maskEditing ? (pending ?? doc.masks ?? {}) : doc.masks;
+  const openCount = maskEditing ? 0 : openMatches(s, doc.dismissed, doc.masks).length;
+  const toggleSuggestion = (i: number) => {
+    if (!s) return;
+    const m = s.matches[i];
+    const hidden = isHidden(s, i, staged);
+    setPending(hidden ? showMatch(staged, s, i) : hideMatch(staged, s, i));
+    setAnnouncement(t.suggest.announce(t.suggest.kinds[m.kind], m.page + 1, !hidden));
+    // L'aperçu suit : on voit ce que l'on vient de masquer.
+    const shownAt = previewOf(m.page);
+    if (shownAt >= 0) setPage(shownAt);
+  };
+  const hideEverything = (everyDocument: boolean) => {
+    if (!s) return;
+    const all = hideAll(staged, s, doc.dismissed);
+    setPending(all.masks);
+    setBulk({ added: all.added, undoOthers: everyDocument ? suggest?.onHideOthers() : undefined });
+  };
+  const undoBulk = () => {
+    if (!s || !bulk) return;
+    setPending(showAll(staged, s, bulk.added));
+    bulk.undoOthers?.();
+    setBulk(null);
+  };
+  const review = () => {
+    // On ouvre sur la première page de l'aperçu qui porte une suggestion à traiter.
+    const first = s ? openMatches(s, doc.dismissed, doc.masks).map((i) => previewOf(s.matches[i].page)).find((i) => i >= 0) : undefined;
+    if (first !== undefined) setPage(first);
+    onMaskEditing(true);
+  };
+  // Contours sur la page affichée : les suggestions ni écartées ni déjà masquées.
+  const outlines =
+    s && maskEditing
+      ? shownMatches(s, doc.dismissed)
+          .filter((i) => s.matches[i].page === pageIndex && !isHidden(s, i, staged))
+          .flatMap((i) =>
+            rectsOf(s, i).map((rect) => ({
+              rect,
+              label: t.suggest.kinds[s.matches[i].kind],
+              onAccept: () => toggleSuggestion(i),
+              onDismiss: () => suggest?.onDismiss(i),
+            }))
+          )
+      : undefined;
+
   const sigRect =
     sigPage !== null && sigPage === pageIndex
       ? (doc.overlays?.[sigPage]?.find((o) => o.image === "signature")?.rect ?? null)
@@ -88,6 +153,7 @@ export function Kiosk({
           {t.processingGeneric}
         </span>
       )}
+      {openCount > 0 && <SuggestionsBanner count={openCount} disabled={updating} onReview={review} />}
       {shownPages > 1 && (
         <nav
           aria-label={t.pagerNav}
@@ -122,9 +188,30 @@ export function Kiosk({
         page={pageIndex}
         existing={doc.masks?.[pageIndex] ?? []}
         maskable={current < shownPages}
-        onSave={(rects) => onMasks(setPageMasks(doc.masks, pageIndex, rects))}
+        onSave={(rects) => onMasks(setPageMasks(staged, pageIndex, rects))}
         editing={maskEditing}
         onEditing={onMaskEditing}
+        staged={maskEditing ? (staged?.[pageIndex] ?? []) : undefined}
+        onStaged={(rects) => setPending(setPageMasks(staged, pageIndex, rects))}
+        pendingChanges={maskEditing ? masksKey(staged) !== masksKey(doc.masks) : undefined}
+        suggestions={outlines}
+        aside={
+          s && (
+            <SuggestionsPanel
+              suggestions={s}
+              dismissed={doc.dismissed}
+              masks={staged}
+              previewPages={result.previewPageIndexes ?? Array.from({ length: shownPages }, (_, i) => i)}
+              onToggle={toggleSuggestion}
+              onDismiss={(i) => suggest?.onDismiss(i)}
+              onHideAll={() => hideEverything(false)}
+              onHideAllDocs={suggest && suggest.others > 0 ? () => hideEverything(true) : undefined}
+              bulk={bulk && { count: bulk.added.length, pages: pagesOf(s, bulk.added) }}
+              onUndoBulk={undoBulk}
+              announcement={announcement}
+            />
+          )
+        }
       >
         {signing ? (
           <SignatureEditor
@@ -184,6 +271,7 @@ export function Kiosk({
       {result.pageCount > shownPages && (
         <p className="mt-3 text-center text-sm text-encre-2">
           {signing && firstGap ? firstGap : `${t.previewLimit(shownPages, result.pageCount)} ${t.mask.limit(shownPages)}`}
+          {s && s.matches.length > 0 && ` ${t.suggest.coverAll}`}
         </p>
       )}
     </div>

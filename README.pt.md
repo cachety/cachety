@@ -38,6 +38,7 @@ Hospedar por conta própria continua possível e com suporte completo (veja abai
 - **Três passos simples:** seu documento, para que serve e quem vai receber, depois a prévia e o download. O texto da marca d'água é escrito para você ("finalidade, destinatário, data", com exemplos prontos) e pode ser editado à vontade.
 - **Dados ocultos removidos:** texto selecionável, metadados e a localização GPS das fotos. Cada página é reconstruída a partir dos pixels.
 - **Ocultação:** cubra um número de conta, o CPF ou uma foto. O conteúdo é realmente apagado, não só coberto.
+- **Áreas sugeridas:** em um PDF com texto, o Cachety aponta os números de conta (IBAN), de cartão, de seguridade social, fiscais ou de identidade (como o CPF) que encontra, no seu aparelho, e oculta com um toque os que você escolher. Ele nunca oculta nada sozinho, e pode deixar passar alguma coisa (fotos, documentos digitalizados, códigos de barras): a página avisa.
 - **Cópias rastreáveis:** adicione `{code}` ao texto e cada cópia ganha seu próprio código curto, listado depois do download para você guardar.
 - **Vários destinatários:** uma cópia por destinatário (até 20), cada uma com o nome da pessoa, num único download.
 - **Senha:** criptografia AES-256 do PDF (PDF 2.0). Marcar "Proteger com senha" cria uma senha fácil de ler com 12 palavras aleatórias (132 bits, lista de palavras BIP39); sua própria senha ou uma senha aleatória de 256 bits continuam disponíveis. Limpeza automática da área de transferência.

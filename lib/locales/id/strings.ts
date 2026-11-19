@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/id";
 
 // Bahasa Indonesia baku yang ramah, sapaan "Anda" (seperti iLovePDF, Smallpdf,
 // PDF24 versi Indonesia). Kalimat pendek, tanpa istilah teknis.
@@ -188,6 +189,7 @@ export const STRINGS_ID: Strings = {
     remove: (n: number) => `Hapus area tertutup ${n}`,
     editHint: "Geser area untuk memindahkannya, geser sudutnya untuk mengubah ukuran, atau ketuk × untuk menghapusnya.",
   },
+  suggest,
   shareReceived: (n: number) => `${n} file diterima lewat Bagikan.`,
   dragHandle: (name: string) => `Pindahkan ${name} (seret, atau pakai tombol panah atas dan bawah)`,
   positionOf: (name: string, total: number) => `Posisi ${name}, dari 1 sampai ${total}`,

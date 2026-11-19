@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/de";
 
 // Deutsch (Deutschland, Österreich, Schweiz), durchgehend „du“, wie bei den
 // meisten Verbraucher-Tools. Kurze Sätze, kein Fachjargon.
@@ -188,6 +189,7 @@ export const STRINGS_DE: Strings = {
     remove: (n: number) => `Geschwärzten Bereich ${n} entfernen`,
     editHint: "Zieh einen Bereich, um ihn zu verschieben, seine Ecke, um die Größe zu ändern, oder tippe auf ×, um ihn zu entfernen.",
   },
+  suggest,
   shareReceived: (n: number) =>
     n > 1 ? `${n} Dateien über „Teilen“ erhalten.` : `1 Datei über „Teilen“ erhalten.`,
   dragHandle: (name: string) => `${name} verschieben (ziehen oder Pfeiltasten hoch und runter)`,

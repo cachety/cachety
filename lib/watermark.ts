@@ -22,6 +22,8 @@ import {
   type Shadow,
   type TileVariation,
 } from "@/lib/watermark-variation";
+import { textCollector } from "@/lib/text-extract";
+import type { Line } from "@/lib/text-lines";
 
 export type WatermarkResult = {
   blob: Blob;
@@ -34,6 +36,10 @@ export type WatermarkResult = {
   pageCount: number;
   /** Taille cible demandée mais non atteinte, même à la compression maximale. */
   overBudget?: boolean;
+  /** Option `extractText` : lignes de texte de chaque page (index 0), pour les suggestions de masquage. */
+  lines?: Line[][];
+  /** Lecture du texte arrêtée avant la fin du document (plafond atteint ou page illisible). */
+  linesIncomplete?: boolean;
 };
 
 export type RenderOptions = {
@@ -53,6 +59,8 @@ export type RenderOptions = {
   forcePdf?: boolean;
   /** Pages (index 0) à prévisualiser ; par défaut les PREVIEW_MAX_PAGES premières. */
   previewPages?: (pageCount: number) => number[];
+  /** PDF : lire aussi la couche texte de chaque page (suggestions de masquage). Rien n'est gardé dans la sortie. */
+  extractText?: boolean;
 };
 
 const randomSeed = () => crypto.getRandomValues(new Uint32Array(1))[0];
@@ -182,6 +190,7 @@ async function watermarkPdf(
   const previews: string[] = [];
   const previewPageIndexes: number[] = [];
   const toPreview = previewSet(pageCount, options.previewPages);
+  const pageText = options.extractText ? textCollector() : null;
 
   try {
     for (let i = 1; i <= pageCount; i++) {
@@ -203,6 +212,9 @@ async function watermarkPdf(
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvas, viewport }).promise;
+      // Lecture du texte lancée maintenant, attendue en fin de page : le worker
+      // pdf.js y travaille pendant que cette page est encodée.
+      const textRead = pageText?.add(page, viewport);
 
       // Ordre voulu : les masques retirent, la signature ajoute, le filigrane
       // recouvre le tout (pas plus facile à effacer que la signature).
@@ -232,6 +244,7 @@ async function watermarkPdf(
         previews.push(URL.createObjectURL(pageBlob));
         previewPageIndexes.push(i - 1);
       }
+      await textRead;
       canvas.width = 0;
       onProgress?.(i, pageCount);
     }
@@ -246,6 +259,7 @@ async function watermarkPdf(
       previewPageIndexes,
       pageCount,
       overBudget: !!maxBytes && blob.size > maxBytes,
+      ...(pageText ? { lines: pageText.lines, linesIncomplete: pageText.incomplete } : {}),
     };
   } catch (e) {
     previews.forEach(URL.revokeObjectURL);

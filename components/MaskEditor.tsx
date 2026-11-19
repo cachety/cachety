@@ -22,6 +22,12 @@ type Gesture =
 
 const KEY_STEP = 0.01;
 
+/**
+ * Zone suggérée sur la page (numéro repéré dans le texte, lib/sensitive.ts) :
+ * un contour en pointillés, qui ne masque rien tant qu'on ne le touche pas.
+ */
+export type MaskSuggestion = { rect: MaskRect; label: string; onAccept: () => void; onDismiss: () => void };
+
 const pct = (r: MaskRect) => ({
   left: `${r.x * 100}%`,
   top: `${r.y * 100}%`,
@@ -39,6 +45,11 @@ export function MaskEditor({
   editing,
   onEditing,
   children,
+  suggestions,
+  staged,
+  onStaged,
+  pendingChanges,
+  aside,
 }: {
   src: string;
   alt: string;
@@ -55,22 +66,40 @@ export function MaskEditor({
   onEditing: (on: boolean) => void;
   /** Aperçu normal (zoom), affiché hors mode masquage. */
   children: React.ReactNode;
+  /** Zones suggérées sur cette page : contours décoratifs (le panneau des suggestions est le chemin accessible). */
+  suggestions?: MaskSuggestion[];
+  /**
+   * Mode piloté : les zones en cours sont tenues par le parent, qui peut en
+   * ajouter (suggestion acceptée) et les garde d'une page à l'autre. Sans
+   * `staged`, l'éditeur les tient lui-même, comme avant.
+   */
+  staged?: MaskRect[];
+  onStaged?: (rects: MaskRect[]) => void;
+  /** Mode piloté : y a-t-il quelque chose à appliquer, sur cette page ou une autre ? */
+  pendingChanges?: boolean;
+  /** Panneau affiché à côté de l'aperçu en mode tracé (sous l'aperçu sur téléphone). */
+  aside?: React.ReactNode;
 }) {
   const t = useT();
   const m = t.mask;
-  const [rects, setRects] = useState<MaskRect[]>(existing);
+  const [local, setLocal] = useState<MaskRect[]>(existing);
+  const rects = staged ?? local;
+  const setRects = (next: MaskRect[] | ((list: MaskRect[]) => MaskRect[])) => {
+    if (onStaged) onStaged(typeof next === "function" ? next(rects) : next);
+    else setLocal(next);
+  };
   const [draft, setDraft] = useState<MaskRect | null>(null);
   const surface = useRef<HTMLDivElement>(null);
   const gesture = useRef<Gesture | null>(null);
 
   // À l'ouverture du mode tracé : les zones appliquées redeviennent éditables.
   useEffect(() => {
-    if (editing) setRects(existing);
+    if (editing && !onStaged) setLocal(existing);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing]);
 
   const key = (list: MaskRect[]) => list.map((r) => [r.x, r.y, r.w, r.h].map((v) => v.toFixed(4)).join(",")).join(";");
-  const dirty = key(rects) !== key(existing);
+  const dirty = pendingChanges ?? key(rects) !== key(existing);
   // Zones appliquées retirées : encore noires dans l'aperçu jusqu'à « Terminé ».
   const removed = existing.filter((e) => !rects.some((r) => key([r]) === key([e])));
 
@@ -94,7 +123,7 @@ export function MaskEditor({
   };
 
   return (
-    <div className="mt-3">
+    <div className={`mt-3 ${editing && aside ? "xl:grid xl:grid-cols-[minmax(0,1fr)_18rem] xl:items-start xl:gap-x-4" : ""}`}>
       {editing && maskable ? (
         <div className="relative mx-auto w-fit">
           <img
@@ -136,6 +165,31 @@ export function MaskEditor({
               gesture.current = null;
             }}
           >
+            {suggestions?.map((s, i) => (
+              <span
+                key={`suggestion-${i}`}
+                aria-hidden
+                data-testid="suggestion-outline"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={s.onAccept}
+                className="absolute cursor-pointer rounded-sm border-2 border-dashed border-sceau bg-sceau/10"
+                style={pct(s.rect)}
+              >
+                <span className="pointer-events-none absolute bottom-full left-0 mb-0.5 max-w-[11rem] truncate rounded bg-sceau px-1.5 py-0.5 text-[11px] font-semibold leading-tight text-white">
+                  {s.label}
+                </span>
+                <span
+                  data-testid="suggestion-dismiss"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    s.onDismiss();
+                  }}
+                  className="absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full border border-sceau bg-white text-sceau shadow"
+                >
+                  <CloseIcon className="h-3 w-3" />
+                </span>
+              </span>
+            ))}
             {removed.map((r, i) => (
               <span
                 key={`removed-${i}`}
@@ -197,10 +251,11 @@ export function MaskEditor({
       ) : (
         children
       )}
+      {editing && aside}
 
       {/* Une seule barre, juste sous l'aperçu : consigne, Terminé, Annuler. */}
       {editing && (
-        <div className="mt-3 rounded-xl border border-bleu/30 bg-bleu/5 p-3">
+        <div className="mt-3 rounded-xl border border-bleu/30 bg-bleu/5 p-3 xl:col-span-2">
           <p id="mask-edit-hint" className="text-sm text-encre">
             {m.hint} {rects.length > 0 && m.editHint}
           </p>

@@ -9,6 +9,7 @@ import { STRINGS_DE } from "@/lib/locales/de/strings";
 import { STRINGS_PT } from "@/lib/locales/pt/strings";
 import { STRINGS_ID } from "@/lib/locales/id/strings";
 import { STRINGS_NL } from "@/lib/locales/nl/strings";
+import { SUGGEST_COPY } from "@/lib/suggest-copy";
 import { readPref, writePref } from "@/lib/storage";
 
 export type { Lang };
@@ -213,6 +214,8 @@ const BASE_STRINGS = {
       remove: (n: number) => `Retirer la zone masquée ${n}`,
       editHint: "Faites glisser une zone pour la déplacer, son coin pour la redimensionner, ou touchez × pour la retirer.",
     },
+    // Suggestions de masquage (docs/prd-suggested-areas.md §10) : lib/suggest-copy.
+    suggest: SUGGEST_COPY.fr,
     shareReceived: (n: number) => (n > 1 ? `${n} fichiers reçus par partage.` : `1 fichier reçu par partage.`),
     dragHandle: (name: string) => `Déplacer ${name} (glisser, ou flèches haut et bas)`,
     positionOf: (name: string, total: number) => `Position de ${name}, de 1 à ${total}`,
@@ -639,6 +642,8 @@ const BASE_STRINGS = {
       remove: (n: number) => `Remove masked area ${n}`,
       editHint: "Drag an area to move it, drag its corner to resize it, or tap × to remove it.",
     },
+    // Suggestions de masquage (docs/prd-suggested-areas.md §10) : lib/suggest-copy.
+    suggest: SUGGEST_COPY.en,
     shareReceived: (n: number) => (n > 1 ? `${n} files received via Share.` : `1 file received via Share.`),
     dragHandle: (name: string) => `Move ${name} (drag, or up and down arrow keys)`,
     positionOf: (name: string, total: number) => `Position of ${name}, from 1 to ${total}`,
@@ -1061,6 +1066,8 @@ const BASE_STRINGS = {
       remove: (n: number) => `隠す範囲 ${n} を削除`,
       editHint: "範囲はドラッグで移動、角のドラッグで大きさを変更、× で削除できます。",
     },
+    // Suggestions de masquage (docs/prd-suggested-areas.md §10) : lib/suggest-copy.
+    suggest: SUGGEST_COPY.ja,
     shareReceived: (n: number) => `共有から ${n} 件のファイルを受け取りました。`,
     dragHandle: (name: string) => `${name}を移動（ドラッグ、または上下の矢印キー）`,
     positionOf: (name: string, total: number) => `${name}の位置（1〜${total}）`,
@@ -1481,6 +1488,8 @@ const BASE_STRINGS = {
       remove: (n: number) => `删除遮挡区域 ${n}`,
       editHint: "拖动区域可移动，拖动角可调整大小，点 × 可删除。",
     },
+    // Suggestions de masquage (docs/prd-suggested-areas.md §10) : lib/suggest-copy.
+    suggest: SUGGEST_COPY.zh,
     shareReceived: (n: number) => `已通过分享收到 ${n} 个文件。`,
     dragHandle: (name: string) => `移动${name}（拖动，或使用上下方向键）`,
     positionOf: (name: string, total: number) => `${name}的位置（1 到 ${total}）`,

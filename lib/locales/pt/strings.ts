@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/pt";
 
 // Português do Brasil, tratamento por "você". Frases curtas, sem jargão,
 // compreensível também em Portugal.
@@ -187,6 +188,7 @@ export const STRINGS_PT: Strings = {
     remove: (n: number) => `Remover a área coberta ${n}`,
     editHint: "Arraste uma área para movê-la, o canto para mudar o tamanho, ou toque em × para removê-la.",
   },
+  suggest,
   shareReceived: (n: number) =>
     n > 1 ? `${n} arquivos recebidos pelo compartilhamento.` : `1 arquivo recebido pelo compartilhamento.`,
   dragHandle: (name: string) => `Mover ${name} (arraste, ou use as setas para cima e para baixo)`,

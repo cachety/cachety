@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/nl";
 
 // Nederlands (Nederland en Vlaanderen), overal "je", zoals bij de meeste
 // consumententools. Korte zinnen, geen vakjargon.
@@ -188,6 +189,7 @@ export const STRINGS_NL: Strings = {
     remove: (n: number) => `Afgedekt gebied ${n} verwijderen`,
     editHint: "Sleep een gebied om het te verplaatsen, sleep de hoek om het formaat te wijzigen, of tik op × om het te verwijderen.",
   },
+  suggest,
   shareReceived: (n: number) =>
     n === 1 ? `1 bestand ontvangen via Delen.` : `${n} bestanden ontvangen via Delen.`,
   dragHandle: (name: string) => `${name} verplaatsen (slepen, of pijltjestoetsen omhoog en omlaag)`,

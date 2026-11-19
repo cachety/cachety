@@ -1,4 +1,5 @@
 import type { ErrorKey, Strings } from "@/lib/i18n";
+import suggest from "@/lib/suggest-copy/fa";
 
 // فارسی (ایران). جمله‌های کوتاه و ساده، برای کاربران غیرفنی.
 // اعداد داخل تابع‌ها همان ارقام لاتین می‌مانند (آزمون‌ها روی آن‌ها حساب می‌کنند).
@@ -184,6 +185,7 @@ export const STRINGS_FA: Strings = {
     remove: (n: number) => `حذف ناحیهٔ پوشانده‌شده ${n}`,
     editHint: "برای جابه‌جایی، ناحیه را بکشید؛ برای تغییر اندازه، گوشه‌اش را بکشید؛ یا برای حذف، × را بزنید.",
   },
+  suggest,
   shareReceived: (n: number) => `${n} فایل از طریق اشتراک‌گذاری دریافت شد.`,
   dragHandle: (name: string) => `جابه‌جا کردن ${name} (بکشید، یا از کلیدهای بالا و پایین استفاده کنید)`,
   positionOf: (name: string, total: number) => `جایگاه ${name}، از ۱ تا ${total}`,

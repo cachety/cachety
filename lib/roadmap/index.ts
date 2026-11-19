@@ -25,7 +25,7 @@ const BY_LANG: Record<Lang, { items: Record<RoadmapId, Text>; copy: RoadmapCopy 
 
 const ITEMS: { id: RoadmapId; status: RoadmapStatus; shipped?: string }[] = [
   { id: "per-recipient-password", status: "next" },
-  { id: "suggested-areas", status: "next" },
+  { id: "suggested-areas", status: "shipped", shipped: "2026-11" },
   { id: "more-languages", status: "next" },
   { id: "purpose-from-recipient", status: "idea" },
   { id: "local-word-lists", status: "idea" },
