@@ -209,10 +209,11 @@ export function ToolLink({
       </div>
       <Link
         href={href}
-        className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border-2 border-sceau px-5 py-2.5 font-semibold text-sceau transition-colors hover:bg-sceau hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sceau focus-visible:ring-offset-2"
+        className="inline-flex max-w-full items-center gap-2 rounded-xl border-2 border-sceau px-5 py-2.5 font-semibold text-sceau transition-colors hover:bg-sceau hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sceau focus-visible:ring-offset-2 sm:shrink-0 sm:whitespace-nowrap"
       >
+        {/* Sur un petit téléphone, un libellé long passe à la ligne au lieu de dépasser de l'écran. */}
         {copy.cta}
-        <ChevronIcon direction="right" className="h-4 w-4" />
+        <ChevronIcon direction="right" className="h-4 w-4 shrink-0" />
       </Link>
     </section>
   );

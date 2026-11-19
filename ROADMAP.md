@@ -10,26 +10,6 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 
 ## Next
 
-### `dossier`: one file to send
-- **Status:** next (built on the `feat/dossier` branch, 2026-11-18; becomes
-  **shipped** on release day, planned as v1.2.0)
-- **Why:** before sending documents, people have to put them in one PDF, in
-  order, under the size a website accepts. The tools they use for that today
-  process the files on their servers.
-- **Scope:** a third mode at `/<lang>/dossier`: drop PDFs and photos; reorder,
-  rotate and remove single pages in a page grid; one PDF, one PDF per section
-  or one per document (ZIP); a size target with a readability floor and an
-  estimate before download; straighten, crop and clean up a photo of a paper
-  page; optional watermark, masks, password and fingerprint as in the other
-  tools; `#tools=dossier` in the partner embed. Pages are rebuilt from pixels,
-  as everywhere else. Two guides in all 11 languages.
-  Spec: [docs/prd-dossier.md](docs/prd-dossier.md).
-- **Before release:** the manual pass of the spec's §11.5 (real phones, a real
-  portal with a size limit, a 300-page file on an iPhone), and the native
-  review below.
-- **Later:** automatic corner detection, comparison pages for merge and
-  compress, a `/compress` entry page, per-use-case checklists (spec §14).
-
 ### `per-recipient-password`: a different password for each recipient
 - **Status:** next
 - **Why:** today one password locks every copy. If several copies travel
@@ -116,7 +96,17 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
   about DossierFacile, which must say no more than the English one. The
   German and Dutch rental guides were adapted to local paperwork (Schufa,
   Mieterselbstauskunft; werkgeversverklaring, uittreksel BRP): check those too.
-- **Suggested areas, before release:** the manual pass on real documents
+- **Dossier, released without its manual pass:** v1.2.0 went out on
+  2026-11-19 on the automated suites only. Still to do by hand
+  (`docs/prd-dossier.md` §11.5): the aeroplane-mode test on an iPhone and an
+  Android phone, a real rental file uploaded to a real portal with a size
+  limit, a 300-page file on an iPhone, and the outputs opened in Acrobat,
+  Preview and a phone mail client. Also check on a real iPhone that a
+  watermark on a text PDF is never drawn upside down (`nextTask` in
+  `lib/watermark.ts`: seen with the test WebKit on Linux, not confirmed on
+  Safari), and run the two `curl` checks of `docs/deploy.md` for the
+  `/<lang>/:page` header rules.
+- **Suggested areas, released without its manual pass:** the manual pass on real documents
   (`docs/prd-suggested-areas.md` §11.4): payslips from 3 French employers, a
   French tax notice, a German Lohnabrechnung, a Spanish nómina, bank details
   from 3 banks. Count detections and misses (counts only, no document), and
@@ -155,6 +145,22 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 
 ## Shipped
 
+### `dossier`: one file to send (2026-11, v1.2.0)
+A third tool at `/<lang>/dossier`: drop PDFs and photos; reorder, rotate and
+remove single pages in a page grid; one PDF, one PDF per section or one per
+document (ZIP); a size target (1, 2, 5, 10 MB or any value from 0.5 to 50)
+with a readability floor and an estimate before download, measured on the
+person's own pages; straighten, crop and clean up a photo of a paper page;
+optional watermark, masks with suggested areas, password and fingerprint as
+in the other tools; `#tools=dossier` in the partner embed. Pages are rebuilt
+from pixels, as everywhere else. Six guides and five comparisons (iLovePDF,
+Smallpdf, Adobe Acrobat, PDF24, Sejda) in all 11 languages. The header now
+has two lines: the site, then the three tools.
+Spec: [docs/prd-dossier.md](docs/prd-dossier.md).
+Later: automatic corner detection, a `/compress` entry page, per-use-case
+checklists, and a preview of the first pages of the whole file across
+documents (today the preview is per document) (spec §14 and §5).
+
 ### `suggested-areas`: suggested areas to hide (2026-11)
 On PDFs with a text layer, "Hide something" points out the IBANs, card
 numbers, French social security and tax numbers, and national numbers
@@ -165,7 +171,9 @@ panel, hidden with one tap, or all at once, in one document or in every
 document. Nothing is hidden automatically, and the panel always says that
 suggestions can miss things (photos and scans are not read, nor are barcodes
 and QR codes). A number is suggested only if its checksum passes or its label
-is next to it. In the watermark and sign tools, in all 11 languages.
+is next to it. IBANs are recognised for the 89 countries of the registry and
+22 more that use the format (Iran, Morocco, Algeria…). In the watermark, sign
+and Dossier tools, in all 11 languages.
 Spec: [docs/prd-suggested-areas.md](docs/prd-suggested-areas.md).
 
 ### `sign-embed`: signing on partner websites (2026-10)

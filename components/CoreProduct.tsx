@@ -1091,7 +1091,7 @@ export default function CoreProduct({
             onClick={() => reachable(s) && goTo(s)}
             disabled={!reachable(s)}
             aria-current={step === s ? "step" : undefined}
-            className={`flex min-h-10 flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm transition-colors ${
+            className={`flex min-h-10 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-2 text-sm transition-colors ${
               step === s
                 ? "bg-encre font-semibold text-white"
                 : reachable(s)
