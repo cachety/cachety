@@ -12,6 +12,7 @@ export const SITE_NL: SiteCopy = {
     guides: "Uitleg",
     privacy: "Privacy",
     menu: "Menu",
+    tools: "Tools",
     close: "Menu sluiten",
     donate: "Doneren",
     compare: "Vergelijkingen",

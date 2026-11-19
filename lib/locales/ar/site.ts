@@ -12,6 +12,7 @@ export const SITE_AR: SiteCopy = {
     guides: "الأدلة",
     privacy: "الخصوصية",
     menu: "القائمة",
+    tools: "الأدوات",
     close: "إغلاق القائمة",
     donate: "تبرّع",
     compare: "المقارنات",

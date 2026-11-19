@@ -67,6 +67,8 @@ export type SiteCopy = {
     guides: string;
     privacy: string;
     menu: string;
+    /** Nom de la barre des trois outils (filigraner, signer, dossier), pour les lecteurs d'écran. */
+    tools: string;
     close: string;
     donate: string;
     compare: string;
@@ -165,6 +167,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       guides: "Guides",
       privacy: "Confidentialité",
       menu: "Menu",
+      tools: "Outils",
       close: "Fermer le menu",
       donate: "Faire un don",
       compare: "Comparatifs",
@@ -477,6 +480,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       guides: "Guides",
       privacy: "Privacy",
       menu: "Menu",
+      tools: "Tools",
       close: "Close menu",
       donate: "Donate",
       compare: "Comparisons",
@@ -788,6 +792,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       guides: "ガイド",
       privacy: "プライバシー",
       menu: "メニュー",
+      tools: "ツール",
       close: "メニューを閉じる",
       donate: "寄付する",
       compare: "比較",
@@ -1100,6 +1105,7 @@ const BASE_COPY: Record<"fr" | "en" | "ja" | "zh", SiteCopy> = {
       guides: "指南",
       privacy: "隐私",
       menu: "菜单",
+      tools: "工具",
       close: "关闭菜单",
       donate: "捐助",
       compare: "对比",

@@ -12,6 +12,7 @@ export const SITE_FA: SiteCopy = {
     guides: "راهنماها",
     privacy: "حریم خصوصی",
     menu: "منو",
+    tools: "ابزارها",
     close: "بستن منو",
     donate: "حمایت مالی",
     compare: "مقایسه‌ها",

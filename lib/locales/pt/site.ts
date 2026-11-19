@@ -12,6 +12,7 @@ export const SITE_PT: SiteCopy = {
     guides: "Guias",
     privacy: "Privacidade",
     menu: "Menu",
+    tools: "Ferramentas",
     close: "Fechar o menu",
     donate: "Doar",
     compare: "Comparativos",

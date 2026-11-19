@@ -13,6 +13,7 @@ export const SITE_DE: SiteCopy = {
     guides: "Ratgeber",
     privacy: "Datenschutz",
     menu: "Menü",
+    tools: "Werkzeuge",
     close: "Menü schließen",
     donate: "Spenden",
     compare: "Vergleiche",

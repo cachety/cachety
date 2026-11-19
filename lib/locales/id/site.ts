@@ -12,6 +12,7 @@ export const SITE_ID: SiteCopy = {
     guides: "Panduan",
     privacy: "Privasi",
     menu: "Menu",
+    tools: "Alat",
     close: "Tutup menu",
     donate: "Donasi",
     compare: "Perbandingan",

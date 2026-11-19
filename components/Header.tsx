@@ -7,8 +7,9 @@ import SiteNav from "@/components/SiteNav";
 import { CheckIcon, ShieldIcon } from "@/components/icons";
 
 /**
- * En-tête de l'accueil : navigation, promesse, et rien de plus. Sur mobile
- * le bloc reste court : l'outil doit apparaître sans avoir à défiler.
+ * En-tête de l'accueil : navigation (deux lignes, voir SiteNav : le site, puis
+ * les trois outils), promesse, et rien de plus. Sur mobile le bloc reste
+ * court : l'outil doit apparaître sans avoir à défiler.
  * `tool="sign"`, `tool="dossier"` : même en-tête pour les pages /sign et
  * /dossier, chacune avec sa propre promesse.
  */
