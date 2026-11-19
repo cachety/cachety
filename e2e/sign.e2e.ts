@@ -583,12 +583,22 @@ describe("signer : nouvelle signature", () => {
       );
       // Sans ligne de date : la signature est émise sans délai supplémentaire.
       await page.getByRole("checkbox", { name: new RegExp(en.sign.block.date) }).uncheck();
-      // On guette l'état « en cours » avant de taper : il est passager, et un
-      // lot de pages blanches peut être fini avant qu'on ait commencé à
-      // l'attendre (le test échouait alors sans que rien ne soit cassé).
-      const started = page.getByText(en.sign.srProcessing).waitFor({ timeout: 60_000 });
+      // On guette l'état « en cours » avant de taper, et dans la page : il est
+      // passager, et un lot de pages blanches peut être fini avant qu'une
+      // attente lancée après coup, ou cadencée par l'affichage, ne le voie
+      // (sous Firefox, le test échouait ainsi dans la suite complète, jamais
+      // seul). Un MutationObserver ne peut pas manquer le changement de texte.
+      await page.evaluate((text) => {
+        const w = window as unknown as { __seenProcessing: boolean };
+        w.__seenProcessing = false;
+        const check = () => {
+          if ([...document.querySelectorAll('[role="status"]')].some((el) => el.textContent?.includes(text))) w.__seenProcessing = true;
+        };
+        new MutationObserver(check).observe(document.body, { subtree: true, childList: true, characterData: true });
+        check();
+      }, en.sign.srProcessing);
       await typeName(page, "Jane Doe");
-      await started;
+      await page.waitForFunction(() => (window as unknown as { __seenProcessing: boolean }).__seenProcessing, null, { timeout: 60_000 });
       // Même PNG, nouvel objet : l'image retirée ne doit pas être fermée sous le lot en cours.
       await page.getByLabel(en.sign.pad.typeLabel).press("End");
       await page.getByLabel(en.sign.pad.typeLabel).pressSequentially(" ");
