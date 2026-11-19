@@ -212,7 +212,9 @@ async function watermarkPdf(
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvas, viewport }).promise;
-      if (pageText) await pageText.add(page, viewport);
+      // Lecture du texte lancée maintenant, attendue en fin de page : le worker
+      // pdf.js y travaille pendant que cette page est encodée.
+      const textRead = pageText?.add(page, viewport);
 
       // Ordre voulu : les masques retirent, la signature ajoute, le filigrane
       // recouvre le tout (pas plus facile à effacer que la signature).
@@ -242,6 +244,7 @@ async function watermarkPdf(
         previews.push(URL.createObjectURL(pageBlob));
         previewPageIndexes.push(i - 1);
       }
+      await textRead;
       canvas.width = 0;
       onProgress?.(i, pageCount);
     }
