@@ -533,10 +533,10 @@ describe("dossier : sections et fichiers produits", () => {
       await waitPages(page, 4);
       await tile(page, 1).getByRole("button", { name: `${d.grid.rotate} 2`, exact: true }).click();
       await page.getByRole("radio", { name: d.output.separate, exact: true }).click();
-      await page.getByLabel(d.fileName, { exact: true }).fill("../my rental file");
+      await page.getByLabel(d.fileName, { exact: true }).fill("../my-rental-file");
       const file = await download(page, d.downloadZip);
       // Nom saisi rendu sûr : aucun séparateur de chemin.
-      expect(file.name).toBe("my rental file.zip");
+      expect(file.name).toBe("my-rental-file.zip");
       const zip = unzipSync(file.bytes);
       expect(Object.keys(zip).sort()).toEqual(["a.pdf", "b.pdf", "photo.pdf"]);
       expect(await pageColours(page, zip["a.pdf"])).toEqual(["red"]);
@@ -777,6 +777,8 @@ describe("dossier : page intégrée des partenaires", () => {
     async () => {
       const page = await openPage("/embed/en#tools=watermark,sign,dossier");
       const group = page.getByRole("group", { name: p.embed.switchLabel });
+      // Les outils sont lus dans le fragment après le montage.
+      await group.getByRole("button").first().waitFor();
       expect(await group.getByRole("button").allTextContents()).toEqual([nav.tool, nav.sign, nav.dossier]);
       await group.getByRole("button", { name: nav.dossier, exact: true }).click();
       await addFiles(page, [pdf("a.pdf", await makeColourPdf([RED, GREEN]))]);

@@ -339,8 +339,12 @@ export function useDossier({
   const startSection = useCallback(
     (index: number) => {
       setState((prev) => {
+        // Une section commence déjà à cette page : rien à couper.
+        if (prev.sections.some((s) => s.start === index)) return prev;
         const taken = prev.sections.map((s) => s.name);
+        // Première coupe : ce qui précède devient la première section, avec le premier nom.
         const first = prev.sections.length ? "" : nextName(taken);
+        if (first && index === 0) return addSection(prev, 0, first);
         return addSection(prev, index, nextName(first ? [...taken, first] : taken), first);
       });
       setOutputState("sections");

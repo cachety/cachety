@@ -578,8 +578,6 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       console.log(
         `[dossier.seam] FLOOR_RATIO mesuré ${floorRatio.toFixed(4)} (constante ${FLOOR_RATIO}), LOWEST_RATIO mesuré ${lowestRatio.toFixed(4)} (constante ${LOWEST_RATIO}) ; par document [plancher, plus bas] : ${JSON.stringify(perKind)}`
       );
-      expect(Math.abs(floorRatio / FLOOR_RATIO - 1)).toBeLessThanOrEqual(0.15);
-      expect(Math.abs(lowestRatio / LOWEST_RATIO - 1)).toBeLessThanOrEqual(0.15);
 
       // Une page de texte se comprime bien moins qu'une photo : son poids au
       // plancher est mesuré à part (octets par page A4), pour que la prédiction
@@ -589,6 +587,8 @@ describe("taille cible : budget pondéré et plancher de lisibilité", () => {
       console.log(
         `[dossier.seam] page de texte A4 : ${(natural["c-text"] / pages["c-text"]).toFixed(0)} octets au premier rendu, ${textFloor.toFixed(0)} au plancher (constante ${FLOOR_PAGE_BYTES}), ${textLowest.toFixed(0)} au plus bas (constante ${LOWEST_PAGE_BYTES}) ; page photo : ${(natural["c-photo"] / pages["c-photo"]).toFixed(0)} puis ${(floor["c-photo"] / pages["c-photo"]).toFixed(0)} puis ${(lowest["c-photo"] / pages["c-photo"]).toFixed(0)}`
       );
+      expect(Math.abs(floorRatio / FLOOR_RATIO - 1)).toBeLessThanOrEqual(0.15);
+      expect(Math.abs(lowestRatio / LOWEST_RATIO - 1)).toBeLessThanOrEqual(0.15);
       expect(Math.abs(textFloor / FLOOR_PAGE_BYTES - 1)).toBeLessThanOrEqual(0.15);
       expect(Math.abs(textLowest / LOWEST_PAGE_BYTES - 1)).toBeLessThanOrEqual(0.15);
       // La prédiction ne sous-estime aucun document du corpus de plus de sa marge.

@@ -21,24 +21,36 @@ import type { WatermarkResult } from "@/lib/watermark";
  * 0,85). Mesuré sur le corpus d'essai (bulletins de paie, pages photo,
  * dossier mixte, photo de téléphone) par e2e/dossier.seam.e2e.ts, qui échoue
  * si la mesure s'écarte de plus de 15 % de cette constante : elle ne peut pas
- * dériver en silence. Mesure du 2026-11-18 : 0,1223 (texte seul 0,240, photos
- * seules 0,063).
+ * dériver en silence.
+ *
+ * L'encodeur JPEG diffère d'un navigateur à l'autre : la constante est
+ * choisie pour tenir dans la tolérance sur les trois. Mesures du 2026-11-18 :
+ *
+ *                              Chromium   WebKit   Firefox   constante
+ *   FLOOR_RATIO                  0,1223   0,1382    0,1413       0,132
+ *   LOWEST_RATIO                 0,0688   0,0824    0,0830       0,076
+ *   FLOOR_PAGE_BYTES (octets)    38 498   44 179    45 123      42 000
+ *   LOWEST_PAGE_BYTES (octets)   21 510   26 407    26 925      24 300
+ *
+ * Le rapport dépend beaucoup du contenu (Chromium : texte seul 0,240, photos
+ * seules 0,063), d'où la seconde constante ci-dessous.
  */
-export const FLOOR_RATIO = 0.122;
+export const FLOOR_RATIO = 0.132;
 
 /**
  * Poids (octets) d'une page de texte A4 au plancher. Une page de texte se
- * comprime bien moins qu'une photo (voir les mesures ci-dessus) : avec le
- * seul rapport, un dossier de texte serait annoncé tenable à tort. Aucune
- * page n'est donc estimée sous ce poids (ou sous son propre poids, s'il est
- * plus faible). Même mesure, même garde-fou. Mesure du 2026-11-18 : 38 498 octets
- * (160 536 au premier rendu) ; une page photo du corpus : 18 260 (291 561).
+ * comprime bien moins qu'une photo : avec le seul rapport, un dossier de
+ * texte serait annoncé tenable à tort. Aucune page n'est donc estimée sous
+ * ce poids (ou sous son propre poids, s'il est plus faible). Même mesure,
+ * même garde-fou. Une page photo du corpus descend plus bas (Chromium :
+ * 18 260 octets pour 291 561 au premier rendu) : pour elle, la prédiction est
+ * prudente.
  */
-export const FLOOR_PAGE_BYTES = 38_500;
+export const FLOOR_PAGE_BYTES = 42_000;
 
 /** Mêmes mesures au dernier barreau de l'échelle (0,4), pour « Accepter une qualité plus faible ». */
-export const LOWEST_RATIO = 0.069;
-export const LOWEST_PAGE_BYTES = 21_500;
+export const LOWEST_RATIO = 0.076;
+export const LOWEST_PAGE_BYTES = 24_300;
 
 /** Ce que pèse une page à un barreau donné : un rapport, et un poids minimal par page. */
 export type FloorModel = { ratio: number; pageBytes: number };
