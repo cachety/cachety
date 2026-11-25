@@ -236,7 +236,6 @@ function pixelsCanvas(p: Pixels): AnyCanvas {
 }
 
 async function canvasPng(canvas: AnyCanvas): Promise<Uint8Array> {
-  // Hors du fil principal là où le navigateur encoderait dessus (lib/encode.ts).
   const blob = await encodeCanvas(canvas, "image/png");
   return new Uint8Array(await blob.arrayBuffer());
 }

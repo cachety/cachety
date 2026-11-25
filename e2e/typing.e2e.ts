@@ -104,9 +104,10 @@ describe("frappe du texte du filigrane", () => {
   );
 });
 
-// lib/encode.ts crée, dans les navigateurs qui encodent sur le fil principal,
-// un worker depuis un blob. Il ne reçoit que des pages déjà dessinées ; encore
-// faut-il qu'il ne puisse rien en faire sortir. Un worker né d'un blob hérite
+// La CSP autorise les workers créés depuis un blob (`worker-src 'self' blob:`).
+// Le site n'en crée aucun aujourd'hui, mais un script qui parviendrait à
+// s'exécuter le pourrait : encore faut-il qu'un tel worker ne puisse rien
+// faire sortir de la page. Un worker né d'un blob hérite
 // de la politique de la page (docs/security.md §4.1) : on le vérifie.
 describe("worker créé depuis un blob", () => {
   test(
