@@ -15,6 +15,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useT, type ErrorKey } from "@/lib/i18n";
+import { makePacer } from "@/lib/pace";
 import { readPrefill } from "@/lib/partners";
 import { readPref, writePref } from "@/lib/storage";
 import {
@@ -27,8 +28,7 @@ import {
   type InkId,
   makeCanvas,
   type Pixels,
-  recolor,
-  removeBackground,
+  prepareUpload,
   renderTypedSignature,
   type SignatureImage,
   signatureBitmap,
@@ -319,26 +319,38 @@ export function SignaturePad({
       return;
     }
     let live = true;
+    // Un réglage qui change abandonne le calcul en cours : il ne servirait plus.
+    const stale = new AbortController();
     // Curseur : l'aperçu suit sans recalculer à chaque pas.
     const timer = setTimeout(async () => {
-      let px = removeBg ? removeBackground(uploaded.pixels, threshold) : uploaded.pixels;
-      if (uploadInk !== "keep") px = recolor(px, INK[uploadInk]);
-      if (!hasInk(px)) {
-        if (live) {
-          setUploadSig(null);
-          setUploadEmpty(true);
-        }
-        return;
-      }
+      // Par tranches (lib/pace.ts) : une grande photo ne fige pas la page
+      // pendant qu'on règle la sensibilité ou qu'on change d'encre.
+      const pace = makePacer(stale.signal);
       try {
-        const sig = await finishSignature(px);
+        const px = await prepareUpload(
+          uploaded.pixels,
+          removeBg ? threshold : null,
+          uploadInk === "keep" ? null : INK[uploadInk],
+          pace
+        );
+        await pace();
+        if (!hasInk(px)) {
+          if (live) {
+            setUploadSig(null);
+            setUploadEmpty(true);
+          }
+          return;
+        }
+        const sig = await finishSignature(px, undefined, pace);
         if (live) setUploadSig(sig);
       } catch {
+        // Abandonné (réglage changé) : le calcul suivant donnera le résultat.
         if (live) setUploadSig(null);
       }
     }, 120);
     return () => {
       live = false;
+      stale.abort();
       clearTimeout(timer);
     };
   }, [uploaded, removeBg, threshold, uploadInk]);

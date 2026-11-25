@@ -1,6 +1,6 @@
 {
   "name": "cachety",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "description": "Watermark ID documents and other files privately, in your browser. Nothing is uploaded.",
   "homepage": "https://cachety.com",

@@ -121,6 +121,13 @@ base-uri 'none'; frame-ancestors 'none'; form-action 'none'
   or by hijacking relative URLs.
 - No external resource (font, CDN, analytics): fonts are self-hosted
   (`@fontsource`), and the pdf.js resources are copied into `public/pdfjs/`.
+- `worker-src 'self' blob:`: two workers, both local. pdf.js's own, served
+  from `public/pdfjs/`; and, only in browsers that would otherwise encode
+  images on the main thread and freeze the page (WebKit), a small encoder
+  created from a `blob:` URL (`lib/encode.ts`). It receives a copy of a page
+  already drawn, returns its JPEG or PNG, imports nothing, and is bound by
+  the same policy as the page that created it (`connect-src 'self'`): it has
+  no way out either.
 
 **One policy per page.** Each page carries its own React Server Components
 payload, so each has different inline bootstrap scripts. A single policy
