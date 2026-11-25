@@ -133,6 +133,17 @@ export function outputSize(quad: Quad, imgW: number, imgH: number, paper: Paper 
  * inverse), par interpolation bilinéaire. La photo d'origine n'est pas modifiée.
  */
 export function warp(src: ImageDataLike, quad: Quad, w: number, h: number): ImageDataLike {
+  const job = warpJob(src, quad, w, h);
+  job.rows(0, job.out.height);
+  return job.out;
+}
+
+/**
+ * Le même redressement, ligne par ligne : `rows(from, to)` remplit les lignes
+ * demandées de `out`. Pour traiter une grande photo sans figer la page
+ * (lib/pace.ts) ; `warp` fait tout d'un coup.
+ */
+export function warpJob(src: ImageDataLike, quad: Quad, w: number, h: number): { out: ImageDataLike; rows: (from: number, to: number) => void } {
   const width = Math.max(1, Math.floor(w));
   const height = Math.max(1, Math.floor(h));
   const m = homography(quad);
@@ -147,8 +158,9 @@ export function warp(src: ImageDataLike, quad: Quad, w: number, h: number): Imag
   const ax = m[0] * du * sw;
   const ay = m[3] * du * sh;
   const aw = m[6] * du;
-  let o = 0;
-  for (let j = 0; j < height; j++) {
+  const rows = (from: number, to: number) => {
+  let o = from * width * 4;
+  for (let j = from; j < to; j++) {
     const v = (j + 0.5) / height;
     const u0 = 0.5 / width;
     let nx = (m[0] * u0 + m[1] * v + m[2]) * sw;
@@ -186,7 +198,8 @@ export function warp(src: ImageDataLike, quad: Quad, w: number, h: number): Imag
       o += 4;
     }
   }
-  return { data: out, width, height };
+  };
+  return { out: { data: out, width, height }, rows };
 }
 
 /** Luminance perçue (Rec. 601), comme le reste du projet. */
@@ -202,6 +215,29 @@ const luma = (r: number, g: number, b: number) => 0.299 * r + 0.587 * g + 0.114 
 export function autoLevels(img: ImageDataLike, low = 2, high = 98): ImageDataLike {
   const { data, width, height } = img;
   const out = new Uint8ClampedArray(data.length);
+  const tables = levelTables(img, low, high);
+  if (!tables) out.set(data);
+  else applyTables(data, out, tables, 0, data.length);
+  return { data: out, width, height };
+}
+
+/** Courbes de `autoLevels`, une par canal ; null : image presque noire, rien à blanchir. */
+export type LevelTables = [Uint8ClampedArray, Uint8ClampedArray, Uint8ClampedArray];
+
+/** Applique les courbes aux octets `from`..`to` (multiples de 4) de `data`, dans `out`. */
+export function applyTables(data: ArrayLike<number>, out: Uint8ClampedArray, tables: LevelTables, from: number, to: number) {
+  const [r, g, b] = tables;
+  for (let i = from; i < to; i += 4) {
+    out[i] = r[data[i]];
+    out[i + 1] = g[data[i + 1]];
+    out[i + 2] = b[data[i + 2]];
+    out[i + 3] = data[i + 3];
+  }
+}
+
+/** Mesure de `autoLevels` : points noir et blanc, puis la courbe de chaque canal. */
+export function levelTables(img: ImageDataLike, low = 2, high = 98): LevelTables | null {
+  const { data, width, height } = img;
   const count = width * height;
   const hist = new Uint32Array(256);
   const lum = new Uint8Array(count);
@@ -225,10 +261,7 @@ export function autoLevels(img: ImageDataLike, low = 2, high = 98): ImageDataLik
   // point blanc : le papier blanchit quand même, l'encre reste sombre.
   const black = Math.min(at(low), Math.floor(whiteLum / 2));
   // Image presque noire : rien à blanchir.
-  if (!count || whiteLum < 16) {
-    out.set(data);
-    return { data: out, width, height };
-  }
+  if (!count || whiteLum < 16) return null;
   // Point blanc de chaque canal : moyenne des pixels dont la luminance est celle du 98e centile.
   const sum = [0, 0, 0];
   for (let p = 0, i = 0; p < count; p++, i += 4) {
@@ -248,13 +281,7 @@ export function autoLevels(img: ImageDataLike, low = 2, high = 98): ImageDataLik
     }
     return lut;
   });
-  for (let i = 0; i < data.length; i += 4) {
-    out[i] = luts[0][data[i]];
-    out[i + 1] = luts[1][data[i + 1]];
-    out[i + 2] = luts[2][data[i + 2]];
-    out[i + 3] = data[i + 3];
-  }
-  return { data: out, width, height };
+  return luts as LevelTables;
 }
 
 /**
@@ -264,14 +291,19 @@ export function autoLevels(img: ImageDataLike, low = 2, high = 98): ImageDataLik
 export function toGray(img: ImageDataLike): ImageDataLike {
   const { data, width, height } = img;
   const out = new Uint8ClampedArray(data.length);
-  for (let i = 0; i < data.length; i += 4) {
+  grayInto(data, out, 0, data.length);
+  return { data: out, width, height };
+}
+
+/** `toGray` sur les octets `from`..`to` (multiples de 4) de `data`, dans `out` (qui peut être `data`). */
+export function grayInto(data: ArrayLike<number>, out: Uint8ClampedArray, from: number, to: number) {
+  for (let i = from; i < to; i += 4) {
     const l = Math.round(luma(data[i], data[i + 1], data[i + 2]));
     out[i] = l;
     out[i + 1] = l;
     out[i + 2] = l;
     out[i + 3] = data[i + 3];
   }
-  return { data: out, width, height };
 }
 
 /** Coin déplacé de (dx, dy), borné à l'image ; les autres coins ne bougent pas. */

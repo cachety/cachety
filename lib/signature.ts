@@ -13,6 +13,8 @@ import { fileKind } from "@/lib/files";
 import { sha256Hex } from "@/lib/fingerprint";
 import { decodeHeic, isHeic } from "@/lib/heic";
 import { imageSize, tooManyPixels } from "@/lib/image-size";
+import { encodeCanvas } from "@/lib/encode";
+import { inBands, type Pacer } from "@/lib/pace";
 import { fontFace } from "@/lib/watermark-style";
 
 /** Sous-ensemble d'ImageData : suffisant pour les fonctions pures, constructible sous Bun. */
@@ -73,14 +75,38 @@ const copy = (p: Pixels): Pixels => ({ data: new Uint8ClampedArray(p.data), widt
 /** Pixels plus clairs que `threshold` (luma 0..255) deviennent transparents. Nouvelle image. */
 export function removeBackground(data: Pixels, threshold: number): Pixels {
   const out = copy(data);
-  const d = out.data;
+  fadeBackground(out.data, threshold, 0, out.data.length);
+  return out;
+}
+
+/** `removeBackground` sur place, pour les octets `from`..`to` (multiples de 4). */
+function fadeBackground(d: Uint8ClampedArray, threshold: number, from: number, to: number) {
   const full = threshold;
   const start = threshold - BACKGROUND_FEATHER;
-  for (let i = 0; i < d.length; i += 4) {
+  for (let i = from; i < to; i += 4) {
     const l = luma(d[i], d[i + 1], d[i + 2]);
     if (l > full) d[i + 3] = 0;
     else if (l > start) d[i + 3] = Math.round((d[i + 3] * (full - l)) / BACKGROUND_FEATHER);
   }
+}
+
+/**
+ * `removeBackground` puis, si `ink` est donné, `recolor`, par bandes de
+ * lignes et en rendant la main entre deux (lib/pace.ts) : une photo de
+ * 3 000 px ne fige pas la page pendant qu'on règle la sensibilité. Même
+ * résultat, au pixel près, que les deux fonctions appelées l'une après l'autre.
+ */
+export async function prepareUpload(data: Pixels, threshold: number | null, ink: string | null, pace: Pacer): Promise<Pixels> {
+  if (threshold === null && ink === null) return data;
+  const rgb = ink === null ? null : parseHex(ink);
+  if (ink !== null && !rgb) throw new Error(`couleur invalide : ${ink}`);
+  const out = copy(data);
+  await pace();
+  const row = out.width * 4;
+  await inBands(out.height, pace, (from, to) => {
+    if (threshold !== null) fadeBackground(out.data, threshold, from * row, to * row);
+    if (rgb) tint(out.data, rgb, from * row, to * row);
+  });
   return out;
 }
 
@@ -98,14 +124,18 @@ export function recolor(data: Pixels, hex: string): Pixels {
   const rgb = parseHex(hex);
   if (!rgb) throw new Error(`couleur invalide : ${hex}`);
   const out = copy(data);
-  const d = out.data;
-  for (let i = 0; i < d.length; i += 4) {
+  tint(out.data, rgb, 0, out.data.length);
+  return out;
+}
+
+/** `recolor` sur place, pour les octets `from`..`to` (multiples de 4). */
+function tint(d: Uint8ClampedArray, rgb: { r: number; g: number; b: number }, from: number, to: number) {
+  for (let i = from; i < to; i += 4) {
     if (d[i + 3] === 0) continue;
     d[i] = rgb.r;
     d[i + 1] = rgb.g;
     d[i + 2] = rgb.b;
   }
-  return out;
 }
 
 /**
@@ -206,10 +236,8 @@ function pixelsCanvas(p: Pixels): AnyCanvas {
 }
 
 async function canvasPng(canvas: AnyCanvas): Promise<Uint8Array> {
-  let blob: Blob | null;
-  if ("convertToBlob" in canvas) blob = await canvas.convertToBlob({ type: "image/png" });
-  else blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
-  if (!blob) throw new Error("export_failed");
+  // Hors du fil principal là où le navigateur encoderait dessus (lib/encode.ts).
+  const blob = await encodeCanvas(canvas, "image/png");
   return new Uint8Array(await blob.arrayBuffer());
 }
 
@@ -290,10 +318,15 @@ export async function fromFile(file: File): Promise<Pixels> {
  * (SIGNATURE_MIN_WIDTH ≤ largeur ≤ SIGNATURE_MAX_WIDTH), PNG transparent.
  * Lève `signature_empty` sans encre.
  */
-export async function finishSignature(pixels: Pixels, pad = SIGNATURE_PAD): Promise<SignatureImage> {
+export async function finishSignature(pixels: Pixels, pad = SIGNATURE_PAD, pace?: Pacer): Promise<SignatureImage> {
   const box = inkBounds(pixels, INK_ALPHA_MIN, pad);
   if (!box) throw new Error("signature_empty");
-  const source = pixelsCanvas(crop(pixels, box));
+  // Entre les étapes lourdes (parcours, copie, mise à l'échelle), on rend la main.
+  await pace?.();
+  const cut = crop(pixels, box);
+  await pace?.();
+  const source = pixelsCanvas(cut);
+  await pace?.();
   const size = exportSize(box.w, box.h);
   const out = makeCanvas(size.width, size.height);
   try {

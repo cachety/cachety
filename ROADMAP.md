@@ -145,6 +145,22 @@ Statuses: **next** (planned), **idea** (being considered), **shipped**.
 
 ## Shipped
 
+### v1.2.1: the page stays responsive while it works (2026-11)
+Typing the watermark text froze Firefox at every pause: the canvas shadow
+under each row is about a hundred times slower there than in Chromium or
+WebKit (0.3 s of frozen page per PDF page, more than 20 s per page with the
+wave option). The shadow is now drawn as one to four offset copies of the
+text, which looks the same and costs the same in every browser; rows that
+fall outside the page are skipped; and the watermark is drawn in slices of a
+few milliseconds, so typing, scrolling and the display go on in between and a
+render made useless by a new keystroke stops at once. The same pacing
+(`lib/pace.ts`) now runs the photo tools of Dossier (straighten, whiten,
+black and white) and the uploaded-signature tools (background, ink). In
+browsers that encode images on the main thread (WebKit: about 2 s for the PNG
+of a large photo), encoding moves to a worker (`lib/encode.ts`). Tests fail
+if a render or typing holds the page for long (`e2e/responsive.seam.e2e.ts`,
+`e2e/typing.e2e.ts`).
+
 ### `dossier`: one file to send (2026-11, v1.2.0)
 A third tool at `/<lang>/dossier`: drop PDFs and photos; reorder, rotate and
 remove single pages in a page grid; one PDF, one PDF per section or one per

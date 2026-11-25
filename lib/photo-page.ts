@@ -10,7 +10,8 @@ import { a4PageFor } from "@/lib/files";
 import { decodeHeic, isHeic } from "@/lib/heic";
 import { imageSize, tooManyPixels } from "@/lib/image-size";
 import type { PageEdit } from "@/lib/pages";
-import { autoLevels, clampQuad, isUsableQuad, outputSize, toGray, warp } from "@/lib/photo-fix";
+import { inBands, makePacer } from "@/lib/pace";
+import { applyTables, clampQuad, grayInto, isUsableQuad, levelTables, outputSize, warpJob } from "@/lib/photo-fix";
 
 /** Largeur maximale d'une vignette (docs/prd-dossier.md §6.3). */
 export const THUMB_MAX_WIDTH = 320;
@@ -46,8 +47,18 @@ export function pagePixels(width: number, height: number, renderScale: number) {
 /**
  * Canvas de la page d'une photo, retouches comprises. `bitmap` n'est ni fermé
  * ni modifié. Tracé inutilisable (croisé, aplati) : la photo entière.
+ *
+ * Redresser, blanchir et désaturer parcourent des millions de pixels : le
+ * travail se fait par bandes de lignes, en rendant la main entre deux
+ * (lib/pace.ts), et s'arrête si `signal` l'abandonne.
  */
-export function photoCanvas(bitmap: ImageBitmap, edit: PageEdit | undefined, renderScale: number): HTMLCanvasElement {
+export async function photoCanvas(
+  bitmap: ImageBitmap,
+  edit: PageEdit | undefined,
+  renderScale: number,
+  signal?: AbortSignal
+): Promise<HTMLCanvasElement> {
+  const pace = makePacer(signal);
   const quad = edit?.crop && isUsableQuad(clampQuad(edit.crop)) ? clampQuad(edit.crop) : null;
   let page: HTMLCanvasElement;
   if (quad) {
@@ -61,7 +72,10 @@ export function photoCanvas(bitmap: ImageBitmap, edit: PageEdit | undefined, ren
     source.ctx.drawImage(bitmap, 0, 0, source.canvas.width, source.canvas.height);
     const pixels = source.ctx.getImageData(0, 0, source.canvas.width, source.canvas.height);
     source.canvas.width = 0;
-    const straight = warp(pixels, quad, target.w, target.h);
+    await pace();
+    const job = warpJob(pixels, quad, target.w, target.h);
+    await inBands(job.out.height, pace, job.rows);
+    const straight = job.out;
     const out = makeCanvas(straight.width, straight.height);
     out.ctx.putImageData(new ImageData(straight.data as Uint8ClampedArray<ArrayBuffer>, straight.width, straight.height), 0, 0);
     page = out.canvas;
@@ -72,6 +86,7 @@ export function photoCanvas(bitmap: ImageBitmap, edit: PageEdit | undefined, ren
     out.ctx.drawImage(bitmap, 0, 0, out.canvas.width, out.canvas.height);
     page = out.canvas;
   }
+  await pace();
 
   if (edit?.rotate) {
     const quarter = edit.rotate === 90 || edit.rotate === 270;
@@ -88,11 +103,20 @@ export function photoCanvas(bitmap: ImageBitmap, edit: PageEdit | undefined, ren
   if (edit?.clean && (edit.clean.whiten || edit.clean.gray)) {
     const ctx = page.getContext("2d");
     if (!ctx) throw new Error("canvas_unavailable");
-    let pixels: { data: Uint8ClampedArray; width: number; height: number } = ctx.getImageData(0, 0, page.width, page.height);
-    // Blanchir d'abord, désaturer ensuite (docs/prd-dossier.md §5.7).
-    if (edit.clean.whiten) pixels = autoLevels(pixels);
-    if (edit.clean.gray) pixels = toGray(pixels);
-    ctx.putImageData(new ImageData(pixels.data as Uint8ClampedArray<ArrayBuffer>, pixels.width, pixels.height), 0, 0);
+    await pace();
+    const pixels = ctx.getImageData(0, 0, page.width, page.height);
+    const data = pixels.data;
+    const row = pixels.width * 4;
+    await pace();
+    // Blanchir d'abord, désaturer ensuite (docs/prd-dossier.md §5.7). Sur place :
+    // chaque pixel ne dépend que de lui-même une fois les courbes mesurées.
+    if (edit.clean.whiten) {
+      const tables = levelTables(pixels);
+      await pace();
+      if (tables) await inBands(pixels.height, pace, (from, to) => applyTables(data, data, tables, from * row, to * row));
+    }
+    if (edit.clean.gray) await inBands(pixels.height, pace, (from, to) => grayInto(data, data, from * row, to * row));
+    ctx.putImageData(pixels, 0, 0);
   }
   return page;
 }

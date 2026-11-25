@@ -24,6 +24,8 @@ import {
   type Shadow,
   type TileVariation,
 } from "@/lib/watermark-variation";
+import { encodeCanvas } from "@/lib/encode";
+import { nextTask, SLICE_MS } from "@/lib/pace";
 import { textCollector } from "@/lib/text-extract";
 import type { Line } from "@/lib/text-lines";
 
@@ -270,8 +272,18 @@ async function watermarkPdf(
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvas, viewport }).promise;
-      // WebKit : voir nextTask. Avant tout texte dessiné par nos soins (initiales, filigrane).
+      // Contournement d'un défaut de WebKit (constaté le 2026-11-19 avec le
+      // WebKit de Playwright sous Linux) : juste après que pdf.js a dessiné une
+      // page qui contient du texte, un `fillText` sur un autre canevas reprend
+      // parfois la transformation des glyphes de pdf.js. Le filigrane sortait
+      // alors retourné et deux fois trop grand, une fois sur deux sur un PDF de
+      // texte, jamais sur une photo ni un PDF sans texte. `getTransform()` et
+      // `measureText()` ne montrent rien ; remettre la transformation à zéro
+      // ou changer de type de canevas n'y change rien. Une tâche plus tard, le
+      // défaut a disparu (0 rendu fautif sur 72, contre 18 sur 36 sans la
+      // pause). Donc : avant tout texte dessiné par nos soins.
       await nextTask();
+      if (signal?.aborted) throw new Error("aborted");
       // Lecture du texte lancée maintenant, attendue en fin de page : le worker
       // pdf.js y travaille pendant que cette page est encodée.
       const textRead = pageText?.add(page, viewport);
@@ -286,7 +298,13 @@ async function watermarkPdf(
         overlaysOnPage(overlays, i - 1, initialsFor(canvas, options)),
         overlayImages
       );
-      drawWatermark(ctx, canvas.width, canvas.height, text, style, (seed + i) >>> 0);
+      // Par tranches : la page reste réactive, et un rendu remplacé s'arrête ici.
+      try {
+        await drawWatermarkPaced(ctx, canvas.width, canvas.height, text, style, (seed + i) >>> 0, signal);
+      } catch (e) {
+        canvas.width = 0;
+        throw e;
+      }
       if (options.thumbnails) thumbs.push(await thumbnailOf(canvas, options.thumbnails));
       (await probeSizes(canvas, options.sizeProbes)).forEach((bytes, k) => probeBytes[k].push(bytes));
 
@@ -363,7 +381,7 @@ async function watermarkImage(
     throw new Error("image_unreadable");
   }
   // Mode « dossier » : la photo est une page comme les autres (voir watermarkPhotoPage).
-  if (options.photoPage) return watermarkPhotoPage(bitmap, text, style, options);
+  if (options.photoPage) return watermarkPhotoPage(bitmap, text, style, options, signal);
 
   const upscale = Math.max(1, MIN_IMAGE_SIDE / Math.max(bitmap.width, bitmap.height));
   const scale = fitScale(bitmap.width, bitmap.height, upscale);
@@ -381,7 +399,12 @@ async function watermarkImage(
   paintMasks(ctx, canvas.width, canvas.height, masks?.[0]);
   paintOverlays(ctx, canvas.width, canvas.height, overlaysOnPage(overlays, 0, initialsFor(canvas, options)), overlayImages);
   await ensureFont(style, text);
-  drawWatermark(ctx, canvas.width, canvas.height, text, style, layoutSeed ?? randomSeed());
+  try {
+    await drawWatermarkPaced(ctx, canvas.width, canvas.height, text, style, layoutSeed ?? randomSeed(), signal);
+  } catch (e) {
+    canvas.width = 0;
+    throw e;
+  }
 
   // PNG par défaut (sans perte). Trop lourd pour la taille cible : JPEG,
   // avec la même échelle qualité puis résolution que les pages de PDF.
@@ -420,12 +443,13 @@ async function watermarkPhotoPage(
   bitmap: ImageBitmap,
   text: string,
   style: WatermarkStyle,
-  options: RenderOptions
+  options: RenderOptions,
+  signal?: AbortSignal
 ): Promise<WatermarkResult> {
   const { masks, maxBytes, layoutSeed, overlays, overlayImages } = options;
   let canvas: HTMLCanvasElement;
   try {
-    canvas = photoCanvas(bitmap, options.edits?.[0], RENDER_SCALE);
+    canvas = await photoCanvas(bitmap, options.edits?.[0], RENDER_SCALE, signal);
   } finally {
     bitmap.close();
   }
@@ -435,7 +459,12 @@ async function watermarkPhotoPage(
   paintOverlays(ctx, canvas.width, canvas.height, overlaysOnPage(overlays, 0, initialsFor(canvas, options)), overlayImages);
   await ensureFont(style, text);
   const seed = layoutSeed ?? randomSeed();
-  drawWatermark(ctx, canvas.width, canvas.height, text, style, seed);
+  try {
+    await drawWatermarkPaced(ctx, canvas.width, canvas.height, text, style, seed, signal);
+  } catch (e) {
+    canvas.width = 0;
+    throw e;
+  }
   const thumbs = options.thumbnails ? [await thumbnailOf(canvas, options.thumbnails)] : [];
   const probeBytes = (await probeSizes(canvas, options.sizeProbes)).map((bytes) => [bytes]);
   try {
@@ -584,7 +613,49 @@ function rowInk(
 ): RunInk {
   if (plan.accent?.kind === "deep") return { fill: rgba(plan.accent.rgb, plan.accent.opacity) };
   if (plan.accent) return { fill: rgba(plan.accent.rgb, plan.accent.opacity), outline };
-  return { fill: plan.fill, halo, outline, shadow: plan.shadow };
+  return { fill: plan.fill, halo, outline, shadow: shadowPasses(plan.shadow, plan.fill) };
+}
+
+/** Une passe d'encre décalée (pixels de la page) qui tient lieu d'ombre. */
+export type ShadowPass = { dx: number; dy: number; fill: string };
+
+const RGBA = /^rgba?\(([^)]+)\)$/;
+function parseRgba(color: string): { r: number; g: number; b: number; a: number } | null {
+  const m = RGBA.exec(color.trim());
+  if (!m) return null;
+  const [r, g, b, a = 1] = m[1].split(",").map((v) => Number(v));
+  return [r, g, b, a].every(Number.isFinite) ? { r, g, b, a } : null;
+}
+
+/**
+ * Ombre portée d'une rangée, sans l'ombre du canevas (`shadowBlur`).
+ *
+ * Firefox dessine une ombre floutée cent fois plus lentement que Chromium ou
+ * WebKit (6 ms par occurrence contre 0,05 ms, mesuré le 2026-11-25) : une
+ * page prenait 0,3 s de fil principal bloqué, et plus de 20 s en mode ondulé,
+ * où chaque glyphe porte son ombre. La page se figeait à chaque frappe.
+ *
+ * Même rendu, à l'œil, avec du texte ordinaire : le texte est redessiné décalé
+ * dans la couleur de l'ombre, sous le remplissage. Ombre nette : une passe.
+ * Ombre floue : quatre passes en croix autour du décalage, à la distance qui
+ * donne le même écart-type que le flou gaussien demandé (σ = flou / 2), et
+ * dont la superposition retrouve la densité voulue. Comme l'ombre du canevas,
+ * la densité suit celle du remplissage (alpha de l'ombre × alpha de l'encre).
+ */
+export function shadowPasses(shadow: Shadow, fill: string): ShadowPass[] {
+  const ink = parseRgba(shadow.color);
+  const alpha = ink ? ink.a * (parseRgba(fill)?.a ?? 1) : 0;
+  if (!ink || !(alpha > 0)) return [];
+  const color = (a: number) => rgba({ r: ink.r, g: ink.g, b: ink.b }, Math.round(a * 10000) / 10000);
+  if (!(shadow.blur > 0)) return [{ dx: shadow.dx, dy: shadow.dy, fill: color(alpha) }];
+  const d = shadow.blur / Math.SQRT2;
+  const each = 1 - Math.pow(1 - alpha, 1 / 4);
+  return [
+    [d, 0],
+    [-d, 0],
+    [0, d],
+    [0, -d],
+  ].map(([x, y]) => ({ dx: shadow.dx + x, dy: shadow.dy + y, fill: color(each) }));
 }
 
 export function drawWatermark(
@@ -596,6 +667,61 @@ export function drawWatermark(
   /** Graine de variation : absente, pavage fixe et variation stable (aperçus de l'interface). */
   seed?: number
 ) {
+  const steps = watermarkSteps(ctx, width, height, text, style, seed);
+  while (!steps.next().done);
+}
+
+/** Nombre d'occurrences dessinées entre deux tracés forcés (voir drawWatermarkPaced). */
+const FLUSH_EVERY = 4;
+
+/**
+ * Le même filigrane, dessiné par tranches de quelques millisecondes : entre
+ * deux tranches, le navigateur traite la frappe, le défilement et l'affichage.
+ * Un rendu devenu inutile (texte modifié, document retiré) s'arrête à la
+ * tranche suivante au lieu d'aller au bout de la page.
+ */
+export async function drawWatermarkPaced(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  text: string,
+  style?: WatermarkStyle,
+  seed?: number,
+  signal?: AbortSignal
+) {
+  const steps = watermarkSteps(ctx, width, height, text, style, seed, true);
+  let since = performance.now();
+  let pending = 0;
+  try {
+    // `next(true)` : le dessin en attente est réellement tracé avant de
+    // regarder l'heure. Chromium et WebKit enregistrent les ordres de dessin
+    // et ne les exécutent qu'au moment où le canevas sert : sans cela, tout
+    // le travail d'une page retombait en un seul bloc à la fin.
+    while (!steps.next(++pending >= FLUSH_EVERY).done) {
+      if (pending < FLUSH_EVERY) continue;
+      pending = 0;
+      if (performance.now() - since < SLICE_MS) continue;
+      await nextTask();
+      if (signal?.aborted) throw new Error("aborted");
+      since = performance.now();
+    }
+  } finally {
+    // Libère le calque si le dessin s'arrête en route.
+    steps.return();
+  }
+}
+
+/** Le dessin du filigrane, une occurrence à la fois (un `yield` après chacune). */
+function* watermarkSteps(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  text: string,
+  style?: WatermarkStyle,
+  seed?: number,
+  /** Dessin par tranches : calque lu sans coût, pour pouvoir forcer le tracé en cours de route. */
+  paced = false
+): Generator<void, void, boolean | undefined> {
   const line = text.trim();
   if (!line) return;
 
@@ -605,7 +731,7 @@ export function drawWatermark(
   // si l'on dessinait directement dessus.
   const layer = makeLayer(width, height);
   const page = ctx;
-  ctx = layer.getContext("2d") as CanvasRenderingContext2D;
+  ctx = layer.getContext("2d", paced ? { willReadFrequently: true } : undefined) as CanvasRenderingContext2D;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   // Sens de base pour l'algorithme bidi : un texte arabe ou persan qui contient
@@ -663,16 +789,45 @@ export function drawWatermark(
   const plans = planRows(rows, extent, fontSize, look.color, look.opacity, rng(variationSeed ^ ROW_STREAM));
   const tileRand = rng(variationSeed ^ TILE_STREAM);
 
-  for (const { row, offset } of rows) {
-    const ink = rowInk(plans.get(row)!, halo, outline);
-    for (let i = -nx; i <= nx; i++) {
-      const tile = tileVariation(tileRand, fontSize, room, lineWidth);
-      drawWatermarkRun(ctx, line, cx + i * stepX + shiftX, cy + offset, fontSize, look.wave, ink, tile);
-    }
-  }
+  // Le pavage couvre le cercle circonscrit à la page : plus de la moitié des
+  // occurrences tombent entièrement hors du cadre. On ne les dessine pas (le
+  // tirage de leur variation a lieu quand même : la suite du hasard, donc le
+  // dessin des autres, ne change pas).
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const glyphs = look.wave > 0 && !RTL.test(line) ? measureGlyphs(ctx, line, fontSize) : undefined;
+  const reach = Math.max(lineWidth, glyphs?.total ?? 0) / 2 + 3 * fontSize + 3 * amplitude;
+  const offPage = (x: number, y: number) => {
+    const px = cx + (x - cx) * cos - (y - cy) * sin;
+    const py = cy + (x - cx) * sin + (y - cy) * cos;
+    return px < -reach || px > width + reach || py < -reach || py > height + reach;
+  };
 
-  page.drawImage(layer, 0, 0);
-  layer.width = 0;
+  try {
+    for (const { row, offset } of rows) {
+      const ink = rowInk(plans.get(row)!, halo, outline);
+      for (let i = -nx; i <= nx; i++) {
+        const tile = tileVariation(tileRand, fontSize, room, lineWidth);
+        const x = cx + i * stepX + shiftX;
+        const y = cy + offset;
+        if (offPage(x + tile.dx, y + tile.dy)) continue;
+        drawWatermarkRun(ctx, line, x, y, fontSize, look.wave, ink, tile, glyphs);
+        // Lire un pixel oblige le navigateur à tracer ce qu'il a mis en attente.
+        if (yield) ctx.getImageData(0, 0, 1, 1);
+      }
+    }
+    page.drawImage(layer, 0, 0);
+  } finally {
+    layer.width = 0;
+  }
+}
+
+/** Glyphes d'un texte et leurs largeurs : mesurés une fois par page, pas à chaque occurrence. */
+type Glyphs = { chars: string[]; widths: number[]; total: number };
+function measureGlyphs(ctx: Pick<CanvasRenderingContext2D, "measureText">, text: string, fontSize: number): Glyphs {
+  const chars = graphemes(text);
+  const widths = chars.map((ch) => Math.max(ctx.measureText(ch).width, fontSize * 0.15));
+  return { chars, widths, total: widths.reduce((sum, w) => sum + w, 0) };
 }
 
 /**
@@ -730,8 +885,8 @@ export type RunInk = {
   halo?: { color: string; width: number };
   /** Contour sombre (outlineRgba, outlineStroke) ; absent : aucun. Exige un canevas transparent (calque). */
   outline?: { color: string; width: number };
-  /** Ombre portée du remplissage. */
-  shadow?: Shadow;
+  /** Ombre portée du remplissage : passes décalées (shadowPasses), jamais l'ombre du canevas. */
+  shadow?: ShadowPass[];
 };
 
 /**
@@ -747,9 +902,15 @@ export function drawWatermarkRun(
   fontSize: number,
   wave: number,
   ink: RunInk,
-  tile: TileVariation = NO_TILE_VARIATION
+  tile: TileVariation = NO_TILE_VARIATION,
+  /** Glyphes déjà mesurés (mode ondulé) ; absents : mesurés ici. */
+  glyphs?: Glyphs
 ) {
-  const paint = (s: string, px: number, py: number) => {
+  // Décalages de l'ombre dans le repère de l'occurrence, puis du glyphe : comme
+  // l'ombre du canevas, elle tombe dans la même direction sur la page quelles
+  // que soient l'inclinaison de la rangée et celle de la lettre.
+  let shadow: { x: number; y: number; fill: string }[] = [];
+  const paint = (s: string, px: number, py: number, turned = 0) => {
     if (ink.halo) {
       ctx.strokeStyle = ink.halo.color;
       ctx.lineWidth = ink.halo.width;
@@ -769,27 +930,33 @@ export function drawWatermarkRun(
       ctx.fillText(s, px, py);
       ctx.globalCompositeOperation = op;
     }
+    // L'ombre : sous le remplissage, par-dessus le halo et le contour.
+    if (shadow.length) {
+      const c = turned ? Math.cos(turned) : 1;
+      const n = turned ? Math.sin(turned) : 0;
+      for (const p of shadow) {
+        ctx.fillStyle = p.fill;
+        ctx.fillText(s, px + p.x * c + p.y * n, py - p.x * n + p.y * c);
+      }
+    }
     ctx.fillStyle = ink.fill;
-    // L'ombre ne vaut que pour le remplissage : posée sur l'évidement
-    // (destination-out), elle creuserait aussi la page autour des lettres.
-    if (ink.shadow) {
-      ctx.shadowColor = ink.shadow.color;
-      ctx.shadowOffsetX = ink.shadow.dx;
-      ctx.shadowOffsetY = ink.shadow.dy;
-      ctx.shadowBlur = ink.shadow.blur;
-    }
     ctx.fillText(s, px, py);
-    if (ink.shadow) {
-      ctx.shadowColor = "rgba(0, 0, 0, 0)";
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-      ctx.shadowBlur = 0;
-    }
   };
 
   ctx.save();
   ctx.translate(x + tile.dx, y + tile.dy);
   ctx.rotate(tile.tilt);
+  if (ink.shadow?.length) {
+    // Inverse de la partie linéaire de la transformation courante (rotation
+    // de la page et de l'occurrence, échelle éventuelle d'un aperçu).
+    const m = ctx.getTransform();
+    const det = m.a * m.d - m.b * m.c || 1;
+    shadow = ink.shadow.map((p) => ({
+      x: (m.d * p.dx - m.c * p.dy) / det,
+      y: (-m.b * p.dx + m.a * p.dy) / det,
+      fill: p.fill,
+    }));
+  }
   // Écriture de droite à gauche (arabe, hébreu…) : poser les lettres une à une
   // inverserait le sens et casserait les liaisons. Le texte reste alors droit
   // (décalage et inclinaison propres à l'occurrence conservés).
@@ -799,9 +966,7 @@ export function drawWatermarkRun(
     return;
   }
 
-  const chars = graphemes(text);
-  const widths = chars.map((ch) => Math.max(ctx.measureText(ch).width, fontSize * 0.15));
-  const total = widths.reduce((sum, w) => sum + w, 0);
+  const { chars, widths, total } = glyphs ?? measureGlyphs(ctx, text, fontSize);
   ctx.textAlign = "center";
   let cursor = -total / 2;
   for (let i = 0; i < chars.length; i++) {
@@ -811,7 +976,7 @@ export function drawWatermarkRun(
     ctx.save();
     ctx.translate(mid, dy);
     ctx.rotate(angle);
-    paint(chars[i], 0, 0);
+    paint(chars[i], 0, 0, angle);
     ctx.restore();
     cursor += width;
   }
@@ -857,34 +1022,6 @@ export function waveDisplacement(
 
 export function watermarkMaxLineWidth(width: number, height: number, lineHeight: number) {
   return Math.SQRT2 * Math.min(width, height) * 0.9 - lineHeight;
-}
-
-/**
- * Rend la main à la boucle d'événements, le temps d'une tâche.
- *
- * Contournement d'un défaut de WebKit (constaté le 2026-11-19 avec le WebKit
- * de Playwright sous Linux) : juste après que pdf.js a dessiné une page qui
- * contient du texte, un `fillText` sur un autre canevas reprend parfois la
- * transformation des glyphes de pdf.js. Le filigrane sort alors retourné et
- * deux fois trop grand, donc illisible : une fois sur deux sur un PDF de texte,
- * jamais sur une photo ni sur un PDF sans texte. `getTransform()` et
- * `measureText()` ne montrent rien d'anormal ; remettre la transformation à
- * zéro ou changer de type de canevas n'y change rien. Une tâche plus tard,
- * le défaut a disparu (0 rendu fautif sur 72, contre 18 sur 36 sans la pause).
- *
- * MessageChannel plutôt que setTimeout : pas de plancher de 4 ms par page
- * (minuteries imbriquées), ni de ralentissement dans un onglet en arrière-plan.
- */
-function nextTask(): Promise<void> {
-  if (typeof MessageChannel === "undefined") return new Promise((resolve) => setTimeout(resolve, 0));
-  return new Promise((resolve) => {
-    const { port1, port2 } = new MessageChannel();
-    port1.onmessage = () => {
-      port1.close();
-      resolve();
-    };
-    port2.postMessage(null);
-  });
 }
 
 async function ensureFont(style: WatermarkStyle, text: string) {
@@ -942,16 +1079,7 @@ function downscale(canvas: HTMLCanvasElement, scale: number) {
   return small;
 }
 
-function canvasToBlob(
-  canvas: HTMLCanvasElement,
-  type: string,
-  quality?: number
-): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error("export_failed"))),
-      type,
-      quality
-    );
-  });
+function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob> {
+  // Hors du fil principal là où le navigateur encoderait dessus (lib/encode.ts).
+  return encodeCanvas(canvas, type, quality);
 }
