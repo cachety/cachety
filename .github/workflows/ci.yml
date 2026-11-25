@@ -41,6 +41,8 @@ jobs:
   test:
     name: Unitaires + navigateur (Chromium)
     runs-on: ubuntu-latest
+    # Durée habituelle : 10 min. Une page bloquée ne doit pas tenir la file 6 h.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -100,6 +102,9 @@ jobs:
     # cassent en premier. Firefox reste indicatif.
     name: Suite navigateur (${{ matrix.browser }})
     runs-on: ubuntu-latest
+    # Durée habituelle : 10 min (Firefox), 25 min (WebKit). Sans limite, une
+    # page bloquée pour de bon tient la tâche 6 h (vu le 2026-11-25, v1.2.1).
+    timeout-minutes: 60
     continue-on-error: ${{ matrix.browser == 'firefox' }}
     strategy:
       fail-fast: false

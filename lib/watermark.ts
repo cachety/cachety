@@ -1080,6 +1080,5 @@ function downscale(canvas: HTMLCanvasElement, scale: number) {
 }
 
 function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob> {
-  // Hors du fil principal là où le navigateur encoderait dessus (lib/encode.ts).
   return encodeCanvas(canvas, type, quality);
 }

@@ -31,7 +31,7 @@ These are checked by tests and in review. A change that breaks one is not merged
 4. **Right-to-left works.** Use logical Tailwind classes (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`, `text-start`) instead of `ml-`, `mr-`, `pl-`, `pr-`, `left-`, `right-`, `text-left`.
 5. **Plain words.** Most users are not technical. Short sentences, no jargon, and no promise the code doesn't keep (see [docs/security.md](docs/security.md)).
 6. **Comparison pages are factual and fair.** Every claim about another tool cites the vendor's public page (`sources`), carries the date it was checked (`checked`), and each page says honestly when the other tool is the better choice.
-7. **The page never freezes.** Everything runs on the visitor's main thread, next to typing and scrolling. Work on a whole page or photo goes in slices through `lib/pace.ts` and stops when it is no longer wanted; image encoding goes through `lib/encode.ts`; no canvas shadow (`shadowBlur`), which Firefox draws a hundred times slower than other browsers.
+7. **The page never freezes.** Everything runs on the visitor's main thread, next to typing and scrolling. Work on a whole page or photo goes in slices through `lib/pace.ts` and stops when it is no longer wanted; image encoding goes through `lib/encode.ts` (on the main thread: read its header before trying a worker); no canvas shadow (`shadowBlur`), which Firefox draws a hundred times slower than other browsers.
 
 ## Where things live
 

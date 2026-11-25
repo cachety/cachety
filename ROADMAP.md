@@ -155,11 +155,15 @@ fall outside the page are skipped; and the watermark is drawn in slices of a
 few milliseconds, so typing, scrolling and the display go on in between and a
 render made useless by a new keystroke stops at once. The same pacing
 (`lib/pace.ts`) now runs the photo tools of Dossier (straighten, whiten,
-black and white) and the uploaded-signature tools (background, ink). In
-browsers that encode images on the main thread (WebKit: about 2 s for the PNG
-of a large photo), encoding moves to a worker (`lib/encode.ts`). Tests fail
-if a render or typing holds the page for long (`e2e/responsive.seam.e2e.ts`,
-`e2e/typing.e2e.ts`).
+black and white) and the uploaded-signature tools (background, ink). Tests
+fail if a render or typing holds the page for long
+(`e2e/responsive.seam.e2e.ts`, `e2e/typing.e2e.ts`).
+
+Known limit: WebKit (Safari) encodes images on the main thread, so the PNG
+of a large photo still holds the page (about 2 s for 3,000 px in the Linux
+test browser; real Safari not measured). Moving the encoding to a worker was
+tried and withdrawn before release: in WebKit it made the page hang for good
+within a few dozen signing batches (`lib/encode.ts`).
 
 ### `dossier`: one file to send (2026-11, v1.2.0)
 A third tool at `/<lang>/dossier`: drop PDFs and photos; reorder, rotate and
