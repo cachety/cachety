@@ -23,3 +23,17 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+  # Images de base du Dockerfile, épinglées par digest.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      # Node suit .nvmrc (24) : une version majeure se relève à la main, avec
+      # node-version de la CI et @types/node.
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
+      # Bun suit bun-version de ci.yml, que Dependabot ne voit pas : seul le
+      # digest de la même version est rafraîchi, la version se relève à la main.
+      - dependency-name: "oven/bun"
+        update-types: ["version-update:semver-major", "version-update:semver-minor", "version-update:semver-patch"]
