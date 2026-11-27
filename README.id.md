@@ -78,6 +78,18 @@ bunx serve out     # atau server file statis apa pun
 
 `out/` bisa langsung ditaruh di hosting statis mana pun. Setiap halaman membawa Content-Security-Policy sendiri dalam tag `<meta>`, jadi penguncian jaringan tetap bekerja tanpa header HTTP kami. Untuk mendapatkan perlindungan yang sama dengan cachety.com, pasang juga header dari `out/_headers`. Lihat [docs/deploy.md](docs/deploy.md) untuk Cloudflare Pages, GitHub Pages, dan server lain.
 
+### Dengan Docker
+
+Untuk menjalankan Cachety di komputer Anda sendiri, cukup dengan Docker:
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+Lalu buka http://localhost:8000. Gunakan `:edge` untuk versi terbaru dari `main`, atau tag versi seperti `:1.3.0`. Untuk membangun image sendiri: `docker build -t cachety .`
+
+Image ini ditujukan untuk penggunaan lokal: `127.0.0.1` menjaganya tetap di luar jaringan Anda, dan image ini menyajikan situs tanpa header keamanan HTTP. Untuk menyajikan Cachety secara publik, letakkan di belakang reverse proxy HTTPS Anda sendiri dan pasang header dari `out/_headers`.
+
 ## Pasang Cachety di situs Anda (mitra)
 
 Agen properti, platform HR, komunitas: situs yang disetujui bisa menampilkan alat ini secara lengkap di halamannya sendiri, supaya orang yang mengirim dokumen bisa langsung memberi watermark di sana.

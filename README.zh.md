@@ -78,6 +78,18 @@ bunx serve out     # or any static file server
 
 `out/` 可以原样放到任何静态托管服务上。每个页面都在 `<meta>` 标签中自带 Content-Security-Policy，所以即使没有我们的 HTTP 响应头，网络封锁依然有效。如果想获得和 cachety.com 一样的防护，还需要设置 `out/_headers` 中的响应头。Cloudflare Pages、GitHub Pages 和其他服务器的部署方法，请见 [docs/deploy.md](docs/deploy.md)。
 
+### 使用 Docker
+
+只需安装 Docker，即可在您自己的电脑上运行 Cachety：
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+然后打开 http://localhost:8000。使用 `:edge` 获取 `main` 的最新版本，或使用 `:1.3.0` 这样的版本标签。如需自行构建镜像：`docker build -t cachety .`
+
+该镜像仅供本地使用：`127.0.0.1` 使其不会暴露在您的网络中，并且它提供的网站不带 HTTP 安全响应头。如需公开提供 Cachety，请将其置于您自己的 HTTPS 反向代理之后，并设置 `out/_headers` 中的响应头。
+
 ## 在你的网站上嵌入 Cachety（合作伙伴）
 
 房产中介、人力资源平台、各类组织：经批准的网站可以在自己的页面中显示完整的工具，让给你们发文件的人当场加水印。

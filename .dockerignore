@@ -1,0 +1,32 @@
+# Contexte de construction : les sources seulement. Sans .git, scripts/seo.ts
+# date le sitemap du jour (repli prévu) ; l'image publiée par la CI reprend
+# l'export testé et n'est pas concernée.
+.git
+.github
+.codegraph
+.worktrees
+.cursor
+.vscode
+.idea
+.wrangler
+.vercel
+node_modules
+.next
+out
+public/pdfjs
+public/fonts
+coverage
+test-results
+playwright-report
+logs
+publications
+core
+core.*
+*.log
+.env
+.env*.local
+.dev.vars
+.dev.vars.*
+*.tsbuildinfo
+Dockerfile
+.dockerignore

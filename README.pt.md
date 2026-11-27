@@ -78,6 +78,18 @@ bunx serve out     # ou qualquer servidor de arquivos estáticos
 
 A pasta `out/` pode ser colocada como está em qualquer hospedagem estática. Cada página leva a própria Content-Security-Policy numa tag `<meta>`, então o bloqueio de rede continua funcionando sem os nossos cabeçalhos HTTP. Para ter a mesma proteção do cachety.com, configure também os cabeçalhos de `out/_headers`. Veja [docs/deploy.md](docs/deploy.md) para Cloudflare Pages, GitHub Pages e outros servidores.
 
+### Com Docker
+
+Para rodar o Cachety no seu próprio computador, sem instalar nada além do Docker:
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+Depois abra http://localhost:8000. Use `:edge` para a versão mais recente de `main`, ou uma tag de versão como `:1.3.0`. Para construir a imagem você mesmo: `docker build -t cachety .`
+
+A imagem foi feita para uso local: `127.0.0.1` a mantém fora da sua rede, e ela serve o site sem os cabeçalhos de segurança HTTP. Para servir o Cachety publicamente, coloque-a atrás do seu próprio proxy reverso HTTPS e configure os cabeçalhos de `out/_headers`.
+
 ## Coloque o Cachety no seu site (parceiros)
 
 Imobiliárias, plataformas de RH, associações: sites aprovados podem mostrar a ferramenta completa nas próprias páginas, para que quem envia documentos coloque a marca d'água ali mesmo.

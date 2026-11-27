@@ -100,6 +100,18 @@ bunx serve out     # or any static file server
 
 Le dossier `out/` peut être déposé tel quel sur n'importe quel hébergement statique. Chaque page embarque sa propre Content-Security-Policy dans une balise `<meta>`, si bien que le verrou réseau fonctionne même sans nos en-têtes HTTP. Pour obtenir la même protection que cachety.com, configurez aussi les en-têtes de `out/_headers`. Voir [docs/deploy.md](docs/deploy.md) pour Cloudflare Pages, GitHub Pages et d'autres serveurs.
 
+### Avec Docker
+
+Pour lancer Cachety sur votre propre machine, sans rien installer d'autre que Docker :
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+Ouvrez ensuite http://localhost:8000. Utilisez `:edge` pour la dernière version de `main`, ou un numéro de version comme `:1.3.0`. Pour construire l'image vous-même : `docker build -t cachety .`
+
+L'image est prévue pour un usage local : `127.0.0.1` la garde hors de votre réseau, et elle sert le site sans les en-têtes de sécurité HTTP. Pour exposer Cachety publiquement, placez-la derrière votre propre proxy inverse HTTPS et configurez les en-têtes de `out/_headers`.
+
 ## Intégrer Cachety à votre site (partenaires)
 
 Agences immobilières, plateformes RH, associations : les sites approuvés peuvent afficher l'outil complet dans leurs pages, pour que ceux qui leur envoient des documents les filigranent sur place.

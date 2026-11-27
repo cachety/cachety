@@ -78,6 +78,18 @@ bunx serve out     # of een andere statische bestandsserver
 
 `out/` kun je zo op elke statische host zetten. Elke pagina heeft een eigen Content-Security-Policy in een `<meta>`-tag, dus de netwerkblokkade werkt ook zonder onze HTTP-headers. Voor dezelfde bescherming als cachety.com stel je ook de headers uit `out/_headers` in. Zie [docs/deploy.md](docs/deploy.md) voor Cloudflare Pages, GitHub Pages en andere servers.
 
+### Met Docker
+
+Om Cachety op je eigen computer te draaien, met alleen Docker geïnstalleerd:
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+Open daarna http://localhost:8000. Gebruik `:edge` voor de nieuwste `main`, of een versietag zoals `:1.3.0`. De image zelf bouwen: `docker build -t cachety .`
+
+De image is bedoeld voor lokaal gebruik: `127.0.0.1` houdt hem buiten je netwerk, en hij serveert de site zonder de HTTP-beveiligingsheaders. Wil je Cachety publiek aanbieden, zet hem dan achter je eigen HTTPS-reverse proxy en stel de headers uit `out/_headers` in.
+
 ## Cachety op je eigen website (partners)
 
 Makelaars, hr-platforms, verenigingen: goedgekeurde websites kunnen de volledige tool op hun eigen pagina's tonen, zodat mensen hun documenten daar meteen van een watermerk voorzien.

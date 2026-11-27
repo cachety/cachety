@@ -78,6 +78,18 @@ bunx serve out     # or any static file server
 
 `out/` は、そのままどんな静的ホスティングにも置けます。各ページは `<meta>` タグに自分専用の Content-Security-Policy を持っているので、私たちの HTTP ヘッダーがなくても通信の制限は働きます。cachety.com と同じ保護を得るには、`out/_headers` にあるヘッダーも設定してください。Cloudflare Pages、GitHub Pages、その他のサーバーについては [docs/deploy.md](docs/deploy.md) をご覧ください。
 
+### Docker で動かす
+
+Docker さえあれば、ほかに何もインストールせずに自分のパソコンで Cachety を動かせます。
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+そのあと http://localhost:8000 を開いてください。`main` の最新版には `:edge` を、特定のバージョンには `:1.3.0` のようなタグを使います。イメージを自分でビルドするには `docker build -t cachety .` を実行します。
+
+このイメージはローカルでの利用を想定しています。`127.0.0.1` を指定しているのでネットワーク上の他の機器からは見えず、HTTP のセキュリティヘッダーなしでサイトを配信します。Cachety を公開する場合は、ご自身の HTTPS リバースプロキシの後ろに置き、`out/_headers` にあるヘッダーを設定してください。
+
 ## あなたのサイトに Cachety を埋め込む（パートナー）
 
 不動産会社、人事プラットフォーム、団体など、承認されたサイトは自分のページにツールをそのまま表示できます。書類を送る人が、その場で透かしを入れられます。

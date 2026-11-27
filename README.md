@@ -100,6 +100,18 @@ bunx serve out     # or any static file server
 
 `out/` can be dropped as-is onto any static host. Each page carries its own Content-Security-Policy in a `<meta>` tag, so the network lock still works without our HTTP headers. To get the same protection as cachety.com, also set the headers from `out/_headers`. See [docs/deploy.md](docs/deploy.md) for Cloudflare Pages, GitHub Pages and other servers.
 
+### With Docker
+
+To run Cachety on your own machine, with nothing to install but Docker:
+
+```sh
+docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
+```
+
+Then open http://localhost:8000. Use `:edge` for the latest `main`, or a release number such as `:1.3.0`. To build the image yourself: `docker build -t cachety .`
+
+The image is meant for local use: `127.0.0.1` keeps it off your network, and it serves the site without the HTTP security headers. To serve Cachety publicly, put it behind your own HTTPS reverse proxy and set the headers from `out/_headers`.
+
 ## Put Cachety on your website (partners)
 
 Letting agencies, HR platforms, associations: approved websites can show the full tool in their own pages, so the people who send them documents can watermark them on the spot.

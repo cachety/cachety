@@ -18,11 +18,12 @@ Cachety is a static export (`out/`). It can be hosted anywhere that serves files
 
 `.github/workflows/ci.yml` runs on every push and pull request:
 
-1. `test` job: dependency audit, unit tests, static export, export security tests, then the Chromium browser suite. On a push to `main`, it uploads the tested `out/` as an artifact.
+1. `test` job: dependency audit, unit tests, static export, export security tests, then the Chromium browser suite. On a push to `main` or a `v*` tag, it uploads the tested `out/` as an artifact.
 2. `browsers` job: the same browser suite on WebKit (blocking) and Firefox (informational).
 3. `deploy` job: **only on a push to `main`, and only if `test` and `browsers` passed.** It downloads the exact `out/` that was tested and publishes it with Wrangler, which is pinned in `bun.lock`.
+4. `image` job: on a push to `main` (`edge` tag) or a `v*` tag (`1.2.3`, `1.2`, `1`, `latest`), after `test` and `browsers`. It packages the same tested `out/` into the Docker image (nginx), checks that pages, the pdf.js worker and the 404 are served, then publishes it for amd64 and arm64 to `ghcr.io/<owner>/cachety` with a build attestation.
 
-Pull requests and the weekly audit run never deploy.
+Pull requests and the weekly audit run never deploy or publish an image; a `v*` tag publishes the image but does not redeploy the site.
 
 **Manual publish.** To force a deploy without a new commit (for example after adding the secrets, or after a Cloudflare setting change): GitHub → *Actions* → *CI* → *Run workflow*, pick the `main` branch, keep **Publish** checked, and run. The full test suite runs first, as for a push; untick **Publish** to only run the tests. Manual runs on other branches never deploy.
 
@@ -56,6 +57,15 @@ From then on, every push to `main` that passes the tests is live within a few mi
 ```sh
 bun run deploy     # build, then wrangler pages deploy
 ```
+
+### Docker image (ghcr.io)
+
+The `image` job needs no secret: it pushes with the workflow's own token. Once:
+
+- After the first publish, GitHub → your profile or organisation → *Packages* → `cachety` → *Package settings* → *Change visibility* → **Public**. A new package starts private, so `docker pull` without logging in fails until then.
+- Version tags on the image come from git tags: `git tag v1.3.0 && git push origin v1.3.0`. Without one, only `edge` and `sha-…` exist.
+
+Running it locally: see *Self-hosting* → *With Docker* in the [README](../README.md).
 
 ### Checking a deployment
 
@@ -125,3 +135,5 @@ Then: GitHub → *Settings* → *Pages* → *Source: GitHub Actions*, and add `c
 ## Any other host (Nginx, Apache, your own server)
 
 Serve `out/` with "try `$uri`, `$uri.html`, `$uri/index.html`" resolution. Reproduce the headers from `out/_headers`: the `/*` block applies to everything, and each path-specific block adds that page's CSP. The `<meta>` CSP in each page already keeps the network lock, so the headers mainly add `frame-ancestors`, HSTS and cross-origin isolation.
+
+For local use, the Docker image does this with nginx (`docker/nginx.conf`), without the headers: see the README.
