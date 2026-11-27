@@ -86,7 +86,7 @@ bunx serve out     # or any static file server
 docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
 ```
 
-然后打开 http://localhost:8000。使用 `:edge` 获取 `main` 的最新版本，或使用 `:1.2.1` 这样的版本标签。如需自行构建镜像：`docker build -t cachety .`
+然后打开 http://localhost:8000。使用 `:edge` 获取 `main` 的最新版本，或使用 `:1.3.0` 这样的版本标签。如需自行构建镜像：`docker build -t cachety .`
 
 该镜像仅供本地使用：`127.0.0.1` 使其不会暴露在您的网络中，并且它提供的网站不带 HTTP 安全响应头。如需公开提供 Cachety，请将其置于您自己的 HTTPS 反向代理之后，并设置 `out/_headers` 中的响应头。
 

@@ -195,7 +195,9 @@ therefore copies each page's policy into a `<meta http-equiv>` tag placed
 before any script on that page ([scripts/gen-sw.mjs](../scripts/gen-sw.mjs)).
 A self-hosted deployment thus keeps the network lock; only
 `frame-ancestors`, HSTS and the other HTTP headers must be reconfigured on
-the server (see §6).
+the server (see §6). The Docker image published by the project
+(`ghcr.io/cachety/cachety`, see §6) is such a deployment: nginx serves
+`out/` with the `<meta>` policies only, for use on one's own machine.
 
 ### 4.2 Script injection (XSS)
 
@@ -583,10 +585,18 @@ script, iframe or pixel, and no change to `connect-src`, `img-src` or
   run the `postinstall` scripts of unapproved dependencies.
 - `bun audit` on every CI run **and every Monday** (scheduled trigger), so
   that a published CVE fails CI without waiting for a commit.
-- Dependabot opens PRs for npm dependencies and GitHub Actions.
-- GitHub Actions **pinned by commit SHA**, `permissions: contents: read`,
-  `persist-credentials: false`: a compromised job has no write token.
-- Bun version pinned in CI.
+- Dependabot opens PRs for npm dependencies, GitHub Actions and the Docker
+  base images (pinned by digest; the Node and Bun versions themselves are
+  raised by hand, in step with CI).
+- GitHub Actions **pinned by commit SHA**, `persist-credentials: false`, and
+  `permissions: contents: read` by default: the test jobs have no write
+  token. Only the `image` job gets `packages: write`, `id-token: write` and
+  `attestations: write`, to push to ghcr.io and sign its build provenance.
+  It runs only after the blocking suites pass, only on a push to `main` or a
+  `v*` tag (never on a pull request), and packages the export already
+  tested, without rebuilding it. The `deploy` job uses a Cloudflare token
+  limited to Pages.
+- Bun version pinned in CI, and in the Dockerfile.
 - No source map published.
 - Deliberately few runtime dependencies: `pdfjs-dist` (Mozilla), `pdf-lib`,
   `pdf-lib-encrypt`, `fflate`, `libheif-js`, React/Next.
@@ -761,11 +771,17 @@ What the application **does not guarantee**, stated plainly:
 - **Trust in the host.** The code is served by Cloudflare Pages; a
   compromised deployment could serve different code. The repository is
   public and the site can be self-hosted with one command (see README) for
-  anyone who does not want to trust any deployment.
+  anyone who does not want to trust any deployment. The Docker image adds
+  two parties to trust: GitHub's registry (ghcr.io) and the base images it
+  is built from (nginx, Node, Bun, pinned by digest). Each published image
+  carries a signed build attestation tied to the commit; `docker build`
+  from the repository avoids both.
 - **Self-hosting**: the `<meta>` CSP is present, but HTTPS, HSTS,
   `X-Frame-Options`/`frame-ancestors`, `X-Content-Type-Options`,
   `Referrer-Policy`, `Permissions-Policy` and COOP/CORP must be configured
-  on the server, based on `out/_headers`.
+  on the server, based on `out/_headers`. The Docker image sets none of
+  these headers: it is meant for local use (`-p 127.0.0.1:…`); serving it to
+  others needs an HTTPS reverse proxy that adds them.
 - **Resource exhaustion**: files, pages and pixels are capped (§4.3). An
   AVIF image has no header reading: its dimensions are left to the
   browser's decoder. The same applies to a HEIC file when the browser

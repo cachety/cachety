@@ -86,7 +86,7 @@ Untuk menjalankan Cachety di komputer Anda sendiri, cukup dengan Docker:
 docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
 ```
 
-Lalu buka http://localhost:8000. Gunakan `:edge` untuk versi terbaru dari `main`, atau tag versi seperti `:1.2.1`. Untuk membangun image sendiri: `docker build -t cachety .`
+Lalu buka http://localhost:8000. Gunakan `:edge` untuk versi terbaru dari `main`, atau tag versi seperti `:1.3.0`. Untuk membangun image sendiri: `docker build -t cachety .`
 
 Image ini ditujukan untuk penggunaan lokal: `127.0.0.1` menjaganya tetap di luar jaringan Anda, dan image ini menyajikan situs tanpa header keamanan HTTP. Untuk menyajikan Cachety secara publik, letakkan di belakang reverse proxy HTTPS Anda sendiri dan pasang header dari `out/_headers`.
 

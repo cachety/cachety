@@ -108,7 +108,7 @@ Pour lancer Cachety sur votre propre machine, sans rien installer d'autre que Do
 docker run --rm -p 127.0.0.1:8000:8080 ghcr.io/cachety/cachety
 ```
 
-Ouvrez ensuite http://localhost:8000. Utilisez `:edge` pour la dernière version de `main`, ou un numéro de version comme `:1.2.1`. Pour construire l'image vous-même : `docker build -t cachety .`
+Ouvrez ensuite http://localhost:8000. Utilisez `:edge` pour la dernière version de `main`, ou un numéro de version comme `:1.3.0`. Pour construire l'image vous-même : `docker build -t cachety .`
 
 L'image est prévue pour un usage local : `127.0.0.1` la garde hors de votre réseau, et elle sert le site sans les en-têtes de sécurité HTTP. Pour exposer Cachety publiquement, placez-la derrière votre propre proxy inverse HTTPS et configurez les en-têtes de `out/_headers`.
 
